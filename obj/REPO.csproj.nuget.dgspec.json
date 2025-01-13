@@ -10,14 +10,14 @@
         "projectUniqueName": "I:\\Users\\DUT\\HK4\\PBL3\\REPO\\REPO.csproj",
         "projectName": "REPO",
         "projectPath": "I:\\Users\\DUT\\HK4\\PBL3\\REPO\\REPO.csproj",
-        "packagesPath": "D:\\Users\\dusqd\\.nuget\\packages\\",
+        "packagesPath": "D:/msys64/home/dusqd\\.nuget\\packages\\",
         "outputPath": "I:\\Users\\DUT\\HK4\\PBL3\\REPO\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "D:\\Users\\dusqd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\msys64\\home\\dusqd\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "D:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "D:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -49,6 +49,16 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "IniParser": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

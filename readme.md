@@ -1,2 +1,0 @@
-ok
-chào anh hoàng :))
