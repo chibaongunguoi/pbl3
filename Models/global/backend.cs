@@ -1,30 +1,30 @@
 namespace module_backend;
 
 using module_config;
-using module_info;
+using module_object;
 using module_query;
 
 sealed class Backend
 {
+    // ========================================================================
     public static void start()
     {
         Config.load();
         test();
     }
 
+    // ------------------------------------------------------------------------
     private static void test()
     {
-        List<Student> students = StudentQuery.get_all_students();
-        Console.WriteLine("Students:");
-        foreach (Student student in students)
+        List<DemoUser> demo_users = DemoUserQuery.get_all_demo_users();
+        Console.WriteLine("DemoUsers:");
+        foreach (DemoUser demo_user in demo_users)
         {
-            student.print();
-        }
-        List<Teacher> teachers = TeacherQuery.get_all_teachers();
-        Console.WriteLine("Teachers:");
-        foreach (Teacher teacher in teachers)
-        {
-            teacher.print();
+            demo_user.print();
         }
     }
+
+    // ========================================================================
 }
+
+/* EOF */

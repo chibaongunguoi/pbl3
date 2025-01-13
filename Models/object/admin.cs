@@ -1,22 +1,23 @@
-namespace module_data;
+namespace module_object;
 
 using Microsoft.Data.SqlClient;
 
-abstract class DataObj
+class Admin : Account
 {
     // ========================================================================
-    public virtual int fetch(SqlDataReader reader, int pos)
+    public Admin() { }
+
+    // ========================================================================
+    public override int fetch(SqlDataReader reader, int pos)
     {
+        pos = base.fetch(reader, pos);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public virtual void print() { }
-
-    // ------------------------------------------------------------------------
-    public virtual bool is_valid()
+    public override void print()
     {
-        return true;
+        base.print();
     }
 
     // ========================================================================

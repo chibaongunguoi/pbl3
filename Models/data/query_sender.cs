@@ -5,6 +5,7 @@ using module_config;
 
 class QuerySender
 {
+    // ========================================================================
     private static string get_connection_string()
     {
         var builder = new SqlConnectionStringBuilder
@@ -17,12 +18,14 @@ class QuerySender
         return builder.ConnectionString;
     }
 
+    // ------------------------------------------------------------------------
     public static void send(string query)
     {
         QuerySender sender = new QuerySender();
         sender._send(query);
     }
 
+    // ========================================================================
     protected void _send(string query)
     {
         try
@@ -34,10 +37,7 @@ class QuerySender
                 {
                     using (SqlDataReader data_reader = command.ExecuteReader())
                     {
-                        while (data_reader.Read())
-                        {
-                            this.row_itering(data_reader);
-                        }
+                        while (data_reader.Read() && this.row_itering(data_reader)) { }
                     }
                 }
             }
@@ -48,5 +48,13 @@ class QuerySender
         }
     }
 
-    protected virtual void row_itering(SqlDataReader reader) { }
+    // ------------------------------------------------------------------------
+    protected virtual bool row_itering(SqlDataReader reader)
+    {
+        return true;
+    }
+
+    // ========================================================================
 }
+
+/* EOF */

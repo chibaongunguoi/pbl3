@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 sealed class DataFetcher<T> : QuerySender
     where T : DataObj, new()
 {
+    // ========================================================================
     public static List<T> fetch(string query)
     {
         DataFetcher<T> receiver = new DataFetcher<T>();
@@ -12,12 +13,19 @@ sealed class DataFetcher<T> : QuerySender
         return receiver.m_results;
     }
 
+    // ========================================================================
     private List<T> m_results = new List<T>();
 
-    protected override void row_itering(SqlDataReader reader)
+    // ========================================================================
+    protected override bool row_itering(SqlDataReader reader)
     {
         T info = new T();
-        info.fetch(reader);
+        info.fetch(reader, 0);
         m_results.Add(info);
+        return true;
     }
+
+    // ========================================================================
 }
+
+/* EOF */

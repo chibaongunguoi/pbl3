@@ -2,6 +2,7 @@ namespace module_io;
 
 sealed class IniReader
 {
+    // ========================================================================
     public static Dictionary<string, Dictionary<string, string>> fetch(string file_path)
     {
         Dictionary<string, Dictionary<string, string>> m_content =
@@ -44,4 +45,8 @@ sealed class IniReader
 
         return m_content;
     }
+
+    // ========================================================================
 }
+
+/* EOF */
