@@ -2,7 +2,7 @@ namespace module_info;
 
 using Microsoft.Data.SqlClient;
 
-class Student : Account
+sealed class Student : Account
 {
     public Student() { }
 

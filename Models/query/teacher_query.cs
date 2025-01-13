@@ -4,7 +4,7 @@ using module_config;
 using module_data;
 using module_info;
 
-class TeacherQuery
+sealed class TeacherQuery
 {
     private static string get_table_name()
     {

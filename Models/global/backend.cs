@@ -4,7 +4,7 @@ using module_config;
 using module_info;
 using module_query;
 
-class Backend
+sealed class Backend
 {
     public static void start()
     {

@@ -2,7 +2,7 @@ namespace module_config;
 
 using module_io;
 
-class Config
+sealed class Config
 {
     private static Dictionary<string, Dictionary<string, string>> s_config =
         new Dictionary<string, Dictionary<string, string>>();

@@ -1,6 +1,6 @@
 namespace module_io;
 
-class IniReader
+sealed class IniReader
 {
     public static Dictionary<string, Dictionary<string, string>> fetch(string file_path)
     {

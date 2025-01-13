@@ -2,7 +2,7 @@ namespace module_data;
 
 using Microsoft.Data.SqlClient;
 
-class DataFetcher<T> : QuerySender
+sealed class DataFetcher<T> : QuerySender
     where T : DataObj, new()
 {
     public static List<T> fetch(string query)

@@ -4,7 +4,7 @@ using module_config;
 using module_data;
 using module_info;
 
-class DemoUserQuery
+sealed class DemoUserQuery
 {
     private static string get_table_name()
     {

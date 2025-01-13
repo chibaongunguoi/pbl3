@@ -3,10 +3,10 @@ namespace module_info;
 using Microsoft.Data.SqlClient;
 using module_data;
 
-class DemoUser : DataObj
+sealed class DemoUser : DataObj
 {
-    protected int m_id;
-    protected string m_name = "";
+    private int m_id;
+    private string m_name = "";
 
     public DemoUser() { }
 
