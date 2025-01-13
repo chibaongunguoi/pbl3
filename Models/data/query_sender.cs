@@ -1,57 +1,36 @@
 namespace module_data;
 
 using Microsoft.Data.SqlClient;
-using module_config;
 
-class QuerySender
+sealed class QuerySender : DatabaseConnection
 {
     // ========================================================================
-    private static string get_connection_string()
-    {
-        var builder = new SqlConnectionStringBuilder
-        {
-            DataSource = Config.get_config("database", "server"),
-            InitialCatalog = Config.get_config("database", "database"),
-            IntegratedSecurity = true,
-            TrustServerCertificate = true,
-        };
-        return builder.ConnectionString;
-    }
-
-    // ------------------------------------------------------------------------
-    public static void send(string query)
+    public static void run(string query)
     {
         QuerySender sender = new QuerySender();
-        sender._send(query);
+        sender.send(query);
     }
 
     // ========================================================================
-    protected void _send(string query)
+    private string query;
+
+    // ========================================================================
+    public QuerySender()
     {
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(get_connection_string()))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    using (SqlDataReader data_reader = command.ExecuteReader())
-                    {
-                        while (data_reader.Read() && this.row_itering(data_reader)) { }
-                    }
-                }
-            }
-        }
-        catch (SqlException e)
-        {
-            Console.WriteLine(e.ToString());
-        }
+        this.query = "";
     }
 
-    // ------------------------------------------------------------------------
-    protected virtual bool row_itering(SqlDataReader reader)
+    // ========================================================================
+    protected override void action(SqlConnection connection)
     {
-        return true;
+        DatabaseConnection.run_query(connection, this.query);
+    }
+
+    // ========================================================================
+    private void send(string query)
+    {
+        this.query = query;
+        connect();
     }
 
     // ========================================================================
