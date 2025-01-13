@@ -1,9 +1,9 @@
-namespace module_database;
+namespace module_data;
 
 using Microsoft.Data.SqlClient;
 using module_config;
 
-class DatabaseMngr
+class QuerySender
 {
     private static string get_connection_string()
     {
@@ -17,7 +17,13 @@ class DatabaseMngr
         return builder.ConnectionString;
     }
 
-    public void run(string query)
+    public static void send(string query)
+    {
+        QuerySender sender = new QuerySender();
+        sender._send(query);
+    }
+
+    protected void _send(string query)
     {
         try
         {

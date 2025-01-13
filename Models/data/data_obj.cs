@@ -1,8 +1,8 @@
-namespace module_database;
+namespace module_data;
 
 using Microsoft.Data.SqlClient;
 
-abstract class DatabaseInfo
+abstract class DataObj
 {
     public virtual int fetch(SqlDataReader reader)
     {

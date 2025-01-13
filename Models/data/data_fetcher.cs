@@ -1,14 +1,14 @@
-namespace module_database;
+namespace module_data;
 
 using Microsoft.Data.SqlClient;
 
-class DatabaseReceiver<T> : DatabaseMngr
-    where T : DatabaseInfo, new()
+class DataFetcher<T> : QuerySender
+    where T : DataObj, new()
 {
-    public static List<T> get_query_results(string query)
+    public static List<T> fetch(string query)
     {
-        DatabaseReceiver<T> receiver = new DatabaseReceiver<T>();
-        receiver.run(query);
+        DataFetcher<T> receiver = new DataFetcher<T>();
+        receiver._send(query);
         return receiver.m_results;
     }
 

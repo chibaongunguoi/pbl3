@@ -1,9 +1,9 @@
 namespace module_info;
 
 using Microsoft.Data.SqlClient;
-using module_database;
+using module_data;
 
-class DemoUser : DatabaseInfo
+class DemoUser : DataObj
 {
     protected int m_id;
     protected string m_name = "";
