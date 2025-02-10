@@ -20,9 +20,9 @@ sealed class DemoUser : DataObj
     }
 
     // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
-        pos = base.fetch(reader, pos);
+        pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
         this.name = reader.GetString(pos++);
         return pos;

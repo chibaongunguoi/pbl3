@@ -19,7 +19,7 @@ abstract class InfoString : DataObj
     }
 
     // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         this.content = reader.GetString(pos++);
         return pos;

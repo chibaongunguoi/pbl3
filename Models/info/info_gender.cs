@@ -19,7 +19,7 @@ sealed class InfoGender : DataObj
     public InfoGender() { }
 
     // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         this.option = (Option)reader.GetInt32(pos++);
         return pos;

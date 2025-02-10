@@ -1,3 +1,11 @@
 ﻿<div class="text-center">
-  Sửa sửa và sửa.
+  Hello World
+  <div>
+    @foreach (int x in ViewData["value"] as List<int>)
+    {
+      <div>
+        @x
+      </div>
+    }
+  </div>
 </div>

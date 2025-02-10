@@ -2,35 +2,35 @@ namespace module_data;
 
 using Microsoft.Data.SqlClient;
 
-sealed class QuerySender : DatabaseConnection
+sealed class QueryExecutor : DatabaseConnection
 {
     // ========================================================================
-    public static void run(string query)
+    protected override void process_connection(SqlConnection connection)
     {
-        QuerySender sender = new QuerySender();
-        sender.send(query);
+        Database.execute_query(connection, this.query);
     }
 
     // ========================================================================
     private string query;
 
     // ========================================================================
-    public QuerySender()
+    public QueryExecutor()
     {
         this.query = "";
     }
 
     // ========================================================================
-    protected override void action(SqlConnection connection)
+    private void execute_query(string query)
     {
-        DatabaseConnection.run_query(connection, this.query);
+        this.query = query;
+        run_kernel();
     }
 
     // ========================================================================
-    private void send(string query)
+    public static void run_query(string query)
     {
-        this.query = query;
-        connect();
+        QueryExecutor executor = new QueryExecutor();
+        executor.execute_query(query);
     }
 
     // ========================================================================

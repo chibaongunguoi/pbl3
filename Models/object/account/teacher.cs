@@ -2,19 +2,15 @@ namespace module_object;
 
 using Microsoft.Data.SqlClient;
 
-sealed class Student : User
+sealed class Teacher : User
 {
     // ========================================================================
-    private int grade;
+    public Teacher() { }
 
     // ========================================================================
-    public Student() { }
-
-    // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
-        pos = base.fetch(reader, pos);
-        this.grade = reader.GetInt32(pos++);
+        pos = base.fetch_data_by_reader(reader, pos);
         return pos;
     }
 

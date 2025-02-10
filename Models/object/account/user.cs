@@ -21,13 +21,13 @@ class User : Account
     }
 
     // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
-        pos = base.fetch(reader, pos);
+        pos = base.fetch_data_by_reader(reader, pos);
         name = reader.GetString(pos++);
-        pos = email.fetch(reader, pos);
-        pos = tel.fetch(reader, pos);
-        pos = addr.fetch(reader, pos);
+        pos = email.fetch_data_by_reader(reader, pos);
+        pos = tel.fetch_data_by_reader(reader, pos);
+        pos = addr.fetch_data_by_reader(reader, pos);
         return pos;
     }
 

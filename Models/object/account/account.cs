@@ -18,12 +18,12 @@ class Account : DataObj
     }
 
     // ========================================================================
-    public override int fetch(SqlDataReader reader, int pos)
+    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
-        pos = base.fetch(reader, pos);
+        pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
-        pos = this.username.fetch(reader, pos);
-        pos = this.password.fetch(reader, pos);
+        pos = this.username.fetch_data_by_reader(reader, pos);
+        pos = this.password.fetch_data_by_reader(reader, pos);
         return pos;
     }
 

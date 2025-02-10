@@ -6,16 +6,16 @@ using module_config;
 class DataGenerator : DatabaseConnection
 {
     // ========================================================================
-    public static void run()
+    public static void generate()
     {
         DataGenerator generator = new DataGenerator();
-        generator.send();
+        generator.run_kernel();
     }
 
     // ------------------------------------------------------------------------
     private static void drop_all_tables(SqlConnection connection)
     {
-        DatabaseConnection.run_query(
+        Database.execute_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
         );
@@ -42,10 +42,10 @@ class DataGenerator : DatabaseConnection
         foreach (string tableName in tableNames)
         {
             string query = $"DROP TABLE {tableName};";
-            DatabaseConnection.run_query(connection, query);
+            Database.execute_query(connection, query);
         }
 
-        DatabaseConnection.run_query(
+        Database.execute_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
         );
@@ -61,13 +61,13 @@ class DataGenerator : DatabaseConnection
             + "id INT PRIMARY KEY NOT NULL,"
             + "name NVARCHAR(50) NOT NULL,"
             + ");";
-        DatabaseConnection.run_query(connection, query);
+        Database.execute_query(connection, query);
         foreach (string line in File.ReadAllLines("data/demo_user.csv"))
         {
             string[] parts = line.Split(',');
             string id = parts[0];
             string name = parts[1];
-            DatabaseConnection.run_query(
+            Database.execute_query(
                 connection,
                 $"INSERT INTO {table_name} VALUES ({id}, N'{name}');"
             );
@@ -75,13 +75,7 @@ class DataGenerator : DatabaseConnection
     }
 
     // ========================================================================
-    private void send()
-    {
-        connect();
-    }
-
-    // ========================================================================
-    protected override void action(SqlConnection connection)
+    protected override void process_connection(SqlConnection connection)
     {
         DataGenerator.drop_all_tables(connection);
         DataGenerator.create_demo_user_table(connection);

@@ -26,7 +26,7 @@ sealed class Backend
     {
         if (Boolean.Parse(Config.get_config("data", "data_generator")))
         {
-            DataGenerator.run();
+            DataGenerator.generate();
         }
 
         List<DemoUser> demo_users = DemoUserQuery.get_all_demo_users();

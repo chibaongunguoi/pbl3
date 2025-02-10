@@ -6,11 +6,9 @@ sealed class DataFetcher<T> : DatabaseConnection
     where T : DataObj, new()
 {
     // ========================================================================
-    public static List<T> fetch(string query)
+    protected override void process_connection(SqlConnection connection)
     {
-        DataFetcher<T> receiver = new DataFetcher<T>();
-        receiver.send(query);
-        return receiver.results;
+        this.results = Database.fetch_data_by_query<T>(connection, this.query);
     }
 
     // ========================================================================
@@ -25,16 +23,18 @@ sealed class DataFetcher<T> : DatabaseConnection
     }
 
     // ========================================================================
-    protected override void action(SqlConnection connection)
+    private List<T> process_query(string query)
     {
-        this.results = DatabaseConnection.run_query<T>(connection, this.query);
+        this.query = query;
+        this.run_kernel();
+        return this.results;
     }
 
     // ========================================================================
-    private void send(string query)
+    public static List<T> fetch_data_by_query(string query)
     {
-        this.query = query;
-        this.connect();
+        DataFetcher<T> receiver = new DataFetcher<T>();
+        return receiver.process_query(query);
     }
 
     // ========================================================================

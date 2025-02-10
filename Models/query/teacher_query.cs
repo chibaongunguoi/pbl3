@@ -16,14 +16,14 @@ sealed class TeacherQuery
     public static List<Teacher> get_all_teachers()
     {
         string query = $"SELECT * FROM {get_table_name()}";
-        return DataFetcher<Teacher>.fetch(query);
+        return DataFetcher<Teacher>.fetch_data_by_query(query);
     }
 
     // ------------------------------------------------------------------------
     public static List<Teacher> get_teacher_by_id(int id)
     {
         string query = $"SELECT * FROM {get_table_name()} WHERE id = {id}";
-        return DataFetcher<Teacher>.fetch(query);
+        return DataFetcher<Teacher>.fetch_data_by_query(query);
     }
 
     // ========================================================================

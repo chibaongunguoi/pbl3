@@ -16,14 +16,14 @@ sealed class StudentQuery
     public static List<Student> get_all_students()
     {
         string query = $"SELECT * FROM {get_table_name()}";
-        return DataFetcher<Student>.fetch(query);
+        return DataFetcher<Student>.fetch_data_by_query(query);
     }
 
     // ------------------------------------------------------------------------
     public static List<Student> get_student_by_id(int id)
     {
         string query = $"SELECT * FROM {get_table_name()} WHERE id = {id}";
-        return DataFetcher<Student>.fetch(query);
+        return DataFetcher<Student>.fetch_data_by_query(query);
     }
 
     // ========================================================================
