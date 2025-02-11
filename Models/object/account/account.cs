@@ -6,33 +6,24 @@ using module_data;
 class Account : DataObj
 {
     // ========================================================================
-    protected int id;
-    protected InfoUsername username;
-    protected InfoPassword password;
-
-    // ========================================================================
-    public Account()
-    {
-        this.username = new InfoUsername();
-        this.password = new InfoPassword();
-    }
+    public int id;
+    public string username = "";
+    public string password = "";
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
-        pos = this.username.fetch_data_by_reader(reader, pos);
-        pos = this.password.fetch_data_by_reader(reader, pos);
+        this.username = reader.GetString(pos++);
+        this.password = reader.GetString(pos++);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public override void print()
+    public override string get_repr()
     {
-        Console.WriteLine(
-            $"ID: {this.id}, Username: {this.username.get_content()}, Password: {this.password.get_content()}"
-        );
+        return $"ID: {this.id}, Username: {this.username}, Password: {this.password}";
     }
 
     // ========================================================================

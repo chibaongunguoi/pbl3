@@ -1,27 +1,28 @@
-namespace module_object;
+namespace module_info;
 
 using Microsoft.Data.SqlClient;
+using module_data;
 
-sealed class Student : User
+sealed class InfoTime : DataObj
 {
     // ========================================================================
-    private int grade;
-
-    // ========================================================================
-    public Student() { }
+    private int hour;
+    private int minute;
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data_by_reader(reader, pos);
-        this.grade = reader.GetInt32(pos++);
+        TimeSpan time = reader.GetTimeSpan(pos);
+        this.hour = time.Hours;
+        this.minute = time.Minutes;
         return pos;
     }
 
-    // ------------------------------------------------------------------------
-    public override void print()
+    // ========================================================================
+    public override string get_repr()
     {
-        base.print();
+        return $"{hour:D2}:{minute:D2}";
     }
 
     // ========================================================================

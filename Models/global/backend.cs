@@ -33,7 +33,7 @@ sealed class Backend
         Console.WriteLine("DemoUsers:");
         foreach (DemoUser demo_user in demo_users)
         {
-            demo_user.print();
+            Console.WriteLine(demo_user.get_repr());
         }
     }
 

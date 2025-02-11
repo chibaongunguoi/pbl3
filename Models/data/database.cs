@@ -6,7 +6,27 @@ using module_config;
 class Database
 {
     // ========================================================================
-    public static string get_connection_string()
+    public static void run_query_new_conn(string query)
+    {
+        Database.call_func_new_conn(conn => Database.run_query_with_conn(conn, query));
+    }
+
+    // ========================================================================
+    public static List<T> fetch_data_new_conn<T>(string query)
+        where T : DataObj, new()
+    {
+        List<T> results = new List<T>();
+        Database.call_func_new_conn(conn =>
+            results = Database.fetch_data_with_conn<T>(conn, query)
+        );
+        return results;
+    }
+
+    // ========================================================================
+    public delegate void QueryFunction(SqlConnection conn);
+
+    // ========================================================================
+    private static string get_connection_string()
     {
         var builder = new SqlConnectionStringBuilder
         {
@@ -19,7 +39,24 @@ class Database
     }
 
     // ========================================================================
-    public static void execute_query(SqlConnection connection, string query)
+    public static void call_func_new_conn(QueryFunction f)
+    {
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(Database.get_connection_string()))
+            {
+                conn.Open();
+                f(conn);
+            }
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+    // ========================================================================
+    public static void run_query_with_conn(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))
         {
@@ -28,11 +65,11 @@ class Database
     }
 
     // ========================================================================
-    public static List<T> fetch_data_by_query<T>(SqlConnection connection, string query)
+    public static List<T> fetch_data_with_conn<T>(SqlConnection conn, string query)
         where T : DataObj, new()
     {
         List<T> results = new List<T>();
-        using (SqlCommand command = new SqlCommand(query, connection))
+        using (SqlCommand command = new SqlCommand(query, conn))
         {
             using (SqlDataReader reader = command.ExecuteReader())
             {
@@ -46,6 +83,7 @@ class Database
         }
         return results;
     }
+
     // ========================================================================
 }
 

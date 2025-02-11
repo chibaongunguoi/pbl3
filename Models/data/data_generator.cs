@@ -3,19 +3,25 @@ namespace module_data;
 using Microsoft.Data.SqlClient;
 using module_config;
 
-class DataGenerator : DatabaseConnection
+sealed class DataGenerator
 {
+    // ========================================================================
+    private static void process_connection(SqlConnection connection)
+    {
+        DataGenerator.drop_all_tables(connection);
+        DataGenerator.create_demo_user_table(connection);
+    }
+
     // ========================================================================
     public static void generate()
     {
-        DataGenerator generator = new DataGenerator();
-        generator.run_kernel();
+        Database.call_func_new_conn(DataGenerator.process_connection);
     }
 
     // ------------------------------------------------------------------------
     private static void drop_all_tables(SqlConnection connection)
     {
-        Database.execute_query(
+        Database.run_query_with_conn(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
         );
@@ -42,43 +48,37 @@ class DataGenerator : DatabaseConnection
         foreach (string tableName in tableNames)
         {
             string query = $"DROP TABLE {tableName};";
-            Database.execute_query(connection, query);
+            Database.run_query_with_conn(connection, query);
         }
 
-        Database.execute_query(
+        Database.run_query_with_conn(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
         );
-        Console.WriteLine("All tables dropped successfully");
     }
 
     // ========================================================================
     private static void create_demo_user_table(SqlConnection connection)
     {
-        string table_name = Config.get_config("table", "demo_user");
+        string table_name = Config.get_config("tableNames", "demo_user");
         string query =
             $"CREATE TABLE {table_name} ("
             + "id INT PRIMARY KEY NOT NULL,"
             + "name NVARCHAR(50) NOT NULL,"
+            + "working_time TIME NOT NULL,"
             + ");";
-        Database.execute_query(connection, query);
+        Database.run_query_with_conn(connection, query);
         foreach (string line in File.ReadAllLines("data/demo_user.csv"))
         {
             string[] parts = line.Split(',');
             string id = parts[0];
             string name = parts[1];
-            Database.execute_query(
+            string working_time = parts[2];
+            Database.run_query_with_conn(
                 connection,
-                $"INSERT INTO {table_name} VALUES ({id}, N'{name}');"
+                $"INSERT INTO {table_name} VALUES ({id}, N'{name}', ('{working_time}'));"
             );
         }
-    }
-
-    // ========================================================================
-    protected override void process_connection(SqlConnection connection)
-    {
-        DataGenerator.drop_all_tables(connection);
-        DataGenerator.create_demo_user_table(connection);
     }
 
     // ========================================================================

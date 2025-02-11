@@ -26,6 +26,8 @@ with open("tools/name/female_first_name.txt", "r", encoding="utf-8") as f:
 
 genders = list(range(0, 2))
 ids = list(range(1001, 1021))
+hours = list(range(0, 24))
+minutes = list(range(0, 60))
 
 results = []
 
@@ -48,7 +50,9 @@ for id in ids:
             + " "
             + random.choice(female_first_names)
         )
-    results.append((id, name))
+
+    working_time = f"{random.choice(hours):02d}:{random.choice(minutes):02d}"
+    results.append((id, name, working_time))
 
 
 csv_output("demo_user")

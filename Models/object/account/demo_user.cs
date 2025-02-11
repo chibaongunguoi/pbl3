@@ -2,22 +2,14 @@ namespace module_object;
 
 using Microsoft.Data.SqlClient;
 using module_data;
+using module_info;
 
 sealed class DemoUser : DataObj
 {
     // ========================================================================
-    private int id;
-    private string name = "";
-
-    // ========================================================================
-    public DemoUser() { }
-
-    // ------------------------------------------------------------------------
-    public DemoUser(int id, string name)
-    {
-        this.id = id;
-        this.name = name;
-    }
+    public int id;
+    public string name = "";
+    public InfoTime working_time = new InfoTime();
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
@@ -25,13 +17,14 @@ sealed class DemoUser : DataObj
         pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
         this.name = reader.GetString(pos++);
+        pos = this.working_time.fetch_data_by_reader(reader, pos);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public override void print()
+    public override string get_repr()
     {
-        Console.WriteLine($"ID: {this.id}, Name: {this.name}");
+        return $"ID: {this.id}, Name: {this.name}, Working_time: {this.working_time.get_repr()}";
     }
 
     // ========================================================================
