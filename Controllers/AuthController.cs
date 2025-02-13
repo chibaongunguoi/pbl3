@@ -7,7 +7,7 @@ using module_query;
 public class AuthController : BaseController
 {
     // ========================================================================
-    [HttpGet]
+
     public IActionResult Login()
     {
         var user = DemoUserQuery.get_all_demo_users();
@@ -15,7 +15,13 @@ public class AuthController : BaseController
         ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].get_repr();
         return View("Login"); // Returns the view "Views/Auth/Login.cshtml"
     }
-    [HttpPost]
+    public IActionResult Listuser()
+    {
+        var user = DemoUserQuery.get_all_demo_users();
+        ViewBag.user = user;
+        return View("ListUser"); // Returns the view "Views/Auth/Login.cshtml"
+    }
+    // [HttpPost]
     public IActionResult store()
     {
         string username = Request.Form["username"];

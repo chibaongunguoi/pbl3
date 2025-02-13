@@ -1,0 +1,30 @@
+<div class="auth-content-wrapper">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <div>
+                @foreach (var x in ViewBag.user)
+                {
+                    <tr>
+                        <td>
+                            @x.id
+                        </td>
+                        <td>
+                            @x.name
+                        </td>
+                    </tr>
+
+                }
+            </div>
+        </tbody>
+    </table>
+
+
+
+</div>
