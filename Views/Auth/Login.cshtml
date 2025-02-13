@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="auth-content-wrapper">
+    <div class="auth-wrapper container">
+        <div class="auth-content">
+            <div class="auth-title">
+                Đăng nhập
+            </div>
+            <div class="auth-form-wrapper">
+                <form action="store" class="login-form" method="POST">
+                    <div class="auth-input-wrapper">
+                        <input name="username" type="text" placeholder='tên đăng nhập' class="auth-input" />
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <input name="password" type="password" placeholder='mật khẩu' class="auth-input" />
+                    </div>
+                    <div class="auth-forget-password-wrapper">
+                        <a href='' class="auth-forget-password">
+                            Quên mật khẩu?
+                        </a>
+                    </div>
+                    <button class="auth-button">
+                        Đăng nhập
+                    </button>
+                </form>
+            </div>
+            <div class="auth-other-way">
+                Bạn chưa có tài khoản?
+                <a href="" class="auth-other-link">Đăng kí</a>
+            </div>
+        </div>
+    </div>
+</div>
