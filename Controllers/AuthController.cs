@@ -15,6 +15,10 @@ public class AuthController : BaseController
         ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].get_repr();
         return View("Login"); // Returns the view "Views/Auth/Login.cshtml"
     }
+    public IActionResult SignUp()
+    {
+        return View("SignUp"); // Returns the view "Views/Auth/Login.cshtml"
+    }
     public IActionResult Listuser()
     {
         var user = DemoUserQuery.get_all_demo_users();
