@@ -3,12 +3,15 @@ namespace module_object;
 using Microsoft.Data.SqlClient;
 using module_data;
 using module_info;
+using DemoUserId = int;
 
 sealed class DemoUser : DataObj
 {
     // ========================================================================
-    public int id;
+    public DemoUserId id;
     public string name = "";
+    public string username = "";
+    public string password = "";
     public InfoTime working_time = new InfoTime();
 
     // ========================================================================
@@ -16,6 +19,8 @@ sealed class DemoUser : DataObj
     {
         pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
+        this.username = reader.GetString(pos++);
+        this.password = reader.GetString(pos++);
         this.name = reader.GetString(pos++);
         pos = this.working_time.fetch_data_by_reader(reader, pos);
         return pos;
