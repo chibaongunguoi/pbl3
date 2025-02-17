@@ -26,6 +26,18 @@ sealed class DemoUserQuery
         return Database.fetch_data_new_conn<DemoUser>(query);
     }
 
+    // ------------------------------------------------------------------------
+    public static List<DemoUser> get_demo_user_by_username_password(
+        string username,
+        string password
+    )
+    {
+        string query =
+            $"SELECT * FROM {get_table_name()} WHERE username = '{username}' AND password = '{password}'";
+
+        return Database.fetch_data_new_conn<DemoUser>(query);
+    }
+
     // ========================================================================
 }
 

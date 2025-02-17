@@ -32,6 +32,8 @@ minutes = list(range(0, 60))
 results = []
 
 for id in ids:
+    username = id
+    password = id
     name = ""
     gender = random.choice(genders)
     if gender == 0:
@@ -52,7 +54,8 @@ for id in ids:
         )
 
     working_time = f"{random.choice(hours):02d}:{random.choice(minutes):02d}"
-    results.append((id, name, working_time))
+    results.append((id, username, password, name, working_time))
 
 
 csv_output("demo_user")
+print("Generated successfully!")

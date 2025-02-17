@@ -64,6 +64,8 @@ sealed class DataGenerator
         string query =
             $"CREATE TABLE {table_name} ("
             + "id INT PRIMARY KEY NOT NULL,"
+            + "username NVARCHAR(50) NOT NULL,"
+            + "password NVARCHAR(50) NOT NULL,"
             + "name NVARCHAR(50) NOT NULL,"
             + "working_time TIME NOT NULL,"
             + ");";
@@ -71,12 +73,15 @@ sealed class DataGenerator
         foreach (string line in File.ReadAllLines("data/demo_user.csv"))
         {
             string[] parts = line.Split(',');
-            string id = parts[0];
-            string name = parts[1];
-            string working_time = parts[2];
+            int pos = 0;
+            string id = parts[pos++];
+            string username = parts[pos++];
+            string password = parts[pos++];
+            string name = parts[pos++];
+            string working_time = parts[pos++];
             Database.run_query_with_conn(
                 connection,
-                $"INSERT INTO {table_name} VALUES ({id}, N'{name}', ('{working_time}'));"
+                $"INSERT INTO {table_name} VALUES ({id}, '{username}', '{password}', N'{name}', ('{working_time}'));"
             );
         }
     }
