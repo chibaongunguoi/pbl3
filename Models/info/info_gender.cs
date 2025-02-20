@@ -6,20 +6,32 @@ using module_data;
 sealed class InfoGender : DataObj
 {
     // ========================================================================
-    enum Option
+    public enum Option
     {
         FEMALE,
         MALE,
     }
 
     // ========================================================================
-    private Option option;
+    public Option option;
+
+    // ========================================================================
+    public InfoGender(Option option = Option.FEMALE)
+    {
+        this.option = option;
+    }
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         this.option = (Option)reader.GetInt32(pos++);
         return pos;
+    }
+
+    // ========================================================================
+    public override string ToString()
+    {
+        return ((int)this.option).ToString();
     }
 
     // ========================================================================

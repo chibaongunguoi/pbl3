@@ -11,7 +11,7 @@ abstract class DataObj
     }
 
     // ------------------------------------------------------------------------
-    public virtual string get_repr()
+    public override string ToString()
     {
         return "";
     }

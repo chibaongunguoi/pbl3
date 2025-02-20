@@ -3,7 +3,7 @@ namespace module_object;
 using Microsoft.Data.SqlClient;
 using module_info;
 
-class User : Account
+abstract class User : Account
 {
     // ========================================================================
     public string name = "";
@@ -22,6 +22,15 @@ class User : Account
         this.tel = reader.GetString(pos++);
         pos = this.bday.fetch_data_by_reader(reader, pos);
         return pos;
+    }
+
+    // ------------------------------------------------------------------------
+    public override string ToString()
+    {
+        return string.Join(
+            ",",
+            new string[] { base.ToString(), name, gender.ToString(), addr, tel, bday.ToString() }
+        );
     }
 
     // ========================================================================

@@ -30,10 +30,15 @@ sealed class Backend
         }
 
         List<DemoUser> demo_users = DemoUserQuery.get_all_demo_users();
+        List<Student> students = Database.fetch_data_new_conn<Student>("SELECT * FROM TblStudent");
         Console.WriteLine("DemoUsers:");
-        foreach (DemoUser demo_user in demo_users)
+        // foreach (DemoUser demo_user in demo_users)
+        // {
+        //     Console.WriteLine(demo_user.ToString());
+        // }
+        foreach (Student student in students)
         {
-            Console.WriteLine(demo_user.get_repr());
+            Console.WriteLine(student.ToString());
         }
     }
 

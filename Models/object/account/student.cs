@@ -1,6 +1,6 @@
 namespace module_object;
 
 // HACK: Tạm thời bỏ trống class này.
-class Admin : Account { }
+class Student : User { }
 
 /* EOF */

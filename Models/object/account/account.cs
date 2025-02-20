@@ -3,7 +3,7 @@ namespace module_object;
 using Microsoft.Data.SqlClient;
 using module_data;
 
-class Account : DataObj
+abstract class Account : DataObj
 {
     // ========================================================================
     public int id;
@@ -21,9 +21,9 @@ class Account : DataObj
     }
 
     // ------------------------------------------------------------------------
-    public override string get_repr()
+    public override string ToString()
     {
-        return $"ID: {this.id}, Username: {this.username}, Password: {this.password}";
+        return string.Join(",", new string[] { id.ToString(), username, password });
     }
 
     // ========================================================================
