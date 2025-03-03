@@ -1,5 +1,5 @@
 /bin/
 /obj/
 /data/
-/config.ini
+/config.json
 /*.sln
