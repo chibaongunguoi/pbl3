@@ -1,7 +1,4 @@
-namespace module_object;
-
 using Microsoft.Data.SqlClient;
-using module_info;
 
 abstract class User : Account
 {

@@ -1,5 +1,3 @@
-namespace module_regex;
-
 using System.Text.RegularExpressions;
 
 class RegexPatterns

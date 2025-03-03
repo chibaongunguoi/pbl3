@@ -1,7 +1,3 @@
-namespace module_config;
-
-using module_io;
-
 sealed class Config
 {
     // ========================================================================

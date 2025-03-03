@@ -3,7 +3,6 @@ namespace REPO.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using module_query;
 
 public class AuthController : BaseController
 {

@@ -9,8 +9,6 @@
 
 // NOTE: Đây là điểm khởi đầu của toàn bộ hệ thống web.
 
-using module_backend;
-
 // NOTE: Backend là tập hợp các lệnh của lập trình viên dùng để khởi tạo cơ sở
 // dữ liệu cũng như nạp các thông tin phụ khác vào hệ thống.
 Backend.start();

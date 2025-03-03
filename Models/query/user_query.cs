@@ -1,9 +1,3 @@
-namespace module_query;
-
-using module_config;
-using module_data;
-using module_object;
-
 sealed class UserQuery
 {
     // ========================================================================

@@ -1,5 +1,3 @@
-namespace module_demo;
-
 class Demo
 {
     public static List<int> demo_int()

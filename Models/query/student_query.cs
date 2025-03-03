@@ -1,7 +1,3 @@
-namespace module_query;
-
-using module_object;
-
 sealed class StudentQuery
 {
     // ========================================================================

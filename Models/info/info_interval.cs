@@ -1,7 +1,4 @@
-namespace module_info;
-
 using Microsoft.Data.SqlClient;
-using module_data;
 
 sealed class InfoInterval : DataObj
 {

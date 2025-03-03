@@ -1,8 +1,4 @@
-namespace module_object;
-
 using Microsoft.Data.SqlClient;
-using module_data;
-using module_info;
 
 sealed class CtrctSchedule : DataObj
 {

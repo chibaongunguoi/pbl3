@@ -1,7 +1,4 @@
-namespace module_data;
-
 using Microsoft.Data.SqlClient;
-using module_config;
 
 class Database
 {

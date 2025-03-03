@@ -1,7 +1,4 @@
-namespace module_data;
-
 using Microsoft.Data.SqlClient;
-using module_config;
 
 // HACK: Đây là class dùng để chuyển đổi dữ liệu từ file csv sang cơ sở
 // dữ liệu SQL Server.

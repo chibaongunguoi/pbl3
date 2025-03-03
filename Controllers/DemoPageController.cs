@@ -1,7 +1,6 @@
 namespace REPO.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using module_demo;
 
 public class DemoPageController : BaseController
 {

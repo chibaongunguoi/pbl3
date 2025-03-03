@@ -1,5 +1,3 @@
-namespace module_data;
-
 using Microsoft.Data.SqlClient;
 
 abstract class DataObj
