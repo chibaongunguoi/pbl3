@@ -6,7 +6,7 @@ using module_info;
 abstract class User : Account
 {
     // ========================================================================
-    public string name = "";
+    public string fullname = "";
     public InfoGender gender = new InfoGender();
     public string addr = "";
     public string tel = "";
@@ -16,7 +16,7 @@ abstract class User : Account
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data_by_reader(reader, pos);
-        this.name = reader.GetString(pos++);
+        this.fullname = reader.GetString(pos++);
         pos = this.gender.fetch_data_by_reader(reader, pos);
         this.addr = reader.GetString(pos++);
         this.tel = reader.GetString(pos++);
@@ -29,7 +29,15 @@ abstract class User : Account
     {
         return string.Join(
             ",",
-            new string[] { base.ToString(), name, gender.ToString(), addr, tel, bday.ToString() }
+            new string[]
+            {
+                base.ToString(),
+                fullname,
+                gender.ToString(),
+                addr,
+                tel,
+                bday.ToString(),
+            }
         );
     }
 

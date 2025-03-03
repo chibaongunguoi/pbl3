@@ -2,27 +2,25 @@ namespace module_object;
 
 using Microsoft.Data.SqlClient;
 using module_data;
+using module_info;
 
-class Subject : DataObj
+class Contract : DataObj
 {
     // ========================================================================
     public int id;
-    public string name = "";
-    public int grade;
-    public int duration; // Tính bằng tháng
-    public int fee_per_month;
-    public int slot_per_week;
+    public int stu_id;
+    public int tch_id;
+    public int sbj_id;
+    public InfoDate start_date = new InfoDate();
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data_by_reader(reader, pos);
         this.id = reader.GetInt32(pos++);
-        this.name = reader.GetString(pos++);
-        this.grade = reader.GetInt32(pos++);
-        this.duration = reader.GetInt32(pos++);
-        this.fee_per_month = reader.GetInt32(pos++);
-        this.slot_per_week = reader.GetInt32(pos++);
+        this.stu_id = reader.GetInt32(pos++);
+        this.tch_id = reader.GetInt32(pos++);
+        this.sbj_id = reader.GetInt32(pos++);
         return pos;
     }
 
