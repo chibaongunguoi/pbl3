@@ -7,7 +7,7 @@ class Subject : DataObj
 {
     // ========================================================================
     public int id;
-    public string name;
+    public string name = "";
     public int grade;
     public int duration; // Tính bằng tháng
     public int fee_per_month;

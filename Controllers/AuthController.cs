@@ -11,7 +11,6 @@ public class AuthController : BaseController
 
     public IActionResult Login()
     {
-        var user = DemoUserQuery.get_all_demo_users();
         var user1001 = DemoUserQuery.get_demo_user_by_id(1002);
         ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].ToString();
         return View("Login");
@@ -44,10 +43,23 @@ public class AuthController : BaseController
         string password = !StringValues.IsNullOrEmpty(password_values)
             ? password_values.ToString()
             : string.Empty;
-        ViewBag.username = username;
-        var user = DemoUserQuery.get_demo_user_by_username_password(username, password);
-        ViewBag.oneuser = user.IsNullOrEmpty() ? "Empty" : user[0].ToString();
-        return View("user");
+
+        var stu_query_result = StudentQuery.get_student_by_username_password(username, password);
+
+        if (!stu_query_result.IsNullOrEmpty())
+        {
+            ViewBag.oneuser = stu_query_result[0].ToString();
+            return View("user");
+        }
+
+        var tch_query_result = TeacherQuery.get_teacher_by_username_password(username, password);
+
+        if (!tch_query_result.IsNullOrEmpty())
+        {
+            ViewBag.oneuser = tch_query_result[0].ToString();
+            return View("user");
+        }
+        return View("Login");
     }
 
     // ========================================================================
