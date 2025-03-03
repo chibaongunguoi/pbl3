@@ -2,30 +2,27 @@ namespace module_object;
 
 using Microsoft.Data.SqlClient;
 using module_data;
+using module_info;
 
-class Subject : DataObj
+sealed class CtrctSchedule : DataObj
 {
     // ========================================================================
-    public int id;
-    public string name;
-    public int grade;
-    public int duration; // Tính bằng tháng
-    public int fee_per_month;
-    public int slot_per_week;
-
-    // ========================================================================
-    public Subject()
-    {
-        this.name = "";
-    }
+    public int ctrct_id;
+    public InfoInterval interval = new InfoInterval();
 
     // ========================================================================
     public override int fetch_data_by_reader(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data_by_reader(reader, pos);
-        this.id = reader.GetInt32(pos++);
-        this.name = reader.GetString(pos++);
+        this.ctrct_id = reader.GetInt32(pos++);
+        pos = this.interval.fetch_data_by_reader(reader, pos);
         return pos;
+    }
+
+    // ------------------------------------------------------------------------
+    public override string ToString()
+    {
+        return $"({this.ctrct_id}, {this.interval.ToString()})";
     }
 
     // ========================================================================
