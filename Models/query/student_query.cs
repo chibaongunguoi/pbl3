@@ -1,9 +1,11 @@
 sealed class StudentQuery
 {
     // ========================================================================
-    public static List<Student> get_student_by_username_password(string username, string password)
+    public static List<Student> get_all_students()
     {
-        return UserQuery.get_user_by_username_password<Student>("student", username, password);
+        return MultiAccountQueryFromTable<Student>.get_all_accounts(
+            ConfigUtils.get_table_name(InfoAccountType.STUDENT)
+        );
     }
 
     // ========================================================================

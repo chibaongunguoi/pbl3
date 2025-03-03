@@ -1,9 +1,11 @@
 sealed class TeacherQuery
 {
     // ========================================================================
-    public static List<Teacher> get_teacher_by_username_password(string username, string password)
+    public static List<Teacher> get_all_teachers()
     {
-        return UserQuery.get_user_by_username_password<Teacher>("teacher", username, password);
+        return MultiAccountQueryFromTable<Teacher>.get_all_accounts(
+            ConfigUtils.get_table_name(InfoAccountType.TEACHER)
+        );
     }
 
     // ========================================================================

@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-abstract class User : Account
+class User : Account
 {
     // ========================================================================
     public string fullname = "";
@@ -10,14 +10,14 @@ abstract class User : Account
     public InfoDate bday = new InfoDate();
 
     // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos)
     {
-        pos = base.fetch_data_by_reader(reader, pos);
-        this.fullname = reader.GetString(pos++);
-        pos = this.gender.fetch_data_by_reader(reader, pos);
-        this.addr = reader.GetString(pos++);
-        this.tel = reader.GetString(pos++);
-        pos = this.bday.fetch_data_by_reader(reader, pos);
+        pos = base.fetch_data(reader, pos);
+        fullname = DataReader.get_string(reader, pos++);
+        gender = DataReader.get_enum<InfoGender>(reader, pos++);
+        addr = DataReader.get_string(reader, pos++);
+        tel = DataReader.get_string(reader, pos++);
+        pos = bday.fetch_data(reader, pos);
         return pos;
     }
 
@@ -30,7 +30,7 @@ abstract class User : Account
             {
                 base.ToString(),
                 fullname,
-                gender.ToString(),
+                ((int)gender).ToString(),
                 addr,
                 tel,
                 bday.ToString(),

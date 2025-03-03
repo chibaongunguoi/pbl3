@@ -6,6 +6,8 @@ sealed class Backend
         try
         {
             Config.load();
+            ConfigJson.load();
+            ConfigUtils.load();
             test();
         }
         catch (Exception e)
@@ -22,13 +24,8 @@ sealed class Backend
             DataGenerator.generate();
         }
 
-        List<DemoUser> demo_users = DemoUserQuery.get_all_demo_users();
-        List<Student> students = Database.fetch_data_new_conn<Student>("SELECT * FROM TblStudent");
-        Console.WriteLine("DemoUsers:");
-        // foreach (DemoUser demo_user in demo_users)
-        // {
-        //     Console.WriteLine(demo_user.ToString());
-        // }
+        List<Student> students = StudentQuery.get_all_students();
+        Console.WriteLine("Students:");
         foreach (Student student in students)
         {
             Console.WriteLine(student.ToString());

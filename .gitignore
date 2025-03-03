@@ -1,6 +1,5 @@
-bin/
-obj/
-data/
-config.ini
-# *.csproj
-*.sln
+/bin/
+/obj/
+/data/
+/config.ini
+/*.sln

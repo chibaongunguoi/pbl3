@@ -1,4 +1,3 @@
-// HACK: Tạm thời bỏ trống class này.
-class Student : User { }
+sealed class Student : User { }
 
 /* EOF */

@@ -43,22 +43,36 @@ public class AuthController : BaseController
             ? password_values.ToString()
             : string.Empty;
 
-        var stu_query_result = StudentQuery.get_student_by_username_password(username, password);
+        // var stu_query_result = StudentQuery.get_student_by_username_password(username, password);
+        //
+        // if (!stu_query_result.IsNullOrEmpty())
+        // {
+        //     ViewBag.oneuser = stu_query_result[0].ToString();
+        //     return View("user");
+        // }
+        //
+        // var tch_query_result = TeacherQuery.get_teacher_by_username_password(username, password);
+        //
+        // if (!tch_query_result.IsNullOrEmpty())
+        // {
+        //     ViewBag.oneuser = tch_query_result[0].ToString();
+        //     return View("user");
+        // }
 
-        if (!stu_query_result.IsNullOrEmpty())
+        var query_handler = SingleAccountQuery<User>.get_account_by_username_password(
+            username,
+            password
+        );
+
+        if (query_handler.result.Count == 0)
         {
-            ViewBag.oneuser = stu_query_result[0].ToString();
-            return View("user");
+            return View("Login");
         }
 
-        var tch_query_result = TeacherQuery.get_teacher_by_username_password(username, password);
-
-        if (!tch_query_result.IsNullOrEmpty())
-        {
-            ViewBag.oneuser = tch_query_result[0].ToString();
-            return View("user");
-        }
-        return View("Login");
+        User user = query_handler.result[0];
+        ViewBag.oneuser =
+            $"Vai trò: {query_handler.account_type.ToString()}, Họ và tên: {user.fullname}.";
+        return View("user");
     }
 
     // ========================================================================

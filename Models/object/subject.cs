@@ -11,15 +11,15 @@ class Subject : DataObj
     public int slot_per_week;
 
     // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos)
     {
-        pos = base.fetch_data_by_reader(reader, pos);
-        this.id = reader.GetInt32(pos++);
-        this.name = reader.GetString(pos++);
-        this.grade = reader.GetInt32(pos++);
-        this.duration = reader.GetInt32(pos++);
-        this.fee_per_month = reader.GetInt32(pos++);
-        this.slot_per_week = reader.GetInt32(pos++);
+        pos = base.fetch_data(reader, pos);
+        id = DataReader.get_int(reader, pos++);
+        name = DataReader.get_string(reader, pos++);
+        grade = DataReader.get_int(reader, pos++);
+        duration = DataReader.get_int(reader, pos++);
+        fee_per_month = DataReader.get_int(reader, pos++);
+        slot_per_week = DataReader.get_int(reader, pos++);
         return pos;
     }
 

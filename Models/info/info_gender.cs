@@ -1,37 +1,7 @@
-using Microsoft.Data.SqlClient;
-
-sealed class InfoGender : DataObj
+enum InfoGender
 {
-    // ========================================================================
-    public enum Option
-    {
-        FEMALE,
-        MALE,
-    }
-
-    // ========================================================================
-    public Option option;
-
-    // ========================================================================
-    public InfoGender(Option option = Option.FEMALE)
-    {
-        this.option = option;
-    }
-
-    // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
-    {
-        this.option = (Option)reader.GetInt32(pos++);
-        return pos;
-    }
-
-    // ========================================================================
-    public override string ToString()
-    {
-        return ((int)this.option).ToString();
-    }
-
-    // ========================================================================
+    FEMALE,
+    MALE,
 }
 
 /* EOF */

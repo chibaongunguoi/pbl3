@@ -3,18 +3,19 @@ using Microsoft.Data.SqlClient;
 class Database
 {
     // ========================================================================
-    public static void run_query_new_conn(string query)
+    public static void exec_query(string query)
     {
-        Database.call_func_new_conn(conn => Database.run_query_with_conn(conn, query));
+        Database.exec_function(conn => DatabaseConn.exec_query(conn, query));
     }
 
     // ========================================================================
-    public static List<T> fetch_data_new_conn<T>(string query)
+    public static List<T> exec_query<T>(string query, string conn_string = "")
         where T : DataObj, new()
     {
         List<T> results = new List<T>();
-        Database.call_func_new_conn(conn =>
-            results = Database.fetch_data_with_conn<T>(conn, query)
+        Database.exec_function(
+            conn => results = DatabaseConn.fetch_data<T>(conn, query),
+            conn_string
         );
         return results;
     }
@@ -23,24 +24,13 @@ class Database
     public delegate void QueryFunction(SqlConnection conn);
 
     // ========================================================================
-    private static string get_connection_string()
+    public static void exec_function(QueryFunction f, string conn_string = "")
     {
-        var builder = new SqlConnectionStringBuilder
-        {
-            DataSource = Config.get_config("database", "server"),
-            InitialCatalog = Config.get_config("database", "database"),
-            IntegratedSecurity = true,
-            TrustServerCertificate = true,
-        };
-        return builder.ConnectionString;
-    }
+        conn_string = conn_string == "" ? DatabaseUtils.get_default_conn_string() : conn_string;
 
-    // ========================================================================
-    public static void call_func_new_conn(QueryFunction f)
-    {
         try
         {
-            using (SqlConnection conn = new SqlConnection(Database.get_connection_string()))
+            using (SqlConnection conn = new SqlConnection(conn_string))
             {
                 conn.Open();
                 f(conn);
@@ -50,35 +40,6 @@ class Database
         {
             Console.WriteLine(e.ToString());
         }
-    }
-
-    // ========================================================================
-    public static void run_query_with_conn(SqlConnection connection, string query)
-    {
-        using (SqlCommand command = new SqlCommand(query, connection))
-        {
-            command.ExecuteNonQuery();
-        }
-    }
-
-    // ========================================================================
-    public static List<T> fetch_data_with_conn<T>(SqlConnection conn, string query)
-        where T : DataObj, new()
-    {
-        List<T> results = new List<T>();
-        using (SqlCommand command = new SqlCommand(query, conn))
-        {
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    T info = new T();
-                    info.fetch_data_by_reader(reader, 0);
-                    results.Add(info);
-                }
-            }
-        }
-        return results;
     }
 
     // ========================================================================

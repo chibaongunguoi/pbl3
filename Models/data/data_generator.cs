@@ -5,29 +5,71 @@ using Microsoft.Data.SqlClient;
 sealed class DataGenerator
 {
     // ========================================================================
-    private static void process_connection(SqlConnection connection)
+    private static void drop_database(SqlConnection conn, string database_name)
     {
-        DataGenerator.drop_all_tables(connection);
-        DataGenerator.create_demo_user_table(connection);
-        DataGenerator.create_student_table(connection);
-        DataGenerator.create_teacher_table(connection);
+        string query =
+            "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')";
+        SqlCommand command = new SqlCommand(query, conn);
+
+        List<string> databases = new List<string>();
+
+        using (SqlDataReader reader = command.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                string result = reader["name"].ToString() ?? "";
+                if (result != database_name)
+                    continue;
+                databases.Add(result);
+                break;
+            }
+        }
+
+        foreach (string database in databases)
+        {
+            string drop_query = $"DROP DATABASE [{database}]";
+            DatabaseConn.exec_query(conn, drop_query);
+        }
+    }
+
+    // ========================================================================
+    private static void create_database(SqlConnection conn, string database_name)
+    {
+        string query = $"CREATE DATABASE [{database_name}]";
+        DatabaseConn.exec_query(conn, query);
+    }
+
+    // ========================================================================
+    private static void generate_1(SqlConnection conn)
+    {
+        string database_name = ConfigJson.get_database_name();
+        drop_database(conn, database_name);
+        create_database(conn, database_name);
+    }
+
+    // ========================================================================
+    private static void generate_2(SqlConnection conn)
+    {
+        drop_all_tables(conn);
+        create_tables(conn);
     }
 
     // ========================================================================
     public static void generate()
     {
-        Database.call_func_new_conn(DataGenerator.process_connection);
+        Database.exec_function(generate_1, DatabaseUtils.get_server_only_conn_string());
+        Database.exec_function(generate_2);
     }
 
     // ------------------------------------------------------------------------
     private static void drop_all_tables(SqlConnection connection)
     {
-        Database.run_query_with_conn(
+        DatabaseConn.exec_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
         );
 
-        List<string> tableNames = new List<string>();
+        List<string> table_names = new List<string>();
 
         using (
             SqlCommand command = new SqlCommand(
@@ -41,129 +83,70 @@ sealed class DataGenerator
                 while (reader.Read())
                 {
                     string tableName = reader["TABLE_NAME"].ToString() ?? "";
-                    tableNames.Add(tableName);
+                    table_names.Add(tableName);
                 }
             }
         }
 
-        foreach (string tableName in tableNames)
+        foreach (string tableName in table_names)
         {
             string query = $"DROP TABLE {tableName};";
-            Database.run_query_with_conn(connection, query);
+            DatabaseConn.exec_query(connection, query);
         }
 
-        Database.run_query_with_conn(
+        DatabaseConn.exec_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
         );
     }
 
     // ========================================================================
-    private static void create_demo_user_table(SqlConnection connection)
+    private static void create_tables(SqlConnection conn)
     {
-        string table_name = Config.get_config("tableNames", "demo_user");
-        string query =
-            $"CREATE TABLE {table_name} ("
-            + "id INT PRIMARY KEY NOT NULL,"
-            + "username NVARCHAR(50) NOT NULL,"
-            + "password NVARCHAR(50) NOT NULL,"
-            + "name NVARCHAR(50) NOT NULL,"
-            + "gender INT NOT NULL,"
-            + "addr NVARCHAR(100) NOT NULL,"
-            + "tel NVARCHAR(15) NOT NULL,"
-            + "bday DATE NOT NULL,"
-            + "working_time TIME NOT NULL,"
-            + ");";
-        Database.run_query_with_conn(connection, query);
-        foreach (string line in File.ReadAllLines("data/demo_user.csv"))
+        var tables = ConfigJson.get_tables();
+
+        foreach (var (key, table) in tables)
         {
-            string[] parts = line.Split(',');
-            int pos = 0;
-            string id = parts[pos++];
-            string username = parts[pos++];
-            string password = parts[pos++];
-            string name = parts[pos++];
-            string gender = parts[pos++];
-            string addr = parts[pos++];
-            string tel = parts[pos++];
-            string bday = parts[pos++];
-            string working_time = parts[pos++];
-            Database.run_query_with_conn(
-                connection,
-                $"INSERT INTO {table_name} VALUES ({id}, '{username}', '{password}', N'{name}', {gender}, N'{addr}', '{tel}', '{bday}', '{working_time}');"
-            );
+            string query = $"CREATE TABLE {table.name} (";
+            foreach (var field in table.fields)
+            {
+                query += $"{field.name} {field.sql_type},";
+            }
+
+            query = query.TrimEnd(',');
+            query += ");";
+            DatabaseConn.exec_query(conn, query);
+            string csv_file = table.csv_file;
+            foreach (string line in File.ReadAllLines(csv_file))
+            {
+                string[] parts = line.Split(',');
+                string query2 = $"INSERT INTO {table.name} VALUES (";
+                int pos = 0;
+                foreach (var field in table.fields)
+                {
+                    switch (field.dtype)
+                    {
+                        case "INT":
+                            query2 += $"{parts[pos]},";
+                            break;
+                        case "NSTRING":
+                            query2 += $"N'{parts[pos]}',";
+                            break;
+                        case "STRING":
+                            query2 += $"'{parts[pos]}',";
+                            break;
+                    }
+                    if (++pos == parts.Length)
+                        break;
+                }
+
+                query2 = query2.TrimEnd(',');
+                query2 += ");";
+                DatabaseConn.exec_query(conn, query2);
+            }
         }
     }
 
-    // ========================================================================
-    private static void create_student_table(SqlConnection connection)
-    {
-        string table_name = Config.get_config("tableNames", "student");
-        string query =
-            $"CREATE TABLE {table_name} ("
-            + "id INT PRIMARY KEY NOT NULL,"
-            + "username NVARCHAR(50) NOT NULL,"
-            + "password NVARCHAR(50) NOT NULL,"
-            + "name NVARCHAR(50) NOT NULL,"
-            + "gender INT NOT NULL,"
-            + "addr NVARCHAR(100) NOT NULL,"
-            + "tel NVARCHAR(15) NOT NULL,"
-            + "bday DATE NOT NULL,"
-            + ");";
-        Database.run_query_with_conn(connection, query);
-        foreach (string line in File.ReadAllLines("data/student.csv"))
-        {
-            string[] parts = line.Split(',');
-            int pos = 0;
-            string id = parts[pos++];
-            string username = parts[pos++];
-            string password = parts[pos++];
-            string name = parts[pos++];
-            string gender = parts[pos++];
-            string addr = parts[pos++];
-            string tel = parts[pos++];
-            string bday = parts[pos++];
-            Database.run_query_with_conn(
-                connection,
-                $"INSERT INTO {table_name} VALUES ({id}, '{username}', '{password}', N'{name}', {gender}, N'{addr}', '{tel}', '{bday}');"
-            );
-        }
-    }
-
-    // ========================================================================
-    private static void create_teacher_table(SqlConnection connection)
-    {
-        string table_name = Config.get_config("tableNames", "teacher");
-        string query =
-            $"CREATE TABLE {table_name} ("
-            + "id INT PRIMARY KEY NOT NULL,"
-            + "username NVARCHAR(50) NOT NULL,"
-            + "password NVARCHAR(50) NOT NULL,"
-            + "name NVARCHAR(50) NOT NULL,"
-            + "gender INT NOT NULL,"
-            + "addr NVARCHAR(100) NOT NULL,"
-            + "tel NVARCHAR(15) NOT NULL,"
-            + "bday DATE NOT NULL,"
-            + ");";
-        Database.run_query_with_conn(connection, query);
-        foreach (string line in File.ReadAllLines("data/teacher.csv"))
-        {
-            string[] parts = line.Split(',');
-            int pos = 0;
-            string id = parts[pos++];
-            string username = parts[pos++];
-            string password = parts[pos++];
-            string name = parts[pos++];
-            string gender = parts[pos++];
-            string addr = parts[pos++];
-            string tel = parts[pos++];
-            string bday = parts[pos++];
-            Database.run_query_with_conn(
-                connection,
-                $"INSERT INTO {table_name} VALUES ({id}, '{username}', '{password}', N'{name}', {gender}, N'{addr}', '{tel}', '{bday}');"
-            );
-        }
-    }
     // ========================================================================
 }
 

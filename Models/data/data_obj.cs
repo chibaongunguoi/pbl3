@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 abstract class DataObj
 {
     // ========================================================================
-    public virtual int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public virtual int fetch_data(SqlDataReader reader, int pos)
     {
         return pos;
     }

@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-abstract class Account : DataObj
+class Account : DataObj
 {
     // ========================================================================
     public int id;
@@ -8,12 +8,12 @@ abstract class Account : DataObj
     public string password = "";
 
     // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos)
     {
-        pos = base.fetch_data_by_reader(reader, pos);
-        this.id = reader.GetInt32(pos++);
-        this.username = reader.GetString(pos++);
-        this.password = reader.GetString(pos++);
+        pos = base.fetch_data(reader, pos);
+        id = DataReader.get_int(reader, pos++);
+        username = DataReader.get_string(reader, pos++);
+        password = DataReader.get_string(reader, pos++);
         return pos;
     }
 

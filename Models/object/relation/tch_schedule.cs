@@ -7,18 +7,18 @@ sealed class TchSchedule : DataObj
     public InfoInterval interval = new InfoInterval();
 
     // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos)
     {
-        pos = base.fetch_data_by_reader(reader, pos);
-        this.tch_id = reader.GetInt32(pos++);
-        pos = this.interval.fetch_data_by_reader(reader, pos);
+        pos = base.fetch_data(reader, pos);
+        tch_id = DataReader.get_int(reader, pos++);
+        pos = interval.fetch_data(reader, pos);
         return pos;
     }
 
     // ------------------------------------------------------------------------
     public override string ToString()
     {
-        return $"({this.tch_id}, {this.interval.ToString()})";
+        return $"({tch_id}, {interval.ToString()})";
     }
 
     // ========================================================================

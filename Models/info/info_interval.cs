@@ -7,11 +7,11 @@ sealed class InfoInterval : DataObj
     public InfoTime end_time = new InfoTime();
 
     // ========================================================================
-    public override int fetch_data_by_reader(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos)
     {
-        pos = base.fetch_data_by_reader(reader, pos);
-        pos = this.start_time.fetch_data_by_reader(reader, pos);
-        pos = this.end_time.fetch_data_by_reader(reader, pos);
+        pos = base.fetch_data(reader, pos);
+        pos = this.start_time.fetch_data(reader, pos);
+        pos = this.end_time.fetch_data(reader, pos);
         return pos;
     }
 

@@ -1,0 +1,150 @@
+{
+  "server_name": "DSPC\\SQLEXPRESS",
+  "database_name": "DbMaster",
+  "data_generator": true,
+  "tables": {
+    "demo_user": {
+      "name": "TblDemoUser",
+      "csv_file": "data/demo_user.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "working_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "student": {
+      "name": "TblStudent",
+      "csv_file": "data/student.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "teacher": {
+      "name": "TblTeacher",
+      "csv_file": "data/teacher.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    }
+  }
+}
