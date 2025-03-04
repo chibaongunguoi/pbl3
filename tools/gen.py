@@ -95,16 +95,18 @@ def generate_addr():
         yield addr
 
 
-demo_users = []
-students = []
-teachers = []
-
 gender_name_gen = generate_gender_name()
 hour_minute_gen = generate_hour_minute()
 tel_gen = generate_tel()
 student_birthday_gen = generate_day(STUDENT_BIRTHDAY_START, STUDENT_BIRTHDAY_END)
 teacher_birthday_gen = generate_day(TEACHER_BIRTHDAY_START, TEACHER_BIRTHDAY_END)
 addr_gen = generate_addr()
+
+# -----------------------------------------------------------------------------
+
+demo_users = []
+students = []
+teachers = []
 
 for id in ids:
     username = id
@@ -115,17 +117,7 @@ for id in ids:
     addr = next(addr_gen)
     working_time = next(hour_minute_gen)
     demo_users.append(
-        (
-            id,
-            username,
-            password,
-            name,
-            gender,
-            addr,
-            tel,
-            bday,
-            working_time,
-        )
+        (id, username, password, name, gender, addr, tel, bday, working_time)
     )
 
 for id in student_ids:
@@ -135,18 +127,7 @@ for id in student_ids:
     tel = next(tel_gen)
     bday = next(student_birthday_gen)
     addr = next(addr_gen)
-    students.append(
-        (
-            id,
-            username,
-            password,
-            name,
-            gender,
-            addr,
-            tel,
-            bday,
-        )
-    )
+    students.append((id, username, password, name, gender, addr, tel, bday))
 
 for id in teacher_ids:
     username = id
@@ -155,22 +136,67 @@ for id in teacher_ids:
     tel = next(tel_gen)
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
-    teachers.append(
-        (
-            id,
-            username,
-            password,
-            name,
-            gender,
-            addr,
-            tel,
-            bday,
-        )
-    )
+    teachers.append((id, username, password, name, gender, addr, tel, bday))
 
 
 csv_output("demo_user", demo_users)
 csv_output("student", students)
 csv_output("teacher", teachers)
 
+# -----------------------------------------------------------------------------
+subjects = []
+subject_dict = dict()
+
+id = 0
+with open("tools/subject.csv", encoding="utf-8") as f:
+    for line in f.readlines():
+        id += 1
+        tup = line.strip().split(",")
+        subjects.append((id, *tup))
+        subject = tup[0]
+        subject_dict[subject] = id
+
+csv_output("subject", subjects)
+
+# -----------------------------------------------------------------------------
+intervals = [
+    ("7:30", "9:00"),
+    ("9:30", "11:00"),
+    ("13:30", "15:00"),
+    ("15:30", "17:00"),
+    ("17:30", "19:00"),
+    ("19:30", "21:00"),
+]
+days = range(7)
+day_intervals = [(day, start, end) for day in days for start, end in intervals]
+teacher_schedules = []
+
+for tch_id in teacher_ids:
+    for day, start, end in day_intervals:
+        if random.random() > 0.25:
+            continue
+
+        teacher_schedules.append((tch_id, day, start, end))
+
+csv_output("teacher_schedule", teacher_schedules)
+
+# -----------------------------------------------------------------------------
+
+subject_groups = [
+    [["Toán", "Ngữ Văn", "Tiếng Anh", "Vật lí"], [6, 7, 8, 9]],
+    [["Hóa học"], [8, 9]],
+    [["Toán", "Ngữ Văn", "Tiếng Anh", "Vật lí", "Hóa học", "Sinh học"], [10, 11, 12]],
+]
+
+teacher_subjects = []
+
+for tch_id in teacher_ids:
+    subjects = random.choice(subject_groups)
+    subject = random.choice(subjects[0])
+    for grade in subjects[1]:
+        teacher_subjects.append((tch_id, subject_dict[subject + " " + str(grade)]))
+
+csv_output("teacher_subject", teacher_subjects)
+
+# -----------------------------------------------------------------------------
 print("Generated successfully!")

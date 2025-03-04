@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-sealed class TchSchedule : DataObj
+sealed class TeacherSchedule : DataObj
 {
     // ========================================================================
     public int tch_id;
@@ -16,10 +16,7 @@ sealed class TchSchedule : DataObj
     }
 
     // ------------------------------------------------------------------------
-    public override string ToString()
-    {
-        return $"({tch_id}, {interval.ToString()})";
-    }
+    public override string ToString() => $"({tch_id},{interval.ToString()})";
 
     // ========================================================================
 }

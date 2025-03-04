@@ -7,8 +7,8 @@ class DatabaseUtils
     {
         var builder = new SqlConnectionStringBuilder
         {
-            DataSource = ConfigJson.get_server_name(),
-            InitialCatalog = ConfigJson.get_database_name(),
+            DataSource = ConfigOptionManager.get_server_name(),
+            InitialCatalog = DatabaseConfigManager.get_database_name(),
             IntegratedSecurity = true,
             TrustServerCertificate = true,
         };
@@ -20,7 +20,7 @@ class DatabaseUtils
     {
         var builder = new SqlConnectionStringBuilder
         {
-            DataSource = ConfigJson.get_server_name(),
+            DataSource = ConfigOptionManager.get_server_name(),
             IntegratedSecurity = true,
             TrustServerCertificate = true,
         };

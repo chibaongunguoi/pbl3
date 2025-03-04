@@ -1,9 +1,9 @@
-sealed class TeacherQuery
+class SubjectQuery
 {
     // ========================================================================
     public static DatabaseTableConfig get_table_config()
     {
-        return DatabaseConfigManager.get_account_table_config(InfoAccountType.TEACHER);
+        return DatabaseConfigManager.get_subject_table_config();
     }
 
     // ------------------------------------------------------------------------
@@ -13,15 +13,9 @@ sealed class TeacherQuery
     public static string field(string f) => "[" + get_table_name() + "].[" + f + "]";
 
     // ========================================================================
-    public static List<Teacher> get_all_teachers()
+    public List<Subject> get_all_subjects()
     {
-        return RecordQueryFromTable<Teacher>.get_all_records(get_table_name());
-    }
-
-    // ------------------------------------------------------------------------
-    public List<Teacher> get_teacher_by_id(int id)
-    {
-        return RecordQueryFromTable<Teacher>.get_record_by_id(get_table_name(), id);
+        return RecordQueryFromTable<Subject>.get_all_records(get_table_name());
     }
 
     // ========================================================================

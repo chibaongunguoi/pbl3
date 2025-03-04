@@ -3,8 +3,9 @@ using Microsoft.Data.SqlClient;
 sealed class InfoInterval : DataObj
 {
     // ========================================================================
-    public InfoTime start_time = new InfoTime();
-    public InfoTime end_time = new InfoTime();
+    public InfoDay day = new();
+    public InfoTime start_time = new();
+    public InfoTime end_time = new();
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos)

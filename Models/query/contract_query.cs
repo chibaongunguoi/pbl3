@@ -1,26 +1,19 @@
-sealed class StudentQuery
+sealed class ContractQuery
 {
     // ========================================================================
     public static DatabaseTableConfig get_table_config()
     {
-        return DatabaseConfigManager.get_account_table_config(InfoAccountType.STUDENT);
+        return DatabaseConfigManager.get_contract_table_config();
     }
 
     // ------------------------------------------------------------------------
     public static string get_table_name() => get_table_config().name;
 
     // ========================================================================
-    public static List<Student> get_all_students()
+    public static List<Contract> get_all_contracts()
     {
-        return RecordQueryFromTable<Student>.get_all_records(get_table_name());
+        return RecordQueryFromTable<Contract>.get_all_records(get_table_name());
     }
-
-    // ------------------------------------------------------------------------
-    public List<Student> get_student_by_id(int id)
-    {
-        return RecordQueryFromTable<Student>.get_record_by_id(get_table_name(), id);
-    }
-
     // ========================================================================
 }
 

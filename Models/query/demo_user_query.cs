@@ -1,20 +1,21 @@
 sealed class DemoUserQuery
 {
     // ========================================================================
+    public static string get_table_name()
+    {
+        return DatabaseConfigManager.get_demo_user_table_config().name;
+    }
+
+    // ========================================================================
     public static List<DemoUser> get_all_demo_users()
     {
-        return MultiAccountQueryFromTable<DemoUser>.get_all_accounts(
-            ConfigUtils.s_demo_user_table_name
-        );
+        return RecordQueryFromTable<DemoUser>.get_all_records(get_table_name());
     }
 
     // ------------------------------------------------------------------------
     public static List<DemoUser> get_demo_user_by_id(int id)
     {
-        return SingleAccountQueryFromTable.get_account_by_id<DemoUser>(
-            ConfigUtils.s_demo_user_table_name,
-            id
-        );
+        return RecordQueryFromTable<DemoUser>.get_record_by_id(get_table_name(), id);
     }
 
     // ------------------------------------------------------------------------
@@ -23,8 +24,8 @@ sealed class DemoUserQuery
         string password
     )
     {
-        return SingleAccountQueryFromTable.get_account_by_username_password<DemoUser>(
-            ConfigUtils.s_demo_user_table_name,
+        return AccountQueryFromTable<DemoUser>.get_account_by_username_password(
+            get_table_name(),
             username,
             password
         );

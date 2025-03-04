@@ -28,7 +28,7 @@ sealed class DataGenerator
         foreach (string database in databases)
         {
             string drop_query = $"DROP DATABASE [{database}]";
-            DatabaseConn.exec_query(conn, drop_query);
+            DatabaseConn.exec_non_query(conn, drop_query);
         }
     }
 
@@ -36,13 +36,13 @@ sealed class DataGenerator
     private static void create_database(SqlConnection conn, string database_name)
     {
         string query = $"CREATE DATABASE [{database_name}]";
-        DatabaseConn.exec_query(conn, query);
+        DatabaseConn.exec_non_query(conn, query);
     }
 
     // ========================================================================
     private static void generate_1(SqlConnection conn)
     {
-        string database_name = ConfigJson.get_database_name();
+        string database_name = DatabaseConfigManager.get_database_name();
         drop_database(conn, database_name);
         create_database(conn, database_name);
     }
@@ -57,14 +57,14 @@ sealed class DataGenerator
     // ========================================================================
     public static void generate()
     {
-        Database.exec_function(generate_1, DatabaseUtils.get_server_only_conn_string());
-        Database.exec_function(generate_2);
+        Database.exec(generate_1, DatabaseUtils.get_server_only_conn_string());
+        Database.exec(generate_2);
     }
 
     // ------------------------------------------------------------------------
     private static void drop_all_tables(SqlConnection connection)
     {
-        DatabaseConn.exec_query(
+        DatabaseConn.exec_non_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
         );
@@ -91,10 +91,10 @@ sealed class DataGenerator
         foreach (string tableName in table_names)
         {
             string query = $"DROP TABLE {tableName};";
-            DatabaseConn.exec_query(connection, query);
+            DatabaseConn.exec_non_query(connection, query);
         }
 
-        DatabaseConn.exec_query(
+        DatabaseConn.exec_non_query(
             connection,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
         );
@@ -103,46 +103,27 @@ sealed class DataGenerator
     // ========================================================================
     private static void create_tables(SqlConnection conn)
     {
-        var tables = ConfigJson.get_tables();
+        var table_configs = DatabaseConfigManager.get_table_configs();
 
-        foreach (var (key, table) in tables)
+        foreach (var (key, table_config) in table_configs)
         {
-            string query = $"CREATE TABLE {table.name} (";
-            foreach (var field in table.fields)
+            string query = $"CREATE TABLE {table_config.name} (";
+            foreach (var field in table_config.fields)
             {
                 query += $"{field.name} {field.sql_type},";
             }
 
             query = query.TrimEnd(',');
             query += ");";
-            DatabaseConn.exec_query(conn, query);
-            string csv_file = table.csv_file;
+            DatabaseConn.exec_non_query(conn, query);
+            string csv_file = table_config.csv_file;
+            if (csv_file == "")
+            {
+                continue;
+            }
             foreach (string line in File.ReadAllLines(csv_file))
             {
-                string[] parts = line.Split(',');
-                string query2 = $"INSERT INTO {table.name} VALUES (";
-                int pos = 0;
-                foreach (var field in table.fields)
-                {
-                    switch (field.dtype)
-                    {
-                        case "INT":
-                            query2 += $"{parts[pos]},";
-                            break;
-                        case "NSTRING":
-                            query2 += $"N'{parts[pos]}',";
-                            break;
-                        case "STRING":
-                            query2 += $"'{parts[pos]}',";
-                            break;
-                    }
-                    if (++pos == parts.Length)
-                        break;
-                }
-
-                query2 = query2.TrimEnd(',');
-                query2 += ");";
-                DatabaseConn.exec_query(conn, query2);
+                QueryCreator.exec_insert_query(conn, line, table_config);
             }
         }
     }

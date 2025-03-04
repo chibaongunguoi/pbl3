@@ -1,25 +1,22 @@
 using Microsoft.Data.SqlClient;
 
-sealed class CtrctSchedule : DataObj
+class TeacherSubject : DataObj
 {
     // ========================================================================
-    public int ctrct_id;
-    public InfoInterval interval = new InfoInterval();
+    public int tch_id;
+    public int sbj_id;
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos)
     {
         pos = base.fetch_data(reader, pos);
-        ctrct_id = DataReader.get_int(reader, pos++);
-        pos = interval.fetch_data(reader, pos);
+        tch_id = DataReader.get_int(reader, pos++);
+        sbj_id = DataReader.get_int(reader, pos++);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public override string ToString()
-    {
-        return $"({ctrct_id}, {interval.ToString()})";
-    }
+    public override string ToString() => $"{tch_id},{sbj_id}";
 
     // ========================================================================
 }

@@ -1,0 +1,283 @@
+{
+  "database_name": "DbMaster",
+  "tables": {
+    "demo_user": {
+      "name": "TblDemoUser",
+      "csv_file": "data/demo_user.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "working_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "student": {
+      "name": "TblStudent",
+      "csv_file": "data/student.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "fullname",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "teacher": {
+      "name": "TblTeacher",
+      "csv_file": "data/teacher.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "fullname",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "gender",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "addr",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "tel",
+          "sql_type": "NVARCHAR(15) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "bday",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "subject": {
+      "name": "TblSubject",
+      "csv_file": "data/subject.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "grade",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "duration",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "fee_per_month",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "slot_per_week",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ]
+    },
+    "teacher_schedule": {
+      "name": "TblTeacherSchedule",
+      "csv_file": "data/teacher_schedule.csv",
+      "fields": [
+        {
+          "name": "tch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "interval_day",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "interval_start_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "interval_end_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "contract_schedule": {
+      "name": "TblContractSchedule",
+      "csv_file": "",
+      "fields": [
+        {
+          "name": "ctrct_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "interval_day",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "interval_start_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "interval_end_time",
+          "sql_type": "TIME NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    },
+    "teacher_subject": {
+      "name": "TblTeacherSubject",
+      "csv_file": "data/teacher_subject.csv",
+      "fields": [
+        {
+          "name": "tch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "sbj_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ]
+    },
+    "contract": {
+      "name": "TblContract",
+      "csv_file": "",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "stu_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "tch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "sbj_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "start_date",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        }
+      ]
+    }
+  }
+}

@@ -59,19 +59,19 @@ public class AuthController : BaseController
         //     return View("user");
         // }
 
-        var query_handler = SingleAccountQuery<User>.get_account_by_username_password(
+        var query_result = SingleAccountQuery<User>.get_account_by_username_password(
             username,
             password
         );
 
-        if (query_handler.result.Count == 0)
+        if (query_result.Count == 0)
         {
             return View("Login");
         }
 
-        User user = query_handler.result[0];
+        User user = query_result[0];
         ViewBag.oneuser =
-            $"Vai trò: {query_handler.account_type.ToString()}, Họ và tên: {user.fullname}.";
+            $"Vai trò: {SingleAccountQuery<User>.get_latest_account_type().ToString()}, Họ và tên: {user.fullname}.";
         return View("user");
     }
 

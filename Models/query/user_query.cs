@@ -1,18 +1,15 @@
-sealed class UserQuery
+sealed class UserQuery<T>
+    where T : Account, new()
 {
     // ========================================================================
-    public string get_user_fullname(int id)
-    {
-        SingleAccountQueryResult<User> query_handler = SingleAccountQuery<User>.get_account_by_id(
-            id
-        );
-        if (query_handler.result.Count == 0)
-        {
-            return string.Empty;
-        }
+    public List<T> get_account_by_id(int id, InfoAccountType? account_type = null) =>
+        (account_type.HasValue)
+            ? RecordQueryFromTable<T>.get_record_by_id(
+                DatabaseConfigManager.get_account_table_config(account_type.Value).name,
+                id
+            )
+            : SingleAccountQuery<T>.get_account_by_id(id);
 
-        return query_handler.result[0].fullname;
-    }
     // ========================================================================
 }
 
