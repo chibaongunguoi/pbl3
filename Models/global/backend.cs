@@ -5,7 +5,6 @@ sealed class Backend
     {
         try
         {
-            Config.load();
             ConfigJson.load();
             ConfigUtils.load();
             test();
@@ -19,7 +18,7 @@ sealed class Backend
     // ------------------------------------------------------------------------
     private static void test()
     {
-        if (Boolean.Parse(Config.get_config("data", "data_generator")))
+        if (ConfigJson.get_data_generator())
         {
             DataGenerator.generate();
         }

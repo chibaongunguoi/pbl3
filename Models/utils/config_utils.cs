@@ -17,6 +17,8 @@ class ConfigUtils
     // ========================================================================
     public static string get_table_name(InfoAccountType account_type)
     {
+        if (!s_table_name_dict.ContainsKey(account_type))
+            return "";
         return s_table_name_dict[account_type];
     }
 

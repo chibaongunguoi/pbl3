@@ -1,5 +1,4 @@
 {
-  "server_name": "DSPC\\SQLEXPRESS",
   "database_name": "DbMaster",
   "data_generator": true,
   "tables": {
