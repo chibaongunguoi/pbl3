@@ -15,15 +15,13 @@ sealed class Query
     }
 
     // ========================================================================
-    private string conv(Table table) => DatabaseConfigManager.get_table_name(table);
+    private string conv(Table table) => TableMngr.conv(table);
 
     // ------------------------------------------------------------------------
-    private string conv(Field table_field) =>
-        DatabaseConfigManager.get_table_field_name(table_field);
+    private string conv(Field table_field) => TableMngr.conv(table_field);
 
     // ------------------------------------------------------------------------
-    private string get_table(Field table_field) =>
-        conv(DatabaseConfigManager.get_table_field_table(table_field));
+    private string get_table(Field table_field) => conv(TableMngr.get_table(table_field));
 
     // ========================================================================
     public void output(Field table_field)
@@ -86,7 +84,7 @@ sealed class Query
     // ------------------------------------------------------------------------
     public string get_select_query()
     {
-        var table_name = DatabaseConfigManager.get_table_name(table);
+        var table_name = TableMngr.conv(table);
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str} FROM {table_name} ";
         query += string.Join(" ", inner_joins);
@@ -97,7 +95,7 @@ sealed class Query
     // ------------------------------------------------------------------------
     public string get_delete_query()
     {
-        var table_name = DatabaseConfigManager.get_table_name(table);
+        var table_name = TableMngr.conv(table);
         return $"DELETE FROM {table_name}" + get_filter_string() + ";";
     }
 

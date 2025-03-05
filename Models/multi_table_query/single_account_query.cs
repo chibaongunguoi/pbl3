@@ -11,9 +11,9 @@ sealed class SingleAccountQuery<T>
     public static List<T> exec_table_function(TableFunction f)
     {
         List<T> result = new();
-        foreach (var table in DatabaseConfigManager.get_account_tables())
+        foreach (var table in TableMngr.get_account_tables())
         {
-            string table_name = DatabaseConfigManager.get_table_name(table);
+            string table_name = TableMngr.conv(table);
             result = f(table_name);
             if (result.Count > 0)
             {

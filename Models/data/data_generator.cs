@@ -42,7 +42,7 @@ sealed class DataGenerator
     // ========================================================================
     private static void generate_1(SqlConnection conn)
     {
-        string database_name = DatabaseConfigManager.get_database_name();
+        string database_name = TableMngr.get_database_name();
         drop_database(conn, database_name);
         create_database(conn, database_name);
     }
@@ -103,7 +103,7 @@ sealed class DataGenerator
     // ========================================================================
     private static void create_tables(SqlConnection conn)
     {
-        var table_configs = DatabaseConfigManager.get_table_configs();
+        var table_configs = TableMngr.get_table_configs();
 
         foreach (var (_, table_config) in table_configs)
         {

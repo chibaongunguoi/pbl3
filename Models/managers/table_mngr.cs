@@ -62,7 +62,7 @@ enum Field
     contract__start_date,
 }
 
-class DatabaseConfigManager
+class TableMngr
 {
     // ========================================================================
     private static string s_database_name = "";
@@ -112,15 +112,13 @@ class DatabaseConfigManager
     public static string get_database_name() => s_database_name;
 
     // ========================================================================
-    public static string get_table_name(Table table) => s_table_name_dict[table];
+    public static string conv(Table table) => s_table_name_dict[table];
 
     // ------------------------------------------------------------------------
-    public static string get_table_field_name(Field table_field) =>
-        s_table_field_name_dict[table_field];
+    public static string conv(Field table_field) => s_table_field_name_dict[table_field];
 
     // ------------------------------------------------------------------------
-    public static Table get_table_field_table(Field table_field) =>
-        s_table_field_table_dict[table_field];
+    public static Table get_table(Field table_field) => s_table_field_table_dict[table_field];
 
     // ------------------------------------------------------------------------
     public static Dictionary<Table, DatabaseTableConfig> get_table_configs() => s_table_config_dict;

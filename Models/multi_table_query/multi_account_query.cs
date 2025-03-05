@@ -8,9 +8,9 @@ class MultiAccountQuery<T>
     public static List<T> exec_function(QueryFunction f)
     {
         List<T> result = new List<T>();
-        foreach (var table in DatabaseConfigManager.get_account_tables())
+        foreach (var table in TableMngr.get_account_tables())
         {
-            string table_name = DatabaseConfigManager.get_table_name(table);
+            string table_name = TableMngr.conv(table);
             result.AddRange(f(table_name));
         }
 

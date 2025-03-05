@@ -8,7 +8,7 @@ class DatabaseUtils
         var builder = new SqlConnectionStringBuilder
         {
             DataSource = ConfigOptionManager.get_server_name(),
-            InitialCatalog = DatabaseConfigManager.get_database_name(),
+            InitialCatalog = TableMngr.get_database_name(),
             IntegratedSecurity = true,
             TrustServerCertificate = true,
         };

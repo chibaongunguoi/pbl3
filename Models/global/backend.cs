@@ -8,13 +8,13 @@ sealed class Backend
         try
         {
             ConfigOptionManager.load();
-            DatabaseConfigManager.load();
+            TableMngr.load();
             if (ConfigOptionManager.get_data_generator())
             {
                 DataGenerator.generate();
             }
 
-            test();
+            test2();
         }
         catch (Exception e)
         {
@@ -23,26 +23,35 @@ sealed class Backend
     }
 
     // ------------------------------------------------------------------------
-    private static void test_2(SqlDataReader reader, ref List<string> output)
-    {
-        string tch_name = DataReader.get_string(reader, 0);
-        string sbj_name = DataReader.get_string(reader, 1);
-        output.Add(tch_name + " - " + sbj_name);
-    }
-
-    // ------------------------------------------------------------------------
     private static void test()
     {
         List<string> output = new();
+        void func(SqlDataReader reader)
+        {
+            string tch_name = DataReader.get_string(reader, 0);
+            string sbj_name = DataReader.get_string(reader, 1);
+            output.Add(tch_name + " - " + sbj_name);
+        }
         Query q = new(Table.teacher_subject);
         q.join(Field.teacher__id, Field.teacher_subject__tch_id);
         q.join(Field.subject__id, Field.teacher_subject__sbj_id);
         q.output(Field.teacher__fullname);
         q.output(Field.subject__name);
-        q.select(r => test_2(r, ref output));
+        q.select(func);
         foreach (string s in output)
         {
             Console.WriteLine(s);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    private static void test2()
+    {
+        Query q = new(Table.student);
+        q.where_(Field.student__id, 1007);
+        foreach (var r in q.select<Student>())
+        {
+            Console.WriteLine(r.ToString());
         }
     }
 
