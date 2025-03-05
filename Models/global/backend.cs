@@ -23,30 +23,27 @@ sealed class Backend
     }
 
     // ------------------------------------------------------------------------
-    private static void test_2(SqlConnection conn, SqlDataReader reader)
+    private static void test_2(SqlDataReader reader, ref List<string> output)
     {
         string tch_name = DataReader.get_string(reader, 0);
         string sbj_name = DataReader.get_string(reader, 1);
-        Console.WriteLine("The teacher " + tch_name + " teaches " + sbj_name);
+        output.Add(tch_name + " - " + sbj_name);
     }
 
     // ------------------------------------------------------------------------
     private static void test()
     {
-        QueryCreator qc = new(TeacherSubjectQuery.get_table_name());
-        qc.add_output_field(TeacherQuery.field("fullname"));
-        qc.add_output_field(SubjectQuery.field("name"));
-        qc.add_inner_join(
-            TeacherQuery.get_table_name(),
-            TeacherQuery.field("id"),
-            TeacherSubjectQuery.field("tch_id")
-        );
-        qc.add_inner_join(
-            SubjectQuery.get_table_name(),
-            SubjectQuery.field("id"),
-            TeacherSubjectQuery.field("sbj_id")
-        );
-        qc.exec_select_query(test_2);
+        List<string> output = new();
+        Query q = new(Table.teacher_subject);
+        q.join(Field.teacher__id, Field.teacher_subject__tch_id);
+        q.join(Field.subject__id, Field.teacher_subject__sbj_id);
+        q.output(Field.teacher__fullname);
+        q.output(Field.subject__name);
+        q.select(r => test_2(r, ref output));
+        foreach (string s in output)
+        {
+            Console.WriteLine(s);
+        }
     }
 
     // ========================================================================

@@ -1,21 +1,18 @@
 sealed class DemoUserQuery
 {
     // ========================================================================
-    public static string get_table_name()
-    {
-        return DatabaseConfigManager.get_demo_user_table_config().name;
-    }
-
-    // ========================================================================
     public static List<DemoUser> get_all_demo_users()
     {
-        return RecordQueryFromTable<DemoUser>.get_all_records(get_table_name());
+        Query q = new(Table.demo_user);
+        return q.select<DemoUser>();
     }
 
     // ------------------------------------------------------------------------
     public static List<DemoUser> get_demo_user_by_id(int id)
     {
-        return RecordQueryFromTable<DemoUser>.get_record_by_id(get_table_name(), id);
+        Query q = new(Table.demo_user);
+        q.where_(Field.demo_user__id, id);
+        return q.select<DemoUser>();
     }
 
     // ------------------------------------------------------------------------
@@ -24,11 +21,10 @@ sealed class DemoUserQuery
         string password
     )
     {
-        return AccountQueryFromTable<DemoUser>.get_account_by_username_password(
-            get_table_name(),
-            username,
-            password
-        );
+        Query q = new(Table.demo_user);
+        q.where_(Field.demo_user__username, username);
+        q.where_(Field.demo_user__password, password);
+        return q.select<DemoUser>();
     }
 
     // ========================================================================

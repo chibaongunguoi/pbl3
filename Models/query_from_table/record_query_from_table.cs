@@ -4,16 +4,16 @@ class RecordQueryFromTable<T>
     // ========================================================================
     public static List<T> get_all_records(string table_name)
     {
-        var query_creator = new QueryCreator(table_name);
-        return query_creator.exec_select_query<T>();
+        var q = new RawQuery(table_name);
+        return q.select<T>();
     }
 
     // ------------------------------------------------------------------------
     public static List<T> get_record_by_id(string table_name, int id)
     {
-        var query_creator = new QueryCreator(table_name);
-        query_creator.add_numeric_condition("id", id);
-        return query_creator.exec_select_query<T>();
+        var q = new RawQuery(table_name);
+        q.where_("id", id);
+        return q.select<T>();
     }
 
     // ========================================================================

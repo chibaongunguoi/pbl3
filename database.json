@@ -13,12 +13,12 @@
         {
           "name": "username",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "password",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "name",
@@ -64,12 +64,12 @@
         {
           "name": "username",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "password",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "fullname",
@@ -110,12 +110,12 @@
         {
           "name": "username",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "password",
           "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
+          "dtype": "STRING"
         },
         {
           "name": "fullname",

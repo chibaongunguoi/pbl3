@@ -57,8 +57,8 @@ sealed class DataGenerator
     // ========================================================================
     public static void generate()
     {
-        Database.exec(generate_1, DatabaseUtils.get_server_only_conn_string());
-        Database.exec(generate_2);
+        Database.exec_conn_function(generate_1, DatabaseUtils.get_server_only_conn_string());
+        Database.exec_conn_function(generate_2);
     }
 
     // ------------------------------------------------------------------------
@@ -105,7 +105,7 @@ sealed class DataGenerator
     {
         var table_configs = DatabaseConfigManager.get_table_configs();
 
-        foreach (var (key, table_config) in table_configs)
+        foreach (var (_, table_config) in table_configs)
         {
             string query = $"CREATE TABLE {table_config.name} (";
             foreach (var field in table_config.fields)
@@ -123,7 +123,7 @@ sealed class DataGenerator
             }
             foreach (string line in File.ReadAllLines(csv_file))
             {
-                QueryCreator.exec_insert_query(conn, line, table_config);
+                RawQuery.insert(conn, line, table_config);
             }
         }
     }

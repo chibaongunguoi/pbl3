@@ -1,27 +1,11 @@
 sealed class TeacherQuery
 {
     // ========================================================================
-    public static DatabaseTableConfig get_table_config()
-    {
-        return DatabaseConfigManager.get_account_table_config(InfoAccountType.TEACHER);
-    }
-
-    // ------------------------------------------------------------------------
-    public static string get_table_name() => get_table_config().name;
-
-    // ========================================================================
-    public static string field(string f) => "[" + get_table_name() + "].[" + f + "]";
-
-    // ========================================================================
-    public static List<Teacher> get_all_teachers()
-    {
-        return RecordQueryFromTable<Teacher>.get_all_records(get_table_name());
-    }
-
-    // ------------------------------------------------------------------------
     public List<Teacher> get_teacher_by_id(int id)
     {
-        return RecordQueryFromTable<Teacher>.get_record_by_id(get_table_name(), id);
+        Query q = new(Table.teacher);
+        q.where_(Field.teacher__id, id);
+        return q.select<Teacher>();
     }
 
     // ========================================================================

@@ -2,7 +2,8 @@ namespace REPO.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
+
+// using Microsoft.IdentityModel.Tokens;
 
 public class AuthController : BaseController
 {
@@ -10,8 +11,8 @@ public class AuthController : BaseController
 
     public IActionResult Login()
     {
-        var user1001 = DemoUserQuery.get_demo_user_by_id(1002);
-        ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].ToString();
+        // var user1001 = DemoUserQuery.get_demo_user_by_id(1002);
+        // ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].ToString();
         return View("Login");
     }
 
@@ -22,8 +23,8 @@ public class AuthController : BaseController
 
     public IActionResult Listuser()
     {
-        var user = DemoUserQuery.get_all_demo_users();
-        ViewBag.user = user;
+        // var user = DemoUserQuery.get_all_demo_users();
+        // ViewBag.user = user;
         return View("ListUser");
     }
 
@@ -71,7 +72,7 @@ public class AuthController : BaseController
 
         User user = query_result[0];
         ViewBag.oneuser =
-            $"Vai trò: {SingleAccountQuery<User>.get_latest_account_type().ToString()}, Họ và tên: {user.fullname}.";
+            $"Vai trò: {SingleAccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.fullname}.";
         return View("user");
     }
 

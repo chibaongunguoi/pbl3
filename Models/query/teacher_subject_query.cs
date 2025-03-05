@@ -1,17 +1,11 @@
 class TeacherSubjectQuery
 {
     // ========================================================================
-    public static DatabaseTableConfig get_table_config()
+    public static List<TeacherSubject> get_all_teacher_subjects()
     {
-        return DatabaseConfigManager.get_teacher_subject_table_config();
+        Query q = new(Table.teacher_subject);
+        return q.select<TeacherSubject>();
     }
-
-    // ------------------------------------------------------------------------
-    public static string get_table_name() => get_table_config().name;
-
-    // ========================================================================
-    public static string field(string f) => "[" + get_table_name() + "].[" + f + "]";
-
     // ========================================================================
 }
 

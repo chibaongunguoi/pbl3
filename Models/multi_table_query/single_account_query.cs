@@ -2,21 +2,22 @@ sealed class SingleAccountQuery<T>
     where T : DataObj, new()
 {
     // ========================================================================
-    private static InfoAccountType s_latest_account_type;
+    private static Table s_latest_table;
 
     // ========================================================================
-    public delegate List<T> QueryFunction(string table_name);
+    public delegate List<T> TableFunction(string table_name);
 
     // ========================================================================
-    public static List<T> exec_function(QueryFunction f)
+    public static List<T> exec_table_function(TableFunction f)
     {
         List<T> result = new();
-        foreach (var (key, table_config) in DatabaseConfigManager.get_account_table_config_dict())
+        foreach (var table in DatabaseConfigManager.get_account_tables())
         {
-            result = f(table_config.name);
+            string table_name = DatabaseConfigManager.get_table_name(table);
+            result = f(table_name);
             if (result.Count > 0)
             {
-                s_latest_account_type = key;
+                s_latest_table = table;
                 break;
             }
         }
@@ -26,11 +27,11 @@ sealed class SingleAccountQuery<T>
 
     // ========================================================================
     public static List<T> get_account_by_id(int id) =>
-        exec_function(table_name => RecordQueryFromTable<T>.get_record_by_id(table_name, id));
+        exec_table_function(table_name => RecordQueryFromTable<T>.get_record_by_id(table_name, id));
 
     // ------------------------------------------------------------------------
     public static List<T> get_account_by_username_password(string username, string password) =>
-        exec_function(table_name =>
+        exec_table_function(table_name =>
             AccountQueryFromTable<T>.get_account_by_username_password(
                 table_name,
                 username,
@@ -39,7 +40,7 @@ sealed class SingleAccountQuery<T>
         );
 
     // ========================================================================
-    public static InfoAccountType get_latest_account_type() => s_latest_account_type;
+    public static Table get_latest_table() => s_latest_table;
 
     // ========================================================================
 }

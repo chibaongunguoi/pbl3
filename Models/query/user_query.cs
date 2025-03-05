@@ -2,13 +2,15 @@ sealed class UserQuery<T>
     where T : Account, new()
 {
     // ========================================================================
-    public List<T> get_account_by_id(int id, InfoAccountType? account_type = null) =>
-        (account_type.HasValue)
+    public List<T> get_account_by_id(int id, Table? table = null)
+    {
+        return (table.HasValue)
             ? RecordQueryFromTable<T>.get_record_by_id(
-                DatabaseConfigManager.get_account_table_config(account_type.Value).name,
+                DatabaseConfigManager.get_table_name(table.Value),
                 id
             )
             : SingleAccountQuery<T>.get_account_by_id(id);
+    }
 
     // ========================================================================
 }
