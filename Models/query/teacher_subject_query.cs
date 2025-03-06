@@ -1,10 +1,13 @@
 class TeacherSubjectQuery
 {
     // ========================================================================
-    public static List<TeacherSubject> get_all_teacher_subjects()
+    public static void get_all_teacher_subjects(
+        DatabaseConn.ReaderFunction f,
+        string? conn_string = null
+    )
     {
         Query q = new(Table.teacher_subject);
-        return q.select<TeacherSubject>();
+        q.select(f, conn_string);
     }
     // ========================================================================
 }

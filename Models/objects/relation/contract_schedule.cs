@@ -7,7 +7,7 @@ sealed class ContractSchedule : DataObj
     public InfoInterval interval = new InfoInterval();
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
         ctrct_id = DataReader.get_int(reader, pos++);

@@ -10,7 +10,7 @@ class User : Account
     public InfoDate bday = new InfoDate();
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
         fullname = DataReader.get_string(reader, pos++);

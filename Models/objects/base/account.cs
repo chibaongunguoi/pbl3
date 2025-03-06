@@ -8,7 +8,7 @@ class Account : DataObj
     public string password = "";
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
         id = DataReader.get_int(reader, pos++);

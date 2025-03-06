@@ -8,7 +8,7 @@ class DatabaseReader
         where T : DataObj, new()
     {
         T info = new T();
-        info.fetch_data(reader, 0);
+        info.fetch_data(reader);
         result.Add(info);
     }
 

@@ -95,7 +95,6 @@ sealed class RawQuery
     // ========================================================================
     public string get_filter_string()
     {
-        var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
         if (conditions_str.Length > 0)

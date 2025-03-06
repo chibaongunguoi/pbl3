@@ -1,11 +1,37 @@
+using Microsoft.Data.SqlClient;
+
 sealed class ContractScheduleQuery
 {
     // ========================================================================
-    public static List<ContractSchedule> get_all_contracts()
+    public static void get_contract_schedule_from_contract(
+        DatabaseConn.ReaderFunction f,
+        int contract_id
+    )
     {
         Query q = new(Table.contract_schedule);
-        return q.select<ContractSchedule>();
+        q.where_(Field.contract_schedule__ctrct_id, contract_id);
+        q.select(f);
     }
+
+    // ========================================================================
+    public static List<InfoInterval> get_ctrct_schedules_from_student(
+        int stu_id,
+        string? conn_string
+    )
+    {
+        List<InfoInterval> result = new();
+        void func(SqlDataReader reader)
+        {
+            var obj = DataReader.get_data_obj<ContractSchedule>(reader);
+            result.Add(obj.interval);
+        }
+        Query q = new(Table.contract);
+        q.join(Field.contract__id, Field.contract_schedule__ctrct_id);
+        q.where_(Field.contract__stu_id, stu_id);
+        q.select(func, conn_string);
+        return result;
+    }
+
     // ========================================================================
 }
 

@@ -7,7 +7,7 @@ class TeacherSubject : DataObj
     public int sbj_id;
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos)
+    public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
         tch_id = DataReader.get_int(reader, pos++);

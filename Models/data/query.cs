@@ -15,36 +15,27 @@ sealed class Query
     }
 
     // ========================================================================
-    private string conv(Table table) => TableMngr.conv(table);
-
-    // ------------------------------------------------------------------------
-    private string conv(Field table_field) => TableMngr.conv(table_field);
-
-    // ------------------------------------------------------------------------
-    private string get_table(Field table_field) => conv(TableMngr.get_table(table_field));
-
-    // ========================================================================
     public void output(Field table_field)
     {
-        output_fields.Add(conv(table_field));
+        output_fields.Add(TableMngr.conv(table_field));
     }
 
     // ========================================================================
     public void where_(Field table_field, int value)
     {
-        conditions.Add($"{conv(table_field)} = {value}");
+        conditions.Add($"{TableMngr.conv(table_field)} = {value}");
     }
 
     // ------------------------------------------------------------------------
     public void where_n(Field table_field, string value)
     {
-        conditions.Add($"{conv(table_field)} = N'{value}'");
+        conditions.Add($"{TableMngr.conv(table_field)} = N'{value}'");
     }
 
     // ------------------------------------------------------------------------
     public void where_(Field table_field, string value)
     {
-        conditions.Add($"{conv(table_field)} = '{value}'");
+        conditions.Add($"{TableMngr.conv(table_field)} = '{value}'");
     }
 
     // ------------------------------------------------------------------------
@@ -58,9 +49,9 @@ sealed class Query
     // ------------------------------------------------------------------------
     public void join(Field field_1_, Field field_2_)
     {
-        string table_name_1 = get_table(field_1_);
-        var field_1 = conv(field_1_);
-        var field_2 = conv(field_2_);
+        string table_name_1 = TableMngr.conv(TableMngr.get_table(field_1_));
+        var field_1 = TableMngr.conv(field_1_);
+        var field_2 = TableMngr.conv(field_2_);
         inner_joins.Add($"INNER JOIN {table_name_1} ON {field_1} = {field_2}");
     }
 
@@ -73,7 +64,6 @@ sealed class Query
     // ========================================================================
     public string get_filter_string()
     {
-        var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
         if (conditions_str.Length > 0)
