@@ -13,13 +13,13 @@ class TeacherScheduleQuery
     }
 
     // ------------------------------------------------------------------------
-    public static List<InfoInterval> get_avai_schedule(int tch_id, string? conn_string = null)
+    public static List<int> get_avai_schedule(int tch_id, string? conn_string = null)
     {
-        List<InfoInterval> result = new();
+        List<int> result = new();
         void func(SqlDataReader reader)
         {
             var obj = DataReader.get_data_obj<TeacherSchedule>(reader);
-            result.Add(obj.interval);
+            result.Add(obj.sch_id);
         }
         Query q = new(Table.teacher_schedule);
         q.where_(Field.teacher_schedule__tch_id, tch_id);

@@ -190,19 +190,9 @@
           "dtype": "INT"
         },
         {
-          "name": "interval_day",
+          "name": "sch_id",
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
-        },
-        {
-          "name": "interval_start_time",
-          "sql_type": "TIME NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "interval_end_time",
-          "sql_type": "TIME NOT NULL",
-          "dtype": "STRING"
         }
       ]
     },
@@ -216,17 +206,33 @@
           "dtype": "INT"
         },
         {
-          "name": "interval_day",
+          "name": "sch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ]
+    },
+    "schedule": {
+      "name": "TblSchedule",
+      "csv_file": "data/schedule.csv",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "day",
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
         },
         {
-          "name": "interval_start_time",
+          "name": "start_time",
           "sql_type": "TIME NOT NULL",
           "dtype": "STRING"
         },
         {
-          "name": "interval_end_time",
+          "name": "end_time",
           "sql_type": "TIME NOT NULL",
           "dtype": "STRING"
         }

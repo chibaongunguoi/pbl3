@@ -170,14 +170,19 @@ intervals = [
 days = range(7)
 day_intervals = [(day, start, end) for day in days for start, end in intervals]
 teacher_schedules = []
+schedules = []
+
+for pos in range(len(day_intervals)):
+    schedules.append((pos + 1, *day_intervals[pos]))
 
 for tch_id in teacher_ids:
-    for day, start, end in day_intervals:
+    for pos in range(1, 7 * len(intervals) + 1):
         if random.random() > 0.25:
             continue
 
-        teacher_schedules.append((tch_id, day, start, end))
+        teacher_schedules.append((tch_id, pos))
 
+csv_output("schedule", schedules)
 csv_output("teacher_schedule", teacher_schedules)
 
 # -----------------------------------------------------------------------------

@@ -14,16 +14,13 @@ sealed class ContractScheduleQuery
     }
 
     // ========================================================================
-    public static List<InfoInterval> get_ctrct_schedules_from_student(
-        int stu_id,
-        string? conn_string
-    )
+    public static List<int> get_ctrct_schedules_from_student(int stu_id, string? conn_string)
     {
-        List<InfoInterval> result = new();
+        List<int> result = new();
         void func(SqlDataReader reader)
         {
             var obj = DataReader.get_data_obj<ContractSchedule>(reader);
-            result.Add(obj.interval);
+            result.Add(obj.sch_id);
         }
         Query q = new(Table.contract);
         q.join(Field.contract__id, Field.contract_schedule__ctrct_id);

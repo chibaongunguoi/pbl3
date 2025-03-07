@@ -1,4 +1,5 @@
 // Các tag dùng để note bao gồm:
+// INFO: Thông tin về code
 // NOTE: Ghi chú, mô tả chung về code.
 // TODO: Đánh dấu việc cần làm trong tương lai.
 // WARN: Cảnh báo về vấn đề hoặc hậu quả tiềm ẩn.

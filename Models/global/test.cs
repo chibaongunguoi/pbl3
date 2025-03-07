@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 class Test
 {
     // ------------------------------------------------------------------------
-    public static void test() => test4();
+    public static void test() => test5();
 
     // ------------------------------------------------------------------------
     private static void test1()
@@ -73,7 +73,7 @@ class Test
                 end = { hour = 10, minute = 15 },
             },
         };
-        IoUtils.print_list(ScheduleUtils.get_subtraction(intervals_1, intervals_2));
+        IoUtils.print_list(IntervalUtils.get_subtraction(intervals_1, intervals_2));
     }
 
     // ------------------------------------------------------------------------
