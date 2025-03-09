@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 class DatabaseUtils
 {
     // ========================================================================
+    // INFO: Trả về xâu kết nối mặc định tới cơ sở dữ liệu.
     public static string get_default_conn_string()
     {
         var builder = new SqlConnectionStringBuilder
@@ -16,6 +17,7 @@ class DatabaseUtils
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Trả về xâu kết nối chỉ tới server.
     public static string get_server_only_conn_string()
     {
         var builder = new SqlConnectionStringBuilder

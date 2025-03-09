@@ -1,5 +1,9 @@
 using Microsoft.Data.SqlClient;
 
+// INFO: Class tạo truy vấn
+// Class truy vấn này được biệt hóa để sử dụng với kiểu
+// dữ liệu Table (bảng) và Field (trường) được định nghĩa
+// chỉ dành riêng cho dự án này.
 sealed class Query
 {
     // ========================================================================
@@ -9,12 +13,14 @@ sealed class Query
     private List<string> inner_joins = new List<string>();
 
     // ========================================================================
+    // INFO: Bắt đầu với một bảng
     public Query(Table table)
     {
         this.table = table;
     }
 
     // ========================================================================
+    // INFO: Thêm trường vào danh sách trường cần lấy
     public void output(Field table_field)
     {
         output_fields.Add(TableMngr.conv(table_field));
@@ -27,6 +33,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Thêm xâu unicode vào điều kiện
     public void where_n(Field table_field, string value)
     {
         conditions.Add($"{TableMngr.conv(table_field)} = N'{value}'");
@@ -39,6 +46,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Điều kiện tự cấu hình
     public void where_(string condition)
     {
         conditions.Add(condition);
@@ -56,6 +64,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Phép kết tự cấu hình
     public void join(string join_cmd)
     {
         inner_joins.Add(join_cmd);
@@ -72,6 +81,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Trả về truy vấn SELECT
     public string get_select_query()
     {
         var table_name = TableMngr.conv(table);
@@ -83,6 +93,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Trả về truy vấn DELETE
     public string get_delete_query()
     {
         var table_name = TableMngr.conv(table);
@@ -90,18 +101,22 @@ sealed class Query
     }
 
     // ========================================================================
+    // INFO: Thực thi truy vấn SELECT, trả về list các DataObj
     public List<T> select<T>(SqlConnection conn)
         where T : DataObj, new() => DatabaseConn.exec_query<T>(conn, get_select_query());
 
     // ------------------------------------------------------------------------
+    // INFO: Thực thi truy vấn SELECT, trả về list các biểu diễn dạng xâu
     public List<string> select(SqlConnection conn) =>
         DatabaseConn.exec_query(conn, get_select_query());
 
     // ------------------------------------------------------------------------
+    // INFO: Chạy reader function với truy vấn SELECT
     public void select(SqlConnection conn, DatabaseConn.ReaderFunction f) =>
         DatabaseConn.exec_reader_function(conn, get_select_query(), f);
 
     // ========================================================================
+    // INFO: Các hàm truy vấn dưới đây có thêm tham số conn
     public void delete(SqlConnection conn) => DatabaseConn.exec_non_query(conn, get_delete_query());
 
     // ========================================================================

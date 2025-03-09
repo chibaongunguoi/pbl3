@@ -1,5 +1,7 @@
 using Microsoft.Data.SqlClient;
 
+// INFO: Tập hợp các hàm dùng để tạo đối tượng từ một SqlDataReader.
+// Cần xác định pos là chỉ số cột bắt đầu để đọc dữ liệu.
 sealed class DataReader
 {
     // ========================================================================

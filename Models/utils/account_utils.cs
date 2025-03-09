@@ -1,6 +1,7 @@
 class AccountUtils
 {
     // ========================================================================
+    // INFO: Xác định vai trò của người dùng bằng id
     public static Table get_account_type(int id)
     {
         if (1000 <= id && id < 2000)

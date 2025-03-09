@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 class DatabaseReader
 {
     // ========================================================================
-    // INFO:  Đọc thông tin trên reader và thêm thông tin vào list các DataObj.
+    // INFO:  Đọc thông tin trên reader và thêm thông tin vào tham chiếu list các DataObj.
     public static void read<T>(SqlDataReader reader, ref List<T> result)
         where T : DataObj, new()
     {
@@ -13,7 +13,7 @@ class DatabaseReader
     }
 
     // ------------------------------------------------------------------------
-    // INFO: Đọc thông tin trên reader và thêm thông tin vào list các string.
+    // INFO: Đọc thông tin trên reader và thêm thông tin vào tham chiếu list các string.
     public static void read(SqlDataReader reader, ref List<string> result)
     {
         List<string> record = new();
