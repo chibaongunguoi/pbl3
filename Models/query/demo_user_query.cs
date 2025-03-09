@@ -3,8 +3,7 @@ sealed class DemoUserQuery
     // ========================================================================
     public static List<DemoUser> get_all_demo_users()
     {
-        Query q = new(Table.demo_user);
-        return q.select<DemoUser>();
+        return CommonQuery<DemoUser>.get_all_records(Table.demo_user);
     }
 
     // ------------------------------------------------------------------------
@@ -21,10 +20,11 @@ sealed class DemoUserQuery
         string password
     )
     {
-        Query q = new(Table.demo_user);
-        q.where_(Field.demo_user__username, username);
-        q.where_(Field.demo_user__password, password);
-        return q.select<DemoUser>();
+        return AccountQuery<DemoUser>.get_account_by_username_password(
+            username,
+            password,
+            Table.demo_user
+        );
     }
 
     // ========================================================================

@@ -3,8 +3,7 @@ sealed class ContractQuery
     // ========================================================================
     public static void get_all_contracts(DatabaseConn.ReaderFunction f)
     {
-        Query q = new(Table.contract);
-        q.select(f);
+        CommonQuery.get_all_records(f, Table.contract);
     }
 
     // ------------------------------------------------------------------------

@@ -5,8 +5,7 @@ class TeacherScheduleQuery
     // ========================================================================
     public static void get_all_teacher_schedules(DatabaseConn.ReaderFunction f)
     {
-        Query q = new(Table.teacher_schedule);
-        q.select(f);
+        CommonQuery.get_all_records(f, Table.teacher_schedule);
     }
 
     // ------------------------------------------------------------------------

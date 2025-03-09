@@ -52,7 +52,7 @@ class DatabaseConn
         where T : DataObj, new()
     {
         List<T> results = new List<T>();
-        exec_reader_function(conn, query, (r) => DatabaseReader.read(r, ref results));
+        exec_reader_function(conn, query, (r) => DataReader.read(r, ref results));
         return results;
     }
 
@@ -64,7 +64,7 @@ class DatabaseConn
     public static List<string> exec_query(SqlConnection conn, string query)
     {
         List<string> results = new List<string>();
-        exec_reader_function(conn, query, (r) => DatabaseReader.read(r, ref results));
+        exec_reader_function(conn, query, (r) => DataReader.read(r, ref results));
         return results;
     }
 

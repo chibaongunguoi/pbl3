@@ -3,8 +3,7 @@ class SubjectQuery
     // ========================================================================
     public static List<Subject> get_all_subjects()
     {
-        Query q = new(Table.subject);
-        return q.select<Subject>();
+        return CommonQuery<Subject>.get_all_records(Table.subject);
     }
 
     // ------------------------------------------------------------------------

@@ -7,8 +7,7 @@ public class DemoPageController : BaseController
     // ========================================================================
     public IActionResult Index()
     {
-        List<int> a = Demo.demo_int();
-        ViewData["value"] = a;
+        ViewData["value"] = 123;
         return View();
     }
 

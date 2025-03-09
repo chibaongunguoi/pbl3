@@ -60,10 +60,7 @@ public class AuthController : BaseController
         //     return View("user");
         // }
 
-        var query_result = SingleAccountQuery<User>.get_account_by_username_password(
-            username,
-            password
-        );
+        var query_result = AccountQuery<User>.get_account_by_username_password(username, password);
 
         if (query_result.Count == 0)
         {
@@ -72,7 +69,7 @@ public class AuthController : BaseController
 
         User user = query_result[0];
         ViewBag.oneuser =
-            $"Vai trò: {SingleAccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.fullname}.";
+            $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.fullname}.";
         return View("user");
     }
 
