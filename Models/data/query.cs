@@ -11,10 +11,11 @@ sealed class Query
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
+    private string? conn_string = null;
 
     // ========================================================================
     // INFO: Bắt đầu với một bảng
-    public Query(Table table)
+    public Query(Table table, string? conn_string = null)
     {
         this.table = table;
     }
@@ -71,7 +72,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public string get_filter_string()
+    public string get_where_clause()
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -88,7 +89,7 @@ sealed class Query
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str} FROM {table_name} ";
         query += string.Join(" ", inner_joins);
-        query += get_filter_string() + ";";
+        query += get_where_clause() + ";";
         return query;
     }
 
@@ -97,11 +98,75 @@ sealed class Query
     public string get_delete_query()
     {
         var table_name = TableMngr.conv(table);
-        return $"DELETE FROM {table_name}" + get_filter_string() + ";";
+        return $"DELETE FROM {table_name}" + get_where_clause() + ";";
+    }
+
+    // ------------------------------------------------------------------------
+    // INFO: Trả về truy vấn INSERT
+    public string get_insert_query<T>(T obj)
+        where T : DataObj, new()
+    {
+        var table_config = TableMngr.get_table_config(table);
+        string[] parts = obj.ToString().Split(',');
+        string query = $"INSERT INTO {table_config.name} VALUES (";
+        int pos = 0;
+        foreach (var field in table_config.fields)
+        {
+            switch (field.dtype)
+            {
+                case "INT":
+                    query += $"{parts[pos]},";
+                    break;
+                case "NSTRING":
+                    query += $"N'{parts[pos]}',";
+                    break;
+                case "STRING":
+                    query += $"'{parts[pos]}',";
+                    break;
+            }
+            if (++pos == parts.Length)
+                break;
+        }
+
+        query = query.TrimEnd(',');
+        query += ");";
+        return query;
+    }
+
+    // ------------------------------------------------------------------------
+    public string get_update_query<T>(T obj)
+        where T : DataObj, new()
+    {
+        var table_config = TableMngr.get_table_config(table);
+        string[] parts = obj.ToString().Split(',');
+        string query = $"UPDATE {table_config.name} SET ";
+        int pos = 0;
+        foreach (var field in table_config.fields)
+        {
+            switch (field.dtype)
+            {
+                case "INT":
+                    query += $"{field.name} = {parts[pos]},";
+                    break;
+                case "NSTRING":
+                    query += $"{field.name} = N'{parts[pos]}',";
+                    break;
+                case "STRING":
+                    query += $"{field.name} = '{parts[pos]}',";
+                    break;
+            }
+            if (++pos == parts.Length)
+                break;
+        }
+
+        query = query.TrimEnd(',');
+        query += $" WHERE {get_where_clause()};";
+        return query;
     }
 
     // ========================================================================
-    // INFO: Thực thi truy vấn SELECT, trả về list các DataObj
+    // INFO: Các hàm truy vấn dưới đây có thêm tham số conn
+    // Thực thi truy vấn SELECT, trả về list các DataObj
     public List<T> select<T>(SqlConnection conn)
         where T : DataObj, new() => DatabaseConn.exec_query<T>(conn, get_select_query());
 
@@ -115,25 +180,38 @@ sealed class Query
     public void select(SqlConnection conn, DatabaseConn.ReaderFunction f) =>
         DatabaseConn.exec_reader_function(conn, get_select_query(), f);
 
-    // ========================================================================
-    // INFO: Các hàm truy vấn dưới đây có thêm tham số conn
+    // ------------------------------------------------------------------------
     public void delete(SqlConnection conn) => DatabaseConn.exec_non_query(conn, get_delete_query());
 
+    // ------------------------------------------------------------------------
+    public void insert<T>(SqlConnection conn, T obj)
+        where T : DataObj, new() => DatabaseConn.exec_non_query(conn, get_insert_query<T>(obj));
+
+    // ------------------------------------------------------------------------
+    public void update<T>(SqlConnection conn, T obj)
+        where T : DataObj, new() => DatabaseConn.exec_non_query(conn, get_update_query(obj));
+
     // ========================================================================
-    public List<T> select<T>(string? conn_string = null)
+    public List<T> select<T>()
         where T : DataObj, new() => Database.exec_query<T>(get_select_query(), conn_string);
 
     // ------------------------------------------------------------------------
-    public List<string> select(string? conn_string = null) =>
-        Database.exec_query(get_select_query(), conn_string);
+    public List<string> select() => Database.exec_query(get_select_query(), conn_string);
 
     // ------------------------------------------------------------------------
-    public void select(DatabaseConn.ReaderFunction f, string? conn_string = null) =>
+    public void select(DatabaseConn.ReaderFunction f) =>
         Database.exec_reader_function(get_select_query(), f, conn_string);
 
-    // ========================================================================
-    public void delete(string? conn_string = null) =>
-        Database.exec_non_query(get_delete_query(), conn_string);
+    // ------------------------------------------------------------------------
+    public void delete() => Database.exec_non_query(get_delete_query(), conn_string);
+
+    // ------------------------------------------------------------------------
+    public void insert<T>(T obj)
+        where T : DataObj, new() => Database.exec_non_query(get_insert_query<T>(obj), conn_string);
+
+    // ------------------------------------------------------------------------
+    public void update<T>(T obj)
+        where T : DataObj, new() => Database.exec_non_query(get_update_query<T>(obj), conn_string);
 
     // ========================================================================
 }

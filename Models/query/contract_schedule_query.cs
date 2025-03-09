@@ -22,10 +22,10 @@ sealed class ContractScheduleQuery
             var obj = DataReader.get_data_obj<ContractSchedule>(reader);
             result.Add(obj.sch_id);
         }
-        Query q = new(Table.contract);
+        Query q = new(Table.contract, conn_string);
         q.join(Field.contract__id, Field.contract_schedule__ctrct_id);
         q.where_(Field.contract__stu_id, stu_id);
-        q.select(func, conn_string);
+        q.select(func);
         return result;
     }
 

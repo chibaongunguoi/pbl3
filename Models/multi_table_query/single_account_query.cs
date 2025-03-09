@@ -5,7 +5,7 @@ sealed class SingleAccountQuery<T>
     private static Table s_latest_table;
 
     // ========================================================================
-    public delegate List<T> TableFunction(string table_name);
+    public delegate List<T> TableFunction(Table table);
 
     // ========================================================================
     public static List<T> exec_table_function(TableFunction f)
@@ -13,8 +13,7 @@ sealed class SingleAccountQuery<T>
         List<T> result = new();
         foreach (var table in TableMngr.get_account_tables())
         {
-            string table_name = TableMngr.conv(table);
-            result = f(table_name);
+            result = f(table);
             if (result.Count > 0)
             {
                 s_latest_table = table;
@@ -27,16 +26,12 @@ sealed class SingleAccountQuery<T>
 
     // ========================================================================
     public static List<T> get_account_by_id(int id) =>
-        exec_table_function(table_name => RecordQueryFromTable<T>.get_record_by_id(table_name, id));
+        exec_table_function(table => CommonQuery<T>.get_record_by_id(table, id));
 
     // ------------------------------------------------------------------------
     public static List<T> get_account_by_username_password(string username, string password) =>
-        exec_table_function(table_name =>
-            AccountQueryFromTable<T>.get_account_by_username_password(
-                table_name,
-                username,
-                password
-            )
+        exec_table_function(table =>
+            CommonQuery<T>.get_account_by_username_password(table, username, password)
         );
 
     // ========================================================================

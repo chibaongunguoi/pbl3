@@ -7,9 +7,10 @@ sealed class RawQuery
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
+    private string? conn_string = null;
 
     // ========================================================================
-    public RawQuery(string table)
+    public RawQuery(string table, string? conn_string = null)
     {
         this.table = table;
     }
@@ -23,7 +24,7 @@ sealed class RawQuery
     // ------------------------------------------------------------------------
     public void output(string table, string table_field)
     {
-        table_field = QueryUtils.get_bracket_format(table, table_field);
+        table_field = QueryUtils.bracket(table, table_field);
         output_fields.Add(table_field);
     }
 
@@ -48,21 +49,21 @@ sealed class RawQuery
     // ========================================================================
     public void where_(string table, string table_field, int value)
     {
-        table_field = QueryUtils.get_bracket_format(table, table_field);
+        table_field = QueryUtils.bracket(table, table_field);
         conditions.Add($"{table_field} = {value}");
     }
 
     // ------------------------------------------------------------------------
     public void where_n(string table, string table_field, string value)
     {
-        table_field = QueryUtils.get_bracket_format(table, table_field);
+        table_field = QueryUtils.bracket(table, table_field);
         conditions.Add($"{table_field} = N'{value}'");
     }
 
     // ------------------------------------------------------------------------
     public void where_(string table, string table_field, string value)
     {
-        table_field = QueryUtils.get_bracket_format(table, table_field);
+        table_field = QueryUtils.bracket(table, table_field);
         conditions.Add($"{table_field} = '{value}'");
     }
 
@@ -93,7 +94,7 @@ sealed class RawQuery
     }
 
     // ========================================================================
-    public string get_filter_string()
+    public string get_where_clause()
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -108,14 +109,14 @@ sealed class RawQuery
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str} FROM {table} ";
         query += string.Join(" ", inner_joins);
-        query += get_filter_string() + ";";
+        query += get_where_clause() + ";";
         return query;
     }
 
     // ------------------------------------------------------------------------
     public string get_delete_query()
     {
-        return $"DELETE FROM {table}" + get_filter_string() + ";";
+        return $"DELETE FROM {table}" + get_where_clause() + ";";
     }
 
     // ------------------------------------------------------------------------
@@ -147,6 +148,35 @@ sealed class RawQuery
         return query;
     }
 
+    // ------------------------------------------------------------------------
+    public string get_update_query(string data, DatabaseTableConfig table_config)
+    {
+        string[] parts = data.Split(',');
+        string query = $"WHERE INTO {table_config.name} VALUES (";
+        int pos = 0;
+        foreach (var field in table_config.fields)
+        {
+            switch (field.dtype)
+            {
+                case "INT":
+                    query += $"{parts[pos]},";
+                    break;
+                case "NSTRING":
+                    query += $"N'{parts[pos]}',";
+                    break;
+                case "STRING":
+                    query += $"'{parts[pos]}',";
+                    break;
+            }
+            if (++pos == parts.Length)
+                break;
+        }
+
+        query = query.TrimEnd(',');
+        query += $" WHERE {get_where_clause()};";
+        return query;
+    }
+
     // ========================================================================
     public List<T> select<T>(SqlConnection conn)
         where T : DataObj, new() => DatabaseConn.exec_query<T>(conn, get_select_query());
@@ -159,32 +189,41 @@ sealed class RawQuery
     public void select(SqlConnection conn, DatabaseConn.ReaderFunction f) =>
         DatabaseConn.exec_reader_function(conn, get_select_query(), f);
 
-    // ========================================================================
+    // ------------------------------------------------------------------------
     public void delete(SqlConnection conn) => DatabaseConn.exec_non_query(conn, get_delete_query());
 
-    // ========================================================================
+    // ------------------------------------------------------------------------
     public static void insert(SqlConnection conn, string data, DatabaseTableConfig table_config) =>
         DatabaseConn.exec_non_query(conn, get_insert_query(data, table_config));
 
+    // ------------------------------------------------------------------------
+    public void update(SqlConnection conn, string data, DatabaseTableConfig table_config) =>
+        DatabaseConn.exec_non_query(conn, get_update_query(data, table_config));
+
     // ========================================================================
-    public List<T> select<T>(string? conn_string = null)
+    public List<T> select<T>()
         where T : DataObj, new() => Database.exec_query<T>(get_select_query(), conn_string);
 
     // ------------------------------------------------------------------------
-    public List<string> select(string? conn_string = null) =>
-        Database.exec_query(get_select_query(), conn_string);
+    public List<string> select() => Database.exec_query(get_select_query(), conn_string);
 
     // ------------------------------------------------------------------------
-    public void select(DatabaseConn.ReaderFunction f, string? conn_string = null) =>
+    public void select(DatabaseConn.ReaderFunction f) =>
         Database.exec_reader_function(get_select_query(), f, conn_string);
 
-    // ========================================================================
-    public void delete(string? conn_string = null) =>
-        Database.exec_non_query(get_delete_query(), conn_string);
+    // ------------------------------------------------------------------------
+    public void delete() => Database.exec_non_query(get_delete_query(), conn_string);
 
-    // ========================================================================
-    public void insert(string data, DatabaseTableConfig table_config, string? conn_string = null) =>
-        Database.exec_non_query(get_insert_query(data, table_config), conn_string);
+    // ------------------------------------------------------------------------
+    public static void insert(
+        string data,
+        DatabaseTableConfig table_config,
+        string? conn_string = null
+    ) => Database.exec_non_query(get_insert_query(data, table_config), conn_string);
+
+    // ------------------------------------------------------------------------
+    public void update(string data, DatabaseTableConfig table_config) =>
+        Database.exec_non_query(get_update_query(data, table_config), conn_string);
 
     // ========================================================================
 }

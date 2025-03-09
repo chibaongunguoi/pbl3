@@ -2,7 +2,7 @@ class MultiAccountQuery<T>
     where T : DataObj, new()
 {
     // ========================================================================
-    public delegate List<T> QueryFunction(string table_name);
+    public delegate List<T> QueryFunction(Table table);
 
     // ========================================================================
     public static List<T> exec_function(QueryFunction f)
@@ -10,8 +10,7 @@ class MultiAccountQuery<T>
         List<T> result = new List<T>();
         foreach (var table in TableMngr.get_account_tables())
         {
-            string table_name = TableMngr.conv(table);
-            result.AddRange(f(table_name));
+            result.AddRange(f(table));
         }
 
         return result;
@@ -20,7 +19,7 @@ class MultiAccountQuery<T>
     // ========================================================================
     public List<T> get_all_accounts()
     {
-        return exec_function(table_name => RecordQueryFromTable<T>.get_all_records(table_name));
+        return exec_function(table => CommonQuery<T>.get_all_records(table));
     }
 
     // ========================================================================

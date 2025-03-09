@@ -73,7 +73,7 @@ class Test
                 end = { hour = 10, minute = 15 },
             },
         };
-        IoUtils.print_list(IntervalUtils.get_subtraction(intervals_1, intervals_2));
+        // IoUtils.print_list(IntervalUtils.get_subtraction(intervals_1, intervals_2));
     }
 
     // ------------------------------------------------------------------------

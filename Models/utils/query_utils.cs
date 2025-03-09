@@ -2,14 +2,19 @@ class QueryUtils
 {
     // ========================================================================
     // INFO: Định dạng bao bọc tên trong SQL, ví dụ "CREATE DATABSE" [database_name]
-    public static string get_bracket_format(string s) => "[" + s + "]";
+    public static string bracket(string s) => "[" + s + "]";
 
     // ------------------------------------------------------------------------
 
     // INFO: Định dạng bao bọc tên trong SQL, ví dụ "SELECT [table_name].[field_name]"
-    public static string get_bracket_format(string table_name, string field) =>
+    public static string bracket(string table_name, string field) =>
         "[" + table_name + "].[" + field + "]";
 
+    // ========================================================================
+    public static Field cat(Table table, FieldSuffix suffix)
+    {
+        return Enum.Parse<Field>($"{table}__{suffix}");
+    }
     // ========================================================================
 }
 

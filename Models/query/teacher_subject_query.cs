@@ -6,8 +6,8 @@ class TeacherSubjectQuery
         string? conn_string = null
     )
     {
-        Query q = new(Table.teacher_subject);
-        q.select(f, conn_string);
+        Query q = new(Table.teacher_subject, conn_string);
+        q.select(f);
     }
     // ========================================================================
 }

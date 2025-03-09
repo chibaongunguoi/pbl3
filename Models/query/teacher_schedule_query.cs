@@ -3,17 +3,14 @@ using Microsoft.Data.SqlClient;
 class TeacherScheduleQuery
 {
     // ========================================================================
-    public static void get_all_teacher_schedules(
-        DatabaseConn.ReaderFunction f,
-        string? conn_string = null
-    )
+    public static void get_all_teacher_schedules(DatabaseConn.ReaderFunction f)
     {
         Query q = new(Table.teacher_schedule);
-        q.select(f, conn_string);
+        q.select(f);
     }
 
     // ------------------------------------------------------------------------
-    public static List<int> get_avai_schedule(int tch_id, string? conn_string = null)
+    public static List<int> get_avai_schedule(int tch_id)
     {
         List<int> result = new();
         void func(SqlDataReader reader)
@@ -23,7 +20,7 @@ class TeacherScheduleQuery
         }
         Query q = new(Table.teacher_schedule);
         q.where_(Field.teacher_schedule__tch_id, tch_id);
-        q.select(func, conn_string);
+        q.select(func);
         return result;
     }
 
