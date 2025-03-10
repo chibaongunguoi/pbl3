@@ -28,7 +28,7 @@ sealed class DataGenerator
         foreach (string database in databases)
         {
             string drop_query = $"DROP DATABASE [{database}]";
-            DatabaseConn.exec_non_query(conn, drop_query);
+            Database.exec_non_query(conn, drop_query);
         }
     }
 
@@ -36,7 +36,7 @@ sealed class DataGenerator
     private static void create_database(SqlConnection conn, string database_name)
     {
         string query = $"CREATE DATABASE [{database_name}]";
-        DatabaseConn.exec_non_query(conn, query);
+        Database.exec_non_query(conn, query);
     }
 
     // ========================================================================
@@ -57,15 +57,15 @@ sealed class DataGenerator
     // ========================================================================
     public static void generate()
     {
-        Database.exec_conn_function(generate_1, DatabaseUtils.get_server_only_conn_string());
-        Database.exec_conn_function(generate_2);
+        Database.exec(generate_1, DatabaseUtils.get_server_only_conn_string());
+        Database.exec(generate_2);
     }
 
     // ------------------------------------------------------------------------
-    private static void drop_all_tables(SqlConnection connection)
+    private static void drop_all_tables(SqlConnection conn)
     {
-        DatabaseConn.exec_non_query(
-            connection,
+        Database.exec_non_query(
+            conn,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
         );
 
@@ -74,7 +74,7 @@ sealed class DataGenerator
         using (
             SqlCommand command = new SqlCommand(
                 "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'",
-                connection
+                conn
             )
         )
         {
@@ -91,11 +91,11 @@ sealed class DataGenerator
         foreach (string tableName in table_names)
         {
             string query = $"DROP TABLE {tableName};";
-            DatabaseConn.exec_non_query(connection, query);
+            Database.exec_non_query(conn, query);
         }
 
-        DatabaseConn.exec_non_query(
-            connection,
+        Database.exec_non_query(
+            conn,
             "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
         );
     }
@@ -115,7 +115,7 @@ sealed class DataGenerator
 
             query = query.TrimEnd(',');
             query += ");";
-            DatabaseConn.exec_non_query(conn, query);
+            Database.exec_non_query(conn, query);
             string csv_file = table_config.csv_file;
             if (csv_file == "")
             {

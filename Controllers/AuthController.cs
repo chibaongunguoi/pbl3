@@ -60,7 +60,9 @@ public class AuthController : BaseController
         //     return View("user");
         // }
 
-        var query_result = AccountQuery<User>.get_account_by_username_password(username, password);
+        var query_result = Database.exec_list<User>(conn =>
+            AccountQuery<User>.get_account_by_username_password(conn, username, password)
+        );
 
         if (query_result.Count == 0)
         {

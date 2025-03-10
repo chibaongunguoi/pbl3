@@ -1,3 +1,5 @@
+using Microsoft.Data.SqlClient;
+
 sealed class AccountQuery<T>
     where T : DataObj, new()
 {
@@ -42,24 +44,25 @@ sealed class AccountQuery<T>
     }
 
     // ========================================================================
-    public static List<T> get_all_accounts()
+    public static List<T> get_all_accounts(SqlConnection conn)
     {
-        return all(table => CommonQuery<T>.get_all_records(table));
+        return all(table => CommonQuery<T>.get_all_records(conn, table));
     }
 
     // ========================================================================
-    public static List<T> get_account_by_id(int id, Table? table = null)
+    public static List<T> get_account_by_id(SqlConnection conn, int id, Table? table = null)
     {
         if (!table.HasValue)
         {
-            return any(table => CommonQuery<T>.get_record_by_id(id, table));
+            return any(table => CommonQuery<T>.get_record_by_id(conn, id, table));
         }
 
-        return CommonQuery<T>.get_record_by_id(id, table.Value);
+        return CommonQuery<T>.get_record_by_id(conn, id, table.Value);
     }
 
     // ------------------------------------------------------------------------
     public static List<T> get_account_by_username_password(
+        SqlConnection conn,
         string username,
         string password,
         Table? table = null
@@ -67,27 +70,31 @@ sealed class AccountQuery<T>
     {
         if (!table.HasValue)
         {
-            return any(table => get_account_by_username_password(username, password, table));
+            return any(table => get_account_by_username_password(conn, username, password, table));
         }
 
         var q = new Query(table.Value);
         q.where_(QueryUtils.cat(table.Value, FieldSuffix.username), username);
         q.where_(QueryUtils.cat(table.Value, FieldSuffix.password), password);
-        return q.select<T>();
+        return q.select<T>(conn);
     }
 
     // ========================================================================
     // INFO: Tìm kiếm tài khoản chỉ bằng tên đăng nhập
     // (thường dùng để kiểm tra tài khoản tồn tại hay không)
-    public static List<T> get_account_by_username(string username, Table? table)
+    public static List<T> get_account_by_username(
+        SqlConnection conn,
+        string username,
+        Table? table = null
+    )
     {
         if (!table.HasValue)
         {
-            return any(table => get_account_by_username(username, table));
+            return any(table => get_account_by_username(conn, username, table));
         }
         var q = new Query(table.Value);
         q.where_(QueryUtils.cat(table.Value, FieldSuffix.username), username);
-        return q.select<T>();
+        return q.select<T>(conn);
     }
 
     // ========================================================================

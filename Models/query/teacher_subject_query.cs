@@ -1,9 +1,11 @@
+using Microsoft.Data.SqlClient;
+
 class TeacherSubjectQuery
 {
     // ========================================================================
-    public static void get_all_teacher_subjects(DatabaseConn.ReaderFunction f)
+    public static void get_all_teacher_subjects(SqlConnection conn, Database.ReaderFunction f)
     {
-        CommonQuery.get_all_records(f, Table.teacher_subject);
+        CommonQuery.get_all_records(conn, f, Table.teacher_subject);
     }
     // ========================================================================
 }

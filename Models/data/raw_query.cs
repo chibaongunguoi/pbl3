@@ -7,10 +7,9 @@ sealed class RawQuery
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
-    private string? conn_string = null;
 
     // ========================================================================
-    public RawQuery(string table, string? conn_string = null)
+    public RawQuery(string table)
     {
         this.table = table;
     }
@@ -179,51 +178,25 @@ sealed class RawQuery
 
     // ========================================================================
     public List<T> select<T>(SqlConnection conn)
-        where T : DataObj, new() => DatabaseConn.exec_query<T>(conn, get_select_query());
+        where T : DataObj, new() => Database.exec_query<T>(conn, get_select_query());
 
     // ------------------------------------------------------------------------
-    public List<string> select(SqlConnection conn) =>
-        DatabaseConn.exec_query(conn, get_select_query());
+    public List<string> select(SqlConnection conn) => Database.exec_query(conn, get_select_query());
 
     // ------------------------------------------------------------------------
-    public void select(SqlConnection conn, DatabaseConn.ReaderFunction f) =>
-        DatabaseConn.exec_reader_function(conn, get_select_query(), f);
+    public void select(SqlConnection conn, Database.ReaderFunction f) =>
+        Database.exec_reader(conn, get_select_query(), f);
 
     // ------------------------------------------------------------------------
-    public void delete(SqlConnection conn) => DatabaseConn.exec_non_query(conn, get_delete_query());
+    public void delete(SqlConnection conn) => Database.exec_non_query(conn, get_delete_query());
 
     // ------------------------------------------------------------------------
     public static void insert(SqlConnection conn, string data, DatabaseTableConfig table_config) =>
-        DatabaseConn.exec_non_query(conn, get_insert_query(data, table_config));
+        Database.exec_non_query(conn, get_insert_query(data, table_config));
 
     // ------------------------------------------------------------------------
     public void update(SqlConnection conn, string data, DatabaseTableConfig table_config) =>
-        DatabaseConn.exec_non_query(conn, get_update_query(data, table_config));
-
-    // ========================================================================
-    public List<T> select<T>()
-        where T : DataObj, new() => Database.exec_query<T>(get_select_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public List<string> select() => Database.exec_query(get_select_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public void select(DatabaseConn.ReaderFunction f) =>
-        Database.exec_reader_function(get_select_query(), f, conn_string);
-
-    // ------------------------------------------------------------------------
-    public void delete() => Database.exec_non_query(get_delete_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public static void insert(
-        string data,
-        DatabaseTableConfig table_config,
-        string? conn_string = null
-    ) => Database.exec_non_query(get_insert_query(data, table_config), conn_string);
-
-    // ------------------------------------------------------------------------
-    public void update(string data, DatabaseTableConfig table_config) =>
-        Database.exec_non_query(get_update_query(data, table_config), conn_string);
+        Database.exec_non_query(conn, get_update_query(data, table_config));
 
     // ========================================================================
 }

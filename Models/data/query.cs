@@ -11,11 +11,10 @@ sealed class Query
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
-    private string? conn_string = null;
 
     // ========================================================================
     // INFO: Bắt đầu với một bảng
-    public Query(Table table, string? conn_string = null)
+    public Query(Table table)
     {
         this.table = table;
     }
@@ -168,50 +167,30 @@ sealed class Query
     // INFO: Các hàm truy vấn dưới đây có thêm tham số conn
     // Thực thi truy vấn SELECT, trả về list các DataObj
     public List<T> select<T>(SqlConnection conn)
-        where T : DataObj, new() => DatabaseConn.exec_query<T>(conn, get_select_query());
+        where T : DataObj, new()
+    {
+        return Database.exec_query<T>(conn, get_select_query());
+    }
 
     // ------------------------------------------------------------------------
     // INFO: Thực thi truy vấn SELECT, trả về list các biểu diễn dạng xâu
-    public List<string> select(SqlConnection conn) =>
-        DatabaseConn.exec_query(conn, get_select_query());
+    public List<string> select(SqlConnection conn) => Database.exec_query(conn, get_select_query());
 
     // ------------------------------------------------------------------------
     // INFO: Chạy reader function với truy vấn SELECT
-    public void select(SqlConnection conn, DatabaseConn.ReaderFunction f) =>
-        DatabaseConn.exec_reader_function(conn, get_select_query(), f);
+    public void select(SqlConnection conn, Database.ReaderFunction f) =>
+        Database.exec_reader(conn, get_select_query(), f);
 
     // ------------------------------------------------------------------------
-    public void delete(SqlConnection conn) => DatabaseConn.exec_non_query(conn, get_delete_query());
+    public void delete(SqlConnection conn) => Database.exec_non_query(conn, get_delete_query());
 
     // ------------------------------------------------------------------------
     public void insert<T>(SqlConnection conn, T obj)
-        where T : DataObj, new() => DatabaseConn.exec_non_query(conn, get_insert_query<T>(obj));
+        where T : DataObj, new() => Database.exec_non_query(conn, get_insert_query<T>(obj));
 
     // ------------------------------------------------------------------------
     public void update<T>(SqlConnection conn, T obj)
-        where T : DataObj, new() => DatabaseConn.exec_non_query(conn, get_update_query(obj));
-
-    // ========================================================================
-    public List<T> select<T>()
-        where T : DataObj, new() => Database.exec_query<T>(get_select_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public List<string> select() => Database.exec_query(get_select_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public void select(DatabaseConn.ReaderFunction f) =>
-        Database.exec_reader_function(get_select_query(), f, conn_string);
-
-    // ------------------------------------------------------------------------
-    public void delete() => Database.exec_non_query(get_delete_query(), conn_string);
-
-    // ------------------------------------------------------------------------
-    public void insert<T>(T obj)
-        where T : DataObj, new() => Database.exec_non_query(get_insert_query<T>(obj), conn_string);
-
-    // ------------------------------------------------------------------------
-    public void update<T>(T obj)
-        where T : DataObj, new() => Database.exec_non_query(get_update_query<T>(obj), conn_string);
+        where T : DataObj, new() => Database.exec_non_query(conn, get_update_query(obj));
 
     // ========================================================================
 }

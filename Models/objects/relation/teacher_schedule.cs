@@ -16,7 +16,7 @@ sealed class TeacherSchedule : DataObj
     }
 
     // ------------------------------------------------------------------------
-    public override string ToString() => $"({tch_id},{sch_id})";
+    public override string ToString() => $"{tch_id},{sch_id}";
 
     // ========================================================================
 }

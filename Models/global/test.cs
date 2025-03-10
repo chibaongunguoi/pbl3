@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 class Test
 {
     // ------------------------------------------------------------------------
-    public static void test() => test5();
+    public static void test() => test4();
 
     // ------------------------------------------------------------------------
     private static void test1()
@@ -19,7 +19,7 @@ class Test
         q.join(Field.subject__id, Field.teacher_subject__sbj_id);
         q.output(Field.teacher__fullname);
         q.output(Field.subject__name);
-        q.select(func);
+        Database.exec(conn => q.select(conn, func));
     }
 
     // ------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class Test
         }
         Query q = new(Table.student);
         q.where_(Field.student__id, 1004);
-        q.select(func);
+        Database.exec(conn => q.select(conn, func));
     }
 
     // ------------------------------------------------------------------------
@@ -40,7 +40,9 @@ class Test
     {
         Query q = new(Table.student);
         q.where_(Field.student__id, 1004);
-        foreach (var r in q.select<Student>())
+        List<Student> students = new();
+        Database.exec_list(conn => students = q.select<Student>(conn));
+        foreach (var r in students)
         {
             Console.WriteLine(r.ToString());
         }
@@ -49,37 +51,31 @@ class Test
     // ------------------------------------------------------------------------
     private static void test4()
     {
-        List<InfoInterval> intervals_1 = new()
+        int tch_id = 2001;
+        int sch_id = 42;
+        TeacherSchedule demo_schedule = new() { tch_id = tch_id, sch_id = sch_id };
+        void func(SqlConnection conn)
         {
-            new()
-            {
-                day = InfoDay.TUESDAY,
-                start = { hour = 8, minute = 0 },
-                end = { hour = 10, minute = 30 },
-            },
-        };
-        List<InfoInterval> intervals_2 = new()
-        {
-            new()
-            {
-                day = InfoDay.TUESDAY,
-                start = { hour = 8, minute = 15 },
-                end = { hour = 9, minute = 15 },
-            },
-            new()
-            {
-                day = InfoDay.TUESDAY,
-                start = { hour = 9, minute = 30 },
-                end = { hour = 10, minute = 15 },
-            },
-        };
-        // IoUtils.print_list(IntervalUtils.get_subtraction(intervals_1, intervals_2));
+            var current_schedule = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
+            IoUtils.print_list(current_schedule);
+            TeacherTools.add_schedule(conn, demo_schedule);
+            var current_schedule_2 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
+            IoUtils.print_list(current_schedule_2);
+            TeacherTools.remove_schedule(conn, demo_schedule);
+            var current_schedule_3 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
+            IoUtils.print_list(current_schedule_3);
+        }
+
+        Database.exec(func);
     }
 
     // ------------------------------------------------------------------------
     private static void test5()
     {
-        IoUtils.print_list(TeacherScheduleQuery.get_avai_schedule(2013));
+        var schedule = Database.exec_list<int>(conn =>
+            TeacherScheduleQuery.get_avai_schedule(conn, 2013)
+        );
+        IoUtils.print_list(schedule);
     }
 
     // ------------------------------------------------------------------------
