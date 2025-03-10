@@ -1,9 +1,8 @@
 using Microsoft.Data.SqlClient;
 
-class Subject : DataObj
+class Subject : IdObj
 {
     // ========================================================================
-    public int id;
     public string name = "";
     public int grade;
     public int duration; // Tính bằng tháng
@@ -14,7 +13,6 @@ class Subject : DataObj
     public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
-        id = DataReader.get_int(reader, pos++);
         name = DataReader.get_string(reader, pos++);
         grade = DataReader.get_int(reader, pos++);
         duration = DataReader.get_int(reader, pos++);

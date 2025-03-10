@@ -3,9 +3,9 @@ using Microsoft.Data.SqlClient;
 sealed class ContractQuery
 {
     // ========================================================================
-    public static void get_all_contracts(SqlConnection conn, Database.ReaderFunction f)
+    public static List<string> get_all_contracts(SqlConnection conn)
     {
-        CommonQuery.get_all_records(conn, f, Table.contract);
+        return CommonQuery.get_all_records(conn, Table.contract);
     }
 
     // ------------------------------------------------------------------------

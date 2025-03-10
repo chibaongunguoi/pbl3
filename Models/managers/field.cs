@@ -9,6 +9,7 @@ enum Table
     contract_schedule,
     teacher_subject,
     teacher_schedule,
+    id_counter,
 }
 
 enum FieldSuffix
@@ -68,4 +69,8 @@ enum Field
     schedule__day,
     schedule__start_time,
     schedule__end_time,
+    id_counter__name,
+    id_counter__count,
+    id_counter__min_count,
+    id_counter__max_count,
 }

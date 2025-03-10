@@ -2,24 +2,22 @@ using Microsoft.Data.SqlClient;
 
 // HACK: Đây là class dùng để thử nghiệm việc đọc các kiểu dữ liệu khác
 // nhau từ cơ sở dữ liệu.
-sealed class DemoUser : DataObj
+sealed class DemoUser : IdObj
 {
     // ========================================================================
-    public int id;
-    public string username = "";
-    public string password = "";
-    public string name = "";
-    public InfoGender gender;
-    public string addr = "";
-    public string tel = "";
-    public InfoDate bday = new InfoDate();
+    public string username { get; set; } = "";
+    public string password { get; set; } = "";
+    public string name { get; set; } = "";
+    public InfoGender gender { get; set; } = new();
+    public string addr { get; set; } = "";
+    public string tel { get; set; } = "";
+    public InfoDate bday { get; set; } = new InfoDate();
     public InfoTime working_time = new InfoTime();
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
-        id = DataReader.get_int(reader, pos++);
         username = DataReader.get_string(reader, pos++);
         password = DataReader.get_string(reader, pos++);
         name = DataReader.get_string(reader, pos++);

@@ -11,6 +11,7 @@ sealed class Query
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
+    private List<string> set_fields = new List<string>();
 
     // ========================================================================
     // INFO: Bắt đầu với một bảng
@@ -53,8 +54,24 @@ sealed class Query
     }
 
     // ========================================================================
+    public void set_(Field table_field, int value)
+    {
+        set_fields.Add($"{TableMngr.conv(table_field)} = {value}");
+    }
 
     // ------------------------------------------------------------------------
+    public void set_n(Field table_field, string value)
+    {
+        set_fields.Add($"{TableMngr.conv(table_field)} = N'{value}'");
+    }
+
+    // ------------------------------------------------------------------------
+    public void set_(Field table_field, string value)
+    {
+        set_fields.Add($"{TableMngr.conv(table_field)} = '{value}'");
+    }
+
+    // ========================================================================
     public void join(Field field_1_, Field field_2_)
     {
         string table_name_1 = TableMngr.conv(TableMngr.get_table(field_1_));
@@ -163,6 +180,15 @@ sealed class Query
         return query;
     }
 
+    // ------------------------------------------------------------------------
+    public string get_update_query()
+    {
+        string query = $"UPDATE {TableMngr.conv(table)} SET ";
+        string set_fields_str = string.Join(", ", set_fields);
+        query += set_fields_str + get_where_clause() + ";";
+        return query;
+    }
+
     // ========================================================================
     // INFO: Các hàm truy vấn dưới đây có thêm tham số conn
     // Thực thi truy vấn SELECT, trả về list các DataObj
@@ -191,6 +217,9 @@ sealed class Query
     // ------------------------------------------------------------------------
     public void update<T>(SqlConnection conn, T obj)
         where T : DataObj, new() => Database.exec_non_query(conn, get_update_query(obj));
+
+    // ------------------------------------------------------------------------
+    public void update(SqlConnection conn) => Database.exec_non_query(conn, get_update_query());
 
     // ========================================================================
 }

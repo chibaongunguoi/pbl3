@@ -284,6 +284,32 @@
           "dtype": "STRING"
         }
       ]
+    },
+    "id_counter": {
+      "name": "TblIdCounter",
+      "csv_file": "data/id_counter.csv",
+      "fields": [
+        {
+          "name": "name",
+          "sql_type": "VARCHAR(50) NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "min_count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "max_count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ]
     }
   }
 }

@@ -3,9 +3,11 @@ using Microsoft.Data.SqlClient;
 class Test
 {
     // ------------------------------------------------------------------------
-    public static void test() => test4();
+    public static void test() => test6();
 
     // ------------------------------------------------------------------------
+    // INFO: Tình huống in tên gia sư - tên môn học ra màn hinh
+    // Sử dụng tính năng join của class Query.
     private static void test1()
     {
         void func(SqlDataReader reader)
@@ -23,6 +25,7 @@ class Test
     }
 
     // ------------------------------------------------------------------------
+    // INFO: In thông tin của student mang id = 1004
     private static void test2()
     {
         void func(SqlDataReader reader)
@@ -36,6 +39,7 @@ class Test
     }
 
     // ------------------------------------------------------------------------
+    // INFO: In thông tin của student mang id = 1004
     private static void test3()
     {
         Query q = new(Table.student);
@@ -49,6 +53,7 @@ class Test
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Thêm và bớt TeacherSchedule
     private static void test4()
     {
         int tch_id = 2001;
@@ -58,10 +63,14 @@ class Test
         {
             var current_schedule = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
             IoUtils.print_list(current_schedule);
-            TeacherTools.add_schedule(conn, demo_schedule);
+
+            TeacherScheduleQuery.add_schedule(conn, demo_schedule);
+
             var current_schedule_2 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
             IoUtils.print_list(current_schedule_2);
-            TeacherTools.remove_schedule(conn, demo_schedule);
+
+            TeacherScheduleQuery.remove_schedule(conn, demo_schedule);
+
             var current_schedule_3 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
             IoUtils.print_list(current_schedule_3);
         }
@@ -70,12 +79,39 @@ class Test
     }
 
     // ------------------------------------------------------------------------
+    // INFO: Kiểm tra counter của bảng student
     private static void test5()
     {
-        var schedule = Database.exec_list<int>(conn =>
-            TeacherScheduleQuery.get_avai_schedule(conn, 2013)
+        int count = 0;
+        Database.exec(conn => count = IdCounterQuery.increment(conn, Table.student));
+        Console.WriteLine(count);
+    }
+
+    // ------------------------------------------------------------------------
+    // INFO: Thêm mới student
+    private static void test6()
+    {
+        Student new_student = new()
+        {
+            username = "demo",
+            password = "demo",
+            fullname = "Nguyễn Văn A",
+            gender = InfoGender.MALE,
+            addr = "123 Đường Chân Trời",
+            tel = "0987654321",
+            bday = new InfoDate
+            {
+                year = 2012,
+                month = 12,
+                day = 12,
+            },
+        };
+
+        Database.exec(conn => CommonQuery.insert_record_with_id(conn, new_student, Table.student));
+
+        IoUtils.print_list(
+            Database.exec_list(conn => CommonQuery.get_all_records(conn, Table.student))
         );
-        IoUtils.print_list(schedule);
     }
 
     // ------------------------------------------------------------------------

@@ -1,5 +1,9 @@
 import random
 from datetime import datetime, timedelta
+import os
+
+if not os.path.exists("data"):
+    os.makedirs("data")
 
 
 def csv_output(file_name, lst):
@@ -23,12 +27,32 @@ female_first_names = read_data("tools/name/female_first_name.txt")
 
 
 genders = list(range(0, 2))
-ids = list(range(3001, 3020))
 hours = list(range(0, 24))
 minutes = list(range(0, 60))
 
-student_ids = list(range(1001, 1020))
-teacher_ids = list(range(2001, 2020))
+student_id_prefix = 1001
+teacher_id_prefix = 2001
+demo_user_id_prefix = 3001
+
+num_of_students = 20
+num_of_teachers = 20
+num_of_demo_users = 20
+
+max_num_of_students = 1000
+max_num_of_teachers = 1000
+max_num_of_demo_users = 1000
+
+student_next_id = student_id_prefix + num_of_students
+teacher_next_id = teacher_id_prefix + num_of_teachers
+demo_user_next_id = demo_user_id_prefix + num_of_demo_users
+
+student_max_id = student_id_prefix + max_num_of_students - 1
+teacher_max_id = teacher_id_prefix + max_num_of_teachers - 1
+demo_user_max_id = demo_user_id_prefix + max_num_of_demo_users - 1
+
+student_ids = list(range(student_id_prefix, student_next_id))
+teacher_ids = list(range(teacher_id_prefix, teacher_next_id))
+demo_user_ids = list(range(demo_user_id_prefix, demo_user_next_id))
 
 STUDENT_BIRTHDAY_START = "2007-1-1"
 STUDENT_BIRTHDAY_END = "2013-12-31"
@@ -108,7 +132,7 @@ demo_users = []
 students = []
 teachers = []
 
-for id in ids:
+for id in demo_user_ids:
     username = id
     password = id
     gender, name = next(generate_gender_name())
@@ -196,12 +220,25 @@ subject_groups = [
 teacher_subjects = []
 
 for tch_id in teacher_ids:
-    subjects = random.choice(subject_groups)
-    subject = random.choice(subjects[0])
-    for grade in subjects[1]:
+    subjects_ = random.choice(subject_groups)
+    subject = random.choice(subjects_[0])
+    for grade in subjects_[1]:
         teacher_subjects.append((tch_id, subject_dict[subject + " " + str(grade)]))
 
 csv_output("teacher_subject", teacher_subjects)
+
+# -----------------------------------------------------------------------------
+
+id_counters = [
+    ["student", student_next_id, student_id_prefix, student_max_id],
+    ["teacher", teacher_next_id, teacher_id_prefix, teacher_max_id],
+    ["demo_user", demo_user_next_id, demo_user_id_prefix, demo_user_max_id],
+    ["subject", len(subjects) + 1, 1, 0],
+    ["schedule", len(schedules) + 1, 1, 0],
+    ["contract", 1, 1, 0],
+]
+
+csv_output("id_counter", id_counters)
 
 # -----------------------------------------------------------------------------
 print("Generated successfully!")

@@ -3,15 +3,14 @@ using Microsoft.Data.SqlClient;
 sealed class ContractScheduleQuery
 {
     // ========================================================================
-    public static void get_contract_schedule_from_contract(
+    public static List<string> get_contract_schedule_from_contract(
         SqlConnection conn,
-        Database.ReaderFunction f,
         int contract_id
     )
     {
         Query q = new(Table.contract_schedule);
         q.where_(Field.contract_schedule__ctrct_id, contract_id);
-        q.select(conn, f);
+        return q.select(conn);
     }
 
     // ========================================================================
@@ -45,7 +44,6 @@ sealed class ContractScheduleQuery
         q.select(conn, func);
         return result;
     }
-
     // ========================================================================
 }
 

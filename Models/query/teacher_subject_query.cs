@@ -3,9 +3,9 @@ using Microsoft.Data.SqlClient;
 class TeacherSubjectQuery
 {
     // ========================================================================
-    public static void get_all_teacher_subjects(SqlConnection conn, Database.ReaderFunction f)
+    public static List<string> get_all_teacher_subjects(SqlConnection conn)
     {
-        CommonQuery.get_all_records(conn, f, Table.teacher_subject);
+        return CommonQuery.get_all_records(conn, Table.teacher_subject);
     }
     // ========================================================================
 }
