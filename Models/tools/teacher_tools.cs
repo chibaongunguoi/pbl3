@@ -17,13 +17,8 @@ class TeacherTools
         int sch_id = schedule.sch_id;
         List<int> avai_schedule = new();
         List<int> busy_schedule = new();
-        void func(SqlConnection conn)
-        {
-            avai_schedule = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
-            busy_schedule = ContractScheduleQuery.get_ctrct_schedules_from_teacher(conn, tch_id);
-        }
-
-        Database.exec(func);
+        avai_schedule = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
+        busy_schedule = ContractScheduleQuery.get_ctrct_schedules_from_teacher(conn, tch_id);
 
         if (avai_schedule.Contains(sch_id))
         {
