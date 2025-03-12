@@ -19,6 +19,14 @@ sealed class Teacher : User
         return string.Join(",", new string[] { base.ToString(), thumbnail });
     }
 
+    // ------------------------------------------------------------------------
+    public override Dictionary<string, string> to_dict()
+    {
+        Dictionary<string, string> dict = base.to_dict();
+        dict["thumbnail"] = thumbnail;
+        return dict;
+    }
+
     // ========================================================================
 }
 

@@ -14,6 +14,26 @@ class IoUtils
     }
 
     // ========================================================================
+    public static string conv(InfoGender gender)
+    {
+        switch (gender)
+        {
+            case InfoGender.MALE:
+                return "Nam";
+            case InfoGender.FEMALE:
+                return "Nữ";
+            default:
+                return "";
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    public static string conv(InfoDate date)
+    {
+        return $"{date.day:D2}/{date.month:D2}/{date.year}";
+    }
+
+    // ========================================================================
 }
 
 /* EOF */

@@ -21,6 +21,15 @@ class Account : IdObj
         return string.Join(",", new string[] { id.ToString(), username, password });
     }
 
+    // ------------------------------------------------------------------------
+    public override Dictionary<string, string> to_dict()
+    {
+        Dictionary<string, string> dict = base.to_dict();
+        dict["username"] = username;
+        dict["password"] = password;
+        return dict;
+    }
+
     // ========================================================================
 }
 

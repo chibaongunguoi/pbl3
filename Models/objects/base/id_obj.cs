@@ -12,6 +12,15 @@ class IdObj : DataObj
         id = DataReader.get_int(reader, pos++);
         return pos;
     }
+
+    // ------------------------------------------------------------------------
+    public override Dictionary<string, string> to_dict()
+    {
+        Dictionary<string, string> dict = base.to_dict();
+        dict["id"] = id.ToString();
+        return dict;
+    }
+
     // ========================================================================
 }
 
