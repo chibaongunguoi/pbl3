@@ -8,9 +8,9 @@
   background: #fff;
   height: 100%;
   margin-bottom: 20px;
-  margin-right: 10.5px;
+  margin-right: 12px;
   min-height: 189px;
-  width: 280px;
+  width: 24%;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .card-product-li:hover{
@@ -23,7 +23,7 @@
   border-width: 1px;
 }
 .card-product-img-wrapper{
-  height: 189px;
+  height: 100px;
   display: inline-flex;
   overflow:hidden;
 }
@@ -32,7 +32,41 @@
 }
 .card-product-desc{
   background: #fff;
-  padding: 4px 8px 12px;
+  padding: 8px 8px 12px 30px;
+}
+.card-item{
+  display: flex;
+  color: black;
+  margin-bottom: 2px;
+}
+.button-group-wrapper{
+  padding-left: 30px;
+  display: flex;
+}
+.card-item-label{
+  min-height: 100%;
+  width: 100px;
+  display: inline-block;
+  text-align: right;
+  margin-right: 10px;
+}
+.card-item-content{
+  display: inline-block;
+  width: 140px;
+  text-align: left;
+}
+.card-product-li-content{
+  padding:20px;
+}
+.card-btn{
+  padding: 1px 8px;
+  background-color:#CAEEFB;
+  border-color:#318DB2; 
+  margin-right: 10px;
+}
+.choose{
+  background-color: #F6C6AD;
+  border-color:red; 
 }
 .card-product-name{
   color: #212121;
@@ -45,31 +79,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.card-product-price-wrapper{
-  display: flex;
-  margin-top: 4px;
-}
-.card-product-price{
-  align-items: center;
-  color: #f57224;
-  flex-direction: row;
-  font-size: 18px;
-  height: 22px;
-  line-height: 22px;
-}
-.currency,.price{
-  color: #f57224;
-  font-size: 18px;
-}
-.price{
-  margin-right: 3px;
-}
-.discount{
-  color: #212121;
-  font-size: 12px;
-  margin-left: 4px;
-  opacity: .8;
-}
+
 .card-Product-rating-number{
   /* color: #9e9e9e !important; */
   font-size: 14px;
@@ -121,4 +131,45 @@
   white-space: nowrap;
   text-align: left;
   text-transform: uppercase;;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+.dot{
+  width: 52px !important;
+  color:hsl(216, 98%, 52%);
+  font-size:20px !important;
+  border: none !important;
+  background-color: inherit;
+  padding-top:5px ;
+ }
+.page-link{
+  margin: 0 4px;
+  width: 40px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 50% !important;
+  cursor: pointer;
+  font-size: 16px;
+  border: 1px solid #B5B0B0;
+  background-color: inherit;
+  /* background-color: inherit;
+  border: none;
+  padding: 1px 15px !important;
+  font-size: inherit; */
+  /* font-weight: bold; */
+}
+.page-link:hover{
+  /* background-color: inherit; */
+  border: 1px solid #B5B0B0;
+}
+
+.pa-active{
+  background-color:hsl(216, 98%, 52%)!important;
+  color:white;
+}
+.pa-active:hover{
+  color:white;
 }
