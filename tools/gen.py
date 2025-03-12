@@ -160,7 +160,8 @@ for id in teacher_ids:
     tel = next(tel_gen)
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
-    teachers.append((id, username, password, name, gender, addr, tel, bday))
+    thumbnail = "../images/thumbnail/thumbnail.jpg"
+    teachers.append((id, username, password, name, gender, addr, tel, bday, thumbnail))
 
 
 csv_output("demo_user", demo_users)

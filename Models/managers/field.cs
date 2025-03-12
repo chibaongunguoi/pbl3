@@ -48,6 +48,7 @@ enum Field
     teacher__addr,
     teacher__tel,
     teacher__bday,
+    teacher__thumbnail,
     subject__id,
     subject__name,
     subject__grade,

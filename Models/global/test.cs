@@ -5,6 +5,8 @@ class Test
     // ------------------------------------------------------------------------
     public static void test() => test6();
 
+    // public static void test() => Test2.test2();
+
     // ------------------------------------------------------------------------
     // INFO: Tình huống in tên gia sư - tên môn học ra màn hinh
     // Sử dụng tính năng join của class Query.

@@ -143,6 +143,11 @@
           "name": "bday",
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
+        },
+        {
+          "name": "thumbnail",
+          "sql_type": "NVARCHAR(100) NOT NULL",
+          "dtype": "STRING"
         }
       ],
       "foreign_keys": []
