@@ -11,6 +11,15 @@ public class DemoPageController : BaseController
         return View();
     }
 
+    // ------------------------------------------------------------------------
+    public IActionResult Teachers()
+    {
+        List<Teacher> teachers = Database.exec_list(conn =>
+            new Query(Table.teacher).select<Teacher>(conn)
+        );
+        return View();
+    }
+
     // ========================================================================
 }
 
