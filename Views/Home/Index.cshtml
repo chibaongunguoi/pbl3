@@ -12,37 +12,95 @@
         <div class="shop-section-content">
             <div class="card-product-ul">
                 @* //tchCard *@
-                <div class="card-product-li">
-                    <a href="card-product-li-content">
-                        <div class="card-product-img-wrapper">
-                            <img class="card-product-img"
-                                src="https://cdn-media.sforum.vn/storage/app/media/THANHAN/avatar-trang-100.jpg"></img>
-                            @* //Max:386 *@
-                        </div>
-                        <div class="card-product-desc">
-                            <div class="card-product-name">
-                                Canvas Bee|Star bracelet design, versatile whitening and sweet bracelet
+                @for (int i = 0; i < 12; i++)
+                {
+                    <div class="card-product-li">
+                        <div class="card-product-li-content">
+                            <div class="card-product-img-wrapper">
+                                <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img>
                             </div>
-                            <div class="card-product-price-wrapper">
-                                <div class="card-product-price">
-                                    <span class="price">7,000</span>
-                                    <span class="currency">₫</span>
-                                    <span class="discount">-30%</span>
+                            <div class="card-product-desc">
+                                <div class="card-item">
+                                    <div class="card-item-label">
+                                        Mã số:
+                                    </div>
+                                    <div class="card-item-content">
+                                        2001
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">
+                                        Họ và tên:
+                                    </div>
+                                    <div class="card-item-content">
+                                        Nguyễn Chí Bảo
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">
+                                        Giới tính:
+                                    </div>
+                                    <div class="card-item-content">
+                                        Nam
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">
+                                        Khu vực:
+                                    </div>
+                                    <div class="card-item-content">
+                                        Quận Thanh Khê
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">
+                                        Dạy môn:
+                                    </div>
+                                    <div class="card-item-content">
+                                        Toán 10, Toán 11, Toán 12
+                                    </div>
                                 </div>
                             </div>
+                            <div class="button-group-wrapper">
+                                <button class="card-btn">Xem chi tiết</button>
+                                <button class="card-btn choose">Chọn gia sư</button>
+                            </div>
                         </div>
-                    </a>
-                </div>
-                @* // *@
+                    </div>
+                }
+            </div>
 
-            </div>
-            <div class="product-load-more-wrapper">
-                <div class="product-load-more-button">
-                    XEM THÊM
-                </div>
-            </div>
+            <nav aria-label="pagination-wrapper">
+                <ul class="pagination">
+                    @* pagination *@
+                    <li class="page-item ">
+                        <a class='page-link pa-active' href="">
+                            1
+                        </a>
+                    </li>
+                    @for (int i = 2; i < 5; i++)
+                    {
+                        <li class="page-item ">
+                            <a class='page-link' href="">
+                                @i
+                            </a>
+                        </li>
+                    }
+                    <li class="page-item dot">
+                        . . .
+                    </li>
+                    @for (int i = 5; i < 8; i++)
+                    {
+                        <li class="page-item">
+                            <a class='page-link ' href="">
+                                @i
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+
         </div>
     </div>
-
-
 </div>

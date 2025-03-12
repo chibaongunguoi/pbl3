@@ -43,6 +43,8 @@ body {
   color: #000;
   margin: 0;
   padding: 0;
+  border: none !important;
+  min-height: 000px;
 }
 .swiper {
   width: 100%;
