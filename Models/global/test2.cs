@@ -1,8 +1,9 @@
 class Test2
 {
     // ------------------------------------------------------------------------
-    public static void test() { }
+    public static void test() => test3();
 
+    // ------------------------------------------------------------------------
     public static void test2()
     {
         List<Teacher> teachers = find_by_id("2007");
@@ -12,6 +13,10 @@ class Test2
         }
     }
 
+    // ------------------------------------------------------------------------
+    public static void test3() { }
+
+    // ------------------------------------------------------------------------
     public static List<Teacher> find_by_id(string id_)
     {
         List<Teacher> teachers = new();

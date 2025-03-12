@@ -5,7 +5,7 @@ class Test
     // ------------------------------------------------------------------------
     public static void test() => test6();
 
-    // public static void test() => Test2.test2();
+    // public static void test() => Test2.test();
 
     // ------------------------------------------------------------------------
     // INFO: Tình huống in tên gia sư - tên môn học ra màn hinh
