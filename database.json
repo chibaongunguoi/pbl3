@@ -50,7 +50,8 @@
           "sql_type": "TIME NOT NULL",
           "dtype": "STRING"
         }
-      ]
+      ],
+      "foreign_keys": []
     },
     "student": {
       "name": "TblStudent",
@@ -96,7 +97,8 @@
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
         }
-      ]
+      ],
+      "foreign_keys": []
     },
     "teacher": {
       "name": "TblTeacher",
@@ -142,7 +144,8 @@
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
         }
-      ]
+      ],
+      "foreign_keys": []
     },
     "subject": {
       "name": "TblSubject",
@@ -178,39 +181,8 @@
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
         }
-      ]
-    },
-    "teacher_schedule": {
-      "name": "TblTeacherSchedule",
-      "csv_file": "data/teacher_schedule.csv",
-      "fields": [
-        {
-          "name": "tch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ]
-    },
-    "contract_schedule": {
-      "name": "TblContractSchedule",
-      "csv_file": "",
-      "fields": [
-        {
-          "name": "ctrct_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ]
+      ],
+      "foreign_keys": []
     },
     "schedule": {
       "name": "TblSchedule",
@@ -236,23 +208,8 @@
           "sql_type": "TIME NOT NULL",
           "dtype": "STRING"
         }
-      ]
-    },
-    "teacher_subject": {
-      "name": "TblTeacherSubject",
-      "csv_file": "data/teacher_subject.csv",
-      "fields": [
-        {
-          "name": "tch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sbj_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ]
+      ],
+      "foreign_keys": []
     },
     "contract": {
       "name": "TblContract",
@@ -283,6 +240,107 @@
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
         }
+      ],
+      "foreign_keys": [
+        {
+          "field": "stu_id",
+          "ref_table": "student",
+          "ref_field": "id"
+        },
+        {
+          "field": "tch_id",
+          "ref_table": "teacher",
+          "ref_field": "id"
+        },
+        {
+          "field": "sbj_id",
+          "ref_table": "subject",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "teacher_schedule": {
+      "name": "TblTeacherSchedule",
+      "csv_file": "data/teacher_schedule.csv",
+      "fields": [
+        {
+          "name": "tch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "sch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "tch_id",
+          "ref_table": "teacher",
+          "ref_field": "id"
+        },
+        {
+          "field": "sch_id",
+          "ref_table": "schedule",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "contract_schedule": {
+      "name": "TblContractSchedule",
+      "csv_file": "",
+      "fields": [
+        {
+          "name": "ctrct_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "sch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "ctrct_id",
+          "ref_table": "contract",
+          "ref_field": "id"
+        },
+        {
+          "field": "sch_id",
+          "ref_table": "schedule",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "teacher_subject": {
+      "name": "TblTeacherSubject",
+      "csv_file": "data/teacher_subject.csv",
+      "fields": [
+        {
+          "name": "tch_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "sbj_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "tch_id",
+          "ref_table": "teacher",
+          "ref_field": "id"
+        },
+        {
+          "field": "sbj_id",
+          "ref_table": "subject",
+          "ref_field": "id"
+        }
       ]
     },
     "id_counter": {
@@ -309,7 +367,8 @@
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
         }
-      ]
+      ],
+      "foreign_keys": []
     }
   }
 }

@@ -113,6 +113,13 @@ sealed class DataGenerator
                 query += $"{field.name} {field.sql_type},";
             }
 
+            foreach (var fk in table_config.foreign_keys)
+            {
+                Table ref_table = Enum.Parse<Table>(fk.ref_table);
+                query +=
+                    $"FOREIGN KEY ({fk.field}) REFERENCES {TableMngr.conv(ref_table)}({fk.ref_field}),";
+            }
+
             query = query.TrimEnd(',');
             query += ");";
             Database.exec_non_query(conn, query);
