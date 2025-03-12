@@ -15,6 +15,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        List<Teacher> teachers = Database.exec_list(conn =>
+            new Query(Table.teacher).select<Teacher>(conn)
+        );
+        ViewBag.teachers = teachers;
+        Console.WriteLine($"Fetched {teachers.Count} teachers");
         return View();
     }
 

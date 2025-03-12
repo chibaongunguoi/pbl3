@@ -6,7 +6,7 @@
 }
 .card-product-li{
   background: #fff;
-  height: 100%;
+  height: 371px;
   margin-bottom: 20px;
   margin-right: 12px;
   min-height: 189px;
@@ -31,6 +31,8 @@
   width:100%
 }
 .card-product-desc{
+  overflow: hidden;
+  /* height: 198px; */
   background: #fff;
   padding: 8px 8px 12px 30px;
 }
@@ -75,7 +77,6 @@
   line-height: 18px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -172,4 +173,8 @@
 }
 .pa-active:hover{
   color:white;
+}
+.card-content{
+  height: 180px;
+  overflow: hidden;
 }

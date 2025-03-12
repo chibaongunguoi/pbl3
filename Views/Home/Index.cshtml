@@ -11,8 +11,8 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul">
-                @* //tchCard *@
-                @for (int i = 0; i < 12; i++)
+
+                @foreach (var teacher in (IEnumerable<Teacher>)ViewBag.teachers)
                 {
                     <div class="card-product-li">
                         <div class="card-product-li-content">
@@ -20,44 +20,46 @@
                                 <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img>
                             </div>
                             <div class="card-product-desc">
-                                <div class="card-item">
-                                    <div class="card-item-label">
-                                        Mã số:
+                                <div class="card-content">
+                                    <div class="card-item">
+                                        <div class="card-item-label">
+                                            Mã số:
+                                        </div>
+                                        <div class="card-item-content">
+                                            @teacher.id
+                                        </div>
                                     </div>
-                                    <div class="card-item-content">
-                                        2001
+                                    <div class="card-item">
+                                        <div class="card-item-label">
+                                            Họ và tên:
+                                        </div>
+                                        <div class="card-item-content">
+                                            @teacher.fullname
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-label">
-                                        Họ và tên:
+                                    <div class="card-item">
+                                        <div class="card-item-label">
+                                            Giới tính:
+                                        </div>
+                                        <div class="card-item-content">
+                                            @teacher.gender
+                                        </div>
                                     </div>
-                                    <div class="card-item-content">
-                                        Nguyễn Chí Bảo
+                                    <div class="card-item">
+                                        <div class="card-item-label">
+                                            Khu vực:
+                                        </div>
+                                        <div class="card-item-content">
+                                            @teacher.addr
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-label">
-                                        Giới tính:
-                                    </div>
-                                    <div class="card-item-content">
-                                        Nam
-                                    </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-label">
-                                        Khu vực:
-                                    </div>
-                                    <div class="card-item-content">
-                                        Quận Thanh Khê
-                                    </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-label">
-                                        Dạy môn:
-                                    </div>
-                                    <div class="card-item-content">
-                                        Toán 10, Toán 11, Toán 12
+                                    <div class="card-item">
+                                        <div class="card-item-label">
+                                            Dạy môn:
+                                        </div>
+                                        <div class="card-item-content">
+                                            Toán 10, Toán 11, Toán 12
+                                        </div>
                                     </div>
                                 </div>
                             </div>
