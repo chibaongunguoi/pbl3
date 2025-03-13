@@ -145,23 +145,23 @@ for id in demo_user_ids:
     )
 
 for id in student_ids:
-    username = id
+    # username = id
     password = id
     gender, name = next(gender_name_gen)
     tel = next(tel_gen)
     bday = next(student_birthday_gen)
     addr = next(addr_gen)
-    students.append((id, username, password, name, gender, addr, tel, bday))
+    students.append((id, password, name, gender, addr, tel, bday))
 
 for id in teacher_ids:
-    username = id
+    # username = id
     password = id
     gender, name = next(gender_name_gen)
     tel = next(tel_gen)
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
     thumbnail = r"./images/thumbnail/thumbnail.jpg"
-    teachers.append((id, username, password, name, gender, addr, tel, bday, thumbnail))
+    teachers.append((id, password, name, gender, addr, tel, bday, thumbnail))
 
 
 csv_output("demo_user", demo_users)

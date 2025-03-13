@@ -95,7 +95,6 @@ class Test
     {
         Student new_student = new()
         {
-            username = "demo",
             password = "demo",
             fullname = "Nguyễn Văn A",
             gender = InfoGender.MALE,

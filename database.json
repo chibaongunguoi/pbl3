@@ -63,11 +63,6 @@
           "dtype": "INT"
         },
         {
-          "name": "username",
-          "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "STRING"
-        },
-        {
           "name": "password",
           "sql_type": "NVARCHAR(50) NOT NULL",
           "dtype": "STRING"
@@ -108,11 +103,6 @@
           "name": "id",
           "sql_type": "INT PRIMARY KEY NOT NULL",
           "dtype": "INT"
-        },
-        {
-          "name": "username",
-          "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "STRING"
         },
         {
           "name": "password",
