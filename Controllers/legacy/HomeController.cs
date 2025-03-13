@@ -19,7 +19,6 @@ public class HomeController : Controller
             new Query(Table.teacher).select<Teacher>(conn)
         );
         ViewBag.teachers = teachers;
-        Console.WriteLine($"Fetched {teachers.Count} teachers");
         return View();
     }
 

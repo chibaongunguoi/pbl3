@@ -10,6 +10,17 @@
             </div>
         </div>
         <div class="shop-section-content">
+            <div class="card-search-wrapper">
+                <form action="">
+                    <select id="comboBox" name="comboBox">
+                        <option value="option1">ID</option>
+                        <option value="option2">Họ và tên</option>
+                        <option value="option3">môn học</option>
+                    </select>
+                    <input type="text" id="inputText" name="inputText" placeholder="Nhập thông tin" required>
+                    <button type="submit">Gửi</button>
+                </form>
+            </div>
             <div class="card-product-ul">
 
                 @foreach (var teacher in (IEnumerable<Teacher>)ViewBag.teachers)
