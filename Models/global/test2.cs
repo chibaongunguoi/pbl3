@@ -1,3 +1,5 @@
+using Microsoft.Data.SqlClient;
+
 class Test2
 {
     // ------------------------------------------------------------------------
@@ -32,6 +34,35 @@ class Test2
         return teachers;
     }
 
+    // ------------------------------------------------------------------------
+    public static List<Dictionary<string, string>> demo(SqlConnection conn)
+    {
+        List<Dictionary<string, string>> teacher_dicts = new();
+        void func(SqlDataReader reader)
+        {
+            Teacher teacher = DataReader.get_data_obj<Teacher>(reader);
+            Dictionary<string, string> dict = teacher.to_dict();
+            teacher_dicts.Add(dict);
+        }
+
+        void func2(SqlConnection conn)
+        {
+            Query q = new(Table.teacher);
+            q.select(conn, func);
+            for (int i = 0; i < teacher_dicts.Count; i++)
+            {
+                Query q2 = new(Table.teacher_subject);
+                q2.join(Field.subject__id, Field.teacher_subject__sbj_id);
+                q2.where_(Field.teacher_subject__tch_id, int.Parse(teacher_dicts[i]["id"]));
+                q2.output(Field.subject__name);
+                List<string> subjects = q2.select(conn);
+                teacher_dicts[i]["subjects"] = string.Join(", ", subjects);
+            }
+        }
+
+        Database.exec(func2);
+        return teacher_dicts;
+    }
     // ------------------------------------------------------------------------
 }
 

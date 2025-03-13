@@ -22,13 +22,14 @@
                 </form>
             </div>
             <div class="card-product-ul">
-
-                @foreach (var teacher in (IEnumerable<Teacher>)ViewBag.teachers)
+                @foreach (var teacher in ViewBag.teachers)
                 {
                     <div class="card-product-li">
                         <div class="card-product-li-content">
                             <div class="card-product-img-wrapper">
-                                <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img>
+                                @teacher["thumbnail"]
+                                <img class="card-product-img" src=@teacher["thumbnail"]></img>
+                                <!-- <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img> -->
                             </div>
                             <div class="card-product-desc">
                                 <div class="card-content">
@@ -37,7 +38,7 @@
                                             Mã số:
                                         </div>
                                         <div class="card-item-content">
-                                            @teacher.id
+                                            @teacher["id"]
                                         </div>
                                     </div>
                                     <div class="card-item">
@@ -45,7 +46,7 @@
                                             Họ và tên:
                                         </div>
                                         <div class="card-item-content">
-                                            @teacher.fullname
+                                            @teacher["fullname"]
                                         </div>
                                     </div>
                                     <div class="card-item">
@@ -53,7 +54,7 @@
                                             Giới tính:
                                         </div>
                                         <div class="card-item-content">
-                                            @teacher.gender
+                                            @teacher["gender"]
                                         </div>
                                     </div>
                                     <div class="card-item">
@@ -61,7 +62,7 @@
                                             Khu vực:
                                         </div>
                                         <div class="card-item-content">
-                                            @teacher.addr
+                                            @teacher["addr"]
                                         </div>
                                     </div>
                                     <div class="card-item">
@@ -69,7 +70,7 @@
                                             Dạy môn:
                                         </div>
                                         <div class="card-item-content">
-                                            Toán 10, Toán 11, Toán 12
+                                            @teacher["subjects"]
                                         </div>
                                     </div>
                                 </div>

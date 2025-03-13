@@ -15,10 +15,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        List<Teacher> teachers = Database.exec_list(conn =>
-            new Query(Table.teacher).select<Teacher>(conn)
-        );
-        ViewBag.teachers = teachers;
+
+        List<Dictionary<string, string>> teacher_dicts = new();
+        Database.exec(conn => teacher_dicts = Test2.demo(conn));
+        ViewBag.teachers = teacher_dicts;
+        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
         return View();
     }
 
@@ -30,6 +31,8 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(
+            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
+        );
     }
 }

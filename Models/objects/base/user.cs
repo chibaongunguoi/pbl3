@@ -38,6 +38,18 @@ class User : Account
         );
     }
 
+    // ------------------------------------------------------------------------
+    public override Dictionary<string, string> to_dict()
+    {
+        Dictionary<string, string> dict = base.to_dict();
+        dict["fullname"] = fullname;
+        dict["gender"] = IoUtils.conv(gender);
+        dict["addr"] = addr;
+        dict["tel"] = tel;
+        dict["bday"] = IoUtils.conv(bday);
+        return dict;
+    }
+
     // ========================================================================
 }
 

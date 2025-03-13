@@ -22,12 +22,7 @@ class CommonQuery
         where T : IdObj, new()
     {
         int next_id = 0;
-        void func(SqlConnection conn)
-        {
-            next_id = IdCounterQuery.increment(conn, table);
-        }
-
-        Database.exec(func);
+        next_id = IdCounterQuery.increment(conn, table);
         if (IdCounterQuery.s_last_state == IdCounterQuery.State.id_hits_limit)
         {
             return;
