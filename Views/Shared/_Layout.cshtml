@@ -54,12 +54,36 @@
                             <a href="/Auth/Login" class="nav-link text-dark">Đăng kí</a>
                         </div> *@
                         <div class="nav-item ">
-                            <a href="/Auth/Login" class="nav-link text-dark user-link">
+                            <a id="user-info" class="text-dark user-link">
                                 <div class="user-role">
                                     Học viên
                                 </div>
                                 <div class="user-name">
                                     Nguyễn Chí Bảo
+                                </div>
+                                <div class="user-icon down-arrow">
+                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                                    </svg>
+                                </div>
+                                <div class="noti-dropdown" id="user-dropdown" style="display:none">
+                                    <div class="user-content-wrapper">
+                                        <div class="user-item-list">
+                                            <div class="user-item">
+                                                <a class="user-item-title" href="">
+                                                    Thông tin tài khoản
+                                                </a>
+                                            </div>
+                                            <div class="logout-item ">
+                                                <form action="" method="POST">
+                                                    <button type='submit' class="user-item-title logout-button">
+                                                        đăng xuất
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -110,6 +134,17 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById("user-info").addEventListener("click", function () {
+            let dropdown = document.getElementById("user-dropdown");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        });
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

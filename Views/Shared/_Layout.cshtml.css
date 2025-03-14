@@ -125,7 +125,9 @@ padding-left: 0px;
   width: 46.875rem;
 }
 .user-link-wrapper{
+  cursor: pointer;
   margin-right: 20px;
+  user-select: none;
 }
 .nav-item{
   font-size: 16px;
@@ -139,4 +141,53 @@ padding-left: 0px;
 .user-name{
   font-weight: bold;
   font-size: 16px;
+  margin-right: 8px;
+}
+.down-arrow{
+  width: 10px;
+  position: relative;
+  top:-2px;
+}
+.navbar-link-wrapper{
+  cursor: pointer;
+  padding: 0rem 0.625rem;
+  font-size: 1.125rem;  
+}
+.navbar-link{
+  color:#fff;
+}
+.noti-dropdown{
+  position: relative;
+  /* display: none ; */
+}
+.user-content-wrapper{
+  background-color: white;
+  outline: none;
+  z-index: 2202;
+  position: absolute;
+  font-size: 14px;
+  width: 100%;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  top:10px;
+  /* display: none; */
+}
+.user-item,.logout-button{
+  text-transform: capitalize;
+  position: relative;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  width: 100%;
+}
+.user-item-title{
+  color:#000000;
+}
+.logout-button{
+  border: 0;
+  width: 100%;
+  text-transform: capitalize;
+  background: inherit;
 }
