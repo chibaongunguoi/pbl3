@@ -50,6 +50,7 @@ button.accept-policy {
   float: left;
   overflow: hidden;
   width: 32%;
+  margin-right: 50px;
 }
 .footer-content-wrapper{
   width: 75rem;
@@ -122,4 +123,20 @@ padding-left: 0px;
 }
 .about-us-wrapper{
   width: 46.875rem;
+}
+.user-link-wrapper{
+  margin-right: 20px;
+}
+.nav-item{
+  font-size: 16px;
+}
+.user-link{
+  display: flex !important;
+}
+.user-role{
+  margin-right: 4px;
+}
+.user-name{
+  font-weight: bold;
+  font-size: 16px;
 }

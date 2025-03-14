@@ -15,7 +15,6 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-
         List<Dictionary<string, string>> teacher_dicts = new();
         Database.exec(conn => teacher_dicts = Test2.demo(conn));
         ViewBag.teachers = teacher_dicts;

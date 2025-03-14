@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - REPO</title>
+    <title>Trung Tâm Tiên Tiến </title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
-
 </head>
 
 <body>
@@ -25,7 +24,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang
                                 chủ</a>
@@ -46,13 +45,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Gia
                                 sư</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="/Auth/Login" class="nav-link text-dark">Login</a>
-                        </li>
                     </ul>
-                    <div class="nav-item">
-                        <a href="/Auth/Login" class="nav-link text-dark">Nguyễn Chí Bảo</a>
+                    <div class="navbar-nav flex user-link-wrapper">
+                        @* <div class="nav-item">
+                            <a href="/Auth/Login" class="nav-link text-dark">Đăng nhập</a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/Auth/Login" class="nav-link text-dark">Đăng kí</a>
+                        </div> *@
+                        <div class="nav-item ">
+                            <a href="/Auth/Login" class="nav-link text-dark user-link">
+                                <div class="user-role">
+                                    Học viên
+                                </div>
+                                <div class="user-name">
+                                    Nguyễn Chí Bảo
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +84,8 @@
                     Trung tâm TIÊN TIẾN được thành lập vào năm 2025
                     với mục đích hỗ trợ học viên
                     có thể tìm kiếm gia sư mình muốn một cách
-                    nhanh chóng, dễ dàng và hiệu quả
+                    nhanh chóng, dễ dàng và hiệu quả. Chúng tôi luôn lắng nghe mọi nguyện vọng của gia sư và học viên,
+                    dựa vào đó để tiến hành nâng cấp và cải thiện hệ thống nhằm tối ưu trải nghiệm của người dùng
                 </div>
 
             </div>
@@ -88,11 +99,6 @@
                             <img class="footer-contact-icon"
                                 src="https://down-vn.img.susercontent.com/file/2277b37437aa470fd1c71127c6ff8eb5" />
                             <span class="footer-contact-desc">Facebook</span>
-                        </a>
-                    </li>
-                    <li class="footer-contact-wrapper">
-                        <a href="" class="footer-contact-li">
-                            <span class="footer-contact-desc phone-number">0967430257</span>
                         </a>
                     </li>
 
