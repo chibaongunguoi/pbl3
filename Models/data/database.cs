@@ -1,9 +1,5 @@
 using Microsoft.Data.SqlClient;
 
-// INFO: Tập hợp các hàm có nhiệm vụ tạo mới một kết nối (connection)
-// để thực thi các query, sau đó ngắt kết nối.
-// Nếu muốn thực thi query trong một kết nối cụ thể mà không
-// muốn ngắt kết nối đó, hãy sử dụng class DatabaseConn.
 class Database
 {
     // ========================================================================
