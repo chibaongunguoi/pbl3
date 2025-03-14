@@ -61,39 +61,20 @@ sealed class AccountQuery<T>
     }
 
     // ------------------------------------------------------------------------
-    public static List<T> get_account_by_username_password(
+    public static List<T> get_account_by_id_password(
         SqlConnection conn,
-        string username,
+        int id,
         string password,
         Table? table = null
     )
     {
         if (!table.HasValue)
         {
-            return any(table => get_account_by_username_password(conn, username, password, table));
+            return any(table => get_account_by_id_password(conn, id, password, table));
         }
-
         var q = new Query(table.Value);
-        q.where_(QueryUtils.cat(table.Value, FieldSuffix.username), username);
+        q.where_(QueryUtils.cat(table.Value, FieldSuffix.id), id);
         q.where_(QueryUtils.cat(table.Value, FieldSuffix.password), password);
-        return q.select<T>(conn);
-    }
-
-    // ========================================================================
-    // INFO: Tìm kiếm tài khoản chỉ bằng tên đăng nhập
-    // (thường dùng để kiểm tra tài khoản tồn tại hay không)
-    public static List<T> get_account_by_username(
-        SqlConnection conn,
-        string username,
-        Table? table = null
-    )
-    {
-        if (!table.HasValue)
-        {
-            return any(table => get_account_by_username(conn, username, table));
-        }
-        var q = new Query(table.Value);
-        q.where_(QueryUtils.cat(table.Value, FieldSuffix.username), username);
         return q.select<T>(conn);
     }
 

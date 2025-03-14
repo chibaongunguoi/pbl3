@@ -15,7 +15,6 @@ enum Table
 enum FieldSuffix
 {
     id,
-    username,
     password,
     name,
     fullname,
@@ -33,7 +32,6 @@ enum Field
     demo_user__bday,
     demo_user__working_time,
     student__id,
-    student__username,
     student__password,
     student__fullname,
     student__gender,
@@ -41,7 +39,6 @@ enum Field
     student__tel,
     student__bday,
     teacher__id,
-    teacher__username,
     teacher__password,
     teacher__fullname,
     teacher__gender,

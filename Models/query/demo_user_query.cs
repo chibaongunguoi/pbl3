@@ -16,21 +16,6 @@ sealed class DemoUserQuery
         return q.select<DemoUser>(conn);
     }
 
-    // ------------------------------------------------------------------------
-    public static List<DemoUser> get_demo_user_by_username_password(
-        SqlConnection conn,
-        string username,
-        string password
-    )
-    {
-        return AccountQuery<DemoUser>.get_account_by_username_password(
-            conn,
-            username,
-            password,
-            Table.demo_user
-        );
-    }
-
     // ========================================================================
 }
 

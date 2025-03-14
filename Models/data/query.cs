@@ -208,10 +208,6 @@ sealed class Query
         Database.exec_reader(conn, get_select_query(), f);
 
     // ------------------------------------------------------------------------
-    public void select(SqlConnection conn, Database.ConnReaderFunction f) =>
-        Database.exec_reader(conn, get_select_query(), f);
-
-    // ------------------------------------------------------------------------
     public void delete(SqlConnection conn) => Database.exec_non_query(conn, get_delete_query());
 
     // ------------------------------------------------------------------------

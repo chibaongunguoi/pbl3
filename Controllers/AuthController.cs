@@ -37,34 +37,28 @@ public class AuthController : BaseController
         Request.Form.TryGetValue("username", out username_values);
         Request.Form.TryGetValue("password", out password_values);
 
-        string username = !StringValues.IsNullOrEmpty(username_values)
+        string id_ = !StringValues.IsNullOrEmpty(username_values)
             ? username_values.ToString()
             : string.Empty;
         string password = !StringValues.IsNullOrEmpty(password_values)
             ? password_values.ToString()
             : string.Empty;
 
-        // var stu_query_result = StudentQuery.get_student_by_username_password(username, password);
-        //
-        // if (!stu_query_result.IsNullOrEmpty())
-        // {
-        //     ViewBag.oneuser = stu_query_result[0].ToString();
-        //     return View("user");
-        // }
-        //
-        // var tch_query_result = TeacherQuery.get_teacher_by_username_password(username, password);
-        //
-        // if (!tch_query_result.IsNullOrEmpty())
-        // {
-        //     ViewBag.oneuser = tch_query_result[0].ToString();
-        //     return View("user");
-        // }
+        int id = 0;
+        List<User> query_result = new();
+        try
+        {
+            id = int.Parse(id_);
+            query_result = Database.exec_list<User>(conn =>
+                AccountQuery<User>.get_account_by_id_password(conn, id, password)
+            );
 
-        var query_result = Database.exec_list<User>(conn =>
-            AccountQuery<User>.get_account_by_username_password(conn, username, password)
-        );
-
-        if (query_result.Count == 0)
+            if (query_result.Count == 0)
+            {
+                throw new();
+            }
+        }
+        catch
         {
             return View("Login");
         }
