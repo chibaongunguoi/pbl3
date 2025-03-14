@@ -66,6 +66,9 @@ public class AuthController : BaseController
         User user = query_result[0];
         ViewBag.oneuser =
             $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.fullname}.";
+
+        HttpContext.Session.SetString("userName", user.fullname);
+        HttpContext.Session.SetInt32("userId", user.id);
         return View("user");
     }
 
