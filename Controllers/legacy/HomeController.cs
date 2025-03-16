@@ -18,9 +18,6 @@ public class HomeController : Controller
         List<Dictionary<string, string>> teacher_dicts = new();
         Database.exec(conn => teacher_dicts = Test2.demo(conn));
         ViewBag.teachers = teacher_dicts;
-        HttpContext.Session.SetString("Username", "NguyenVanA");
-        string username = HttpContext.Session.GetString("Username");
-        ViewBag.name = "Xin chào, " + username;
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
         return View();
     }

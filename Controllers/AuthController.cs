@@ -71,6 +71,14 @@ public class AuthController : BaseController
         HttpContext.Session.SetInt32("userId", user.id);
         return View("user");
     }
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Remove("userName"); // Xóa một session cụ thể
+        HttpContext.Session.Remove("userId");
+        HttpContext.Session.Clear();
+        return Redirect("http://localhost:5022/Auth/Login");
+    }
+
 
     // ========================================================================
 }
