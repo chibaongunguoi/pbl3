@@ -24,8 +24,8 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TRUNG TÂM TIÊN TIẾN</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,14 +33,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang
-                                chủ</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                Đăng kí môn học</a>
-                        </li> -->
                     </ul>
                     <div class="navbar-nav flex user-link-wrapper">
                     @if (string.IsNullOrEmpty(ViewBag.name?.ToString())){
@@ -48,7 +40,7 @@
                             <a href="/Auth/Login" class="nav-link text-dark">Đăng nhập</a>
                         </div>
                         <div class="nav-item">
-                            <a href="/Auth/Login" class="nav-link text-dark">Đăng kí</a>
+                            <a href="/Auth/Login" class="nav-link text-dark">Đăng ký</a>
                         </div>   
                     }
                     else{
@@ -86,12 +78,34 @@
                                 </div>
                             </a>
                         </div>
-                    }
-                        
+                    }        
                     </div>
                 </div>
             </div>
         </nav>
+        <div id="header_menu" class="d-none d-lg-block" data-v-4133fbdc="">
+        <div class="container" data-v-4133fbdc="">
+        <div class="row1" data-v-4133fbdc="">
+        <div class="header-megamenu " data-v-4133fbdc="">
+        <nav id="fieldmegamenu-main" data-v-4133fbdc="">
+        <ul data-v-4133fbdc="">
+        <li class="root active" data-v-4133fbdc="">
+        <a href="/" aria-current="page" class="nuxt-link-exact-active nuxt-link-active" data-v-4133fbdc="">
+        <span data-v-4133fbdc="">
+        <i class="fa fa-home" data-v-4133fbdc="">
+        </i>Trang chủ</span></a></li> 
+        <li class="root" data-v-4133fbdc=""><a href="/Course" data-v-4133fbdc="" class="">
+        <span data-v-4133fbdc="">
+        <i class="fa fa-video-camera" data-v-4133fbdc="">
+        </i>Khóa học</span></a></li> 
+        <li class="root" data-v-4133fbdc="">
+        <a href="/Teacher" data-v-4133fbdc="" class="">
+        <span data-v-4133fbdc=""><i class="fa fa-book" data-v-4133fbdc="">
+        </i>Gia sư</span></a></li> <li class="root" data-v-4133fbdc="">
+        <a href="/danh-muc/tai-lieu/0/tat-ca" data-v-4133fbdc="" class="">
+        <span data-v-4133fbdc=""><i class="fa fa-paperclip" data-v-4133fbdc="">
+        </i>Đánh giá</span></a></li> 
+        </ul></nav></div></div></div></div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -149,7 +163,6 @@
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     });
 }
-
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
