@@ -1,3 +1,5 @@
+@model int
+
 <nav aria-label="pagination-wrapper">
                 <ul class="pagination">
                     @* pagination *@
@@ -17,7 +19,7 @@
                     <li class="page-item dot">
                         . . .
                     </li>
-                    @for (int i = 5; i < 8; i++)
+                    @for (int i = 5; i < @Model; i++)
                     {
                         <li class="page-item">
                             <a class='page-link ' href="">
