@@ -85,35 +85,7 @@
                 }
             </div>
 
-            <nav aria-label="pagination-wrapper">
-                <ul class="pagination">
-                    @* pagination *@
-                    <li class="page-item ">
-                        <a class='page-link pa-active' href="">
-                            1
-                        </a>
-                    </li>
-                    @for (int i = 2; i < 5; i++)
-                    {
-                        <li class="page-item ">
-                            <a class='page-link' href="">
-                                @i
-                            </a>
-                        </li>
-                    }
-                    <li class="page-item dot">
-                        . . .
-                    </li>
-                    @for (int i = 5; i < 8; i++)
-                    {
-                        <li class="page-item">
-                            <a class='page-link ' href="">
-                                @i
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+            @await Html.PartialAsync("_Pagination")
 
 
         </div>
