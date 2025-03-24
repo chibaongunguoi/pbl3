@@ -1,0 +1,61 @@
+@model List<Dictionary<string, string>>
+
+@foreach (var teacher in Model)
+{
+    <div class="card-product-li">
+        <div class="card-product-li-content">
+            <div class="card-product-img-wrapper">
+                <img class="card-product-img" src=@teacher["thumbnail"]></img>
+                <!-- <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img> -->
+            </div>
+            <div class="card-product-desc">
+                <div class="card-content">
+                    <div class="card-item">
+                        <div class="card-item-label">
+                            Mã số:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["id"]
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">
+                            Họ và tên:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["fullname"]
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">
+                            Giới tính:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["gender"]
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">
+                            Khu vực:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["addr"]
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">
+                            Dạy môn:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["subjects"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-wrapper">
+                <button class="card-btn">Xem chi tiết</button>
+                <button class="card-btn choose">Chọn gia sư</button>
+            </div>
+        </div>
+    </div>
+}

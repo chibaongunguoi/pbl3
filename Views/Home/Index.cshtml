@@ -11,81 +11,13 @@
         </div>
         <div class="shop-section-content">
             <div class="card-search-wrapper">
-                <form action="">
-                    <select class=" input cb" id="comboBox" name="comboBox">
-                        <option value="option1">Tìm kiếm theo</option>
-                        <option value="option1">ID</option>
-                        <option value="option2">Họ và tên</option>
-                        <option value="option3">Khu vực</option>
-                    </select>
-                    <input class="input" type="text" id="inputText" name="inputText" placeholder="Nhập thông tin"
-                        required>
-                    <button type="submit" class="submit-form-btn">Tìm kiếm</button>
-                </form>
+                @await Html.PartialAsync("_SearchSection")
             </div>
             <div class="card-product-ul">
-                @foreach (var teacher in ViewBag.teachers)
-                {
-                    <div class="card-product-li">
-                        <div class="card-product-li-content">
-                            <div class="card-product-img-wrapper">
-                                <img class="card-product-img" src=@teacher["thumbnail"]></img>
-                                <!-- <img class="card-product-img" src="~/images/thumbnail/thumbnail.jpg"></img> -->
-                            </div>
-                            <div class="card-product-desc">
-                                <div class="card-content">
-                                    <div class="card-item">
-                                        <div class="card-item-label">
-                                            Mã số:
-                                        </div>
-                                        <div class="card-item-content">
-                                            @teacher["id"]
-                                        </div>
-                                    </div>
-                                    <div class="card-item">
-                                        <div class="card-item-label">
-                                            Họ và tên:
-                                        </div>
-                                        <div class="card-item-content">
-                                            @teacher["fullname"]
-                                        </div>
-                                    </div>
-                                    <div class="card-item">
-                                        <div class="card-item-label">
-                                            Giới tính:
-                                        </div>
-                                        <div class="card-item-content">
-                                            @teacher["gender"]
-                                        </div>
-                                    </div>
-                                    <div class="card-item">
-                                        <div class="card-item-label">
-                                            Khu vực:
-                                        </div>
-                                        <div class="card-item-content">
-                                            @teacher["addr"]
-                                        </div>
-                                    </div>
-                                    <div class="card-item">
-                                        <div class="card-item-label">
-                                            Dạy môn:
-                                        </div>
-                                        <div class="card-item-content">
-                                            @teacher["subjects"]
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="button-group-wrapper">
-                                <button class="card-btn">Xem chi tiết</button>
-                                <button class="card-btn choose">Chọn gia sư</button>
-                            </div>
-                        </div>
-                    </div>
-                }
+                @await Html.PartialAsync("_TeacherCard", (object)ViewBag.teachers)
             </div>
 
-            @await Html.PartialAsync("_Pagination",10)
+            @await Html.PartialAsync("_Pagination", 10)
 
 
         </div>

@@ -1,0 +1,60 @@
+@model List<Dictionary<string, string>>
+
+@foreach (var teacher in Model)
+{
+    <div class="card-product-li">
+        <div class="card-sem-li-content">
+            <div class="card-product-img-wrapper">
+                <div class="card-sem-title">Khóa học vận dụng cao toán 12</div>
+            </div>
+            <div class="card-sem-desc">
+                <div class="card-content">
+                    <div class="card-item">
+                        <div class="card-sem-item-label">
+                            Gia sư:
+                        </div>
+                        <div class="card-item-content">
+                            @teacher["fullname"]
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-sem-item-label">
+                            Thời gian:
+                        </div>
+                        <div class="card-item-content">
+                            1/4/2021 - 1/5/2021
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-sem-item-label">
+                            Sĩ số:
+                        </div>
+                        <div class="card-item-content">
+                            34/50
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-sem-item-label">
+                            Đánh giá:
+                        </div>
+                        <div class="card-item-content">
+                            4.5/5 (100)
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-sem-item-label">
+                            Học phí:
+                        </div>
+                        <div class="card-item-content">
+                            2.000.000đ
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-wrapper">
+                <button class="card-btn">Xem chi tiết</button>
+                <button class="card-btn choose">Chọn gia sư</button>
+            </div>
+        </div>
+    </div>
+}
