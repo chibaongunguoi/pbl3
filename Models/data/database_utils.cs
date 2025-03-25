@@ -12,6 +12,7 @@ class DatabaseUtils
             InitialCatalog = TableMngr.get_database_name(),
             IntegratedSecurity = true,
             TrustServerCertificate = true,
+            ConnectTimeout = 60,
         };
         return builder.ConnectionString;
     }
@@ -25,6 +26,7 @@ class DatabaseUtils
             DataSource = ConfigOptionManager.get_server_name(),
             IntegratedSecurity = true,
             TrustServerCertificate = true,
+            ConnectTimeout = 60,
         };
         return builder.ConnectionString;
     }

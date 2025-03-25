@@ -21,7 +21,10 @@ public class TeacherController : Controller
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
         return View();
     }
-
+    public IActionResult Profile()
+    {
+        return View();
+    }
     public IActionResult Privacy()
     {
         return View();

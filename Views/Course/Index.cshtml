@@ -6,22 +6,12 @@
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
             <div class="shop-section-title">
-                Danh sách gia sư
+                Danh sách khóa học
             </div>
         </div>
         <div class="shop-section-content">
             <div class="card-search-wrapper">
-                <form action="">
-                    <select class=" input cb" id="comboBox" name="comboBox">
-                        <option value="option1">Tìm kiếm theo</option>
-                        <option value="option1">ID</option>
-                        <option value="option2">Họ và tên</option>
-                        <option value="option3">Khu vực</option>
-                    </select>
-                    <input class="input" type="text" id="inputText" name="inputText" placeholder="Nhập thông tin"
-                        required>
-                    <button type="submit" class="submit-form-btn">Tìm kiếm</button>
-                </form>
+                @await Html.PartialAsync("_SearchSemSection")
             </div>
             <div class="card-product-ul">
                 @await Html.PartialAsync("_SemesterCard", (object)ViewBag.teachers)
