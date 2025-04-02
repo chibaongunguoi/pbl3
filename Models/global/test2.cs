@@ -63,6 +63,28 @@ class Test2
         Database.exec(func2);
         return teacher_dicts;
     }
+
+    // ------------------------------------------------------------------------
+    public static List<BriefTeacherCard> demo2(SqlConnection conn)
+    {
+        List<BriefTeacherCard> cards = new();
+        void func(SqlDataReader reader)
+        {
+            Teacher teacher = DataReader.get_data_obj<Teacher>(reader);
+            BriefTeacherCard card = new()
+            {
+                id = teacher.id,
+                name = teacher.fullname,
+                gender = IoUtils.conv(teacher.gender),
+                bday = IoUtils.conv(teacher.bday),
+            };
+
+            cards.Add(card);
+        }
+        Query q = new(Table.teacher);
+        q.select(conn, func);
+        return cards;
+    }
     // ------------------------------------------------------------------------
 }
 
