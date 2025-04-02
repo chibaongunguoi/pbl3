@@ -1,31 +1,14 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
+﻿
+<div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
             <div class="shop-section-title">
-                Danh sách gia sư
+                Chi tiết khóa học
             </div>
         </div>
         <div class="shop-section-content">
-            <div class="card-search-wrapper">
-                <form action="">
-                    <select class=" input cb" id="comboBox" name="comboBox">
-                        <option value="option1">Tìm kiếm theo</option>
-                        <option value="option1">ID</option>
-                        <option value="option2">Họ và tên</option>
-                        <option value="option3">Khu vực</option>
-                    </select>
-                    <input class="input" type="text" id="inputText" name="inputText" placeholder="Nhập thông tin"
-                        required>
-                    <button type="submit" class="submit-form-btn">Tìm kiếm</button>
-                </form>
-            </div>
             <div class="card-product-ul">
-                @await Html.PartialAsync("_TeacherCardList", (object)ViewBag.teachers)
-
+                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.teachers)
             </div>
 
             <nav aria-label="pagination-wrapper">
@@ -57,8 +40,6 @@
                     }
                 </ul>
             </nav>
-
-
         </div>
     </div>
 </div>

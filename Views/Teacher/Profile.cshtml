@@ -1,4 +1,4 @@
-<div class="teacher-profile-wrapper" style="clear: both;">
+<div class="teacher-profile-wrapper clearfix" style="clear: both;">
     <div class="shop-section-title">
         Thông tin gia sư
     </div>
@@ -26,3 +26,48 @@
     </div>
 </div>
 </div>
+<div class="shop-section-wrapper container">
+        <div class="shop-section-header">
+            <div class="shop-section-title">
+                Danh sách khóa học
+            </div>
+        </div>
+        <div class="shop-section-content">
+            <div class="card-search-wrapper">
+                @await Html.PartialAsync("_SearchSemSection")
+            </div>
+            <div class="card-product-ul">
+                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.teachers)
+            </div>
+
+            <nav aria-label="pagination-wrapper">
+                <ul class="pagination">
+                    @* pagination *@
+                    <li class="page-item ">
+                        <a class='page-link pa-active' href="">
+                            1
+                        </a>
+                    </li>
+                    @for (int i = 2; i < 5; i++)
+                    {
+                        <li class="page-item ">
+                            <a class='page-link' href="">
+                                @i
+                            </a>
+                        </li>
+                    }
+                    <li class="page-item dot">
+                        . . .
+                    </li>
+                    @for (int i = 5; i < 8; i++)
+                    {
+                        <li class="page-item">
+                            <a class='page-link ' href="">
+                                @i
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>

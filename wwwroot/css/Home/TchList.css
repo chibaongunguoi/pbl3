@@ -39,7 +39,7 @@
   overflow: hidden;
   /* height: 198px; */
   background: #fff;
-  padding: 8px 8px 10px 30px;
+  padding: 8px 8px 10px 10px;
 }
 
 .card-item {
@@ -49,8 +49,8 @@
 }
 
 .button-group-wrapper {
-  padding-left: 30px;
   display: flex;
+  justify-content: center;
 }
 
 .card-item-label {
@@ -75,7 +75,6 @@
   padding: 1px 8px;
   background-color: #caeefb;
   border-color: #318db2;
-  margin-right: 10px;
 }
 
 .choose {
@@ -144,7 +143,7 @@
 }
 
 .shop-section-title {
-  margin: 10px 0px;
+  margin: 0px 0px;
   color: #424242;
   font-size: 20px;
   overflow: hidden;
@@ -272,6 +271,7 @@
 }
 .sem-btn-group {
   padding-left: 20px;
+  display: block !important;
 }
 .sem-price {
   color: red;
@@ -299,4 +299,11 @@
   content: "";
   display: block;
   clear: both;
+}
+
+.tch-detail {
+  width: 60%;
+}
+.course-detail {
+  margin-right: 12px;
 }

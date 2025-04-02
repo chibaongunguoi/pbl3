@@ -1,7 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
+﻿
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
@@ -14,7 +11,7 @@
                 @await Html.PartialAsync("_SearchSemSection")
             </div>
             <div class="card-product-ul">
-                @await Html.PartialAsync("_SemesterCard", (object)ViewBag.teachers)
+                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.teachers)
             </div>
 
             <nav aria-label="pagination-wrapper">

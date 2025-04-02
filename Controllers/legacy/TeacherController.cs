@@ -23,6 +23,10 @@ public class TeacherController : Controller
     }
     public IActionResult Profile()
     {
+          List<Dictionary<string, string>> teacher_dicts = new();
+        Database.exec(conn => teacher_dicts = Test2.demo(conn));
+        ViewBag.teachers = teacher_dicts;
+        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
         return View();
     }
     public IActionResult Privacy()

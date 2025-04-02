@@ -1,6 +1,6 @@
 @model List<Dictionary<string, string>>
 
-@foreach (var teacher in Model)
+@for (int i = 0; i < 8; i++)
 {
     <div class="card-product-li sem-li">
         <div class="card-sem-li-content">
@@ -14,7 +14,7 @@
                             Gia sư:
                         </div>
                         <div class="card-sem-item-content">
-                            @teacher["fullname"]
+                            Nguyễn Chí Bảo
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="button-group-wrapper sem-btn-group">
-                <button class="card-btn">Xem chi tiết</button>
+                <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail'">Xem chi tiết</button>
                 <button class="card-btn choose">Đăng kí khóa học</button>
             </div>
         </div>
