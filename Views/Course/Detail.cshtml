@@ -7,39 +7,17 @@
             </div>
         </div>
         <div class="shop-section-content">
-            <div class="card-product-ul">
-                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.teachers)
+            <div class="card-product-ul text-center">
+            @{
+                var teachers1 = ViewBag.teachers as List<Dictionary<string, string>>;
+                var firstteacher=teachers1[0];
+            }
+                @await Html.PartialAsync("_TeacherCard", firstteacher)
+                @await Html.PartialAsync("_SemesterCardDetail")
             </div>
 
-            <nav aria-label="pagination-wrapper">
-                <ul class="pagination">
-                    @* pagination *@
-                    <li class="page-item ">
-                        <a class='page-link pa-active' href="">
-                            1
-                        </a>
-                    </li>
-                    @for (int i = 2; i < 5; i++)
-                    {
-                        <li class="page-item ">
-                            <a class='page-link' href="">
-                                @i
-                            </a>
-                        </li>
-                    }
-                    <li class="page-item dot">
-                        . . .
-                    </li>
-                    @for (int i = 5; i < 8; i++)
-                    {
-                        <li class="page-item">
-                            <a class='page-link ' href="">
-                                @i
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+
+            
         </div>
     </div>
 </div>

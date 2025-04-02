@@ -16,28 +16,22 @@ Backend.start();
 
 // WARN: Từ đây trở về sau là code của hệ thống, hạn chế sửa đổi.
 var builder = WebApplication.CreateBuilder(args);
-
-// Thêm dịch vụ Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30000); // Thời gian timeout của session
+    options.IdleTimeout = TimeSpan.FromMinutes(30000); 
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 app.UseSession();
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseRouting();
 
