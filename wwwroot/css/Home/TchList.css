@@ -51,8 +51,14 @@
 .button-group-wrapper {
   display: flex;
 }
+.teacher-card {
+  padding: 15px !important;
+}
 .teacher-btn-group {
   justify-content: center;
+}
+.teacher-card-field {
+  text-align: left !important ;
 }
 .card-item-label {
   min-height: 100%;
