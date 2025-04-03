@@ -7,7 +7,8 @@ sealed class Semester : IdObj
     public InfoDate start_date { get; set; } = new InfoDate();
     public InfoDate finish_date { get; set; } = new InfoDate();
     public int capacity { get; set; }
-    public string description = "";
+    public int fee { get; set; }
+    public InfoSemesterState state { get; set; } = new();
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
@@ -16,7 +17,9 @@ sealed class Semester : IdObj
         course_id = DataReader.get_int(reader, pos++);
         pos = start_date.fetch_data(reader, pos);
         pos = finish_date.fetch_data(reader, pos);
-        description = DataReader.get_string(reader, pos++);
+        capacity = DataReader.get_int(reader, pos++);
+        fee = DataReader.get_int(reader, pos++);
+        state = DataReader.get_enum<InfoSemesterState>(reader, pos++);
         return pos;
     }
 
@@ -28,7 +31,8 @@ sealed class Semester : IdObj
         lst.Add(start_date.ToString());
         lst.Add(finish_date.ToString());
         lst.Add($"{capacity}");
-        lst.Add(description);
+        lst.Add($"{fee}");
+        lst.Add($"{(int)state}");
         return lst;
     }
 

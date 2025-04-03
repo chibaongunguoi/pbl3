@@ -275,6 +275,11 @@
           "name": "fee",
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
+        },
+        {
+          "name": "state",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
         }
       ],
       "foreign_keys": [
@@ -303,6 +308,11 @@
           "name": "date",
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
+        },
+        {
+          "name": "state",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
         }
       ],
       "foreign_keys": [

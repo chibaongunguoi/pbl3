@@ -81,7 +81,8 @@ class Database
         List<T> results = new List<T>();
         void func(SqlDataReader reader)
         {
-            results.Add(DataReader.get_data_obj<T>(reader));
+            int pos = 0;
+            results.Add(DataReader.get_data_obj<T>(reader, ref pos));
         }
         Database.exec_reader(conn, query, func);
         return results;

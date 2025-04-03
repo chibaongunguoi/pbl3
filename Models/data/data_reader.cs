@@ -24,11 +24,11 @@ sealed class DataReader
     }
 
     // ========================================================================
-    public static T get_data_obj<T>(SqlDataReader reader, int pos = 0)
+    public static T get_data_obj<T>(SqlDataReader reader, ref int pos)
         where T : DataObj, new()
     {
         T info = new T();
-        info.fetch_data(reader);
+        pos = info.fetch_data(reader, pos);
         return info;
     }
 

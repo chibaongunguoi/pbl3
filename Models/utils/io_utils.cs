@@ -33,6 +33,14 @@ class IoUtils
         return $"{date.day:D2}/{date.month:D2}/{date.year}";
     }
 
+    // ------------------------------------------------------------------------
+    // 300000000 -> 300.000.000
+    public static string conv_fee(int fee)
+    {
+        return fee.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)
+            .Replace(",", ".");
+    }
+
     // ========================================================================
 }
 

@@ -15,10 +15,10 @@ public class CourseController : Controller
 
     public IActionResult Index()
     {
-        List<BriefTeacherCard> teacher_dicts = new();
-        Database.exec(conn => teacher_dicts = Test2.demo2(conn));
-        ViewBag.teachers = teacher_dicts;
-        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
+        List<BriefCourseCard> courses = new();
+        Database.exec(conn => courses = Test2.get_brief_course_cards(conn));
+        ViewBag.courses = courses;
+        Console.WriteLine($"Fetched {courses.Count} courses");
         return View();
     }
 

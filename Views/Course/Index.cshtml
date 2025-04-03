@@ -11,7 +11,7 @@
                 @await Html.PartialAsync("_SearchSemSection")
             </div>
             <div class="card-product-ul">
-                @await Html.PartialAsync("_SemesterCardList")
+                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
             </div>
 
             <nav aria-label="pagination-wrapper">

@@ -16,7 +16,8 @@ class Test
     {
         void func(SqlDataReader reader)
         {
-            var student = DataReader.get_data_obj<Student>(reader);
+            int pos = 0;
+            var student = DataReader.get_data_obj<Student>(reader, ref pos);
             Console.WriteLine(student.ToString());
         }
         Query q = new(Table.student);

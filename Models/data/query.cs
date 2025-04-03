@@ -33,6 +33,13 @@ sealed class Query
         conditions.Add($"{TableMngr.conv(table_field)} = {value}");
     }
 
+    // ========================================================================
+    public void where_(Field table_field, List<int> value)
+    {
+        string str = string.Join(", ", value);
+        conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
+    }
+
     // ------------------------------------------------------------------------
     // INFO: Thêm xâu unicode vào điều kiện
     public void where_n(Field table_field, string value)

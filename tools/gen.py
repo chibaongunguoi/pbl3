@@ -7,13 +7,15 @@ if not os.path.exists("data"):
     os.makedirs("data")
 
 
-def csv_output(file_name, lst):
+def json_output(file_name, lst):
     with open(f"data/{file_name}.json", "w", encoding="utf-8", newline="") as f:
-        json.dump(
-            [[str(item) for item in obj] for obj in lst],
-            f,
-            ensure_ascii=False,
-            indent=4,
+        f.write(
+            "["
+            + ",\n".join(
+                json.dumps([str(item) for item in obj], ensure_ascii=False)
+                for obj in lst
+            )
+            + "]"
         )
 
 
@@ -39,8 +41,8 @@ student_first_id = 1001
 teacher_first_id = 2001
 demo_user_id_prefix = 3001
 
-num_of_students = 20
-num_of_teachers = 20
+num_of_students = 300
+num_of_teachers = 300
 
 max_num_of_students = 1000
 max_num_of_teachers = 1000
@@ -135,17 +137,8 @@ addr_gen = generate_addr()
 students = []
 teachers = []
 
-# for id in demo_user_ids:
-#     username = id
-#     password = id
-#     gender, name = next(generate_gender_name())
-#     tel = next(tel_gen)
-#     bday = next(teacher_birthday_gen)
-#     addr = next(addr_gen)
-#     working_time = next(hour_minute_gen)
-#     demo_users.append(
-#         (id, username, password, name, gender, addr, tel, bday, working_time)
-#     )
+grades = list(range(6, 13))
+student_grades = {grade: [] for grade in grades}
 
 for stu_id in student_ids:
     username = stu_id
@@ -155,8 +148,10 @@ for stu_id in student_ids:
     bday = next(student_birthday_gen)
     # addr = next(addr_gen)
     students.append((stu_id, username, password, name, gender, bday))
+    grade = random.choice([6, 7, 8, 9, 10, 11, 12])
+    student_grades[grade].append(stu_id)
 
-csv_output("student", students)
+json_output("student", students)
 
 subject_groups = [
     [["Toán", "Ngữ Văn", "Tiếng Anh", "Vật lí"], [6, 7, 8, 9]],
@@ -179,11 +174,13 @@ with open("tools/subject.csv", encoding="utf-8") as f:
         subject_infos[subject_next_id] = tup
         subject_next_id += 1
 
-csv_output("subject", subjects)
+json_output("subject", subjects)
 
 # -----------------------------------------------------------------------------
 courses = []
 semesters = []
+requests = []
+ratings = []
 
 for tch_id in teacher_ids:
     username = tch_id
@@ -193,7 +190,7 @@ for tch_id in teacher_ids:
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
     thumbnail = r"./images/thumbnail/thumbnail.jpg"
-    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}.,
+    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}.
 - Giúp bạn out trình mấy con gà không đi học thêm
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
@@ -233,41 +230,89 @@ for tch_id in teacher_ids:
             f"Khóa học {sbj} của giáo viên {name}. "
             + r"Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         )
-        course = (course_id, tch_id, sbj_id, f"Khóa học VDC {sbj}", course_description)
+        course = (
+            course_id,
+            tch_id,
+            sbj_id,
+            f"Khóa học VDC {sbj}",
+            course_description,
+        )
         courses.append(course)
         course_next_id += 1
 
         # create semesters
 
-        for _ in range(random.randint(1, 3)):
+        start_start_date = datetime.strptime("2024-1-1", "%Y-%m-%d")
+        indices = list(range(1, 3))
+        last_index = len(indices) - 1
+        for i in indices:
             semester_id = semester_next_id
             capacity = random.choice([30, 40, 50, 60])
 
-            # random date between 2024/1/1 and 2024/12/31
-            # finish date is between 30 and 90 days after start date
-            start_start_date = datetime.strptime("2024-1-1", "%Y-%m-%d")
-            end_start_date = datetime.strptime("2024-12-31", "%Y-%m-%d")
-
-            start_date = start_start_date + timedelta(
-                random.randint(0, (end_start_date - start_start_date).days)
-            )
-            finish_date = start_date + timedelta(days=random.randint(30, 90))
+            start_date = start_start_date + timedelta(random.randint(0, 100))
+            finish_date = start_date + timedelta(days=random.randint(90, 120))
+            start_start_date = finish_date
 
             # format: yyyy-mm-dd
 
             start_date = f"{start_date.year}-{start_date.month}-{start_date.day}"
-            finish_date = f"{finish_date.year}-{finish_date.month}-{finish_date.day}"
+            finish_date_ = f"{finish_date.year}-{finish_date.month}-{finish_date.day}"
 
             fee = subject_infos[sbj_id][3]
-            semester = (semester_id, course_id, start_date, finish_date, capacity, fee)
+            semester = [
+                semester_id,
+                course_id,
+                start_date,
+                finish_date_,
+                capacity,
+                fee,
+                2,
+            ]
             semesters.append(semester)
-
             semester_next_id += 1
 
+            # choose 10-20 students
+            joined_students = []
+            for stu_id in student_grades[grade]:
+                if random.random() > 0.5:
+                    continue
 
-csv_output("teacher", teachers)
-csv_output("course", courses)
-csv_output("semester", semesters)
+                if len(joined_students) > capacity:
+                    break
+
+                # joined_day is around 20 days before start_date
+                joined_day = start_start_date - timedelta(random.randint(0, 20))
+                joined_day = f"{joined_day.year}-{joined_day.month}-{joined_day.day}"
+                request = (stu_id, semester_id, joined_day, 1)
+                requests.append(request)
+
+                if random.random() > 0.5:
+                    continue
+
+                # rating date is around 20 days after finish_date
+                rating_date = finish_date + timedelta(random.randint(0, 20))
+                rating_date_ = (
+                    f"{rating_date.year}-{rating_date.month}-{rating_date.date}"
+                )
+                rating_description = """Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
+                rating = (
+                    stu_id,
+                    course_id,
+                    rating_date,
+                    random.randint(1, 5),
+                    rating_description,
+                )
+                ratings.append(rating)
+
+        if len(semesters) > 0:
+            semesters[-1][-1] = 0
+
+
+json_output("teacher", teachers)
+json_output("course", courses)
+json_output("semester", semesters)
+json_output("request", requests)
+json_output("rating", ratings)
 
 # -----------------------------------------------------------------------------
 # intervals = [
@@ -306,12 +351,10 @@ id_counters = [
     ["subject", 1, 1, 0],
 ]
 
-csv_output("id_counter", id_counters)
+json_output("id_counter", id_counters)
 
 # -----------------------------------------------------------------------------
-csv_output("admin", [(1, "admin", "admin")])
-csv_output("rating", [])
-csv_output("request", [])
+json_output("admin", [(1, "admin", "admin")])
 
 # -----------------------------------------------------------------------------
 print("Generated successfully!")

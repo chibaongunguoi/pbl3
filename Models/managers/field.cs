@@ -17,6 +17,7 @@ enum FieldSuffix
     username,
     password,
     name,
+    state,
 }
 
 enum Field
@@ -52,9 +53,11 @@ enum Field
     semester__finish_date,
     semester__capacity,
     semester__fee,
+    semester__state,
     request__stu_id,
     request__semester_id,
     request__date,
+    request__state,
     rating__stu_id,
     rating__course_id,
     rating__date,

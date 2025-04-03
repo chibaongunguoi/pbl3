@@ -6,6 +6,7 @@ sealed class Request : DataObj
     public int stu_id { get; set; }
     public int semester_id { get; set; }
     public InfoDate date { get; set; } = new InfoDate();
+    public InfoRequestState state { get; set; } = new();
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
@@ -23,6 +24,7 @@ sealed class Request : DataObj
         lst.Add($"{stu_id}");
         lst.Add($"{semester_id}");
         lst.Add(date.ToString());
+        lst.Add($"{(int)state}");
         return lst;
     }
 
