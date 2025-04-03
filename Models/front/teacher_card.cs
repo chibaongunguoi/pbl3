@@ -4,6 +4,7 @@ struct BriefTeacherCard
     public string name;
     public string gender;
     public string bday;
+    public string description;
 }
 
 struct DetailedTeacherCard
