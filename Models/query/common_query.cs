@@ -24,9 +24,7 @@ class CommonQuery
         int next_id = 0;
         next_id = IdCounterQuery.increment(conn, table);
         if (IdCounterQuery.s_last_state == IdCounterQuery.State.id_hits_limit)
-        {
             return;
-        }
 
         obj.id = next_id;
 

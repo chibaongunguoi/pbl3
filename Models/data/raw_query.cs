@@ -119,9 +119,8 @@ sealed class RawQuery
     }
 
     // ------------------------------------------------------------------------
-    public static string get_insert_query(string data, DatabaseTableConfig table_config)
+    public static string get_insert_query(List<string> data, DatabaseTableConfig table_config)
     {
-        string[] parts = data.Split(',');
         string query = $"INSERT INTO {table_config.name} VALUES (";
         int pos = 0;
         foreach (var field in table_config.fields)
@@ -129,16 +128,17 @@ sealed class RawQuery
             switch (field.dtype)
             {
                 case "INT":
-                    query += $"{parts[pos]},";
+                    query += $"{data[pos]},";
                     break;
                 case "NSTRING":
-                    query += $"N'{parts[pos]}',";
+                    // strip the double quotes
+                    query += $"N'{data[pos]}',";
                     break;
                 case "STRING":
-                    query += $"'{parts[pos]}',";
+                    query += $"'{data[pos]}',";
                     break;
             }
-            if (++pos == parts.Length)
+            if (++pos == data.Count)
                 break;
         }
 
@@ -191,8 +191,11 @@ sealed class RawQuery
     public void delete(SqlConnection conn) => Database.exec_non_query(conn, get_delete_query());
 
     // ------------------------------------------------------------------------
-    public static void insert(SqlConnection conn, string data, DatabaseTableConfig table_config) =>
-        Database.exec_non_query(conn, get_insert_query(data, table_config));
+    public static void insert(
+        SqlConnection conn,
+        List<string> data,
+        DatabaseTableConfig table_config
+    ) => Database.exec_non_query(conn, get_insert_query(data, table_config));
 
     // ------------------------------------------------------------------------
     public void update(SqlConnection conn, string data, DatabaseTableConfig table_config) =>

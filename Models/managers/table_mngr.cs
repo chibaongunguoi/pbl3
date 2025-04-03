@@ -4,7 +4,12 @@ class TableMngr
 {
     // ========================================================================
     private static string s_database_name = "";
-    private static List<Table> s_account_tables = new() { Table.student, Table.teacher };
+    private static List<Table> s_account_tables = new()
+    {
+        Table.student,
+        Table.teacher,
+        Table.admin,
+    };
     private static Dictionary<Table, DatabaseTableConfig> s_table_config_dict = new();
     private static Dictionary<Field, string> s_table_field_name_dict = new();
     private static Dictionary<Table, string> s_table_name_dict = new();

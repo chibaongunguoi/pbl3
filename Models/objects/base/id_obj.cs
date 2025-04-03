@@ -14,11 +14,11 @@ class IdObj : DataObj
     }
 
     // ------------------------------------------------------------------------
-    public override Dictionary<string, string> to_dict()
+    public override List<string> ToListString()
     {
-        Dictionary<string, string> dict = base.to_dict();
-        dict["id"] = id.ToString();
-        return dict;
+        var lst = base.ToListString();
+        lst.Add($"{id}");
+        return lst;
     }
 
     // ========================================================================

@@ -14,15 +14,9 @@ abstract class DataObj
 
     // ------------------------------------------------------------------------
     // INFO: Chuyển đổi sang dạng xâu csv
-    public override string ToString()
+    public virtual List<string> ToListString()
     {
-        return "";
-    }
-
-    // ------------------------------------------------------------------------
-    public virtual Dictionary<string, string> to_dict()
-    {
-        return new();
+        return [];
     }
 
     // ========================================================================

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.Data.SqlClient;
 
 // HACK: Đây là class dùng để chuyển đổi dữ liệu từ file csv sang cơ sở
@@ -123,12 +124,15 @@ sealed class DataGenerator
             query = query.TrimEnd(',');
             query += ");";
             Database.exec_non_query(conn, query);
-            string csv_file = table_config.csv_file;
-            if (csv_file == "")
+
+            string json_file = table_config.json_file;
+            if (json_file == "")
             {
                 continue;
             }
-            foreach (string line in File.ReadAllLines(csv_file))
+            string database_config_json = File.ReadAllText(json_file);
+            var lst = JsonSerializer.Deserialize<List<List<string>>>(database_config_json) ?? new();
+            foreach (List<string> line in lst)
             {
                 RawQuery.insert(conn, line, table_config);
             }

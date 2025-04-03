@@ -10,22 +10,6 @@ class Test
     // ------------------------------------------------------------------------
     // INFO: Tình huống in tên gia sư - tên môn học ra màn hinh
     // Sử dụng tính năng join của class Query.
-    private static void test1()
-    {
-        void func(SqlDataReader reader)
-        {
-            string tch_name = DataReader.get_string(reader, 0);
-            string sbj_name = DataReader.get_string(reader, 1);
-            Console.WriteLine(tch_name + " - " + sbj_name);
-        }
-        Query q = new(Table.teacher_subject);
-        q.join(Field.teacher__id, Field.teacher_subject__tch_id);
-        q.join(Field.subject__id, Field.teacher_subject__sbj_id);
-        q.output(Field.teacher__fullname);
-        q.output(Field.subject__name);
-        Database.exec(conn => q.select(conn, func));
-    }
-
     // ------------------------------------------------------------------------
     // INFO: In thông tin của student mang id = 1004
     private static void test2()
@@ -55,32 +39,6 @@ class Test
     }
 
     // ------------------------------------------------------------------------
-    // INFO: Thêm và bớt TeacherSchedule
-    private static void test4()
-    {
-        int tch_id = 2001;
-        int sch_id = 42;
-        TeacherSchedule demo_schedule = new() { tch_id = tch_id, sch_id = sch_id };
-        void func(SqlConnection conn)
-        {
-            var current_schedule = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
-            IoUtils.print_list(current_schedule);
-
-            TeacherScheduleQuery.add_schedule(conn, demo_schedule);
-
-            var current_schedule_2 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
-            IoUtils.print_list(current_schedule_2);
-
-            TeacherScheduleQuery.remove_schedule(conn, demo_schedule);
-
-            var current_schedule_3 = TeacherScheduleQuery.get_avai_schedule(conn, tch_id);
-            IoUtils.print_list(current_schedule_3);
-        }
-
-        Database.exec(func);
-    }
-
-    // ------------------------------------------------------------------------
     // INFO: Kiểm tra counter của bảng student
     private static void test5()
     {
@@ -95,11 +53,10 @@ class Test
     {
         Student new_student = new()
         {
+            username = "demo",
             password = "demo",
-            fullname = "Nguyễn Văn A",
+            name = "Nguyễn Văn A",
             gender = InfoGender.MALE,
-            addr = "123 Đường Chân Trời",
-            tel = "0987654321",
             bday = new InfoDate
             {
                 year = 2012,

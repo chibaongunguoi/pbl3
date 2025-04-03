@@ -123,7 +123,7 @@ sealed class Query
         where T : DataObj, new()
     {
         var table_config = TableMngr.get_table_config(table);
-        string[] parts = obj.ToString().Split(',');
+        List<string> parts = obj.ToListString();
         string query = $"INSERT INTO {table_config.name} VALUES (";
         int pos = 0;
         foreach (var field in table_config.fields)
@@ -140,7 +140,7 @@ sealed class Query
                     query += $"'{parts[pos]}',";
                     break;
             }
-            if (++pos == parts.Length)
+            if (++pos == parts.Count)
                 break;
         }
 
@@ -154,7 +154,7 @@ sealed class Query
         where T : DataObj, new()
     {
         var table_config = TableMngr.get_table_config(table);
-        string[] parts = obj.ToString().Split(',');
+        List<string> parts = obj.ToListString();
         string query = $"UPDATE {table_config.name} SET ";
         int pos = 0;
         foreach (var field in table_config.fields)
@@ -171,7 +171,7 @@ sealed class Query
                     query += $"{field.name} = '{parts[pos]}',";
                     break;
             }
-            if (++pos == parts.Length)
+            if (++pos == parts.Count)
                 break;
         }
 

@@ -1,16 +1,21 @@
 using Microsoft.Data.SqlClient;
 
-sealed class Teacher : User
+sealed class Semester : IdObj
 {
     // ========================================================================
-    public string thumbnail = "";
+    public int course_id { get; set; }
+    public InfoDate start_date { get; set; } = new InfoDate();
+    public InfoDate finish_date { get; set; } = new InfoDate();
+    public int capacity { get; set; }
     public string description = "";
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
-        thumbnail = DataReader.get_string(reader, pos++);
+        course_id = DataReader.get_int(reader, pos++);
+        pos = start_date.fetch_data(reader, pos);
+        pos = finish_date.fetch_data(reader, pos);
         description = DataReader.get_string(reader, pos++);
         return pos;
     }
@@ -19,7 +24,10 @@ sealed class Teacher : User
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(thumbnail);
+        lst.Add($"{course_id}");
+        lst.Add(start_date.ToString());
+        lst.Add(finish_date.ToString());
+        lst.Add($"{capacity}");
         lst.Add(description);
         return lst;
     }

@@ -3,28 +3,25 @@ using Microsoft.Data.SqlClient;
 class Account : IdObj
 {
     // ========================================================================
+    public string username { get; set; } = "";
     public string password { get; set; } = "";
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
     {
         pos = base.fetch_data(reader, pos);
+        username = DataReader.get_string(reader, pos++);
         password = DataReader.get_string(reader, pos++);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public override string ToString()
+    public override List<string> ToListString()
     {
-        return string.Join(",", new string[] { id.ToString(), password });
-    }
-
-    // ------------------------------------------------------------------------
-    public override Dictionary<string, string> to_dict()
-    {
-        Dictionary<string, string> dict = base.to_dict();
-        dict["password"] = password;
-        return dict;
+        var lst = base.ToListString();
+        lst.Add(username);
+        lst.Add(password);
+        return lst;
     }
 
     // ========================================================================

@@ -1,10 +1,12 @@
 using Microsoft.Data.SqlClient;
 
-class TeacherSubject : DataObj
+sealed class Course : IdObj
 {
     // ========================================================================
-    public int tch_id;
-    public int sbj_id;
+    public int tch_id { get; set; }
+    public int sbj_id { get; set; }
+    public string name { get; set; } = "";
+    public string description { get; set; } = "";
 
     // ========================================================================
     public override int fetch_data(SqlDataReader reader, int pos = 0)
@@ -12,11 +14,21 @@ class TeacherSubject : DataObj
         pos = base.fetch_data(reader, pos);
         tch_id = DataReader.get_int(reader, pos++);
         sbj_id = DataReader.get_int(reader, pos++);
+        name = DataReader.get_string(reader, pos++);
+        description = DataReader.get_string(reader, pos++);
         return pos;
     }
 
     // ------------------------------------------------------------------------
-    public override string ToString() => $"{tch_id},{sbj_id}";
+    public override List<string> ToListString()
+    {
+        var lst = base.ToListString();
+        lst.Add($"{tch_id}");
+        lst.Add($"{sbj_id}");
+        lst.Add(name);
+        lst.Add(description);
+        return lst;
+    }
 
     // ========================================================================
 }

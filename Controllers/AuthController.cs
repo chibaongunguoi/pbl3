@@ -65,12 +65,13 @@ public class AuthController : BaseController
 
         User user = query_result[0];
         ViewBag.oneuser =
-            $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.fullname}.";
+            $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.name}.";
 
-        HttpContext.Session.SetString("userName", user.fullname);
+        HttpContext.Session.SetString("userName", user.name);
         HttpContext.Session.SetInt32("userId", user.id);
         return View("user");
     }
+
     public IActionResult Logout()
     {
         HttpContext.Session.Remove("userName"); // Xóa một session cụ thể
@@ -78,7 +79,6 @@ public class AuthController : BaseController
         HttpContext.Session.Clear();
         return Redirect("http://localhost:5022/Auth/Login");
     }
-
 
     // ========================================================================
 }

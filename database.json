@@ -1,9 +1,58 @@
 {
   "database_name": "DbMaster",
   "tables": {
-    "demo_user": {
-      "name": "TblDemoUser",
-      "csv_file": "data/demo_user.csv",
+    "id_counter": {
+      "name": "TblIdCounter",
+      "json_file": "data/id_counter.json",
+      "fields": [
+        {
+          "name": "name",
+          "sql_type": "VARCHAR(50) NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "min_count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "max_count",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": []
+    },
+    "admin": {
+      "name": "TblAdmin",
+      "json_file": "data/admin.json",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "password",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "STRING"
+        }
+      ],
+      "foreign_keys": []
+    },
+    "student": {
+      "name": "TblStudent",
+      "json_file": "data/student.json",
       "fields": [
         {
           "name": "id",
@@ -31,63 +80,6 @@
           "dtype": "INT"
         },
         {
-          "name": "addr",
-          "sql_type": "NVARCHAR(100) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
-          "name": "tel",
-          "sql_type": "NVARCHAR(15) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
-          "name": "bday",
-          "sql_type": "DATE NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "working_time",
-          "sql_type": "TIME NOT NULL",
-          "dtype": "STRING"
-        }
-      ],
-      "foreign_keys": []
-    },
-    "student": {
-      "name": "TblStudent",
-      "csv_file": "data/student.csv",
-      "fields": [
-        {
-          "name": "id",
-          "sql_type": "INT PRIMARY KEY NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "password",
-          "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "fullname",
-          "sql_type": "NVARCHAR(50) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
-          "name": "gender",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "addr",
-          "sql_type": "NVARCHAR(100) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
-          "name": "tel",
-          "sql_type": "NVARCHAR(15) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
           "name": "bday",
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
@@ -97,7 +89,7 @@
     },
     "teacher": {
       "name": "TblTeacher",
-      "csv_file": "data/teacher.csv",
+      "json_file": "data/teacher.json",
       "fields": [
         {
           "name": "id",
@@ -105,12 +97,17 @@
           "dtype": "INT"
         },
         {
+          "name": "username",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "STRING"
+        },
+        {
           "name": "password",
           "sql_type": "NVARCHAR(50) NOT NULL",
           "dtype": "STRING"
         },
         {
-          "name": "fullname",
+          "name": "name",
           "sql_type": "NVARCHAR(50) NOT NULL",
           "dtype": "NSTRING"
         },
@@ -120,16 +117,6 @@
           "dtype": "INT"
         },
         {
-          "name": "addr",
-          "sql_type": "NVARCHAR(100) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
-          "name": "tel",
-          "sql_type": "NVARCHAR(15) NOT NULL",
-          "dtype": "NSTRING"
-        },
-        {
           "name": "bday",
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
@@ -137,14 +124,19 @@
         {
           "name": "thumbnail",
           "sql_type": "NVARCHAR(100) NOT NULL",
-          "dtype": "STRING"
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "description",
+          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "dtype": "NSTRING"
         }
       ],
       "foreign_keys": []
     },
     "subject": {
       "name": "TblSubject",
-      "csv_file": "data/subject.csv",
+      "json_file": "data/subject.json",
       "fields": [
         {
           "name": "id",
@@ -160,64 +152,17 @@
           "name": "grade",
           "sql_type": "INT NOT NULL",
           "dtype": "INT"
-        },
-        {
-          "name": "duration",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "fee_per_month",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "slot_per_week",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
         }
       ],
       "foreign_keys": []
     },
-    "schedule": {
-      "name": "TblSchedule",
-      "csv_file": "data/schedule.csv",
+    "course": {
+      "name": "TblCourse",
+      "json_file": "data/course.json",
       "fields": [
         {
           "name": "id",
           "sql_type": "INT PRIMARY KEY NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "day",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "start_time",
-          "sql_type": "TIME NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "end_time",
-          "sql_type": "TIME NOT NULL",
-          "dtype": "STRING"
-        }
-      ],
-      "foreign_keys": []
-    },
-    "contract": {
-      "name": "TblContract",
-      "csv_file": "",
-      "fields": [
-        {
-          "name": "id",
-          "sql_type": "INT PRIMARY KEY NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "stu_id",
-          "sql_type": "INT NOT NULL",
           "dtype": "INT"
         },
         {
@@ -231,7 +176,131 @@
           "dtype": "INT"
         },
         {
+          "name": "name",
+          "sql_type": "NVARCHAR(50) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "description",
+          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "dtype": "NSTRING"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "tch_id",
+          "ref_table": "teacher",
+          "ref_field": "id"
+        },
+        {
+          "field": "sbj_id",
+          "ref_table": "subject",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "rating": {
+      "name": "TblRating",
+      "json_file": "data/rating.json",
+      "fields": [
+        {
+          "name": "stu_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "course_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "date",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "stars",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "description",
+          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "dtype": "STRING"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "stu_id",
+          "ref_table": "student",
+          "ref_field": "id"
+        },
+        {
+          "field": "course_id",
+          "ref_table": "course",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "semester": {
+      "name": "TblSemester",
+      "json_file": "data/semester.json",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "course_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
           "name": "start_date",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "finish_date",
+          "sql_type": "DATE NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "capacity",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "fee",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "course_id",
+          "ref_table": "course",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "request": {
+      "name": "TblRequest",
+      "json_file": "data/request.json",
+      "fields": [
+        {
+          "name": "stu_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "semester_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "date",
           "sql_type": "DATE NOT NULL",
           "dtype": "STRING"
         }
@@ -243,127 +312,11 @@
           "ref_field": "id"
         },
         {
-          "field": "tch_id",
-          "ref_table": "teacher",
-          "ref_field": "id"
-        },
-        {
-          "field": "sbj_id",
-          "ref_table": "subject",
+          "field": "semester_id",
+          "ref_table": "semester",
           "ref_field": "id"
         }
       ]
-    },
-    "teacher_schedule": {
-      "name": "TblTeacherSchedule",
-      "csv_file": "data/teacher_schedule.csv",
-      "fields": [
-        {
-          "name": "tch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ],
-      "foreign_keys": [
-        {
-          "field": "tch_id",
-          "ref_table": "teacher",
-          "ref_field": "id"
-        },
-        {
-          "field": "sch_id",
-          "ref_table": "schedule",
-          "ref_field": "id"
-        }
-      ]
-    },
-    "contract_schedule": {
-      "name": "TblContractSchedule",
-      "csv_file": "",
-      "fields": [
-        {
-          "name": "ctrct_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ],
-      "foreign_keys": [
-        {
-          "field": "ctrct_id",
-          "ref_table": "contract",
-          "ref_field": "id"
-        },
-        {
-          "field": "sch_id",
-          "ref_table": "schedule",
-          "ref_field": "id"
-        }
-      ]
-    },
-    "teacher_subject": {
-      "name": "TblTeacherSubject",
-      "csv_file": "data/teacher_subject.csv",
-      "fields": [
-        {
-          "name": "tch_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "sbj_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ],
-      "foreign_keys": [
-        {
-          "field": "tch_id",
-          "ref_table": "teacher",
-          "ref_field": "id"
-        },
-        {
-          "field": "sbj_id",
-          "ref_table": "subject",
-          "ref_field": "id"
-        }
-      ]
-    },
-    "id_counter": {
-      "name": "TblIdCounter",
-      "csv_file": "data/id_counter.csv",
-      "fields": [
-        {
-          "name": "name",
-          "sql_type": "VARCHAR(50) NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "count",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "min_count",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "max_count",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        }
-      ],
-      "foreign_keys": []
     }
   }
 }

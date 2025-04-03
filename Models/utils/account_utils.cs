@@ -13,7 +13,7 @@ class AccountUtils
             return Table.teacher;
         }
 
-        return Table.demo_user;
+        return Table.admin;
     }
 
     // ========================================================================
