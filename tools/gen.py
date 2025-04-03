@@ -193,7 +193,26 @@ for tch_id in teacher_ids:
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
     thumbnail = r"./images/thumbnail/thumbnail.jpg"
-    description = f"Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}."
+    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}.,
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+- Giúp bạn out trình mấy con gà không đi học thêm
+- Không sợ out meta, top 1 tri thức hệ toán
+- VDC không còn khó, đại học Vinh chỉ còn là cái tên
+"""
     teachers.append(
         (tch_id, username, password, name, gender, bday, thumbnail, description)
     )

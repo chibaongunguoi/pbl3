@@ -128,7 +128,7 @@
         },
         {
           "name": "description",
-          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "sql_type": "NVARCHAR(2000) NOT NULL",
           "dtype": "NSTRING"
         }
       ],
@@ -182,7 +182,7 @@
         },
         {
           "name": "description",
-          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "sql_type": "NVARCHAR(2000) NOT NULL",
           "dtype": "NSTRING"
         }
       ],
@@ -225,7 +225,7 @@
         },
         {
           "name": "description",
-          "sql_type": "NVARCHAR(1000) NOT NULL",
+          "sql_type": "NVARCHAR(2000) NOT NULL",
           "dtype": "STRING"
         }
       ],
