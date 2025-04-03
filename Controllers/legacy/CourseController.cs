@@ -24,8 +24,7 @@ public class CourseController : Controller
 
     public IActionResult Detail()
     {
-        List<BriefTeacherCard> teacher_dicts = new();
-        Database.exec(conn => teacher_dicts = Test2.demo2(conn));
+        List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn => Test2.demo2(conn));
         ViewBag.teachers = teacher_dicts;
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
         return View();
