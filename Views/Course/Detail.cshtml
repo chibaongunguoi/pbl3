@@ -9,7 +9,7 @@
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
             @{
-                var teachers1 = ViewBag.teachers as List<Dictionary<string, string>>;
+                var teachers1 = ViewBag.teachers as List<BriefTeacherCard>;
                 var firstteacher=teachers1[0];
             }
                 @await Html.PartialAsync("_TeacherCard", firstteacher)

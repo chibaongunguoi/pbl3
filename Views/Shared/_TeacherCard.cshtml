@@ -1,25 +1,51 @@
 @model BriefTeacherCard
-   <div class="card-product-li">
-        <div class="card-product-li-content teacher-card">
-            <div class="thumb" style="width:110px; height:128px !important; max-height:130px !important;">
-        <img src="http://localhost:5022/images/thumbnail/thumbnail.jpg" style="width:100%; height:128px;">
-    </div>
-    <div style="line-height:150% !important; font-size:14px;">
-        <div class="teacher-card-field"><strong>Mã số:</strong> @Model.id</div>
-        <div class="teacher-card-field"><strong>Tên gia sư:</strong> 
-            <strong style="color:#008eff;">
-                <a href="/gia-su-2918.html">@Model.name</a>
-            </strong>
-        </div>
-        <div class="teacher-card-field"><strong>Giới tính:</strong> @Model.gender</div>
-        <div class="teacher-card-field"><strong>Ngày sinh:</strong> @Model.bday</div>
-        <div class="teacher-card-field"><strong>Nhận dạy:</strong> Lớp 6, Lớp 7, Lớp 8, Lớp 10, Lớp 12</div>
-        <div class="teacher-card-field"><strong>Các môn:</strong> Toán, Lý, Hóa</div>
-        <div class="teacher-card-field"><strong>Mô tả:</strong> Có kinh nghiệm dạy kèm</div>
-    </div>
-            <div class="button-group-wrapper teacher-btn-group">
-                <button class="card-btn tch-detail" onclick="window.location.href='/Teacher/Profile'" >Xem chi tiết</button>
-                <!-- <button class="card-btn choose">Chọn gia sư</button> -->
+
+<div class="card-product-li">
+    <div class="card-product-li-content teacher-card">
+        <div class="teacher-card-main-content">
+            <div class="thumb" style="width:110px; height:100px !important; max-height:110px !important;">
+                <img src="http://localhost:5022/images/thumbnail/thumbnail.jpg" style="width:100%; height:110px;">
+            </div>
+            <div style="line-height:150% !important; font-size:14px;">
+                <div class="teacher-card-field"><strong>Mã số:</strong> @Model.id</div>
+                <div class="teacher-card-field">
+                    <strong>Tên gia sư:</strong> 
+                    <strong style="color:#008eff;">
+                        <a href="/gia-su-2918.html">@Model.name</a>
+                    </strong>
+                </div>
+                <div class="teacher-card-field"><strong>Giới tính:</strong> @Model.gender</div>
+                <div class="teacher-card-field teacher-down"><strong>Ngày sinh:</strong> @Model.bday</div>
             </div>
         </div>
+
+        <div class="teacher-card-desc">
+            <div class="teacher-card-field"><strong>Mô tả:</strong></div>
+            <div class="card-sem-des-content" style="height:150px !important;">
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
+                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
+                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
+                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>                    
+            </div>
+        </div>
+
+        <div class="button-group-wrapper teacher-btn-group">
+            <button class="card-btn tch-detail" onclick="window.location.href='/Teacher/Profile'">Xem chi tiết</button>
+            <!-- <button class="card-btn choose">Chọn gia sư</button> -->
+        </div>
     </div>
+</div>
