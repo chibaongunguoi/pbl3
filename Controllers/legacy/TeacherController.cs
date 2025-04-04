@@ -25,10 +25,13 @@ public class TeacherController : Controller
 
     public IActionResult Profile()
     {
-        List<BriefTeacherCard> teacher_dicts = new();
-        Database.exec(conn => teacher_dicts = Test2.get_brief_teacher_cards(conn));
+        List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
+            Test2.get_brief_teacher_cards(conn)
+        );
         ViewBag.teachers = teacher_dicts;
-        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
+         List<BriefCourseCard> courses = new();
+        Database.exec(conn => courses = Test2.get_brief_course_cards(conn,1));
+        ViewBag.courses = courses;
         return View();
     }
 

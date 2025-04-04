@@ -2,30 +2,33 @@
 
 <nav aria-label="pagination-wrapper">
                 <ul class="pagination">
-                    @* pagination *@
                     <li class="page-item ">
-                        <a class='page-link pa-active' href="">
-                            1
+                        <a class='page-link ' href="">
+                            <<
                         </a>
                     </li>
-                    @for (int i = 2; i < 5; i++)
+                    @{
+                        var left=Model-2;
+                        var right=Model+2;
+                        if (left<1){
+                            left=1;
+                        }
+                        if (right>ViewBag.maxIndexPage){
+                            right=ViewBag.maxIndexPage;
+                        }
+                    }
+                    @for (int i = left; i <=  right; i++)
                     {
                         <li class="page-item ">
-                            <a class='page-link' href="">
+                            <a class="page-link @(i == Model ? "pa-active" : "")" href="?page=@i">
                                 @i
                             </a>
                         </li>
                     }
-                    <li class="page-item dot">
-                        . . .
+                     <li class="page-item ">
+                        <a class='page-link ' href="">
+                            >>
+                        </a>
                     </li>
-                    @for (int i = 5; i < @Model; i++)
-                    {
-                        <li class="page-item">
-                            <a class='page-link ' href="">
-                                @i
-                            </a>
-                        </li>
-                    }
                 </ul>
             </nav>
