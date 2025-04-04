@@ -11,8 +11,6 @@ sealed class Backend
             {
                 DataGenerator.generate();
             }
-
-            Test.test();
         }
         catch (Exception e)
         {

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
 
@@ -104,6 +105,7 @@ sealed class DataGenerator
     // ========================================================================
     private static void create_tables(SqlConnection conn)
     {
+        Stopwatch stopwatch = Stopwatch.StartNew();
         var table_configs = TableMngr.get_table_configs();
 
         foreach (var (_, table_config) in table_configs)
@@ -132,11 +134,11 @@ sealed class DataGenerator
             }
             string database_config_json = File.ReadAllText(json_file);
             var lst = JsonSerializer.Deserialize<List<List<string>>>(database_config_json) ?? new();
-            foreach (List<string> line in lst)
-            {
-                RawQuery.insert(conn, line, table_config);
-            }
+            RawQuery.insert(conn, lst, table_config);
         }
+        stopwatch.Stop();
+        TimeSpan elapsed = stopwatch.Elapsed;
+        Console.WriteLine($"DataGenerator - Time taken: {elapsed.TotalMilliseconds} ms");
     }
 
     // ========================================================================

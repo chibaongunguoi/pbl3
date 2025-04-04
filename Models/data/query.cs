@@ -11,7 +11,9 @@ sealed class Query
     private List<string> output_fields = new List<string>();
     private List<string> conditions = new List<string>();
     private List<string> inner_joins = new List<string>();
+    private List<string> orders = new List<string>();
     private List<string> set_fields = new List<string>();
+    private string? offset_string = null;
 
     // ========================================================================
     // INFO: Bắt đầu với một bảng
@@ -25,6 +27,12 @@ sealed class Query
     public void output(Field table_field)
     {
         output_fields.Add(TableMngr.conv(table_field));
+    }
+
+    // ========================================================================
+    public void offset(int page, int num_objs)
+    {
+        offset_string = $"OFFSET {(page - 1) * num_objs} ROWS FETCH NEXT {num_objs} ROWS ONLY";
     }
 
     // ========================================================================
@@ -110,9 +118,18 @@ sealed class Query
     {
         var table_name = TableMngr.conv(table);
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
-        string query = $"SELECT {output_fields_str} FROM {table_name} ";
-        query += string.Join(" ", inner_joins);
-        query += get_where_clause() + ";";
+        string query = $"SELECT {output_fields_str} FROM {table_name}";
+        query += " " + string.Join(" ", inner_joins);
+        query += " " + get_where_clause();
+        if (orders.Count == 0)
+        {
+            query += " ORDER BY (SELECT NULL)";
+        }
+        if (offset_string is not null)
+        {
+            query += " " + offset_string;
+        }
+        query += ";";
         return query;
     }
 
@@ -212,6 +229,11 @@ sealed class Query
     // ------------------------------------------------------------------------
     // INFO: Chạy reader function với truy vấn SELECT
     public void select(SqlConnection conn, Database.ReaderFunction f) =>
+        Database.exec_reader(conn, get_select_query(), f);
+
+    // ------------------------------------------------------------------------
+    // INFO: Chạy reader function với truy vấn SELECT
+    public void select(SqlConnection conn, Database.BoolReaderFunction f) =>
         Database.exec_reader(conn, get_select_query(), f);
 
     // ------------------------------------------------------------------------

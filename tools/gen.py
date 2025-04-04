@@ -258,7 +258,7 @@ for tch_id in teacher_ids:
             start_date = f"{start_date.year}-{start_date.month}-{start_date.day}"
             finish_date_ = f"{finish_date.year}-{finish_date.month}-{finish_date.day}"
 
-            fee = subject_infos[sbj_id][3]
+            fee = random.choice(["1250000", "1500000", "1750000", "2000000", "2150000"])
             semester = [
                 semester_id,
                 course_id,
