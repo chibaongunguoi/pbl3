@@ -376,3 +376,27 @@
 .teacher-card-main-content {
   height: 117px;
 }
+.rating-wrapper {
+  padding-top: 0px;
+}
+
+.reviews-item {
+  background: white;
+  font-size: 16px;
+  color: #1c1e21;
+  border-radius: 20px;
+  padding: 20px 15px 20px;
+}
+.fullname {
+  font-weight: 600;
+}
+.show-star .num-vote {
+  color: #686f7a;
+  padding-left: 8px;
+  font-size: 12px;
+  padding: 10px 0px;
+}
+.info-course {
+  padding-top: 10px;
+  font-size: 12px;
+}

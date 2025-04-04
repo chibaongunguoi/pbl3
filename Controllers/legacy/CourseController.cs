@@ -15,9 +15,16 @@ public class CourseController : Controller
 
     public IActionResult Index()
     {
+        string? page_ = Request.Query["page"];
+        int page=1;
+        if (page_ is not null){
+         page= int.Parse(page_);
+        }
         List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = Test2.get_brief_course_cards(conn));
+        Database.exec(conn => courses = Test2.get_brief_course_cards(conn,page));
         ViewBag.courses = courses;
+        ViewBag.currentPage = page;
+        ViewBag.maxIndexPage = 10;
         Console.WriteLine($"Fetched {courses.Count} courses");
         return View();
     }

@@ -8,16 +8,63 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-            @{
+          @{
                 var teachers1 = ViewBag.teachers as List<BriefTeacherCard>;
                 var firstteacher=teachers1[0];
-            }
-                @await Html.PartialAsync("_TeacherCard", firstteacher)
-                @await Html.PartialAsync("_SemesterCardDetail")
-            </div>
-
-
+            } 
+              @await Html.PartialAsync("_TeacherCard", firstteacher)
             
+                @await Html.PartialAsync("_SemesterCardDetail")
+            </div>         
+        </div>
+    </div>
+
+    <div class="shop-section-wrapper container rating-wrapper">
+        <div class="shop-section-header">
+            <div class="shop-section-title">
+                Đánh giá khóa học
+            </div>
+        </div>
+        <div class="shop-section-content">
+           <div class="reviews-item">
+
+                                    <div class="student-info d-flex">
+                                       
+                                        <div class="user-info">
+                                            <span class="fullname">Phạm Tiến Đức</span>
+                                            <div class="reviews-date">
+                                                <!--Gần đây-->
+                                                <!--2 năm trước-->
+                                            </div>
+                                            <div class="show-star">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <span class="num-vote">(5/5)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="show-star">-->
+                                 
+                                    <!--    <i class="fas fa-star"></i>-->
+                                    <!--    <i class="fas fa-star"></i>-->
+                                    <!--    <i class="fas fa-star"></i>-->
+                                    <!--    <i class="fas fa-star"></i>-->
+                                    <!--    <i class="fas fa-star"></i>-->
+                                    <!--    <span class="num-vote">(5/5)</span>-->
+                                    <!--</div>-->
+                                    <div class="message">
+                                        Mình đã học qua HTML và CSS tại trường. Nhưng thông qua khóa học của thầy đã hiểu rõ hơn và biết thêm nhiều hơn về HTML và CSS. Đặc biệt là tư duy trong việc học và làm bài được thầy truyền tải qua khóa học.
+
+                                    </div>
+                                    <div class="info-course text-muted">Học viên của khóa:
+                                        <a target="_blank" href="https://unitop.vn/course/html-css-21-ngay-thanh-thao-xay-dung-giao-dien-web-thuc-te-tu-ban-thiet-ke-photoshop/intro" title="Html Css 21 Ngày - Thành thạo xây dựng giao diện web thực tế từ bản thiết kế Photoshop">
+                                            1/4/2019 - 1/5/2020
+                                    </div>
+
+                                </div>       
         </div>
     </div>
 </div>
