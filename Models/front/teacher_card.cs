@@ -16,3 +16,12 @@ struct DetailedTeacherCard
     public string subjects;
     public string description;
 }
+
+struct BriefTeacherPage
+{
+    public int current_page;
+    public int total_page;
+    public List<BriefTeacherCard> teachers = new();
+
+    public BriefTeacherPage(int current_page) { }
+}

@@ -16,7 +16,7 @@ public class CourseController : Controller
     public IActionResult Index()
     {
         List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = Test2.get_brief_course_cards(conn));
+        Database.exec(conn => courses = BriefCourseCard.get_brief_course_cards(conn));
         ViewBag.courses = courses;
         Console.WriteLine($"Fetched {courses.Count} courses");
         return View();

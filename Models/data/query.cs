@@ -114,10 +114,13 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
-    public string get_select_query()
+    public string get_select_query(bool count_mode = false)
     {
         var table_name = TableMngr.conv(table);
-        var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
+        var output_fields_str =
+            output_fields.Count > 0 ? string.Join(", ", output_fields)
+            : count_mode ? "COUNT(*)"
+            : "*";
         string query = $"SELECT {output_fields_str} FROM {table_name}";
         query += " " + string.Join(" ", inner_joins);
         query += " " + get_where_clause();
@@ -235,6 +238,19 @@ sealed class Query
     // INFO: Chạy reader function với truy vấn SELECT
     public void select(SqlConnection conn, Database.BoolReaderFunction f) =>
         Database.exec_reader(conn, get_select_query(), f);
+
+    // ------------------------------------------------------------------------
+    public int count(SqlConnection conn)
+    {
+        int result = 0;
+        int pos = 0;
+        Database.exec_reader(
+            conn,
+            get_select_query(count_mode: true),
+            reader => result = DataReader.get_int(reader, pos)
+        );
+        return result;
+    }
 
     // ------------------------------------------------------------------------
     public void delete(SqlConnection conn) => Database.exec_non_query(conn, get_delete_query());
