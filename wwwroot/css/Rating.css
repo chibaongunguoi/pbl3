@@ -5,10 +5,10 @@
   position: relative;
   top: -2px;
   margin-right: 4px;
+
   /* width: 105px; */
 }
 .rating-star-wrapper {
-  /* margin-right: 0px; */
   margin-right: 1.5px;
   position: relative;
   /* margin-right: 20px; */
@@ -57,11 +57,11 @@
   justify-content: flex-start;
 }
 .rating-summary {
-  /* float: left; */
   width: 145px;
   margin-right: 60px;
   position: relative;
-  top: -20px;
+  top: 10px;
+  left: 45px;
 }
 .rating-score {
   height: 70px;
@@ -107,6 +107,7 @@
   height: 12px;
 }
 .rating-star-wrapper {
+  font-size: 1rem;
   display: inline-block;
 }
 .review-star-rating-count {
@@ -161,4 +162,10 @@
   border-color: #ee4d2d;
   fill: #ee4d2d;
   color: #ee4d2d;
+}
+.reply-rating-star-icon-list
+  .card-product-rating-star
+  .card-product-rating-star
+  .rating-star-wrapper {
+  font-size: 1.5rem !important;
 }
