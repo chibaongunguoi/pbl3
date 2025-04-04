@@ -48,6 +48,12 @@ sealed class Query
         conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
     }
 
+    // ========================================================================
+    public void where_string_contains(Field table_field, string value)
+    {
+        conditions.Add($"{TableMngr.conv(table_field)} LIKE '%{value}%'");
+    }
+
     // ------------------------------------------------------------------------
     // INFO: Thêm xâu unicode vào điều kiện
     public void where_n(Field table_field, string value)
