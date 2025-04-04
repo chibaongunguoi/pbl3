@@ -26,10 +26,10 @@
             </div>
         </div>
         <div class="shop-section-content">
+        @await Html.PartialAsync("_RatingTable")
            <div class="reviews-item">
 
                                     <div class="student-info d-flex">
-                                       
                                         <div class="user-info">
                                             <span class="fullname">Phạm Tiến Đức</span>
                                             <div class="reviews-date">
@@ -37,24 +37,11 @@
                                                 <!--2 năm trước-->
                                             </div>
                                             <div class="show-star">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span class="num-vote">(5/5)</span>
+                                                @await Html.PartialAsync("_Rating5StarList")
                                             </div>
+                                            <div class="reply-user-time">2023-03-27 15:23</div>
                                         </div>
                                     </div>
-                                    <!--<div class="show-star">-->
-                                 
-                                    <!--    <i class="fas fa-star"></i>-->
-                                    <!--    <i class="fas fa-star"></i>-->
-                                    <!--    <i class="fas fa-star"></i>-->
-                                    <!--    <i class="fas fa-star"></i>-->
-                                    <!--    <i class="fas fa-star"></i>-->
-                                    <!--    <span class="num-vote">(5/5)</span>-->
-                                    <!--</div>-->
                                     <div class="message">
                                         Mình đã học qua HTML và CSS tại trường. Nhưng thông qua khóa học của thầy đã hiểu rõ hơn và biết thêm nhiều hơn về HTML và CSS. Đặc biệt là tư duy trong việc học và làm bài được thầy truyền tải qua khóa học.
 
