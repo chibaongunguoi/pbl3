@@ -36,7 +36,11 @@ class Test2
     }
 
     // ------------------------------------------------------------------------
-    public static List<BriefTeacherCard> demo2(SqlConnection conn)
+    public static List<BriefTeacherCard> get_brief_teacher_cards(
+        SqlConnection conn,
+        int page = 1,
+        int num_objs = 20
+    )
     {
         List<BriefTeacherCard> cards = new();
         void func(SqlDataReader reader)
@@ -55,6 +59,7 @@ class Test2
             cards.Add(card);
         }
         Query q = new(Table.teacher);
+        q.offset(page, num_objs);
         q.select(conn, func);
         return cards;
     }
