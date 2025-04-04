@@ -13,7 +13,7 @@ struct BriefCourseCard
     public int num_ratings;
     public string fee;
 
-    static Query get_query_creator()
+    public static Query get_query_creator()
     {
         Query q = new Query(Table.course);
         q.join(Field.subject__id, Field.course__sbj_id);
