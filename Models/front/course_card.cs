@@ -13,7 +13,7 @@ struct BriefCourseCard
     public int num_ratings;
     public string fee;
 
-    public static List<BriefCourseCard> get_brief_course_cards(
+    public static List<BriefCourseCard> get_page(
         SqlConnection conn,
         int page = 1,
         int num_objs = 20
@@ -22,7 +22,7 @@ struct BriefCourseCard
         Stopwatch stopwatch = Stopwatch.StartNew();
         List<BriefCourseCard> cards = new();
 
-        bool get_card(SqlDataReader reader)
+        void get_card(SqlDataReader reader)
         {
             int pos = 0;
             int course_id = DataReader.get_int(reader, pos++);
@@ -56,7 +56,6 @@ struct BriefCourseCard
                 fee = IoUtils.conv_fee(fee),
             };
             cards.Add(card);
-            return true;
         }
 
         Query q = new Query(Table.course);

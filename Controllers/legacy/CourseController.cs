@@ -21,19 +21,18 @@ public class CourseController : Controller
         {
             page = int.Parse(page_);
         }
-        List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = BriefCourseCard.get_brief_course_cards(conn));
-        ViewBag.courses = courses;
+        BriefCoursePage course_page = new(page);
+        ViewBag.courses = course_page.courses;
         ViewBag.currentPage = page;
-        ViewBag.maxIndexPage = 10;
-        Console.WriteLine($"Fetched {courses.Count} courses");
+        ViewBag.maxIndexPage = course_page.total_num_pages;
+        Console.WriteLine($"Fetched {course_page.courses.Count} courses");
         return View();
     }
 
     public IActionResult Detail()
     {
         List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            Test2.get_brief_teacher_cards(conn)
+            BriefTeacherCard.get_page(conn)
         );
         ViewBag.teachers = teacher_dicts;
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");

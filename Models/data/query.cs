@@ -235,20 +235,14 @@ sealed class Query
         Database.exec_reader(conn, get_select_query(), f);
 
     // ------------------------------------------------------------------------
-    // INFO: Chạy reader function với truy vấn SELECT
-    public void select(SqlConnection conn, Database.BoolReaderFunction f) =>
-        Database.exec_reader(conn, get_select_query(), f);
-
-    // ------------------------------------------------------------------------
     public int count(SqlConnection conn)
     {
         int result = 0;
-        int pos = 0;
-        Database.exec_reader(
-            conn,
-            get_select_query(count_mode: true),
-            reader => result = DataReader.get_int(reader, pos)
-        );
+        void func(SqlDataReader reader)
+        {
+            result = DataReader.get_int(reader, 0);
+        }
+        Database.exec_reader(conn, get_select_query(count_mode: true), func);
         return result;
     }
 

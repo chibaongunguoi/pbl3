@@ -61,7 +61,6 @@ class Database
     // với dữ liệu đọc được. Ví dụ, một reader_function mỗi lần nhận id và name
     // mới thì sẽ thêm id và name đó vào một list kết quả.
     public delegate void ReaderFunction(SqlDataReader reader);
-    public delegate bool BoolReaderFunction(SqlDataReader reader);
 
     // ========================================================================
     // INFO: Tạo reader và truyền reader vào reader_function.
@@ -74,23 +73,6 @@ class Database
                 while (reader.Read())
                 {
                     f(reader);
-                }
-            }
-        }
-    }
-
-    // ========================================================================
-    // INFO: Tạo reader và truyền reader vào reader_function.
-    public static void exec_reader(SqlConnection conn, string query, BoolReaderFunction f)
-    {
-        using (SqlCommand command = new SqlCommand(query, conn))
-        {
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    if (!f(reader))
-                        break;
                 }
             }
         }

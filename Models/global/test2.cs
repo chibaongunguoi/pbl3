@@ -1,5 +1,3 @@
-using Microsoft.Data.SqlClient;
-
 class Test2
 {
     // ------------------------------------------------------------------------
@@ -32,35 +30,6 @@ class Test2
         q.where_(Field.teacher__id, id);
         teachers = Database.exec_list(conn => q.select<Teacher>(conn));
         return teachers;
-    }
-
-    // ------------------------------------------------------------------------
-    public static List<BriefTeacherCard> get_brief_teacher_cards(
-        SqlConnection conn,
-        int page = 1,
-        int num_objs = 20
-    )
-    {
-        List<BriefTeacherCard> cards = new();
-        void func(SqlDataReader reader)
-        {
-            int pos = 0;
-            Teacher teacher = DataReader.get_data_obj<Teacher>(reader, ref pos);
-            BriefTeacherCard card = new()
-            {
-                id = teacher.id,
-                name = teacher.name,
-                gender = IoUtils.conv(teacher.gender),
-                bday = IoUtils.conv(teacher.bday),
-                description = teacher.description,
-            };
-
-            cards.Add(card);
-        }
-        Query q = new(Table.teacher);
-        q.offset(page, num_objs);
-        q.select(conn, func);
-        return cards;
     }
 
     // ------------------------------------------------------------------------

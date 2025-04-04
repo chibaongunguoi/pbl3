@@ -16,7 +16,7 @@ public class TeacherController : Controller
     public IActionResult Index()
     {
         List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            Test2.get_brief_teacher_cards(conn)
+            BriefTeacherCard.get_page(conn)
         );
         ViewBag.teachers = teacher_dicts;
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
@@ -26,11 +26,11 @@ public class TeacherController : Controller
     public IActionResult Profile()
     {
         List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            Test2.get_brief_teacher_cards(conn)
+            BriefTeacherCard.get_page(conn)
         );
         ViewBag.teachers = teacher_dicts;
-         List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = Test2.get_brief_course_cards(conn,1));
+        List<BriefCourseCard> courses = new();
+        Database.exec(conn => courses = BriefCourseCard.get_page(conn, 1));
         ViewBag.courses = courses;
         return View();
     }

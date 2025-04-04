@@ -7,7 +7,8 @@ static class SemesterQuery
         Query q_2 = new(Table.request);
         q_2.where_(Field.request__semester_id, semester_id);
         q_2.where_(Field.request__state, (int)InfoRequestState.JOINED);
-        return q_2.count(conn);
+        List<Request> requests = q_2.select<Request>(conn);
+        return requests.Count;
     }
 }
 

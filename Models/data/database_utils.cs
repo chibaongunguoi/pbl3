@@ -13,6 +13,7 @@ class DatabaseUtils
             IntegratedSecurity = true,
             TrustServerCertificate = true,
             ConnectTimeout = 60,
+            MultipleActiveResultSets = true,
         };
         return builder.ConnectionString;
     }

@@ -16,7 +16,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            Test2.get_brief_teacher_cards(conn)
+            BriefTeacherCard.get_page(conn)
         );
         ViewBag.teachers = teacher_dicts;
         Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
