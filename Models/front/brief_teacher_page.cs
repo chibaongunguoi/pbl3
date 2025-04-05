@@ -4,7 +4,7 @@ struct BriefTeacherPage
 {
     public int current_page;
     public int total_num_pages;
-    public List<BriefCourseCard> teachers = new();
+    public List<BriefTeacherCard> teachers = new();
 
     public BriefTeacherPage(int current_page = 1, int num_displayed_objs = 20)
     {
@@ -16,7 +16,7 @@ struct BriefTeacherPage
 
             self.current_page = current_page;
             self.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
-            self.teachers = BriefCourseCard.get_page(conn, current_page, num_displayed_objs);
+            self.teachers = BriefTeacherCard.get_page(conn, current_page, num_displayed_objs);
         }
 
         Database.exec(func);

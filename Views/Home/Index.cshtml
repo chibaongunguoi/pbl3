@@ -14,7 +14,7 @@
                 @await Html.PartialAsync("_TeacherCardList", (object)ViewBag.teachers)
             </div>
 
-            @await Html.PartialAsync("_Pagination", 10)
+            @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
 
 
         </div>

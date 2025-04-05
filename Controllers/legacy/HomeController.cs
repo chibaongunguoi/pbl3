@@ -15,11 +15,16 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            BriefTeacherCard.get_page(conn)
-        );
-        ViewBag.teachers = teacher_dicts;
-        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
+        string? page_ = Request.Query["page"];
+        int page = 1;
+        if (page_ is not null)
+        {
+            page = int.Parse(page_);
+        }
+        BriefTeacherPage teacher_page = new(page);
+        ViewBag.teachers = teacher_page.teachers;
+        ViewBag.currentPage = page;
+        ViewBag.maxIndexPage = teacher_page.total_num_pages;
         return View();
     }
 

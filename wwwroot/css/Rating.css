@@ -169,3 +169,6 @@
   .rating-star-wrapper {
   font-size: 1.5rem !important;
 }
+.reviews-item:has(.pagination) {
+  padding: 10px 0px 1px 0px !important ;
+}
