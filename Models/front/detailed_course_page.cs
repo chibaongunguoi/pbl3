@@ -2,8 +2,8 @@ using Microsoft.Data.SqlClient;
 
 struct DetailedCoursePage
 {
-    BriefTeacherCard? teacher_card;
-    DetailedCourseCard? course_card;
+    public List<BriefTeacherCard> teachers = new();
+    public List<DetailedCourseCard> courses = new();
 
     public DetailedCoursePage(int course_id)
     {
@@ -18,8 +18,8 @@ struct DetailedCoursePage
 
             int tch_id = courses[0].tch_id;
 
-            self.course_card = DetailedCourseCard.get_by_id(conn, course_id);
-            self.teacher_card = BriefTeacherCard.get_by_id(conn, tch_id);
+            self.courses = DetailedCourseCard.get_by_id(conn, course_id);
+            self.teachers = BriefTeacherCard.get_by_id(conn, tch_id);
         }
 
         Database.exec(func);

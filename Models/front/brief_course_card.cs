@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 
 struct BriefCourseCard
 {
+    public int course_id;
     public string course_name;
     public string tch_name;
     public string subject;
@@ -59,6 +60,7 @@ struct BriefCourseCard
 
         BriefCourseCard card = new()
         {
+            course_id = course_id,
             course_name = course_name,
             tch_name = tch_name,
             subject = subject,

@@ -8,13 +8,9 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-          @{
-                var teachers1 = ViewBag.teachers as List<BriefTeacherCard>;
-                var firstteacher=teachers1[0];
-            } 
-              @await Html.PartialAsync("_TeacherCard", firstteacher)
-            
-                @await Html.PartialAsync("_SemesterCardDetail")
+              @await Html.PartialAsync("_TeacherCard", (object)ViewBag.teacher)
+
+              @await Html.PartialAsync("_SemesterCardDetail", (object)ViewBag.course)
             </div>         
         </div>
     </div>

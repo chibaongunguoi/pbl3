@@ -39,13 +39,13 @@ struct BriefTeacherCard
     }
 
     // ------------------------------------------------------------------------
-    public static BriefTeacherCard? get_by_id(SqlConnection conn, int tch_id)
+    public static List<BriefTeacherCard> get_by_id(SqlConnection conn, int tch_id)
     {
         List<BriefTeacherCard> cards = new();
         Query q = new(Table.teacher);
         q.where_(Field.teacher__id, tch_id);
         q.select(conn, reader => get_card(reader, ref cards));
-        return cards.Count == 0 ? null : cards[0];
+        return cards;
     }
 
     // ------------------------------------------------------------------------

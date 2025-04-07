@@ -62,12 +62,12 @@ struct DetailedCourseCard
         cards.Add(card);
     }
 
-    public static DetailedCourseCard? get_by_id(SqlConnection conn, int id)
+    public static List<DetailedCourseCard> get_by_id(SqlConnection conn, int id)
     {
         List<DetailedCourseCard> cards = new();
         Query q = get_query_creator();
         q.where_(Field.course__id, id);
         q.select(conn, reader => get_card(conn, reader, ref cards));
-        return cards.Count > 0 ? cards[0] : null;
+        return cards;
     }
 }

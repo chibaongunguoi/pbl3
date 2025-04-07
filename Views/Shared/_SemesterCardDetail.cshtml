@@ -1,8 +1,9 @@
+@model DetailedCourseCard
 
     <div class="card-product-li sem-li sem-detail">
         <div class="card-sem-li-content">
             <div class="card-sem-detail-wrapper">
-                <div class="card-sem-title">Khóa học vận dụng - vận dụng cao toán 12</div>
+                <div class="card-sem-title">@Model.course_name</div>
             </div>
             <div class="card-sem-desc">
                 <div class="card-content">
@@ -11,7 +12,7 @@
                             Gia sư:
                         </div>
                         <div class="card-sem-item-content">
-                            Nguyễn Chí Bảo
+                            @Model.tch_name
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -19,7 +20,7 @@
                             Môn học:
                         </div>
                         <div class="card-sem-item-content">
-                            Toán
+                            @Model.subject
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -27,7 +28,7 @@
                             Lớp:
                         </div>
                         <div class="card-sem-item-content">
-                            12
+                            @Model.grade
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -35,7 +36,7 @@
                             Thời gian:
                         </div>
                         <div class="card-sem-item-content">
-                            1/4/2021 - 1/5/2021
+                            @Model.dates
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -43,7 +44,7 @@
                             Sĩ số:
                         </div>
                         <div class="card-sem-item-content">
-                            34/50
+                            @Model.participants
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -51,7 +52,7 @@
                             Đánh giá:
                         </div>
                         <div class="card-sem-item-content">
-                            4.5/5 (100 lượt đánh giá)
+            @($"{Model.avg_rating}/5 ({@Model.num_ratings} lượt đánh giá)")
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -59,7 +60,7 @@
                             Học phí:
                         </div>
                         <div class="card-sem-item-content">
-                           <div class="sem-price">2.000.000</div> 
+                           <div class="sem-price">@Model.fee</div> 
                             <span class="currency">đ</span>
                         </div>
                     </div>
@@ -69,25 +70,8 @@
                         <div class="card-sem-item-label des-label">
                             Mô tả:
                         </div>
-                        <div class="card-sem-des-content sem-detail-des">
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                            <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                            <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                            <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>                    
+                        <div class="card-sem-des-content sem-detail-des" style="text-align: justify; width: 300px; overflow: hidden;">
+                          @Model.description
                         </div>
                     </div>
                 </div>

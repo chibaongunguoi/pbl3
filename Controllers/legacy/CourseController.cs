@@ -31,11 +31,15 @@ public class CourseController : Controller
 
     public IActionResult Detail()
     {
-        List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            BriefTeacherCard.get_page(conn)
-        );
-        ViewBag.teachers = teacher_dicts;
-        Console.WriteLine($"Fetched {teacher_dicts.Count} teachers");
+        string? course_id_ = Request.Query["course_id"];
+        int course_id = -1;
+        if (course_id_ is not null)
+        {
+          course_id = int.Parse(course_id_);
+        }
+        DetailedCoursePage course_page = new(course_id);
+        ViewBag.teacher = course_page.teachers[0];
+        ViewBag.course = course_page.courses[0];
         return View();
     }
 
