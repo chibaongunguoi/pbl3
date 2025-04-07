@@ -31,13 +31,13 @@ public class TeacherController : Controller
     public IActionResult Profile()
     {
         List<BriefTeacherCard> teacher_dicts = Database.exec_list(conn =>
-            BriefTeacherCard.get_page(conn,1)
+            BriefTeacherCard.get_page(conn, 1)
         );
         ViewBag.teachers = teacher_dicts;
-        List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = BriefCourseCard.get_page(conn, 1));
-        ViewBag.courses = courses;
-        ViewBag.currentPage=1;
+        // List<BriefCourseCard> courses = new();
+        // Database.exec(conn => courses = BriefCourseCard.get_page(conn, 1));
+        // ViewBag.courses = courses;
+        ViewBag.currentPage = 1;
         return View();
     }
 

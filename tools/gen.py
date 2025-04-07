@@ -226,7 +226,7 @@ for tch_id in teacher_ids:
         sbj_id = subject_dict[sbj]
 
         course_id = course_next_id
-        course_description = (
+        semester_description = (
             f"Khóa học {sbj} của giáo viên {name}. "
             + r"Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         )
@@ -235,7 +235,6 @@ for tch_id in teacher_ids:
             tch_id,
             sbj_id,
             f"Khóa học VDC {sbj}",
-            course_description,
         )
         courses.append(course)
         course_next_id += 1
@@ -266,6 +265,7 @@ for tch_id in teacher_ids:
                 finish_date_,
                 capacity,
                 fee,
+                semester_description,
                 2,
             ]
             semesters.append(semester)
@@ -277,7 +277,7 @@ for tch_id in teacher_ids:
                 if random.random() > 0.5:
                     continue
 
-                if len(joined_students) > capacity:
+                if len(joined_students) >= capacity:
                     break
 
                 # joined_day is around 20 days before start_date

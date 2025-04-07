@@ -1,13 +1,12 @@
 using Microsoft.Data.SqlClient;
 
-struct DetailedCoursePage
+class DetailedCoursePage
 {
     public List<BriefTeacherCard> teachers = new();
     public List<DetailedCourseCard> courses = new();
 
     public DetailedCoursePage(int course_id)
     {
-        var self = this;
         void func(SqlConnection conn)
         {
             Query q = new(Table.course);
@@ -18,11 +17,10 @@ struct DetailedCoursePage
 
             int tch_id = courses[0].tch_id;
 
-            self.courses = DetailedCourseCard.get_by_id(conn, course_id);
-            self.teachers = BriefTeacherCard.get_by_id(conn, tch_id);
+            this.courses = DetailedCourseCard.get_by_id(conn, course_id);
+            this.teachers = BriefTeacherCard.get_by_id(conn, tch_id);
         }
 
         Database.exec(func);
-        this = self;
     }
 }

@@ -8,7 +8,7 @@ struct BriefTeacherCard
     public string bday;
     public string description;
 
-    static void get_card(SqlDataReader reader, ref List<BriefTeacherCard> cards)
+    public static BriefTeacherCard get_card(SqlConnection conn, SqlDataReader reader)
     {
         int pos = 0;
         Teacher teacher = DataReader.get_data_obj<Teacher>(reader, ref pos);
@@ -21,7 +21,7 @@ struct BriefTeacherCard
             description = teacher.description,
         };
 
-        cards.Add(card);
+        return card;
     }
 
     // ------------------------------------------------------------------------
@@ -34,7 +34,7 @@ struct BriefTeacherCard
         List<BriefTeacherCard> cards = new();
         Query q = new(Table.teacher);
         q.offset(page, num_objs);
-        q.select(conn, reader => get_card(reader, ref cards));
+        q.select(conn, reader => cards.Add(get_card(conn, reader)));
         return cards;
     }
 
@@ -44,7 +44,7 @@ struct BriefTeacherCard
         List<BriefTeacherCard> cards = new();
         Query q = new(Table.teacher);
         q.where_(Field.teacher__id, tch_id);
-        q.select(conn, reader => get_card(reader, ref cards));
+        q.select(conn, reader => cards.Add(get_card(conn, reader)));
         return cards;
     }
 

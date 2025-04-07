@@ -16,7 +16,7 @@ struct DetailedCourseCard
     static Query get_query_creator()
     {
         Query q = BriefCourseCard.get_query_creator();
-        q.output(Field.course__description);
+        q.output(Field.semester__description);
         return q;
     }
 

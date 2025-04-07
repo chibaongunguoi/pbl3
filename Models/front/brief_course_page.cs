@@ -1,27 +1,77 @@
+using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 
-struct BriefCoursePage
+// Trang tổng quan các khóa học
+class BriefCoursePage
 {
     public int current_page;
     public int total_num_pages;
     public List<BriefCourseCard> courses = new();
 
-    public BriefCoursePage(int current_page = 1, int num_displayed_courses = 20)
+    public BriefCoursePage(
+        int current_page = 1,
+        int num_displayed_courses = 20,
+        string? search_by_course_name = null,
+        string? search_by_teacher_name = null,
+        string? search_by_subject_name = null
+    )
     {
-        var self = this;
-        void func(SqlConnection conn)
+        this.current_page = current_page;
+
+        Database.exec(
+            delegate(SqlConnection conn)
+            {
+                // Truy vấn tổng số khóa học
+                Query q = new(Table.course);
+                int num_total_courses = q.count(conn);
+                // Suy ra tổng số trang
+                this.total_num_pages = (int)
+                    Math.Ceiling((double)num_total_courses / num_displayed_courses);
+                // Danh sách khóa học
+                this.courses = BriefCoursePage.get_page(
+                    conn,
+                    current_page,
+                    num_displayed_courses,
+                    search_by_course_name,
+                    search_by_teacher_name,
+                    search_by_subject_name
+                );
+            }
+        );
+    }
+
+    public static List<BriefCourseCard> get_page(
+        SqlConnection conn,
+        int page = 1,
+        int num_objs = 20,
+        string? search_by_course_name = null,
+        string? search_by_teacher_name = null,
+        string? search_by_subject_name = null
+    )
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        List<BriefCourseCard> cards = new();
+        Query q = BriefCourseCard.get_query_creator();
+        if (search_by_course_name != null)
         {
-            Query q = new(Table.course);
-            int num_total_courses = q.count(conn);
-
-            self.current_page = current_page;
-            self.total_num_pages = (int)
-                Math.Ceiling((double)num_total_courses / num_displayed_courses);
-            self.courses = BriefCourseCard.get_page(conn, current_page, num_displayed_courses);
+            q.where_string_contains(Field.course__name, search_by_course_name);
         }
-
-        Database.exec(func);
-        this = self;
+        if (search_by_teacher_name != null)
+        {
+            q.where_string_contains(Field.teacher__name, search_by_teacher_name);
+        }
+        if (search_by_subject_name != null)
+        {
+            q.where_string_contains(Field.subject__name, search_by_subject_name);
+        }
+        q.offset(page, num_objs);
+        q.select(conn, reader => cards.Add(BriefCourseCard.get_card(conn, reader)));
+        stopwatch.Stop();
+        TimeSpan elapsed = stopwatch.Elapsed;
+        Console.WriteLine($"get_brief_course_cards");
+        Console.WriteLine($"Number of courses: {cards.Count}");
+        Console.WriteLine($"Time taken: {elapsed.TotalMilliseconds} ms");
+        return cards;
     }
 }
 
