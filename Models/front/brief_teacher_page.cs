@@ -16,9 +16,23 @@ class BriefTeacherPage
 
                 this.current_page = current_page;
                 this.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
-                this.teachers = BriefTeacherCard.get_page(conn, current_page, num_displayed_objs);
+                this.teachers = BriefTeacherPage.get_page(conn, current_page, num_displayed_objs);
             }
         );
+    }
+
+    // ------------------------------------------------------------------------
+    public static List<BriefTeacherCard> get_page(
+        SqlConnection conn,
+        int page = 1,
+        int num_objs = 20
+    )
+    {
+        List<BriefTeacherCard> cards = new();
+        Query q = new(Table.teacher);
+        q.offset(page, num_objs);
+        q.select(conn, reader => cards.Add(BriefTeacherCard.get_card(conn, reader)));
+        return cards;
     }
 }
 

@@ -25,20 +25,6 @@ struct BriefTeacherCard
     }
 
     // ------------------------------------------------------------------------
-    public static List<BriefTeacherCard> get_page(
-        SqlConnection conn,
-        int page = 1,
-        int num_objs = 20
-    )
-    {
-        List<BriefTeacherCard> cards = new();
-        Query q = new(Table.teacher);
-        q.offset(page, num_objs);
-        q.select(conn, reader => cards.Add(get_card(conn, reader)));
-        return cards;
-    }
-
-    // ------------------------------------------------------------------------
     public static List<BriefTeacherCard> get_by_id(SqlConnection conn, int tch_id)
     {
         List<BriefTeacherCard> cards = new();
