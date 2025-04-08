@@ -5,7 +5,7 @@
 <div id="content" class="container-fluid">
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-      <div class="m-0 table-title">Danh sách khóa học của tôi</div>
+      <div class="m-0 table-title">Danh sách học viên đang chờ xác nhận</div>
       <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
           <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
@@ -21,11 +21,10 @@
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Tên học viên</th>
+              <th scope="col">Ngày sinh</th>
               <th scope="col">Tên khóa học</th>
-              <th scope="col">Đánh giá</th>
-              <th scope="col">Tình trạng</th>
-              <th scope="col">Môn học</th>
-              <th scope="col">Lớp</th>
+              <th scope="col">Thời gian gửi</th>
               <th scope="col">Tác vụ</th>
             </tr>
           </thead>
@@ -34,17 +33,16 @@
               <td scope="row" class="table-index">1</td>
               <td>
                 <a class="course-table-name"href='/Course/Detail?course_id=1' target="_blank">
-                VDC Hóa học 8
+                Nguyễn Chí Bảo
                 </a>
               </td>
-              <td>4.5</td>
-              <td>Đang diễn ra</td>
-              <td>Hóa học 8</td>
-              <td>8</td>
+              <td>05/09/2005</td>
+              <td>VDC Hóa học 8</td>
+              <td>8/4/2025 10:04:30</td>
               <td>
                 <div class="button-group-wrapper course-manager">
-                <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem các kì học </button>
-                <button class="card-btn course-detail">Xem đánh giá</button>
+                <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Đồng ý </button>
+                <button class="card-btn choose">Từ chối</button>
             </div>
               </td>
             </tr>
