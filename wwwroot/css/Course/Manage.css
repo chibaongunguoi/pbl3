@@ -1,0 +1,113 @@
+.pt-add-content-wrapper {
+  background-color: white;
+  width: 90%;
+  /* margin: 5px; */
+}
+.pt-add-content {
+  padding: 20px;
+}
+.pt-add-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.pt-add-form-item {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  position: relative;
+}
+.required-icon {
+  display: inline-block;
+  color: red;
+}
+.pt-add-label {
+  width: 18%;
+  text-align: right;
+  margin-right: 10px;
+  padding-top: 8px;
+  vertical-align: top;
+}
+.pt-add-input-wrapper {
+  width: 80%;
+  position: relative;
+}
+.pt-add-class-wrapper {
+  width: 20%;
+}
+.pt-add-subject-wrapper {
+  width: 20%;
+}
+.pt-add-form-input {
+  width: 100%;
+  border: 1px solid #cbced5;
+  border-radius: 3px;
+  padding: 8px;
+}
+.pt-price-input {
+  width: 50%;
+}
+.pt-add-error {
+  margin-top: 4px;
+  margin-left: 19%;
+}
+.choose-file-btn {
+  width: 100px;
+  height: 80px;
+  padding-top: 16px;
+  vertical-align: bottom;
+  text-align: center;
+  font-weight: bold;
+  color: #ee4d2d;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.thumbnail-img {
+  padding: 0px;
+}
+.custom-file-input {
+  display: none;
+}
+.pt-name-input {
+  padding-right: 70px;
+}
+.pt-add-price-input {
+  padding-left: 30px;
+}
+.detail-input {
+  height: 250px;
+}
+.pt-add-btn-group {
+  display: flex;
+  justify-content: flex-end;
+}
+.hl-btn {
+  display: inline-block;
+  text-align: center;
+  border: none;
+  background: #ee4d2d;
+  color: #fff;
+  padding: 0.375rem 0.75rem;
+  height: 100%;
+  font-size: 1rem;
+}
+.text-count {
+  border-left: 1px solid #cbced5;
+  padding-left: 5px;
+  position: absolute;
+  right: 1.5%;
+  transform: translateY(-50%);
+  top: 50%;
+  color: gray;
+}
+.money-detail {
+  border-right: 1px solid #cbced5;
+  padding-left: 5px;
+  padding-right: 5px;
+  position: absolute;
+  left: 1%;
+  transform: translateY(-50%);
+  top: 50%;
+  color: gray;
+}

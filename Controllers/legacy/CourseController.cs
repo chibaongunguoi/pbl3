@@ -46,6 +46,10 @@ public class CourseController : Controller
     {
         return View();
     }
+     public IActionResult Add()
+    {
+        return View();
+    }
 
     public IActionResult Privacy()
     {

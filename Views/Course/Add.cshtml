@@ -1,0 +1,112 @@
+@{
+    Layout = "_ManageLayout"; // Sử dụng layout admin
+
+}
+<div class="pt-add-content-wrapper">
+    <div class="pt-add-content">
+        <div class="pt-add-title">Thông tin khóa học</div>
+        <div class="pt-add-form">
+            <form id="pt-add" enctype="multipart/form-data" method="POST">
+            
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="">
+                            <div class="required-icon">*</div>Tên khóa học
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-name-input" type="text" name="name" placeholder="Nhập vào" maxlength="150">
+                        <div class="text-count">0/150</div>
+                    </div>
+                </div>
+
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="cat">
+                            <div class="required-icon">*</div>Môn học
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                        <select class=" input cb"  name="subject">
+                            <option value="option1">Chọn môn học</option>
+                            <option value="option1">Tên khóa học</option>
+                            <option value="option2">Tên gia sư</option>
+                            <option value="option2">Tên môn học</option>
+                        </select>
+                    </div>
+                     <div class="pt-add-label">
+                        <label for="cat">
+                            <div class="required-icon">*</div>Lớp
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-class-wrapper">
+                        <select class=" input cb"  name="grade">
+                            <option value="option1">Chọn môn học</option>
+                            <option value="option1">Tên khóa học</option>
+                            <option value="option2">Tên gia sư</option>
+                            <option value="option2">Tên môn học</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="cat">
+                            <div class="required-icon">*</div>Ngày bắt đầu
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                       <input class="input cb" type="date" name="start_date" >
+                    </div>
+                     <div class="pt-add-label">
+                        <label for="cat">
+                            <div class="required-icon">*</div>Ngày kết thúc
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-class-wrapper">
+                        <input class="input cb" type="date" name="finish_date" >
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="">
+                            <div class="required-icon">*</div>Số học viên đối đa
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-name-input" type="number" name="capacity" placeholder="Nhập vào" maxlength="150" value="2">
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="">
+                            <div class="required-icon">*</div>Học phí
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-add-price-input" type="number" name="fee" placeholder="Nhập vào" maxlength="150" value="">
+                        <div class="money-detail">₫</div>
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="description">
+                            <div class="required-icon">*</div>Mô tả khóa học
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <textarea class="pt-add-form-input detail-input" name="description" id="description"></textarea>
+                    </div>
+                </div>
+
+                
+
+                
+
+                <div class="pt-add-btn-group">
+                    <button class="hl-btn"><span>Xác nhận</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

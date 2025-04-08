@@ -66,12 +66,13 @@ a {
 }
 
 #content {
-  padding-top: 20px;
+  padding-top: 15px;
+  padding-left: 0px;
   padding-bottom: 20px;
 }
 
 #content .card-header {
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .nav-fixed .topnav {
