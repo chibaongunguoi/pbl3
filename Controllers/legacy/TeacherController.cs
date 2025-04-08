@@ -22,7 +22,7 @@ public class TeacherController : Controller
             page = int.Parse(page_);
         }
         BriefTeacherPage teacher_page = new(page);
-        ViewBag.teacher = teacher_page.teachers[0];
+        ViewBag.teachers = teacher_page.teachers;
         ViewBag.currentPage = page;
         ViewBag.maxIndexPage = teacher_page.total_num_pages;
         return View();
