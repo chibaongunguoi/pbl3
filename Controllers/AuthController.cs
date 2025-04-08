@@ -69,7 +69,7 @@ public class AuthController : BaseController
 
         HttpContext.Session.SetString("userName", user.name);
         HttpContext.Session.SetInt32("userId", user.id);
-        return View("user");
+        return Redirect("/");
     }
 
     public IActionResult Logout()

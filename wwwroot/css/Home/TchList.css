@@ -41,7 +41,6 @@
   border-color: rgba(238, 77, 45, 1);
   transform: translate(0px, -1px) rotate(0) skewX(0) skewY(0) scaleX(1)
     scaleY(1);
-  z-index: 1;
   transition-duration: 0.1s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
   border-width: 1px;

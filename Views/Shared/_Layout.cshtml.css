@@ -11,7 +11,17 @@ ul {
 a {
   color: #0077cc;
 }
-
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  /* transform: translateZ(0); */
+}
+.content-wrapper {
+  margin-top: 6rem;
+}
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -47,6 +57,7 @@ button.accept-policy {
   font-size: 1rem;
   padding: 0.25rem 0;
   border-top: 2px solid lightslategray;
+  position: relative;
 }
 .about-us-wrapper {
   float: left;
@@ -150,6 +161,10 @@ button.accept-policy {
   position: relative;
   top: -2px;
 }
+.navbar {
+  padding: 5px 0px;
+  z-index: 1;
+}
 .navbar-link-wrapper {
   cursor: pointer;
   padding: 0rem 0.625rem;
@@ -199,6 +214,8 @@ button.accept-policy {
   position: relative;
   top: 0 !important;
   width: 100%;
+  z-index: 1;
+  /* position: fixed; */
 }
 .container {
   width: 100%;
@@ -225,7 +242,7 @@ button.accept-policy {
 #fieldmegamenu-main ul li a[data-v-4133fbdc] {
   display: block;
   padding: 0 15px;
-  line-height: 50px;
+  line-height: 42px;
   color: #fff;
 }
 .active {

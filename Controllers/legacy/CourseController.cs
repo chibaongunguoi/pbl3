@@ -42,6 +42,10 @@ public class CourseController : Controller
         ViewBag.course = course_page.courses[0];
         return View();
     }
+    public IActionResult Manage()
+    {
+        return View();
+    }
 
     public IActionResult Privacy()
     {
