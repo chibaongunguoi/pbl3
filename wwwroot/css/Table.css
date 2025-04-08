@@ -1,0 +1,10 @@
+.course-manager {
+  width: 70%;
+  flex-wrap: wrap;
+}
+.course-manager .card-btn {
+  margin-bottom: 5px;
+}
+.table-index {
+  font-weight: bold;
+}
