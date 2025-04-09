@@ -36,9 +36,15 @@ public class AuthController : BaseController
         Console.WriteLine($"Username: {username}");
         Console.WriteLine($"Password: {password}");
 
-        List<User> query_result = new();
-        query_result = Database.exec_list<User>(conn =>
-            AccountQuery<User>.get_account_by_username_password(conn, username, password)
+        List<Account> query_result = new();
+        Table table = Table.none;
+        Database.exec(conn =>
+            table = AccountQuery<Account>.get_account_by_username_password(
+                conn,
+                username,
+                password,
+                out query_result
+            )
         );
 
         if (query_result.Count == 0)
@@ -46,13 +52,12 @@ public class AuthController : BaseController
             return Redirect("Login");
         }
 
-        User user = query_result[0];
-        ViewBag.oneuser =
-            $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.name}.";
-
-        SessionManager.log_in(HttpContext.Session, user.id);
-        HttpContext.Session.SetString("userName", user.name);
-        HttpContext.Session.SetInt32("userId", user.id);
+        int id = query_result[0].id;
+        // ViewBag.oneuser =
+        //     $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.name}.";
+        //
+        SessionManager.log_in(HttpContext.Session, table, id);
+        HttpContext.Session.SetInt32("userId", id);
         return Redirect("/");
     }
 

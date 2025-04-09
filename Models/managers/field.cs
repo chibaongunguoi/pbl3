@@ -1,5 +1,6 @@
 enum Table
 {
+    none,
     admin,
     student,
     teacher,
