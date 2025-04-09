@@ -76,7 +76,6 @@ public class CourseController : Controller
         AddCourseFormLog log = form.execute(tch_id ?? 0);
         if (!log.success)
             return RedirectToAction("Add");
-
         return RedirectToAction("Index");
     }
 
