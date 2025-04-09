@@ -59,14 +59,14 @@ public class CourseController : Controller
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
-        int? role = HttpContext.Session.GetInt32(SessionKey.role);
+        string? role = HttpContext.Session.GetString(SessionKey.user_role);
         int? tch_id = null;
         switch (role)
         {
-            case (int)SessionRole.teacher:
+            case SessionRole.teacher:
                 tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
                 break;
-            case (int)SessionRole.admin:
+            case SessionRole.admin:
                 // TODO:
                 tch_id = 2001;
                 break;

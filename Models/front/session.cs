@@ -1,16 +1,16 @@
 using Microsoft.Data.SqlClient;
 
-enum SessionRole
+static class SessionRole
 {
-    none,
-    student,
-    teacher,
-    admin,
+    public const string none = "",
+        student = "student",
+        teacher = "teacher",
+        admin = "admin";
 }
 
 static class SessionKey
 {
-    public static string role = "role",
+    public const string user_role = "user_role",
         user_id = "user_id",
         user_name = "user_name";
 }
@@ -22,15 +22,15 @@ static class SessionManager
         switch (table)
         {
             case Table.student:
-                session.SetInt32(SessionKey.role, (int)SessionRole.student);
+                session.SetString(SessionKey.user_role, SessionRole.student);
                 break;
 
             case Table.teacher:
-                session.SetInt32(SessionKey.role, (int)SessionRole.teacher);
+                session.SetString(SessionKey.user_role, SessionRole.teacher);
                 break;
 
             case Table.admin:
-                session.SetInt32(SessionKey.role, (int)SessionRole.admin);
+                session.SetString(SessionKey.user_role, SessionRole.admin);
                 break;
         }
 
@@ -55,6 +55,6 @@ static class SessionManager
     public static void log_out(ISession session)
     {
         session.Remove(SessionKey.user_id);
-        session.Remove(SessionKey.role);
+        session.Remove(SessionKey.user_role);
     }
 }
