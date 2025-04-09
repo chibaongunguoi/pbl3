@@ -71,7 +71,7 @@
                             <a href="/Auth/Login" class="nav-link text-dark">Đăng nhập</a>
                         </div>
                         <div class="nav-item">
-                            <a href="/Auth/Login" class="nav-link text-dark">Đăng ký</a>
+                            <a href="/Auth/SignUp" class="nav-link text-dark">Đăng ký</a>
                         </div>   
                     }
                     else if (user_role == SessionRole.student || user_role == SessionRole.teacher) {
@@ -253,12 +253,33 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         let userInfo = document.getElementById("user-info");
-        if (userInfo) {
-        userInfo.addEventListener("click", function () {
-        let dropdown = document.getElementById("user-dropdown");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        if (userInfo) 
+        {
+                userInfo.addEventListener("click", function () {
+                let dropdown = document.getElementById("user-dropdown");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";      
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+        const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
+        const eyeClose = document.querySelector(".eye-close");
+        const eyeOpen = document.querySelector(".eye-open");
+        const passwordInput = document.querySelector("input[name='password']");
+        eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
+
+    eyeIconWrapper.addEventListener("click", function () {
+        if (eyeClose.style.display === "none") {
+            eyeClose.style.display = "block";
+            eyeOpen.style.display = "none";
+            passwordInput.type = "password";
+        } else {
+            eyeClose.style.display = "none";
+            eyeOpen.style.display = "block";
+            passwordInput.type = "text";
+        }
     });
-}
+});
+
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
