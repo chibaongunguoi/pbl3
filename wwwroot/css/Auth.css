@@ -1,122 +1,121 @@
-
-.auth-content-wrapper{
-    background-color: white;
+.auth-content-wrapper {
+  background-color: white;
 }
-.auth-wrapper{
-    width: 444px;
-    min-height: 445px;
-    padding: 70px 0;
-    text-align: center;
+.auth-wrapper {
+  width: 444px !important;
+  min-height: 445px;
+  padding: 70px 0;
+  text-align: center;
 }
-.auth-content{
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-    min-height: 300px;
-    position: relative;
-    border: 2px solid black;
-    padding: 0px 20px;
+.auth-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  min-height: 300px;
+  position: relative;
+  border: 2px solid black;
+  padding: 0px 20px;
 }
-.auth-title{
-    color: #2e3346;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 26px;
-    text-transform: uppercase;
+.auth-title {
+  color: #2e3346;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 26px;
+  text-transform: uppercase;
 }
-.auth-form-wrapper{
-    padding: 0 50px;
-    width: 100%;
+.auth-form-wrapper {
+  padding: 0 50px;
+  width: 100%;
 }
-.auth-input-wrapper{
-    max-height: 100%;
-    max-width: 100%;
-    font-size: 17px;
-    width: 100%;
-    position: relative;
-    /* text-transform: capitalize; */
+.auth-input-wrapper {
+  max-height: 100%;
+  max-width: 100%;
+  font-size: 17px;
+  width: 100%;
+  position: relative;
+  /* text-transform: capitalize; */
 }
-.auth-input{
-    background: 0 0;
-    border: 1px solid #cbced5;
-    border-radius: 6px;
-    box-sizing: border-box;
-    display: block;
-    flex: auto;
-    height: 48px;
-    line-height: 18px;
-    outline: 0;
-    padding: 0 18px;
-    resize: none;
-    max-height: 100%;
-    max-width: 100%;
-    width: 100%;
-    margin-top: 26px;
+.auth-input {
+  background: 0 0;
+  border: 1px solid #cbced5;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: block;
+  flex: auto;
+  height: 48px;
+  line-height: 18px;
+  outline: 0;
+  padding: 0 18px;
+  resize: none;
+  max-height: 100%;
+  max-width: 100%;
+  width: 100%;
+  margin-top: 26px;
 }
-.auth-forget-password-wrapper{
-display: flex;
-justify-content: flex-end;
+.auth-forget-password-wrapper {
+  display: flex;
+  justify-content: flex-end;
 }
-.auth-forget-password{
-    color: #1e71ff;
-    margin-top: 6px;
-    text-align: right;
+.auth-forget-password {
+  color: #1e71ff;
+  margin-top: 6px;
+  text-align: right;
 }
-.auth-button{
-    margin-top: 30px;
-    text-align: center;
-    padding: 2px 28px !important;
-    height: 30px;
-    line-height: 14px;
-    font-size: 16px;
+.auth-button {
+  margin-top: 30px;
+  text-align: center;
+  padding: 2px 28px !important;
+  height: 30px;
+  line-height: 14px;
+  font-size: 16px;
 }
-.auth-button:hover{
-    opacity: .9;
+.auth-button:hover {
+  opacity: 0.9;
 }
-.auth-other-way{
-    color: #858b9c;
-    margin-top: 12px;
+.auth-other-way {
+  color: #858b9c;
+  margin-top: 12px;
 }
-.auth-other-link{
-    color: #1e71ff;
+.auth-other-link {
+  color: #1e71ff;
 }
-.eye-icon-wrapper{
-    cursor: pointer;
-    color: #858b9c;
-    width: 24px;
-    height: 24px;
-    fill: currentcolor;
-    stroke: currentcolor;
-    stroke-width: 2.54;
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    user-select: none;
+.eye-icon-wrapper {
+  cursor: pointer;
+  color: #858b9c;
+  width: 24px;
+  height: 24px;
+  fill: currentcolor;
+  stroke: currentcolor;
+  stroke-width: 2.54;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  user-select: none;
 }
-.email-verify-noti{
-    font-size: 16px;
-    margin-top: 10px;
+.email-verify-noti {
+  font-size: 16px;
+  margin-top: 10px;
 }
-.email-title{
-    font-weight: 600;
+.email-title {
+  font-weight: 600;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; 
+  -webkit-appearance: none;
+  margin: 0;
 }
-.resend-wrapper{
-    cursor: pointer;
-    color: #858b9c;
-    /* width: 24px; */
-    height: 24px;
-    fill: currentcolor;
-    stroke: currentcolor;
-    stroke-width: 2.54;
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
+.resend-wrapper {
+  cursor: pointer;
+  color: #858b9c;
+  /* width: 24px; */
+  height: 24px;
+  fill: currentcolor;
+  stroke: currentcolor;
+  stroke-width: 2.54;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
 }
