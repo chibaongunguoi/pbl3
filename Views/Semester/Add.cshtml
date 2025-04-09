@@ -4,46 +4,22 @@
 }
 <div class="pt-add-content-wrapper">
     <div class="pt-add-content">
-        <div class="pt-add-title">Thông tin khóa học</div>
+        <div class="pt-add-title">Thông tin kì học</div>
         <div class="pt-add-form">
             <form id="pt-add" enctype="multipart/form-data" method="POST">
             
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label for="">
-                            <div class="required-icon">*</div>Tên khóa học
+                            <div class="required-icon">*</div>Khóa học
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input" type="text" name="name" placeholder="Nhập vào" maxlength="150">
-                    </div>
-                </div>
-
-                <div class="pt-add-form-item">
-                    <div class="pt-add-label">
-                        <label for="cat">
-                            <div class="required-icon">*</div>Môn học
-                        </label>
-                    </div>
-                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-                        <select class=" input cb"  name="subject">
-                            <option value="option1">Chọn môn học</option>
-                            <option value="option1">Tên khóa học</option>
-                            <option value="option2">Tên gia sư</option>
-                            <option value="option3">Tên môn học</option>
-                        </select>
-                    </div>
-                     <div class="pt-add-label">
-                        <label for="cat">
-                            <div class="required-icon">*</div>Lớp
-                        </label>
-                    </div>
-                     <div class="pt-add-input-wrapper pt-add-class-wrapper">
-                        <select class=" input cb"  name="grade">
-                            <option value="option1">Chọn môn học</option>
-                            <option value="option1">Tên khóa học</option>
-                            <option value="option2">Tên gia sư</option>
-                            <option value="option3">Tên môn học</option>
+                        <select class="pt-add-form-input pt-course-input" id="comboBox" name="comboBox">
+                            <option value="0" >Chọn khóa học đã có sẵn</option>
+                            <option value="1">Khóa học 1</option>
+                            <option value="2">Khóa học 2</option>
+                            <option value="3">Khóa học 3</option>
                         </select>
                     </div>
                 </div>
@@ -97,11 +73,6 @@
                         <textarea class="pt-add-form-input detail-input" name="description" id="description"></textarea>
                     </div>
                 </div>
-
-                
-
-                
-
                 <div class="pt-add-btn-group">
                     <button class="hl-btn"><span>Xác nhận</span></button>
                 </div>
