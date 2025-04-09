@@ -4,6 +4,9 @@ using Microsoft.Data.SqlClient;
 class Database
 {
     // ========================================================================
+    static int query_counter = 0;
+
+    // ========================================================================
     // INFO: Delegate cho các hàm nhận conn làm tham số.
     public delegate void ConnFunction(SqlConnection conn);
     public delegate List<T> ConnFunction<T>(SqlConnection conn);
@@ -41,6 +44,8 @@ class Database
     // Chạy non_query (query kiểu hành động, không trả về dữ liệu)
     public static void exec_non_query(SqlConnection conn, string query)
     {
+        int counter = ++query_counter;
+        Console.WriteLine($"[START] query #{counter}: {query[..Math.Min(100, query.Length)]}");
         // Console.WriteLine(query);
         Stopwatch stopwatch = Stopwatch.StartNew();
         using (SqlCommand command = new SqlCommand(query, conn))
@@ -49,8 +54,9 @@ class Database
         }
         stopwatch.Stop();
         TimeSpan elapsed = stopwatch.Elapsed;
-        Console.WriteLine($"query: {query[..Math.Min(100, query.Length)]}");
-        Console.WriteLine($"exec_non_query - Time taken: {elapsed.TotalMilliseconds} ms");
+        Console.WriteLine(
+            $"[FINISH] query #{counter} - Time taken: {elapsed.TotalMilliseconds} ms"
+        );
     }
 
     // ========================================================================
@@ -66,6 +72,9 @@ class Database
     // INFO: Tạo reader và truyền reader vào reader_function.
     public static void exec_reader(SqlConnection conn, string query, ReaderFunction f)
     {
+        int counter = ++query_counter;
+        Console.WriteLine($"[START] query #{counter}: {query}");
+        Stopwatch stopwatch = Stopwatch.StartNew();
         using (SqlCommand command = new SqlCommand(query, conn))
         {
             using (SqlDataReader reader = command.ExecuteReader())
@@ -76,6 +85,11 @@ class Database
                 }
             }
         }
+        stopwatch.Stop();
+        TimeSpan elapsed = stopwatch.Elapsed;
+        Console.WriteLine(
+            $"[FINISH] query #{counter} - Time taken: {elapsed.TotalMilliseconds} ms"
+        );
     }
 
     // ========================================================================

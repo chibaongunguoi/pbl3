@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using REPO.Models;
 
 namespace REPO.Controllers;
@@ -35,24 +36,54 @@ public class CourseController : Controller
         int course_id = -1;
         if (course_id_ is not null)
         {
-          course_id = int.Parse(course_id_);
+            course_id = int.Parse(course_id_);
         }
         DetailedCoursePage course_page = new(course_id);
+        if (course_page.invalid)
+            return Redirect("Index");
         ViewBag.teacher = course_page.teachers[0];
         ViewBag.course = course_page.courses[0];
         return View();
     }
+
     public IActionResult Manage()
     {
         return View();
     }
-     public IActionResult Add()
+
+    public IActionResult Add()
     {
         return View();
     }
 
+    [HttpPost]
+    public IActionResult add_course(AddCourseForm form)
+    {
+        string? role = HttpContext.Session.GetString(SessionKey.user_role);
+        int? tch_id = null;
+        switch (role)
+        {
+            case SessionRole.teacher:
+                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+                break;
+            case SessionRole.admin:
+                // TODO:
+                tch_id = 2001;
+                break;
+        }
+        if (tch_id is null)
+            return RedirectToAction("Add");
+        AddCourseFormLog log = form.execute(tch_id ?? 0);
+        if (!log.success)
+            return RedirectToAction("Add");
+
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Privacy()
     {
+        StringValues course_name_;
+        Request.Form.TryGetValue("course_name", out course_name_);
         return View();
     }
 

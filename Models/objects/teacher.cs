@@ -7,11 +7,11 @@ sealed class Teacher : User
     public string description = "";
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos = 0)
+    public override int fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, pos);
-        thumbnail = DataReader.get_string(reader, pos++);
-        description = DataReader.get_string(reader, pos++);
+        pos = base.fetch_data(reader, ref pos);
+        thumbnail = DataReader.get_string(reader, ref pos);
+        description = DataReader.get_string(reader, ref pos);
         return pos;
     }
 

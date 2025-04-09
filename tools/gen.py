@@ -170,7 +170,8 @@ with open("tools/subject.csv", encoding="utf-8") as f:
         tup = line.strip().split(",")
         subjects.append((subject_next_id, *tup[:3]))
         sbj_name = tup[0]
-        subject_dict[sbj_name] = subject_next_id
+        grade = tup[1]
+        subject_dict[sbj_name + " " + grade] = subject_next_id
         subject_infos[subject_next_id] = tup
         subject_next_id += 1
 

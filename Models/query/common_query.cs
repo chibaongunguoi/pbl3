@@ -21,15 +21,14 @@ class CommonQuery
     public static void insert_record_with_id<T>(SqlConnection conn, T obj, Table table)
         where T : IdObj, new()
     {
-        int next_id = 0;
-        next_id = IdCounterQuery.increment(conn, table);
-        if (IdCounterQuery.s_last_state == IdCounterQuery.State.id_hits_limit)
-            return;
-
-        obj.id = next_id;
-
-        Query q = new(table);
-        q.insert<T>(conn, obj);
+        // int next_id = IdCounterQuery.increment(conn, table);
+        // if (IdCounterQuery.s_last_state == IdCounterQuery.State.id_hits_limit)
+        //     return;
+        //
+        // obj.id = next_id;
+        //
+        // Query q = new(table);
+        // q.insert<T>(conn, obj);
     }
 
     // ========================================================================

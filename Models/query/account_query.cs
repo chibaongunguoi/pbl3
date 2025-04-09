@@ -4,11 +4,7 @@ sealed class AccountQuery<T>
     where T : DataObj, new()
 {
     // ========================================================================
-    private static Table s_latest_table;
     public delegate List<T> QueryFunction(Table table);
-
-    // ------------------------------------------------------------------------
-    public static Table get_latest_table() => s_latest_table;
 
     // ------------------------------------------------------------------------
     // INFO: Tìm kiếm trên tất cả các bảng tài khoản.
@@ -27,20 +23,21 @@ sealed class AccountQuery<T>
     // ------------------------------------------------------------------------
     // INFO: Tìm kiếm trên tất cả các bảng tài khoản.
     // Khi có kết quả thì dừng việc tìm kiếm.
-    public static List<T> any(QueryFunction f)
+    public static Table any(QueryFunction f, out List<T> result)
     {
-        List<T> result = new();
+        result = new();
+        Table latest_table = Table.none;
         foreach (var table in TableMngr.get_account_tables())
         {
             result = f(table);
             if (result.Count > 0)
             {
-                s_latest_table = table;
+                latest_table = table;
                 break;
             }
         }
 
-        return result;
+        return latest_table;
     }
 
     // ========================================================================
@@ -50,32 +47,34 @@ sealed class AccountQuery<T>
     }
 
     // ========================================================================
-    public static List<T> get_account_by_id(SqlConnection conn, int id, Table? table = null)
+    public static Table get_account_by_id(SqlConnection conn, int id, out List<T> result)
     {
-        if (!table.HasValue)
-        {
-            return any(table => CommonQuery<T>.get_record_by_id(conn, id, table));
-        }
-
-        return CommonQuery<T>.get_record_by_id(conn, id, table.Value);
+        return any(table => CommonQuery<T>.get_record_by_id(conn, id, table), out result);
     }
 
     // ------------------------------------------------------------------------
-    public static List<T> get_account_by_id_password(
+    public static Table get_account_by_username_password(
         SqlConnection conn,
-        int id,
+        string username,
         string password,
+        out List<T> result,
         Table? table = null
     )
     {
+        List<T> func(Table table)
+        {
+            var q = new Query(table);
+            q.where_(QueryUtils.cat(table, FieldSuffix.username), username);
+            q.where_(QueryUtils.cat(table, FieldSuffix.password), password);
+            return q.select<T>(conn);
+        }
         if (!table.HasValue)
         {
-            return any(table => get_account_by_id_password(conn, id, password, table));
+            return any(table => func(table), out result);
         }
-        var q = new Query(table.Value);
-        q.where_(QueryUtils.cat(table.Value, FieldSuffix.id), id);
-        q.where_(QueryUtils.cat(table.Value, FieldSuffix.password), password);
-        return q.select<T>(conn);
+
+        result = func(table.Value);
+        return Table.none;
     }
 
     // ========================================================================

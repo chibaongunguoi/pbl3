@@ -27,24 +27,24 @@ struct DetailedCourseCard
     )
     {
         int pos = 0;
-        int course_id = DataReader.get_int(reader, pos++);
+        int course_id = DataReader.get_int(reader, ref pos);
 
-        int semester_id = DataReader.get_int(reader, pos++);
+        int semester_id = DataReader.get_int(reader, ref pos);
         int num_participants = SemesterQuery.get_num_of_joined_requests(conn, semester_id);
 
         double avg_rating;
         int num_ratings;
         CourseQuery.get_avg_rating(conn, course_id, out avg_rating, out num_ratings);
 
-        var course_name = DataReader.get_string(reader, pos++);
-        var tch_name = DataReader.get_string(reader, pos++);
-        var subject = DataReader.get_string(reader, pos++);
-        var grade = DataReader.get_int(reader, pos++);
-        var start_date = DataReader.get_data_obj<InfoDate>(reader, ref pos);
-        var finish_date = DataReader.get_data_obj<InfoDate>(reader, ref pos);
-        var capacity = DataReader.get_int(reader, pos++);
-        var fee = DataReader.get_int(reader, pos++);
-        var description = DataReader.get_string(reader, pos++);
+        var course_name = DataReader.get_string(reader, ref pos);
+        var tch_name = DataReader.get_string(reader, ref pos);
+        var subject = DataReader.get_string(reader, ref pos);
+        var grade = DataReader.get_int(reader, ref pos);
+        var start_date = DataReader.get_date(reader, ref pos);
+        var finish_date = DataReader.get_date(reader, ref pos);
+        var capacity = DataReader.get_int(reader, ref pos);
+        var fee = DataReader.get_int(reader, ref pos);
+        var description = DataReader.get_string(reader, ref pos);
 
         DetailedCourseCard card = new()
         {

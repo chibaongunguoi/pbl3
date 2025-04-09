@@ -64,6 +64,7 @@ class BriefCoursePage
         {
             q.where_string_contains(Field.subject__name, search_by_subject_name);
         }
+        q.order_by(Field.semester__id, desc: true);
         q.offset(page, num_objs);
         q.select(conn, reader => cards.Add(BriefCourseCard.get_card(conn, reader)));
         stopwatch.Stop();
