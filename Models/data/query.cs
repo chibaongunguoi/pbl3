@@ -8,11 +8,11 @@ sealed class Query
 {
     // ========================================================================
     private Table table = new();
-    private List<string> output_fields = new List<string>();
-    private List<string> conditions = new List<string>();
-    private List<string> inner_joins = new List<string>();
-    private List<string> orders = new List<string>();
-    private List<string> set_fields = new List<string>();
+    private List<string> output_fields = new();
+    private List<string> conditions = new();
+    private List<string> inner_joins = new();
+    private List<string> order_bys = new();
+    private List<string> set_fields = new();
     private string? offset_string = null;
 
     // ========================================================================
@@ -33,6 +33,12 @@ sealed class Query
     public void offset(int page, int num_objs)
     {
         offset_string = $"OFFSET {(page - 1) * num_objs} ROWS FETCH NEXT {num_objs} ROWS ONLY";
+    }
+
+    // ========================================================================
+    public void remove_offset()
+    {
+        offset_string = null;
     }
 
     // ========================================================================
@@ -72,6 +78,15 @@ sealed class Query
     public void where_(string condition)
     {
         conditions.Add(condition);
+    }
+
+    // ------------------------------------------------------------------------
+    public void order_by(Field table_field, bool desc = false)
+    {
+        string s = TableMngr.conv(table_field);
+        if (desc)
+            s += " DESC";
+        order_bys.Add(s);
     }
 
     // ========================================================================
@@ -118,6 +133,26 @@ sealed class Query
         return query;
     }
 
+    // ========================================================================
+    public string get_join_clause()
+    {
+        if (inner_joins.Count == 0)
+            return "";
+        return " " + string.Join(" ", inner_joins);
+    }
+
+    // ========================================================================
+    public string get_order_clause()
+    {
+        string query = "";
+        if (order_bys.Count > 0)
+        {
+            var s = string.Join(", ", order_bys);
+            query += $" ORDER BY {s}";
+        }
+        return query;
+    }
+
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
     public string get_select_query(bool count_mode = false)
@@ -128,14 +163,13 @@ sealed class Query
             : count_mode ? "COUNT(*)"
             : "*";
         string query = $"SELECT {output_fields_str} FROM {table_name}";
-        query += " " + string.Join(" ", inner_joins);
-        query += " " + get_where_clause();
-        if (orders.Count == 0)
-        {
-            query += " ORDER BY (SELECT NULL)";
-        }
+        query += get_join_clause();
+        query += get_where_clause();
+        query += get_order_clause();
         if (offset_string is not null)
         {
+            if (order_bys.Count == 0)
+                query += " ORDER BY (SELECT NULL)";
             query += " " + offset_string;
         }
         query += ";";
@@ -246,7 +280,8 @@ sealed class Query
         int result = 0;
         void func(SqlDataReader reader)
         {
-            result = DataReader.get_int(reader, 0);
+            int pos = 0;
+            result = DataReader.get_int(reader, ref pos);
         }
         Database.exec_reader(conn, get_select_query(count_mode: true), func);
         return result;

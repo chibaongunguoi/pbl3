@@ -5,22 +5,29 @@ using Microsoft.Data.SqlClient;
 sealed class DataReader
 {
     // ========================================================================
-    public static int get_int(SqlDataReader reader, int pos = 0)
+    public static int get_int(SqlDataReader reader, ref int pos)
     {
-        return reader.GetInt32(pos);
+        return reader.GetInt32(pos++);
     }
 
     // ------------------------------------------------------------------------
-    public static string get_string(SqlDataReader reader, int pos = 0)
+    public static string get_string(SqlDataReader reader, ref int pos)
     {
-        return reader.GetString(pos);
+        return reader.GetString(pos++);
     }
 
     // ------------------------------------------------------------------------
-    public static T get_enum<T>(SqlDataReader reader, int pos = 0)
+    public static DateOnly get_date(SqlDataReader reader, ref int pos)
+    {
+        DateTime d = reader.GetDateTime(pos++);
+        return new(d.Year, d.Month, d.Day);
+    }
+
+    // ------------------------------------------------------------------------
+    public static T get_enum<T>(SqlDataReader reader, ref int pos)
         where T : Enum
     {
-        return (T)Enum.ToObject(typeof(T), reader.GetInt32(pos));
+        return (T)Enum.ToObject(typeof(T), reader.GetInt32(pos++));
     }
 
     // ========================================================================
@@ -28,7 +35,7 @@ sealed class DataReader
         where T : DataObj, new()
     {
         T info = new T();
-        pos = info.fetch_data(reader, pos);
+        pos = info.fetch_data(reader, ref pos);
         return info;
     }
 

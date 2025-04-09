@@ -5,15 +5,15 @@ class User : Account
     // ========================================================================
     public string name = "";
     public InfoGender gender = new InfoGender();
-    public InfoDate bday = new InfoDate();
+    public DateOnly bday = new();
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos = 0)
+    public override int fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, pos);
-        name = DataReader.get_string(reader, pos++);
-        gender = DataReader.get_enum<InfoGender>(reader, pos++);
-        pos = bday.fetch_data(reader, pos);
+        pos = base.fetch_data(reader, ref pos);
+        name = DataReader.get_string(reader, ref pos);
+        gender = DataReader.get_enum<InfoGender>(reader, ref pos);
+        bday = DataReader.get_date(reader, ref pos);
         return pos;
     }
 

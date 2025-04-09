@@ -61,19 +61,19 @@ sealed class AccountQuery<T>
     }
 
     // ------------------------------------------------------------------------
-    public static List<T> get_account_by_id_password(
+    public static List<T> get_account_by_username_password(
         SqlConnection conn,
-        int id,
+        string username,
         string password,
         Table? table = null
     )
     {
         if (!table.HasValue)
         {
-            return any(table => get_account_by_id_password(conn, id, password, table));
+            return any(table => get_account_by_username_password(conn, username, password, table));
         }
         var q = new Query(table.Value);
-        q.where_(QueryUtils.cat(table.Value, FieldSuffix.id), id);
+        q.where_(QueryUtils.cat(table.Value, FieldSuffix.username), username);
         q.where_(QueryUtils.cat(table.Value, FieldSuffix.password), password);
         return q.select<T>(conn);
     }

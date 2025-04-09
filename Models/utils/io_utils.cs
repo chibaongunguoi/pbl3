@@ -28,9 +28,9 @@ class IoUtils
     }
 
     // ------------------------------------------------------------------------
-    public static string conv(InfoDate date)
+    public static string conv(DateOnly date)
     {
-        return $"{date.day:D2}/{date.month:D2}/{date.year}";
+        return $"{date.Day:D2}/{date.Month:D2}/{date.Year}";
     }
 
     // ------------------------------------------------------------------------

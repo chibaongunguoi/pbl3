@@ -2,12 +2,13 @@
     Layout = "_ManageLayout"; // Sử dụng layout admin
 
 }
+
 <div class="pt-add-content-wrapper">
     <div class="pt-add-content">
         <div class="pt-add-title">Thông tin khóa học</div>
         <div class="pt-add-form">
-            <form id="pt-add" enctype="multipart/form-data" method="POST">
-            
+            <!-- <form id="pt-add" action="AddCourse" enctype="multipart/form-data" method="POST"> -->
+            <form action="add_course" id="pt-add" method="POST">
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label for="">
@@ -15,7 +16,7 @@
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input" type="text" name="name" placeholder="Nhập vào" maxlength="150">
+                        <input class="pt-add-form-input pt-name-input" type="text" name="course_name" placeholder="Nhập vào" maxlength="150">
                     </div>
                 </div>
 
@@ -27,10 +28,10 @@
                     </div>
                      <div class="pt-add-input-wrapper pt-add-subject-wrapper">
                         <select class=" input cb"  name="subject">
-                            <option value="option1">Chọn môn học</option>
-                            <option value="option1">Tên khóa học</option>
-                            <option value="option2">Tên gia sư</option>
-                            <option value="option3">Tên môn học</option>
+                            <option value="Toán">Toán</option>
+                            <option value="Ngữ Văn">Ngữ Văn</option>
+                            <option value="Tiếng Anh">Tiếng Anh</option>
+                            <option value="Vật lí">Vật lí</option>
                         </select>
                     </div>
                      <div class="pt-add-label">
@@ -40,10 +41,10 @@
                     </div>
                      <div class="pt-add-input-wrapper pt-add-class-wrapper">
                         <select class=" input cb"  name="grade">
-                            <option value="option1">Chọn môn học</option>
-                            <option value="option1">Tên khóa học</option>
-                            <option value="option2">Tên gia sư</option>
-                            <option value="option3">Tên môn học</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
                         </select>
                     </div>
                 </div>

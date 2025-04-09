@@ -44,7 +44,7 @@ class Test
     private static void test5()
     {
         int count = 0;
-        Database.exec(conn => count = IdCounterQuery.increment(conn, Table.student));
+        // Database.exec(conn => count = IdCounterQuery.increment(conn, Table.student));
         Console.WriteLine(count);
     }
 
@@ -58,12 +58,7 @@ class Test
             password = "demo",
             name = "Nguyễn Văn A",
             gender = InfoGender.MALE,
-            bday = new InfoDate
-            {
-                year = 2012,
-                month = 12,
-                day = 12,
-            },
+            bday = new DateOnly(2012, 12, 12),
         };
 
         Database.exec(conn => CommonQuery.insert_record_with_id(conn, new_student, Table.student));

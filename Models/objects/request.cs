@@ -5,15 +5,15 @@ sealed class Request : DataObj
     // ========================================================================
     public int stu_id { get; set; }
     public int semester_id { get; set; }
-    public InfoDate date { get; set; } = new InfoDate();
+    public DateOnly date { get; set; } = new();
     public InfoRequestState state { get; set; } = new();
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos = 0)
+    public override int fetch_data(SqlDataReader reader, ref int pos)
     {
-        stu_id = DataReader.get_int(reader, pos++);
-        semester_id = DataReader.get_int(reader, pos++);
-        pos = date.fetch_data(reader, pos);
+        stu_id = DataReader.get_int(reader, ref pos);
+        semester_id = DataReader.get_int(reader, ref pos);
+        DataReader.get_date(reader, ref pos);
         return pos;
     }
 

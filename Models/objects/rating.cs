@@ -5,18 +5,18 @@ sealed class Rating : DataObj
     // ========================================================================
     public int stu_id { get; set; }
     public int course_id { get; set; }
-    public InfoDate date { get; set; } = new InfoDate();
+    public DateOnly date { get; set; } = new DateOnly();
     public int stars { get; set; }
     public string description { get; set; } = "";
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos = 0)
+    public override int fetch_data(SqlDataReader reader, ref int pos)
     {
-        stu_id = DataReader.get_int(reader, pos++);
-        course_id = DataReader.get_int(reader, pos++);
-        pos = date.fetch_data(reader, pos);
-        stars = DataReader.get_int(reader, pos++);
-        description = DataReader.get_string(reader, pos++);
+        stu_id = DataReader.get_int(reader, ref pos);
+        course_id = DataReader.get_int(reader, ref pos);
+        date = DataReader.get_date(reader, ref pos);
+        stars = DataReader.get_int(reader, ref pos);
+        description = DataReader.get_string(reader, ref pos);
         return pos;
     }
 

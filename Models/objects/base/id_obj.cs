@@ -6,10 +6,10 @@ class IdObj : DataObj
     public int id { get; set; } = 0;
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, int pos = 0)
+    public override int fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, pos);
-        id = DataReader.get_int(reader, pos++);
+        pos = base.fetch_data(reader, ref pos);
+        id = DataReader.get_int(reader, ref pos);
         return pos;
     }
 

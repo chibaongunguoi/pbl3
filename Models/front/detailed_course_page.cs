@@ -5,6 +5,8 @@ class DetailedCoursePage
     public List<BriefTeacherCard> teachers = new();
     public List<DetailedCourseCard> courses = new();
 
+    public bool invalid => teachers.Count == 0 || courses.Count == 0;
+
     public DetailedCoursePage(int course_id)
     {
         void func(SqlConnection conn)

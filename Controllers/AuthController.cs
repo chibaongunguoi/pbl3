@@ -1,7 +1,6 @@
 namespace REPO.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 // using Microsoft.IdentityModel.Tokens;
 
@@ -28,45 +27,30 @@ public class AuthController : BaseController
         return View("ListUser");
     }
 
-    // [HttpPost]
-    public IActionResult store()
+    [HttpPost]
+    public IActionResult store(LoginForm form)
     {
-        StringValues username_values;
-        StringValues password_values;
+        string username = form.username;
+        string password = form.password;
 
-        Request.Form.TryGetValue("username", out username_values);
-        Request.Form.TryGetValue("password", out password_values);
+        Console.WriteLine($"Username: {username}");
+        Console.WriteLine($"Password: {password}");
 
-        string id_ = !StringValues.IsNullOrEmpty(username_values)
-            ? username_values.ToString()
-            : string.Empty;
-        string password = !StringValues.IsNullOrEmpty(password_values)
-            ? password_values.ToString()
-            : string.Empty;
-
-        int id = 0;
         List<User> query_result = new();
-        try
-        {
-            id = int.Parse(id_);
-            query_result = Database.exec_list<User>(conn =>
-                AccountQuery<User>.get_account_by_id_password(conn, id, password)
-            );
+        query_result = Database.exec_list<User>(conn =>
+            AccountQuery<User>.get_account_by_username_password(conn, username, password)
+        );
 
-            if (query_result.Count == 0)
-            {
-                throw new();
-            }
-        }
-        catch
+        if (query_result.Count == 0)
         {
-            return View("Login");
+            return Redirect("Login");
         }
 
         User user = query_result[0];
         ViewBag.oneuser =
             $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.name}.";
 
+        SessionManager.log_in(HttpContext.Session, user.id);
         HttpContext.Session.SetString("userName", user.name);
         HttpContext.Session.SetInt32("userId", user.id);
         return Redirect("/");
@@ -76,6 +60,9 @@ public class AuthController : BaseController
     {
         HttpContext.Session.Remove("userName"); // Xóa một session cụ thể
         HttpContext.Session.Remove("userId");
+
+        SessionManager.log_out(HttpContext.Session);
+
         HttpContext.Session.Clear();
         return Redirect("http://localhost:5022/Auth/Login");
     }

@@ -39,9 +39,9 @@ struct BriefCourseCard
     public static BriefCourseCard get_card(SqlConnection conn, SqlDataReader reader)
     {
         int pos = 0;
-        int course_id = DataReader.get_int(reader, pos++);
+        int course_id = DataReader.get_int(reader, ref pos);
 
-        int semester_id = DataReader.get_int(reader, pos++);
+        int semester_id = DataReader.get_int(reader, ref pos);
         // Lấy sĩ số đã tham gia
         int num_participants = SemesterQuery.get_num_of_joined_requests(conn, semester_id);
 
@@ -50,14 +50,14 @@ struct BriefCourseCard
         // Lấy trung bình và tổng số các đánh giá
         CourseQuery.get_avg_rating(conn, course_id, out avg_rating, out num_ratings);
 
-        var course_name = DataReader.get_string(reader, pos++);
-        var tch_name = DataReader.get_string(reader, pos++);
-        var subject = DataReader.get_string(reader, pos++);
-        var grade = DataReader.get_int(reader, pos++);
-        var start_date = DataReader.get_data_obj<InfoDate>(reader, ref pos);
-        var finish_date = DataReader.get_data_obj<InfoDate>(reader, ref pos);
-        var capacity = DataReader.get_int(reader, pos++);
-        var fee = DataReader.get_int(reader, pos++);
+        var course_name = DataReader.get_string(reader, ref pos);
+        var tch_name = DataReader.get_string(reader, ref pos);
+        var subject = DataReader.get_string(reader, ref pos);
+        var grade = DataReader.get_int(reader, ref pos);
+        var start_date = DataReader.get_date(reader, ref pos);
+        var finish_date = DataReader.get_date(reader, ref pos);
+        var capacity = DataReader.get_int(reader, ref pos);
+        var fee = DataReader.get_int(reader, ref pos);
 
         BriefCourseCard card = new()
         {
