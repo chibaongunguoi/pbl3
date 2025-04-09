@@ -23,7 +23,7 @@ sealed class Request : DataObj
         var lst = base.ToListString();
         lst.Add($"{stu_id}");
         lst.Add($"{semester_id}");
-        lst.Add(date.ToString());
+        lst.Add(IoUtils.conv_db(date));
         lst.Add($"{(int)state}");
         return lst;
     }

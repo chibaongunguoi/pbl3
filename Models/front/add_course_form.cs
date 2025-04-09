@@ -13,6 +13,8 @@ public enum AddCourseFormError
 public class AddCourseFormLog
 {
     public List<AddCourseFormError> errors = new();
+    public int? course_id = null;
+    public int? semester_id = null;
 
     public void Add(AddCourseFormError error) => errors.Add(error);
 
@@ -115,6 +117,9 @@ public class AddCourseForm
         q.insert<Course>(conn, course);
         q = new(Table.semester);
         q.insert<Semester>(conn, semester);
+
+        log.course_id = course_id;
+        log.semester_id = semester_id;
         return log;
     }
 
@@ -123,6 +128,20 @@ public class AddCourseForm
         AddCourseFormLog log = new();
         Database.exec(conn => log = execute(conn, tch_id));
         return log;
+    }
+
+    public void print_log()
+    {
+        Console.WriteLine("[LOG]");
+        Console.WriteLine($"course_name: {course_name}");
+        Console.WriteLine($"subject: {subject}");
+        Console.WriteLine($"grade: {grade}");
+        Console.WriteLine($"start_date: {start_date}");
+        Console.WriteLine($"finish_date: {finish_date}");
+        Console.WriteLine($"capacity: {capacity}");
+        Console.WriteLine($"fee: {fee}");
+        Console.WriteLine($"description: {description}");
+        Console.WriteLine("[/LOG]");
     }
 }
 

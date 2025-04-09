@@ -30,8 +30,8 @@ sealed class Semester : IdObj
     {
         var lst = base.ToListString();
         lst.Add($"{course_id}");
-        lst.Add(start_date.ToString());
-        lst.Add(finish_date.ToString());
+        lst.Add(IoUtils.conv_db(start_date));
+        lst.Add(IoUtils.conv_db(finish_date));
         lst.Add($"{capacity}");
         lst.Add($"{fee}");
         lst.Add(description);

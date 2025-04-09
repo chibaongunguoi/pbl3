@@ -59,6 +59,7 @@ public class CourseController : Controller
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
+        form.print_log();
         string? role = HttpContext.Session.GetString(SessionKey.user_role);
         int? tch_id = null;
         switch (role)
@@ -77,7 +78,7 @@ public class CourseController : Controller
         if (!log.success)
             return RedirectToAction("Add");
 
-        return RedirectToAction("Index");
+        return Redirect($"Detail/?course_id={log.course_id}");
     }
 
     public IActionResult Privacy()
