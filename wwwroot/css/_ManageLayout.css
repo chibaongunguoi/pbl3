@@ -9,6 +9,7 @@ a {
   color: #787272;
   display: inline;
   font-size: 16px;
+  font-weight: bold;
 }
 .sidebar-link-active a {
   color: #0061f2 !important;
@@ -119,7 +120,7 @@ ul#sidebar-menu * {
 }
 
 #sidebar-menu .sub-menu {
-  padding-left: 22px;
+  padding-left: 15px;
   border-left: 1px dashed #b8b8b8;
   margin-left: 6px;
   display: none;
