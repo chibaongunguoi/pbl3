@@ -14,26 +14,4 @@
             </div>         
         </div>
     </div>
-
-    <div class="shop-section-wrapper container rating-wrapper">
-        <div class="shop-section-header">
-            <div class="shop-section-title">
-                Đánh giá khóa học
-            </div>
-        </div>
-        <div class="shop-section-content">
-        @await Html.PartialAsync("_RatingTable")
-        <div class="rating-comment-wapper">
-            @await Html.PartialAsync("_RatingComment")      
-            @await Html.PartialAsync("_RatingComment")   
-            @await Html.PartialAsync("_RatingComment")
-            @await Html.PartialAsync("_RatingComment")      
-            @await Html.PartialAsync("_RatingComment")   
-            @await Html.PartialAsync("_RatingComment")
-        </div>
-        <div class="reviews-item">
-            @await Html.PartialAsync("_Pagination",1    )
-        </div>    
-        </div>
-    </div>
 </div>
