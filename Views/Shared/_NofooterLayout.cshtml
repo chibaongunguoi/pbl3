@@ -4,6 +4,32 @@
 
 @inject IHttpContextAccessor HttpContextAccessor
 
+@{
+    string? user_role = HttpContextAccessor.HttpContext.Session.GetString(SessionKey.user_role);
+    string? display_role = null;
+    string? display_name = null;
+    switch (user_role)
+    {
+      case SessionRole.teacher:
+        display_role = "Gia sư";
+        break;
+
+      case SessionRole.student:
+        display_role = "Học viên";
+        break;
+
+      case SessionRole.admin:
+        display_role = "Quản trị viên";
+        break;
+    }
+
+    switch (user_role)
+    {
+      case SessionRole.student or SessionRole.teacher:
+        display_name = HttpContextAccessor.HttpContext.Session.GetString(SessionKey.user_name);
+        break;
+    }
+}
 <head>
 
     @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
@@ -39,22 +65,22 @@
                     <ul class="navbar-nav flex">
                     </ul>
                     <div class="navbar-nav flex user-link-wrapper">
-                    @if (string.IsNullOrEmpty(ViewBag.name?.ToString())){
+                    @if (user_role is null){
                           <div class="nav-item">
                             <a href="/Auth/Login" class="nav-link text-dark">Đăng nhập</a>
                         </div>
                         <div class="nav-item">
-                            <a href="/Auth/Login" class="nav-link text-dark">Đăng ký</a>
+                            <a href="/Auth/SignUp" class="nav-link text-dark">Đăng ký</a>
                         </div>   
                     }
-                    else{
+                    else if (user_role == SessionRole.student || user_role == SessionRole.teacher) {
                         <div class="nav-item ">
                             <a id="user-info" class="text-dark user-link">
                                 <div class="user-role">
-                                    Học viên
+                                    @display_role
                                 </div>
                                 <div class="user-name">
-                                    @ViewBag.name
+                                    @display_name
                                 </div>
                                 <div class="user-icon down-arrow">
                                     <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
@@ -83,6 +109,39 @@
                             </a>
                         </div>
                     }        
+                    else {
+                        <div class="nav-item ">
+                            <a id="user-info" class="text-dark user-link">
+                                <div class="user-role">
+                                    @display_role
+                                </div>
+                                <div class="user-icon down-arrow">
+                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                                    </svg>
+                                </div>
+                                <div class="noti-dropdown" id="user-dropdown" style="display:none">
+                                    <div class="user-content-wrapper">
+                                        <div class="user-item-list">
+                                            <div class="user-item">
+                                                <a class="user-item-title" href="">
+                                                    Thông tin tài khoản
+                                                </a>
+                                            </div>
+                                            <div class="logout-item ">
+                                                <form action="/Auth/Logout" method="POST">
+                                                    <button type='submit' class="user-item-title logout-button">
+                                                        đăng xuất
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }             
                     </div>
                 </div>
             </div>

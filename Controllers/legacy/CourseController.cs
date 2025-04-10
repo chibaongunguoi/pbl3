@@ -95,6 +95,7 @@ public class CourseController : Controller
             return RedirectToAction("Add");
 
         return Redirect($"Detail/?course_id={log.course_id}");
+
     }
 
     public IActionResult Privacy()
