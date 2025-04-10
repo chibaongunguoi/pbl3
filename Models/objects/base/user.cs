@@ -8,13 +8,12 @@ class User : Account
     public DateOnly bday = new();
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, ref pos);
+        base.fetch_data(reader, ref pos);
         name = DataReader.get_string(reader, ref pos);
         gender = DataReader.get_enum<InfoGender>(reader, ref pos);
         bday = DataReader.get_date(reader, ref pos);
-        return pos;
     }
 
     // ------------------------------------------------------------------------

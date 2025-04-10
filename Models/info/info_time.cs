@@ -7,13 +7,12 @@ sealed class InfoTime : DataObj
     public int minute;
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, ref pos);
+        base.fetch_data(reader, ref pos);
         TimeSpan time = reader.GetTimeSpan(pos++);
         this.hour = time.Hours;
         this.minute = time.Minutes;
-        return pos;
     }
 
     // ========================================================================

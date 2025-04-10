@@ -48,6 +48,22 @@ public class CourseController : Controller
 
     public IActionResult Manage()
     {
+        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
+        int? tch_id = null;
+        switch (user_role)
+        {
+            case SessionRole.teacher:
+                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+                break;
+            case SessionRole.admin:
+                // TODO:
+                tch_id = 2001;
+                break;
+        }
+        if (tch_id is null)
+            return RedirectToAction("Add");
+        ManageCoursePage page = ManageCoursePage.get_by_tch_id(tch_id ?? 0);
+        ViewBag.page = page;
         return View();
     }
 
@@ -60,9 +76,9 @@ public class CourseController : Controller
     public IActionResult add_course(AddCourseForm form)
     {
         form.print_log();
-        string? role = HttpContext.Session.GetString(SessionKey.user_role);
+        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
         int? tch_id = null;
-        switch (role)
+        switch (user_role)
         {
             case SessionRole.teacher:
                 tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
