@@ -26,7 +26,7 @@ sealed class Rating : DataObj
         var lst = base.ToListString();
         lst.Add($"{stu_id}");
         lst.Add($"{course_id}");
-        lst.Add(date.ToString());
+        lst.Add(IoUtils.conv_db(date));
         lst.Add($"{stars}");
         lst.Add(description);
         return lst;

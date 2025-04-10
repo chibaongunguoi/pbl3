@@ -34,6 +34,12 @@ class IoUtils
     }
 
     // ------------------------------------------------------------------------
+    public static string conv_db(DateOnly date)
+    {
+        return $"{date.Year}-{date.Month:D2}-{date.Day:D2}";
+    }
+
+    // ------------------------------------------------------------------------
     // 300000000 -> 300.000.000
     public static string conv_fee(int fee)
     {
