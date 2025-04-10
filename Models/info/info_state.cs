@@ -4,11 +4,18 @@ enum InfoRequestState
     JOINED,
 }
 
-enum InfoSemesterState
+static class SemesterState
 {
-    WAITING,
-    STARTED,
-    FINISHED,
+    public const string waiting = "waiting",
+        started = "started",
+        finished = "finished";
+}
+
+static class CourseState
+{
+    public const string waiting = "waiting",
+        started = "started",
+        finished = "finished";
 }
 
 /* EOF */

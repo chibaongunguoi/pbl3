@@ -35,7 +35,7 @@ sealed class DataReader
         where T : DataObj, new()
     {
         T info = new T();
-        pos = info.fetch_data(reader, ref pos);
+        info.fetch_data(reader, ref pos);
         return info;
     }
 

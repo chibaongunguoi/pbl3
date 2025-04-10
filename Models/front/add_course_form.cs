@@ -110,7 +110,7 @@ public class AddCourseForm
             capacity = capacity,
             fee = fee,
             description = description,
-            state = InfoSemesterState.WAITING,
+            state = SemesterState.waiting,
         };
 
         q = new(Table.course);

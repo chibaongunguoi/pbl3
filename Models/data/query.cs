@@ -55,6 +55,13 @@ sealed class Query
     }
 
     // ========================================================================
+    public void where_(Field table_field, List<string> value)
+    {
+        string str = string.Join(", ", value.Select(v => $"\'{v}\'"));
+        conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
+    }
+
+    // ========================================================================
     public void where_string_contains(Field table_field, string value)
     {
         conditions.Add($"{TableMngr.conv(table_field)} LIKE '%{value}%'");

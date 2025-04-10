@@ -6,15 +6,16 @@ sealed class Course : IdObj
     public int tch_id { get; set; }
     public int sbj_id { get; set; }
     public string name { get; set; } = "";
+    public string state { get; set; } = "";
 
     // ========================================================================
-    public override int fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch_data(SqlDataReader reader, ref int pos)
     {
-        pos = base.fetch_data(reader, ref pos);
+        base.fetch_data(reader, ref pos);
         tch_id = DataReader.get_int(reader, ref pos);
         sbj_id = DataReader.get_int(reader, ref pos);
         name = DataReader.get_string(reader, ref pos);
-        return pos;
+        state = DataReader.get_string(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
@@ -24,6 +25,7 @@ sealed class Course : IdObj
         lst.Add($"{tch_id}");
         lst.Add($"{sbj_id}");
         lst.Add(name);
+        lst.Add(state);
         return lst;
     }
 

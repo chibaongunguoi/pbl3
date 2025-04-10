@@ -231,12 +231,8 @@ for tch_id in teacher_ids:
             f"Khóa học {sbj} của giáo viên {name}. "
             + r"Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         )
-        course = (
-            course_id,
-            tch_id,
-            sbj_id,
-            f"Khóa học VDC {sbj}",
-        )
+        course_state = random.choice(["finished", "waiting"])
+        course = (course_id, tch_id, sbj_id, f"Khóa học VDC {sbj}", course_state)
         courses.append(course)
         course_next_id += 1
 
@@ -267,7 +263,7 @@ for tch_id in teacher_ids:
                 capacity,
                 fee,
                 semester_description,
-                2,
+                "finished",
             ]
             semesters.append(semester)
             semester_next_id += 1
@@ -305,8 +301,8 @@ for tch_id in teacher_ids:
                 )
                 ratings.append(rating)
 
-        if len(semesters) > 0:
-            semesters[-1][-1] = 0
+        if course_state == "waiting" and len(semesters) > 0:
+            semesters[-1][-1] = "waiting"
 
 
 json_output("teacher", teachers)

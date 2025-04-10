@@ -47,6 +47,7 @@ enum Field
     course__tch_id,
     course__sbj_id,
     course__name,
+    course__state,
     semester__id,
     semester__course_id,
     semester__start_date,

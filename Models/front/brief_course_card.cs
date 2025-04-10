@@ -19,10 +19,7 @@ struct BriefCourseCard
         q.join(Field.subject__id, Field.course__sbj_id);
         q.join(Field.teacher__id, Field.course__tch_id);
         q.join(Field.semester__course_id, Field.course__id);
-        q.where_(
-            Field.semester__state,
-            [(int)InfoSemesterState.WAITING, (int)InfoSemesterState.STARTED]
-        );
+        q.where_(Field.semester__state, [SemesterState.waiting, SemesterState.started]);
         q.output(Field.course__id);
         q.output(Field.semester__id);
         q.output(Field.course__name);

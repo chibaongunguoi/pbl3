@@ -179,6 +179,11 @@
           "name": "name",
           "sql_type": "NVARCHAR(50) NOT NULL",
           "dtype": "NSTRING"
+        },
+        {
+          "name": "state",
+          "sql_type": "VARCHAR(20) NOT NULL",
+          "dtype": "STRING"
         }
       ],
       "foreign_keys": [
@@ -273,13 +278,13 @@
         },
         {
           "name": "description",
-          "sql_type": "NVARCHAR(2000) NOT NULL",
+          "sql_type": "NVARCHAR(1500) NOT NULL",
           "dtype": "NSTRING"
         },
         {
           "name": "state",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
+          "sql_type": "VARCHAR(20) NOT NULL",
+          "dtype": "STRING"
         }
       ],
       "foreign_keys": [
