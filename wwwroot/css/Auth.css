@@ -119,3 +119,21 @@ input::-webkit-inner-spin-button {
   top: 50%;
   transform: translateY(-50%);
 }
+
+/* payment */
+.card-qr {
+  width: 280px !important;
+  height: 280px !important;
+}
+.qr-img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+.payment-label {
+  width: 140px !important;
+}
+.alert-warning {
+  font-size: 16px;
+  padding: 10px;
+}

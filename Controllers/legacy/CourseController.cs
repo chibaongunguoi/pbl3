@@ -55,7 +55,10 @@ public class CourseController : Controller
     {
         return View();
     }
-
+    public IActionResult Payment()
+    {
+        return View();
+    }
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
