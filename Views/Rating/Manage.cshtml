@@ -3,14 +3,12 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
 
 }
 
-@{
-List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
-  }
+
 
   <div id="content" class="container-fluid">
     <div class="card">
       <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách khóa học của tôi</div>
+        <div class="m-0 table-title">Danh sách đánh giá</div>
         <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
           <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
@@ -28,36 +26,33 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
               <th scope="col">#</th>
               <th scope="col">Tên khóa học</th>
               <th scope="col">Đánh giá</th>
-              <th scope="col">Tình trạng</th>
-              <th scope="col">Môn học</th>
-              <th scope="col">Lớp</th>
+              <th scope="col">Thời gian</th>
+              <th scope="col">Nội dung</th>
               <th scope="col">Tác vụ</th>
             </tr>
           </thead>
           <tbody>
-            @foreach(var card in cards)
-            {
+          
             <tr>
-              <td scope="row" class="table-index">@card.table_index</td>
+              <td scope="row" class="table-index">1</td>
               <td>
-                <a class="course-table-name" href='/Course/Detail?course_id=@card.course_id' target="_blank">
-                  @card.course_name
+                <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
+                  card.course_name
                 </a>
               </td>
-              <td>@card.avg_rating</td>
-              <td>@card.course_state</td>
-              <td>@card.subject</td>
-              <td>@card.grade</td>
+              <td>4/5</td>
+              <td>4/11/2025 5:43:10</td>
+              <td>Khóa học cũng khá là wow đấy </td>
               <td>
                 <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
+                  <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
                     các kì học </button>
-                  <button class="card-btn course-detail">Xem đánh giá</button>
-                  <button class="card-btn choose">Đánh giá</button>
+                  <button class="card-btn course-detail">Xem đánh giá</button> -->
+                  <button class="card-btn choose">Sửa đánh giá</button>
                 </div>
               </td>
             </tr>
-            }
+            
           </tbody>
         </table>
       </div>
