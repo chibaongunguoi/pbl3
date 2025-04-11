@@ -37,7 +37,7 @@
 }
 
 .card-product-li:hover {
-  border: 1px solid red !important;
+  border: 1px solid #0088ff !important;
   border-color: rgba(238, 77, 45, 1);
   transform: translate(0px, -1px) rotate(0) skewX(0) skewY(0) scaleX(1)
     scaleY(1);
@@ -110,7 +110,6 @@
 .choose {
   background-color: #f6c6ad;
   border-color: red;
-  font-size: 16px;
 }
 
 .card-product-name {
@@ -335,6 +334,12 @@
 .tch-detail {
   width: 60%;
 }
+
+.card-btn {
+  border-radius: 3px;
+  font-size: 14px;
+}
+
 .course-detail {
   margin-right: 12px;
 }

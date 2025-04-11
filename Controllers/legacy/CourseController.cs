@@ -71,10 +71,16 @@ public class CourseController : Controller
     {
         return View();
     }
+
     public IActionResult Payment()
     {
+        string? course_id_ = Request.Query["course_id"];
+        int course_id = 0;
+        if (!int.TryParse(course_id_, out course_id))
+            return Redirect("/");
         return View();
     }
+
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
@@ -98,7 +104,6 @@ public class CourseController : Controller
             return RedirectToAction("Add");
 
         return Redirect($"Detail/?course_id={log.course_id}");
-
     }
 
     public IActionResult Privacy()

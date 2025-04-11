@@ -1,20 +1,19 @@
-﻿
-<div class="course-content-wrapper">
-    <div class="shop-section-wrapper container">
-        <div class="shop-section-header">
-            <div class="shop-section-title">
-                Danh sách khóa học
-            </div>
-        </div>
-        <div class="shop-section-content">
-            <div class="card-search-wrapper">
-                @await Html.PartialAsync("_SearchSemSection")
-            </div>
-            <div class="card-product-ul">
-                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
-            </div>
-                @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
-            
-        </div>
+﻿<div class="course-content-wrapper">
+  <div class="shop-section-wrapper container">
+    <div class="shop-section-header section-header">
+      <div class="shop-section-title section-title">
+        Danh sách khóa học
+      </div>
     </div>
+    <div class="shop-section-content">
+      <div class="card-search-wrapper">
+        @await Html.PartialAsync("_SearchSemSection")
+      </div>
+      <div class="card-product-ul">
+        @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
+      </div>
+      @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
+
+    </div>
+  </div>
 </div>
