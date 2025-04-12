@@ -3,13 +3,34 @@
     <div class="auth-wrapper container">
         <div class="auth-content">
             <div class="auth-title">
-                Đăng kí
+                Đăng ký
             </div>
             <div class="auth-form-wrapper">
                 <form action="store" class="login-form" method="POST">
                     <div class="auth-input-wrapper">
+                        <input name="fullname" type="text" placeholder='Họ và tên' class="auth-input" />
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="auth-label">Giới tính</div>
+                        <div class="auth-radio-wapper"> 
+                            <label class="auth-label-radio">
+                                Nam
+                                <input name="gender" type="radio" class="auth-radio" />
+                            </label>
+                            <label class="auth-label-radio">
+                                Nữ
+                                <input name="gender" type="radio" class="auth-radio" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="auth-label">Ngày sinh</div>
+                        <input name="birthday" type="date" placeholder='Ngày sinh' class="auth-input" />
+                    </div>
+                    <div class="auth-input-wrapper">
                         <input name="username" type="text" placeholder='Tên đăng nhập' class="auth-input" />
                     </div>
+                    
                     <div class="auth-input-wrapper">
                         <input name="password" type="password" placeholder='Mật khẩu' class="auth-input" />
                         <div class="hide-show-icon-wrapper">
@@ -23,13 +44,15 @@
                                     fill="none"
                                     viewBox="0 0 36 36"
                                     width="100%"
-                                    height="100%"
-                                >
+                                    height="100%"           >
                                     <circle cx="18" cy="17.5" r="4"></circle>
                                     <path d="M3.284 18.47a1.77 1.77 0 0 1 0-1.94c3.167-4.84 8.573-8.03 14.711-8.03s11.545 3.19 14.711 8.03a1.77 1.77 0 0 1 0 1.94c-3.166 4.84-8.573 8.03-14.71 8.03-6.139 0-11.545-3.19-14.712-8.03"></path>
                                 </svg>        
                             </div>
                         </div>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <input name="password_confirm" type="password" placeholder='Xác nhận mật khẩu' class="auth-input" />
                     </div>
                     @* <div class="auth-forget-password-wrapper">
                         <a href='' class="auth-forget-password">
@@ -37,13 +60,13 @@
                         </a>
                     </div> *@
                     <button class="auth-button card-btn">
-                        Đăng nhập
+                        Đăng ký
                     </button>
                 </form>
             </div>
             <div class="auth-other-way">
-                Bạn chưa có tài khoản?
-                <a href="" class="auth-other-link">Đăng kí</a>
+                Bạn đã có tài khoản?
+                <a href="http://localhost:5022/Auth/Login" class="auth-other-link">Đăng nhập</a>
             </div>
         </div>
     </div>
