@@ -171,3 +171,6 @@
 .reviews-item:has(.pagination) {
   padding: 10px 0px 1px 0px !important ;
 }
+.modal {
+  --bs-modal-width: 1000px;
+}

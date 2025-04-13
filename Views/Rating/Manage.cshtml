@@ -35,7 +35,7 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
               <td scope="row" class="table-index">1</td>
               <td>
                 <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
-                  card.course_name
+                  VDC toán 12
                 </a>
               </td>
               <td>4/5</td>
@@ -46,7 +46,8 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
                   <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
                     các kì học </button>
                   <button class="card-btn course-detail">Xem đánh giá</button> -->
-                  <button class="card-btn choose">Sửa đánh giá</button>
+                  <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Sửa đánh giá</button>
+                   @await Html.PartialAsync("_RatingFormPopup");
                 </div>
               </td>
             </tr>
@@ -56,3 +57,10 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
       </div>
     </div>
   </div>
+<style>
+  /* Làm mờ nền khi modal mở */
+  .modal.show {
+    backdrop-filter: blur(5px); /* Hiệu ứng blur */
+    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+  }
+</style>
