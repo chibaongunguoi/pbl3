@@ -23,16 +23,5 @@ struct BriefTeacherCard
 
         return card;
     }
-
-    // ------------------------------------------------------------------------
-    public static List<BriefTeacherCard> get_by_id(SqlConnection conn, int tch_id)
-    {
-        List<BriefTeacherCard> cards = new();
-        Query q = new(Table.teacher);
-        q.where_(Field.teacher__id, tch_id);
-        q.select(conn, reader => cards.Add(get_card(conn, reader)));
-        return cards;
-    }
-
     // ------------------------------------------------------------------------
 }

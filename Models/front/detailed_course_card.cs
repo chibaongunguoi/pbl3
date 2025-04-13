@@ -13,14 +13,14 @@ struct DetailedCourseCard
     public string fee;
     public string description;
 
-    static Query get_query_creator()
+    public static Query get_query_creator()
     {
         Query q = BriefCourseCard.get_query_creator();
         q.output(Field.semester__description);
         return q;
     }
 
-    static void get_card(
+    public static void get_card(
         SqlConnection conn,
         SqlDataReader reader,
         ref List<DetailedCourseCard> cards
@@ -60,14 +60,5 @@ struct DetailedCourseCard
             description = description,
         };
         cards.Add(card);
-    }
-
-    public static List<DetailedCourseCard> get_by_id(SqlConnection conn, int id)
-    {
-        List<DetailedCourseCard> cards = new();
-        Query q = get_query_creator();
-        q.where_(Field.course__id, id);
-        q.select(conn, reader => get_card(conn, reader, ref cards));
-        return cards;
     }
 }
