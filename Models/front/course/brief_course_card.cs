@@ -32,7 +32,6 @@ struct BriefCourseCard
         q.output(Field.semester__fee);
         return q;
     }
-
     public static BriefCourseCard get_card(SqlConnection conn, SqlDataReader reader)
     {
         int pos = 0;
