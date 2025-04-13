@@ -4,7 +4,6 @@ using Microsoft.Data.SqlClient;
 // Trang tổng quan các khóa học
 class BriefCoursePage
 {
-    public int current_page;
     public int total_num_pages;
     public List<BriefCourseCard> courses = new();
 
@@ -16,8 +15,6 @@ class BriefCoursePage
         string? search_by_subject_name = null
     )
     {
-        this.current_page = current_page;
-
         Database.exec(
             delegate(SqlConnection conn)
             {

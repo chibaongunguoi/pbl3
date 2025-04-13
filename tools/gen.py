@@ -280,7 +280,7 @@ for tch_id in teacher_ids:
                 # joined_day is around 20 days before start_date
                 joined_day = start_start_date - timedelta(random.randint(0, 20))
                 joined_day = f"{joined_day.year}-{joined_day.month}-{joined_day.day}"
-                request = (stu_id, semester_id, joined_day, 1)
+                request = (stu_id, semester_id, joined_day, "joined")
                 requests.append(request)
 
                 if random.random() > 0.5:
