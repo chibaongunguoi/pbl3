@@ -57,7 +57,7 @@ class Test
             username = "demo",
             password = "demo",
             name = "Nguyễn Văn A",
-            gender = InfoGender.MALE,
+            gender = Gender.male,
             bday = new DateOnly(2012, 12, 12),
         };
 

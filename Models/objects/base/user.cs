@@ -4,7 +4,7 @@ class User : Account
 {
     // ========================================================================
     public string name = "";
-    public InfoGender gender = new InfoGender();
+    public string gender = "";
     public DateOnly bday = new();
 
     // ========================================================================
@@ -12,7 +12,7 @@ class User : Account
     {
         base.fetch_data(reader, ref pos);
         name = DataReader.get_string(reader, ref pos);
-        gender = DataReader.get_enum<InfoGender>(reader, ref pos);
+        gender = DataReader.get_string(reader, ref pos);
         bday = DataReader.get_date(reader, ref pos);
     }
 
@@ -21,7 +21,7 @@ class User : Account
     {
         var lst = base.ToListString();
         lst.Add(name);
-        lst.Add($"{(int)gender}");
+        lst.Add(gender);
         lst.Add(bday.ToString());
         return lst;
     }

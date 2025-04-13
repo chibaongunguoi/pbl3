@@ -33,7 +33,7 @@ male_first_names = read_data("tools/name/male_first_name.txt")
 female_first_names = read_data("tools/name/female_first_name.txt")
 
 
-genders = list(range(0, 2))
+genders = ["male", "female"]
 hours = list(range(0, 24))
 minutes = list(range(0, 60))
 
@@ -70,7 +70,7 @@ def generate_gender_name():
     while True:
         gender = random.choice(genders)
         surname = random.choice(surnames)
-        if gender == 1:
+        if gender == "male":
             name_1 = random.choice(male_first_names)
             name_2 = random.choice(male_first_names)
         else:

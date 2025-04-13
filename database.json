@@ -76,8 +76,8 @@
         },
         {
           "name": "gender",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
+          "sql_type": "VARCHAR(20) NOT NULL",
+          "dtype": "STRING"
         },
         {
           "name": "bday",
@@ -113,8 +113,8 @@
         },
         {
           "name": "gender",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
+          "sql_type": "VARCHAR(20) NOT NULL",
+          "dtype": "STRING"
         },
         {
           "name": "bday",
@@ -316,8 +316,8 @@
         },
         {
           "name": "state",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
+          "sql_type": "VARCHAR(20) NOT NULL",
+          "dtype": "STRING"
         }
       ],
       "foreign_keys": [

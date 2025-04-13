@@ -14,13 +14,13 @@ class IoUtils
     }
 
     // ========================================================================
-    public static string conv(InfoGender gender)
+    public static string conv_gender(string gender)
     {
         switch (gender)
         {
-            case InfoGender.MALE:
+            case Gender.male:
                 return "Nam";
-            case InfoGender.FEMALE:
+            case Gender.female:
                 return "Nữ";
             default:
                 return "";

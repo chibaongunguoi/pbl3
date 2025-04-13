@@ -1,28 +1,18 @@
 using Microsoft.Data.SqlClient;
 
-public enum AddCourseFormError
-{
-    NONE,
-    TCH_ID_NOT_EXIST,
-    GRADE_MUST_BE_INT,
-    START_DATE_MISSING,
-    FINISH_DATE_MISSING,
-    RUN_OUT_OF_ID,
-}
-
-public class AddCourseFormLog
-{
-    public List<AddCourseFormError> errors = new();
-    public int? course_id = null;
-    public int? semester_id = null;
-
-    public void Add(AddCourseFormError error) => errors.Add(error);
-
-    public bool success => errors.Count == 0;
-}
-
 public class AddCourseForm
 {
+    public class Log
+    {
+        public List<string> errors = new();
+        public int? course_id = null;
+        public int? semester_id = null;
+
+        public void Add(string error) => errors.Add(error);
+
+        public bool success => errors.Count == 0;
+    }
+
     public required string course_name { get; set; }
     public required string subject { get; set; }
     public required string grade { get; set; }
@@ -32,26 +22,26 @@ public class AddCourseForm
     public int fee { get; set; }
     public required string description { get; set; }
 
-    public AddCourseFormLog execute(SqlConnection conn, int tch_id)
+    public Log execute(SqlConnection conn, int tch_id)
     {
-        AddCourseFormLog log = new();
+        Log log = new();
         int i_grade;
         bool valid = true;
         if (!int.TryParse(grade, out i_grade))
         {
-            log.Add(AddCourseFormError.GRADE_MUST_BE_INT);
+            log.Add(ErrorStr.grade_must_be_int);
             valid = false;
         }
 
         if (start_date is null)
         {
-            log.Add(AddCourseFormError.START_DATE_MISSING);
+            log.Add(ErrorStr.start_date_missing);
             valid = false;
         }
 
         if (finish_date is null)
         {
-            log.Add(AddCourseFormError.FINISH_DATE_MISSING);
+            log.Add(ErrorStr.finish_date_missing);
             valid = false;
         }
 
@@ -64,7 +54,7 @@ public class AddCourseForm
         int c = q.count(conn);
         if (c == 0)
         {
-            log.Add(AddCourseFormError.TCH_ID_NOT_EXIST);
+            log.Add(ErrorStr.tch_id_not_exist);
             return log;
         }
 
@@ -75,7 +65,7 @@ public class AddCourseForm
 
         if (subjects.Count == 0)
         {
-            log.Add(AddCourseFormError.RUN_OUT_OF_ID);
+            log.Add(ErrorStr.run_out_of_id);
             return log;
         }
 
@@ -88,7 +78,7 @@ public class AddCourseForm
             || !IdCounterQuery.get_count(conn, Table.semester, out semester_id)
         )
         {
-            log.Add(AddCourseFormError.RUN_OUT_OF_ID);
+            log.Add(ErrorStr.run_out_of_id);
             return log;
         }
         IdCounterQuery.increment(conn, Table.course, out course_id);
@@ -123,9 +113,9 @@ public class AddCourseForm
         return log;
     }
 
-    public AddCourseFormLog execute(int tch_id)
+    public Log execute(int tch_id)
     {
-        AddCourseFormLog log = new();
+        Log log = new();
         Database.exec(conn => log = execute(conn, tch_id));
         return log;
     }

@@ -16,7 +16,7 @@ struct BriefTeacherCard
         {
             id = teacher.id,
             name = teacher.name,
-            gender = IoUtils.conv(teacher.gender),
+            gender = IoUtils.conv_gender(teacher.gender),
             bday = IoUtils.conv(teacher.bday),
             description = teacher.description,
         };

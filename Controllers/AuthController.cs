@@ -17,7 +17,21 @@ public class AuthController : BaseController
 
     public IActionResult SignUp()
     {
+        SessionManager.log_out(HttpContext.Session);
         return View("SignUp");
+    }
+
+    [HttpPost]
+    public IActionResult submit_sign_up(StudentSignUpForm form)
+    {
+        StudentSignUpForm.Log log = form.execute();
+        if (!log.success)
+        {
+            return Redirect("SignUp");
+        }
+
+        SessionManager.log_in(HttpContext.Session, Table.student, log.stu_id ?? 0);
+        return Redirect("/");
     }
 
     public IActionResult Listuser()
@@ -69,7 +83,7 @@ public class AuthController : BaseController
         SessionManager.log_out(HttpContext.Session);
 
         HttpContext.Session.Clear();
-        return Redirect("http://localhost:5022/Auth/Login");
+        return Redirect("/Auth/Login");
     }
 
     // ========================================================================

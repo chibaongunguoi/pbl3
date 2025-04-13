@@ -99,7 +99,7 @@ public class CourseController : Controller
         }
         if (tch_id is null)
             return RedirectToAction("Add");
-        AddCourseFormLog log = form.execute(tch_id ?? 0);
+        AddCourseForm.Log log = form.execute(tch_id ?? 0);
         if (!log.success)
             return RedirectToAction("Add");
 

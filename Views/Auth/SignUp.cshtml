@@ -6,26 +6,26 @@
                 Đăng ký
             </div>
             <div class="auth-form-wrapper">
-                <form action="store" class="login-form" method="POST">
+                <form action="submit_sign_up" class="login-form" method="POST">
                     <div class="auth-input-wrapper">
-                        <input name="fullname" type="text" placeholder='Họ và tên' class="auth-input" />
+                        <input name="name" type="text" placeholder='Họ và tên' class="auth-input" />
                     </div>
                     <div class="auth-input-wrapper">
                         <div class="auth-label">Giới tính</div>
                         <div class="auth-radio-wapper"> 
                             <label class="auth-label-radio">
                                 Nam
-                                <input name="gender" type="radio" class="auth-radio" />
+                                <input value="male" name="gender" type="radio" class="auth-radio" />
                             </label>
                             <label class="auth-label-radio">
                                 Nữ
-                                <input name="gender" type="radio" class="auth-radio" />
+                                <input value="female" name="gender" type="radio" class="auth-radio" />
                             </label>
                         </div>
                     </div>
                     <div class="auth-input-wrapper">
                         <div class="auth-label">Ngày sinh</div>
-                        <input name="birthday" type="date" placeholder='Ngày sinh' class="auth-input" />
+                        <input name="bday" type="date" placeholder='Ngày sinh' class="auth-input" />
                     </div>
                     <div class="auth-input-wrapper">
                         <input name="username" type="text" placeholder='Tên đăng nhập' class="auth-input" />
@@ -66,7 +66,7 @@
             </div>
             <div class="auth-other-way">
                 Bạn đã có tài khoản?
-                <a href="http://localhost:5022/Auth/Login" class="auth-other-link">Đăng nhập</a>
+                <a href="/Auth/Login" class="auth-other-link">Đăng nhập</a>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@ sealed class Request : DataObj
     public int stu_id { get; set; }
     public int semester_id { get; set; }
     public DateOnly date { get; set; } = new();
-    public InfoRequestState state { get; set; } = new();
+    public string state { get; set; } = "";
 
     // ========================================================================
     public override void fetch_data(SqlDataReader reader, ref int pos)
@@ -14,7 +14,7 @@ sealed class Request : DataObj
         stu_id = DataReader.get_int(reader, ref pos);
         semester_id = DataReader.get_int(reader, ref pos);
         date = DataReader.get_date(reader, ref pos);
-        state = DataReader.get_enum<InfoRequestState>(reader, ref pos);
+        state = DataReader.get_string(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
@@ -24,7 +24,7 @@ sealed class Request : DataObj
         lst.Add($"{stu_id}");
         lst.Add($"{semester_id}");
         lst.Add(IoUtils.conv_db(date));
-        lst.Add($"{(int)state}");
+        lst.Add(state);
         return lst;
     }
 
