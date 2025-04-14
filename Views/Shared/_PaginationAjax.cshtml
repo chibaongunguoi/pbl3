@@ -1,0 +1,63 @@
+@model int
+
+<nav aria-label="pagination-wrapper">
+                <ul class="pagination">
+                    <li class="page-item ">
+                        <a class='page-link 'data-index="@(Model-1)" >
+                            <<
+                        </a>
+                    </li>
+                    @{
+                        var left=Model-2;
+                        var right=Model+2;
+                        if (left<1){
+                            left=1;
+                        }
+                        if (right>ViewBag.maxIndexPage){
+                            right=ViewBag.maxIndexPage;
+                        }
+                    }
+                    @for (int i = left; i <=  right; i++)
+                    {
+                        <li class="page-item ">
+                            <a class="page-link @(i == Model ? "pa-active" : "")" data-index="@i" >
+                                @i
+                            </a>
+                        </li>
+                    }
+                     <li class="page-item ">
+                        <a class='page-link 'data-index="@(Model+1)">
+                            >>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+<script>
+ function attachPaginationEvents() {
+    const PaginationLinks = document.querySelectorAll('.page-link');
+    PaginationLinks.forEach((link) => {
+        link.addEventListener('click', function() {
+            const pValue = this.dataset.index;
+            console.log("click", pValue);
+            
+            $.ajax({
+                url: '/BPController/GetPagination',
+                type: 'GET',
+                data: { currentPage: pValue },
+                success: function(response) {
+                    console.log('Thành công:', response);
+                    $('.review-pagination').html(response);
+                    // Gắn lại sự kiện sau khi load xong
+                    attachPaginationEvents();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi:', error);
+                }
+            });
+        });
+    });
+}
+
+// Gắn sự kiện ban đầu khi trang tải
+document.addEventListener('DOMContentLoaded', attachPaginationEvents);
+</script>
