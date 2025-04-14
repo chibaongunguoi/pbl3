@@ -2,7 +2,6 @@ using Microsoft.Data.SqlClient;
 
 class BriefTeacherPage
 {
-    public int current_page;
     public int total_num_pages;
     public List<BriefTeacherCard> teachers = new();
 
@@ -13,8 +12,6 @@ class BriefTeacherPage
             {
                 Query q = new(Table.teacher);
                 int total_num = q.count(conn);
-
-                this.current_page = current_page;
                 this.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
                 this.teachers = BriefTeacherPage.get_page(conn, current_page, num_displayed_objs);
             }

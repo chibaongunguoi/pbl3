@@ -1,4 +1,9 @@
-﻿
+﻿@{
+  DetailedCoursePage page = (DetailedCoursePage)ViewBag.page;
+  var teacher = page.teacher_lst[0];
+  var course = page.course_lst[0];
+}
+
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
@@ -8,9 +13,9 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-              @await Html.PartialAsync("_TeacherCard", (object)ViewBag.teacher)
+              @await Html.PartialAsync("_TeacherCard", (object)teacher)
 
-              @await Html.PartialAsync("_SemesterCardDetail", (object)ViewBag.course)
+              @await Html.PartialAsync("_SemesterCardDetail", (object)course)
             </div>         
         </div>
     </div>
@@ -22,17 +27,15 @@
             </div>
         </div>
         <div class="shop-section-content">
-        @await Html.PartialAsync("_RatingTable")
+        @await Html.PartialAsync("_RatingTable", (page.averageRating, page.numRatings))
         <div class="rating-comment-wapper">
-            @await Html.PartialAsync("_RatingComment")      
-            @await Html.PartialAsync("_RatingComment")   
-            @await Html.PartialAsync("_RatingComment")
-            @await Html.PartialAsync("_RatingComment")      
-            @await Html.PartialAsync("_RatingComment")   
-            @await Html.PartialAsync("_RatingComment")
+        @foreach (var card in page.cards)
+        {
+          @await Html.PartialAsync("_RatingComment", (object)card)      
+        }
         </div>
         <div class="reviews-item">
-            @await Html.PartialAsync("_Pagination",1    )
+            @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
         </div>    
         </div>
     </div>

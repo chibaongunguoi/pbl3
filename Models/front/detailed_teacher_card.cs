@@ -1,9 +1,9 @@
 struct DetailedTeacherCard
 {
     public int id;
-    public string name;
-    public string bday;
-    public string grades;
-    public string subjects;
-    public string description;
+    public required string name;
+    public required string bday;
+    public required string grades;
+    public required string subjects;
+    public required string description;
 }

@@ -100,11 +100,12 @@
                 Bạn đã có tài khoản?
                 <a href="/Auth/Login" class="auth-other-link">Đăng nhập</a>
             </div>
-            @if (SessionForm.errors.ContainsKey(ErrorKey.run_out_of_id))
+          @{
+            if (SessionForm.errors.ContainsKey(ErrorKey.run_out_of_id))
             {
             <div style="color: red;">@SessionForm.errors[ErrorKey.run_out_of_id]</div>
             }
-            }
+         }       
         </div>
     </div>
 </div>

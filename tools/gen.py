@@ -292,11 +292,13 @@ for tch_id in teacher_ids:
                     f"{rating_date.year}-{rating_date.month}-{rating_date.date}"
                 )
                 rating_description = """Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
+                # score = random.choices([1,2,3,4,5], weights=[0.05, 0.05, 0.05, 0.05, 0.80], k=1)[0]
+                score = random.choice([1, 2, 3, 4, 5])
                 rating = (
                     stu_id,
                     course_id,
                     rating_date,
-                    random.randint(1, 5),
+                    score,
                     rating_description,
                 )
                 ratings.append(rating)

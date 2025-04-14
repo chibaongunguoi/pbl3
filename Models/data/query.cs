@@ -166,8 +166,8 @@ sealed class Query
     {
         var table_name = TableMngr.conv(table);
         var output_fields_str =
-            output_fields.Count > 0 ? string.Join(", ", output_fields)
-            : count_mode ? "COUNT(*)"
+            count_mode ? "COUNT(*)"
+            : output_fields.Count > 0 ? string.Join(", ", output_fields)
             : "*";
         string query = $"SELECT {output_fields_str} FROM {table_name}";
         query += get_join_clause();

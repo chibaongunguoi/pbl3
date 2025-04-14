@@ -38,11 +38,20 @@ public class CourseController : Controller
         {
             course_id = int.Parse(course_id_);
         }
-        DetailedCoursePage course_page = new(course_id);
+
+        string? page_ = Request.Query["page"];
+        int page = 1;
+        if (page_ is not null)
+        {
+            page = int.Parse(page_);
+        }
+
+        DetailedCoursePage course_page = new(course_id, page);
         if (course_page.invalid)
             return Redirect("Index");
-        ViewBag.teacher = course_page.teachers[0];
-        ViewBag.course = course_page.courses[0];
+        ViewBag.page = course_page;
+        ViewBag.currentPage = page;
+        ViewBag.maxIndexPage = course_page.total_num_pages;
         return View();
     }
 
