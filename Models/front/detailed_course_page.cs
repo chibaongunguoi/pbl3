@@ -10,8 +10,7 @@ class DetailedCoursePage
     public int total_num_pages;
     public double averageRating;
     public int numRatings;
-
-    Dictionary<int, int> ratingCount = new();
+    public Dictionary<int, int> rating_counts = new();
 
     public bool invalid => teacher_lst.Count == 0 || course_lst.Count == 0;
 
@@ -36,6 +35,14 @@ class DetailedCoursePage
             q.where_(Field.rating__course_id, course_id);
             int count = q.count(conn);
             this.total_num_pages = (int)Math.Ceiling((double)count / num_objs);
+
+            for (int i = 1; i <= 5; i++)
+            {
+                q = RatingCard.get_query_creator();
+                q.where_(Field.rating__course_id, course_id);
+                q.where_(Field.rating__stars, i);
+                rating_counts.Add(i, q.count(conn));
+            }
         }
         // thay thees delegate(SqlConnection conn);
         Database.exec(func);
