@@ -11,6 +11,7 @@ sealed class Backend
             {
                 DataGenerator.generate();
             }
+            GeneralQuery.update_course_states();
         }
         catch (Exception e)
         {

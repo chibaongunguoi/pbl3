@@ -50,14 +50,31 @@ sealed class Query
     // ========================================================================
     public void where_(Field table_field, List<int> value)
     {
+        if (value.Count == 0)
+        {
+            conditions.Add($"1 = 0");
+            return;
+        }
         string str = string.Join(", ", value);
         conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
     }
 
     // ========================================================================
-    public void where_(Field table_field, List<string> value)
+    public void where_str(Field table_field, List<string> value)
     {
+        if (value.Count == 0)
+        {
+            conditions.Add($"1 = 0");
+            return;
+        }
         string str = string.Join(", ", value.Select(v => $"\'{v}\'"));
+        conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
+    }
+
+    // ========================================================================
+    public void where_int(Field table_field, List<string> value)
+    {
+        string str = string.Join(", ", value);
         conditions.Add($"{TableMngr.conv(table_field)} IN ({str})");
     }
 
@@ -78,6 +95,12 @@ sealed class Query
     public void where_(Field table_field, string value)
     {
         conditions.Add($"{TableMngr.conv(table_field)} = '{value}'");
+    }
+
+    // ------------------------------------------------------------------------
+    public void where_(Field table_field, DateOnly value)
+    {
+        conditions.Add($"{TableMngr.conv(table_field)} = '{IoUtils.conv_db(value)}'");
     }
 
     // ------------------------------------------------------------------------
