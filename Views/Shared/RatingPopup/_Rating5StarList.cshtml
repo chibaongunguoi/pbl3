@@ -1,0 +1,17 @@
+@{
+  float ratingvalue=Model;
+}
+<div class="card-product-rating-star">
+ @for (var i=0;i<5;i++){
+        if (ratingvalue>=1){
+          @await Html.PartialAsync("RatingPopup/_Rating5StarIcon", (float)100.0)
+          ratingvalue-=1;
+        }else{
+            @await Html.PartialAsync("RatingPopup/_Rating5StarIcon",(float)100.0*ratingvalue)
+            while (i<4){
+              @await Html.PartialAsync("RatingPopup/_Rating5StarIcon",(float)0.0)
+              i++;
+            }
+        }
+      }
+</div>

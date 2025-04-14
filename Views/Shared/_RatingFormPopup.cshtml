@@ -4,7 +4,7 @@
 
       <div class="modal-header">
         <h5 class="modal-title">Viết Đánh Giá</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
       </div>
 
       <div class="modal-body">
@@ -12,13 +12,13 @@
           <form action="add_course" id="pt-add" method="POST">
             <!-- Tên khóa học -->
             <div class="pt-add-form-item">
-              <div class="pt-add-label">
-                <label>
+              <div class="pt-add-label star-label ">
+                <label >
                   <div class="required-icon">*</div> Đánh giá 
                 </label>
               </div>
-              <div class="pt-add-input-wrapper">
-                @await Html.PartialAsync("_Rating5StarList", (float)0.0)
+              <div class="pt-add-input-wrapper star-input">
+                @await Html.PartialAsync("RatingPopup/_Rating5StarList", (float)0.0)
               </div>
             </div>
             <!-- Mô tả -->
@@ -48,6 +48,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const starWrappers = document.querySelectorAll('.rating-star-wrapper');
+    const closeButton = document.querySelector('.close-popup');
     let selectedRating = 0;
     starWrappers.forEach((wrapper, index) => {
       // Sự kiện mouseover
@@ -60,7 +61,10 @@
         selectedRating = index + 1;
       });
     });
-    
+     closeButton.addEventListener('click', () => {
+       highlightStars(0);
+        selectedRating = 0;
+      });
     // Sự kiện mouseout cho container chính
     document.querySelector('.card-product-rating-star').addEventListener('mouseout', () => {
       if (selectedRating > 0) {

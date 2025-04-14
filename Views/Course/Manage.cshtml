@@ -53,7 +53,8 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
                   <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
                     các kì học </button>
                   <button class="card-btn course-detail">Xem đánh giá</button>
-                  <button class="card-btn choose">Đánh giá</button>
+                  <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Đánh giá</button>
+                   @await Html.PartialAsync("_RatingFormPopup")
                 </div>
               </td>
             </tr>
@@ -63,3 +64,10 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
       </div>
     </div>
   </div>
+<style>
+  /* Làm mờ nền khi modal mở */
+  .modal.show {
+    backdrop-filter: blur(5px); /* Hiệu ứng blur */
+    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+  }
+</style>
