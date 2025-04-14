@@ -9,10 +9,18 @@ public class StudentSignUpForm
     public required string password { get; set; }
     public required string password_confirm { get; set; }
 
+    //         bday_empty = "bday_empty",
+    //         name_empty = "name_empty",
+    //         username_empty = "username_empty",
+    //         password_empty = "password_empty",
+    //         password_mismatch = "password_mismatch",
+    //         username_taken = "username_taken",
+    //         run_out_of_id = "run_out_of_id";
+
     public class Log
     {
         public int? stu_id;
-        public List<string> errors = new();
+        public Dictionary<string, string> errors = new();
         public bool success => errors.Count == 0;
     }
 
@@ -20,29 +28,31 @@ public class StudentSignUpForm
     {
         Log log = new Log();
 
-        bool success = true;
-
         if (bday == null)
         {
-            log.errors.Add(ErrorStr.bday_empty);
+            log.errors[ErrorKey.bday_empty] = "Ngày sinh không được để trống";
         }
 
         if (string.IsNullOrEmpty(name))
         {
-            log.errors.Add(ErrorStr.name_empty);
+            log.errors[ErrorKey.name_empty] = "Họ và tên không được để trống";
         }
 
         if (string.IsNullOrEmpty(username))
         {
-            log.errors.Add(ErrorStr.username_empty);
+            log.errors[ErrorKey.username_empty] = "Tên đăng nhập không được để trống";
         }
 
-        if (password != password_confirm)
+        if (string.IsNullOrEmpty(password))
         {
-            log.errors.Add(ErrorStr.password_mismatch);
+            log.errors[ErrorKey.password_empty] = "Mật khẩu không được để trống";
+        }
+        else if (password != password_confirm)
+        {
+            log.errors[ErrorKey.password_mismatch] = "Mật khẩu không khớp";
         }
 
-        if (!success)
+        if (!log.success)
         {
             return log;
         }
@@ -53,14 +63,14 @@ public class StudentSignUpForm
 
         if (count > 0)
         {
-            log.errors.Add(ErrorStr.username_taken);
+            log.errors[ErrorKey.username_taken] = "Tên đăng nhập đã tồn tại";
             return log;
         }
 
         int id = 0;
         if (!IdCounterQuery.increment(conn, Table.student, out id))
         {
-            log.errors.Add(ErrorStr.run_out_of_id);
+            log.errors[ErrorKey.run_out_of_id] = "Đã hết ID cho bảng sinh viên";
             return log;
         }
 

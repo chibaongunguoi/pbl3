@@ -1,4 +1,3 @@
-
 <div class="auth-content-wrapper">
     <div class="auth-wrapper container">
         <div class="auth-content">
@@ -10,12 +9,18 @@
                     <div class="auth-input-wrapper">
                         <input name="name" type="text" placeholder='Họ và tên' class="auth-input" />
                     </div>
+              @{
+              if (SessionForm.errors.ContainsKey(ErrorKey.name_empty))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.name_empty]</div>
+              }
+              }
                     <div class="auth-input-wrapper">
                         <div class="auth-label">Giới tính</div>
                         <div class="auth-radio-wapper"> 
                             <label class="auth-label-radio">
                                 Nam
-                                <input value="male" name="gender" type="radio" class="auth-radio" />
+                                <input value="male" name="gender" type="radio" class="auth-radio" checked/>
                             </label>
                             <label class="auth-label-radio">
                                 Nữ
@@ -27,9 +32,24 @@
                         <div class="auth-label">Ngày sinh</div>
                         <input name="bday" type="date" placeholder='Ngày sinh' class="auth-input" />
                     </div>
+              @{
+              if (SessionForm.errors.ContainsKey(ErrorKey.bday_empty))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.bday_empty]</div>
+              }
+              }
                     <div class="auth-input-wrapper">
                         <input name="username" type="text" placeholder='Tên đăng nhập' class="auth-input" />
                     </div>
+              @{
+              if (SessionForm.errors.ContainsKey(ErrorKey.username_empty))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.username_empty]</div>
+              } else if (SessionForm.errors.ContainsKey(ErrorKey.username_taken))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.username_taken]</div>
+              }
+              }
                     
                     <div class="auth-input-wrapper">
                         <input name="password" type="password" placeholder='Mật khẩu' class="auth-input" />
@@ -51,9 +71,21 @@
                             </div>
                         </div>
                     </div>
+              @{
+              if (SessionForm.errors.ContainsKey(ErrorKey.password_empty))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.password_empty]</div>
+              }
+              }
                     <div class="auth-input-wrapper">
                         <input name="password_confirm" type="password" placeholder='Xác nhận mật khẩu' class="auth-input" />
                     </div>
+              @{
+              if (SessionForm.errors.ContainsKey(ErrorKey.password_mismatch))
+              {
+                  <div style="color: red;">@SessionForm.errors[ErrorKey.password_mismatch]</div>
+              }
+              }
                     @* <div class="auth-forget-password-wrapper">
                         <a href='' class="auth-forget-password">
                             Quên mật khẩu?
@@ -68,6 +100,11 @@
                 Bạn đã có tài khoản?
                 <a href="/Auth/Login" class="auth-other-link">Đăng nhập</a>
             </div>
+            @if (SessionForm.errors.ContainsKey(ErrorKey.run_out_of_id))
+            {
+            <div style="color: red;">@SessionForm.errors[ErrorKey.run_out_of_id]</div>
+            }
+            }
         </div>
     </div>
 </div>

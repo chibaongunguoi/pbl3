@@ -29,19 +29,19 @@ public class AddCourseForm
         bool valid = true;
         if (!int.TryParse(grade, out i_grade))
         {
-            log.Add(ErrorStr.grade_must_be_int);
+            log.Add(ErrorKey.grade_must_be_int);
             valid = false;
         }
 
         if (start_date is null)
         {
-            log.Add(ErrorStr.start_date_missing);
+            log.Add(ErrorKey.start_date_missing);
             valid = false;
         }
 
         if (finish_date is null)
         {
-            log.Add(ErrorStr.finish_date_missing);
+            log.Add(ErrorKey.finish_date_missing);
             valid = false;
         }
 
@@ -54,7 +54,7 @@ public class AddCourseForm
         int c = q.count(conn);
         if (c == 0)
         {
-            log.Add(ErrorStr.tch_id_not_exist);
+            log.Add(ErrorKey.tch_id_not_exist);
             return log;
         }
 
@@ -65,7 +65,7 @@ public class AddCourseForm
 
         if (subjects.Count == 0)
         {
-            log.Add(ErrorStr.run_out_of_id);
+            log.Add(ErrorKey.run_out_of_id);
             return log;
         }
 
@@ -78,7 +78,7 @@ public class AddCourseForm
             || !IdCounterQuery.get_count(conn, Table.semester, out semester_id)
         )
         {
-            log.Add(ErrorStr.run_out_of_id);
+            log.Add(ErrorKey.run_out_of_id);
             return log;
         }
         IdCounterQuery.increment(conn, Table.course, out course_id);

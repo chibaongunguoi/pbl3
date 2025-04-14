@@ -84,7 +84,6 @@ public class CourseController : Controller
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
-        form.print_log();
         string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
         int? tch_id = null;
         switch (user_role)

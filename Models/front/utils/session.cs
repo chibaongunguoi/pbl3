@@ -12,7 +12,15 @@ static class SessionKey
 {
     public const string user_role = "user_role",
         user_id = "user_id",
-        user_name = "user_name";
+        user_name = "user_name",
+        TRUE = "TRUE",
+        FALSE = "FALSE";
+}
+
+static class SessionForm
+{
+    public static Dictionary<string, string> errors = new();
+    public static bool displaying_error = false;
 }
 
 static class SessionManager
