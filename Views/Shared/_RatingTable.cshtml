@@ -1,4 +1,18 @@
-@model ( double avg_rating, int num_ratings )
+@model ( double avg_rating, int num_ratings, Dictionary<int, int> rating_counts )
+
+@{
+  int sum = 0;
+  foreach (var item in Model.rating_counts)
+  {
+    sum += item.Value;
+  }
+
+  Dictionary<int, float> rating_ratio = new();
+  foreach (var item in Model.rating_counts)
+  {
+    rating_ratio[item.Key] = (float)item.Value / sum * 100;
+  }
+}
 
 <div class="product-des-content-wrapper">
   <div class="product-rating-wrapper">
@@ -26,10 +40,10 @@
           <div class="progress-bar-wrapper">
             <div class="review-progress-wrapper">
               <div class="review-progress"></div>
-              <div class="review-progress review-progress-fill" style="width: 70%;"></div>
+              <div class="review-progress review-progress-fill" style="width: @rating_ratio[5]%;"></div>
             </div>
           </div>
-          <div class="review-star-rating-count">70</div>
+          <div class="review-star-rating-count">@Model.rating_counts[5]</div>
         </li>
         <li class="rating-star">
           <div class="rating-star-wrapper">
@@ -41,10 +55,10 @@
           <div class="progress-bar-wrapper">
             <div class="review-progress-wrapper">
               <div class="review-progress"></div>
-              <div class="review-progress review-progress-fill" style="width: 15%;"></div>
+              <div class="review-progress review-progress-fill" style="width: @rating_ratio[4]%;"></div>
             </div>
           </div>
-          <div class="review-star-rating-count">15</div>
+          <div class="review-star-rating-count">@Model.rating_counts[4]</div>
         </li>
         <li class="rating-star">
           <div class="rating-star-wrapper">
@@ -55,10 +69,10 @@
           <div class="progress-bar-wrapper">
             <div class="review-progress-wrapper">
               <div class="review-progress"></div>
-              <div class="review-progress review-progress-fill" style="width: 10%;"></div>
+              <div class="review-progress review-progress-fill" style="width: @rating_ratio[3]%;"></div>
             </div>
           </div>
-          <div class="review-star-rating-count">10</div>
+          <div class="review-star-rating-count">@Model.rating_counts[3]</div>
         </li>
         <li class="rating-star">
           <div class="rating-star-wrapper">
@@ -69,10 +83,10 @@
           <div class="progress-bar-wrapper">
             <div class="review-progress-wrapper">
               <div class="review-progress"></div>
-              <div class="review-progress review-progress-fill" style="width: 0%;"></div>
+              <div class="review-progress review-progress-fill" style="width: @rating_ratio[2]%;"></div>
             </div>
           </div>
-          <div class="review-star-rating-count">0</div>
+          <div class="review-star-rating-count">@Model.rating_counts[2]</div>
         </li>
         <li class="rating-star">
           <div class="rating-star-wrapper">
@@ -83,10 +97,10 @@
           <div class="progress-bar-wrapper">
             <div class="review-progress-wrapper">
               <div class="review-progress"></div>
-              <div class="review-progress review-progress-fill" style="width: 5%;"></div>
+              <div class="review-progress review-progress-fill" style="width: @rating_ratio[1]%;"></div>
             </div>
           </div>
-          <div class="review-star-rating-count">5</div>
+          <div class="review-star-rating-count">@Model.rating_counts[1]</div>
         </li>
       </ul>
     </div>

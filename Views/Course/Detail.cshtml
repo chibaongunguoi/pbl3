@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="shop-section-content">
-        @await Html.PartialAsync("_RatingTable", (page.averageRating, page.numRatings))
+        @await Html.PartialAsync("_RatingTable", (page.averageRating, page.numRatings, page.rating_counts))
         <div class="rating-comment-wapper">
         @foreach (var card in page.cards)
         {
