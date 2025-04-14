@@ -17,6 +17,14 @@ public class AuthController : BaseController
 
     public IActionResult SignUp()
     {
+        if (SessionForm.displaying_error)
+        {
+            SessionForm.displaying_error = false;
+        }
+        else
+        {
+            SessionForm.errors.Clear();
+        }
         SessionManager.log_out(HttpContext.Session);
         return View("SignUp");
     }
@@ -27,6 +35,8 @@ public class AuthController : BaseController
         StudentSignUpForm.Log log = form.execute();
         if (!log.success)
         {
+            SessionForm.displaying_error = true;
+            SessionForm.errors = log.errors;
             return Redirect("SignUp");
         }
 

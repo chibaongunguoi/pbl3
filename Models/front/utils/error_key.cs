@@ -1,4 +1,4 @@
-public static class ErrorStr
+public static class ErrorKey
 {
     public const string //
         // general errors

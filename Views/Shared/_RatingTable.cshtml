@@ -1,16 +1,18 @@
+@model ( double avg_rating, int num_ratings )
+
 <div class="product-des-content-wrapper">
   <div class="product-rating-wrapper">
     <div class="rating-summary">
       <div class="rating-score">
-        <span class="score-avg">4.5</span>
+        <span class="score-avg">@Math.Round(Model.avg_rating,1)</span>
         <span class="score-max">/5</span>
       </div>
       <div class="reply-rating-star-icon-list">
         <div class="card-product-rating-star">
-          @await Html.PartialAsync("_Rating5StarList",(float)4.5)
+          @await Html.PartialAsync("_Rating5StarList",(float)Model.avg_rating)
         </div>
       </div>
-      <div class="rating-count">50 Lượt đánh giá</div>
+      <div class="rating-count">@Model.num_ratings lượt đánh giá</div>
     </div>
     <div class="rating-detail">
       <ul class="rating-star-list">
