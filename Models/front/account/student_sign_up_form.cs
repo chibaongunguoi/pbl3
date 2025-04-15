@@ -57,8 +57,8 @@ public class StudentSignUpForm
             return log;
         }
 
-        Query q = new(Table.student);
-        q.where_(Field.student__username, username);
+        QueryCreator q = new(Tbl.student);
+        q.WhereClause(QPiece.eq(Fld.username, username));
         int count = q.count(conn);
 
         if (count > 0)
@@ -68,7 +68,7 @@ public class StudentSignUpForm
         }
 
         int id = 0;
-        if (!IdCounterQuery.increment(conn, Table.student, out id))
+        if (!IdCounterQuery.increment(conn, Tbl.student, out id))
         {
             log.errors[ErrorKey.run_out_of_id] = "Đã hết ID cho bảng sinh viên";
             return log;
@@ -83,8 +83,8 @@ public class StudentSignUpForm
             gender = gender,
             bday = bday ?? new(),
         };
-        q = new Query(Table.student);
-        q.insert<Student>(conn, student);
+        Query q1 = new Query(Table.student);
+        q1.insert<Student>(conn, student);
 
         log.stu_id = id;
         return log;

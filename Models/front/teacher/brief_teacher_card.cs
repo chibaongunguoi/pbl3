@@ -1,27 +1,21 @@
 using Microsoft.Data.SqlClient;
 
-struct BriefTeacherCard
+class BriefTeacherCard : DataObj
 {
     public int id;
-    public string name;
-    public string gender;
-    public string bday;
-    public string description;
+    public string name = "";
+    public string gender = "";
+    public string bday = "";
+    public string description = "";
 
-    public static BriefTeacherCard get_card(SqlConnection conn, SqlDataReader reader)
+    public override void fetch_data(SqlDataReader reader, ref int pos)
     {
-        int pos = 0;
         Teacher teacher = DataReader.get_data_obj<Teacher>(reader, ref pos);
-        BriefTeacherCard card = new()
-        {
-            id = teacher.id,
-            name = teacher.name,
-            gender = IoUtils.conv_gender(teacher.gender),
-            bday = IoUtils.conv(teacher.bday),
-            description = teacher.description,
-        };
-
-        return card;
+        this.id = teacher.id;
+        this.name = teacher.name;
+        this.gender = IoUtils.conv_gender(teacher.gender);
+        this.bday = IoUtils.conv(teacher.bday);
+        this.description = teacher.description;
     }
     // ------------------------------------------------------------------------
 }

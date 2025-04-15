@@ -13,7 +13,7 @@ sealed class IdCounterQuery
     public static State s_last_state { get; private set; } = State.none;
 
     // ========================================================================
-    public static bool get_count(SqlConnection conn, Table table, out int id)
+    public static bool get_count(SqlConnection conn, string table, out int id)
     {
         int count = 1;
         int max_count = 0;
@@ -26,10 +26,9 @@ sealed class IdCounterQuery
             max_count = DataReader.get_int(reader, ref pos);
         }
 
-        Query q = new(Table.id_counter);
-        q.where_(Field.id_counter__name, table.ToString());
-        q.output(Field.id_counter__count);
-        q.output(Field.id_counter__max_count);
+        QueryCreator q = new(Tbl.id_counter);
+        q.WhereClause(QPiece.eqStr(Fld.name, table));
+        q.output(Fld.count, Fld.max_count);
         q.select(conn, func);
 
         if (count > max_count)
@@ -43,14 +42,14 @@ sealed class IdCounterQuery
     }
 
     // ========================================================================
-    public static bool increment(SqlConnection conn, Table table, out int id)
+    public static bool increment(SqlConnection conn, string table, out int id)
     {
         if (!get_count(conn, table, out id))
             return false;
 
-        Query q = new(Table.id_counter);
-        q.set_(Field.id_counter__count, id + 1);
-        q.where_(Field.id_counter__name, table.ToString());
+        QueryCreator q = new(Tbl.id_counter);
+        q.SetClause(QPiece.eq(Fld.count, id + 1));
+        q.WhereClause(QPiece.eq(Fld.name, table));
         q.update(conn);
         return true;
     }

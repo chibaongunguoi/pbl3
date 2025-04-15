@@ -40,31 +40,31 @@ static class Session
 
 static class SessionManager
 {
-    public static void log_in(ISession session, Table table, int id)
+    public static void log_in(ISession session, string table, int id)
     {
         switch (table)
         {
-            case Table.student:
+            case Tbl.student:
                 session.SetString(SessionKey.user_role, SessionRole.student);
                 break;
 
-            case Table.teacher:
+            case Tbl.teacher:
                 session.SetString(SessionKey.user_role, SessionRole.teacher);
                 break;
 
-            case Table.admin:
+            case Tbl.admin:
                 session.SetString(SessionKey.user_role, SessionRole.admin);
                 break;
         }
 
         switch (table)
         {
-            case Table.student
-            or Table.teacher:
+            case Tbl.student
+            or Tbl.teacher:
                 Database.exec(
                     delegate(SqlConnection conn)
                     {
-                        List<User> users = CommonQuery<User>.get_record_by_id(conn, id, table);
+                        List<User> users = CommonQuery<User>.get_record_by_id(conn, table, id);
                         string name = users[0].name;
                         session.SetString(SessionKey.user_name, name);
                     }

@@ -2,21 +2,6 @@ using Microsoft.Data.SqlClient;
 
 class CommonQuery
 {
-    // ========================================================================
-    public static List<string> get_all_records(SqlConnection conn, Table table)
-    {
-        Query q = new(table);
-        return q.select(conn);
-    }
-
-    // ------------------------------------------------------------------------
-    public static List<string> get_record_by_id(int id, Table table, SqlConnection conn)
-    {
-        Query q = new(table);
-        q.where_(QueryUtils.cat(table, FieldSuffix.id), id);
-        return q.select(conn);
-    }
-
     // ------------------------------------------------------------------------
     public static void insert_record_with_id<T>(SqlConnection conn, T obj, Table table)
         where T : IdObj, new()
@@ -38,17 +23,17 @@ class CommonQuery<T>
     where T : DataObj, new()
 {
     // ========================================================================
-    public static List<T> get_all_records(SqlConnection conn, Table table)
+    public static List<T> get_all_records(SqlConnection conn, string table)
     {
-        Query q = new(table);
+        QueryCreator q = new(table);
         return q.select<T>(conn);
     }
 
     // ------------------------------------------------------------------------
-    public static List<T> get_record_by_id(SqlConnection conn, int id, Table table)
+    public static List<T> get_record_by_id(SqlConnection conn, string table, int id)
     {
-        var q = new Query(table);
-        q.where_(QueryUtils.cat(table, FieldSuffix.id), id);
+        QueryCreator q = new(table);
+        q.Where(table, Fld.id, id);
         return q.select<T>(conn);
     }
 

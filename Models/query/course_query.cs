@@ -9,10 +9,11 @@ static class CourseQuery
         out int num_ratings
     )
     {
-        Query q = new(Table.rating);
-        q.where_(Field.rating__course_id, course_id);
+        QueryCreator q = new(Tbl.rating);
+        q.Where(Tbl.rating, Fld.course_id, course_id);
         List<Rating> ratings = Database.exec_list(conn => q.select<Rating>(conn));
         num_ratings = ratings.Count;
+
         int total_stars = 0;
         foreach (Rating rating in ratings)
         {

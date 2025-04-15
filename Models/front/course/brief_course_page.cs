@@ -19,7 +19,7 @@ class BriefCoursePage
             delegate(SqlConnection conn)
             {
                 // Truy vấn tổng số khóa học
-                Query q = new(Table.course);
+                QueryCreator q = new(Tbl.course);
                 int num_total_courses = q.count(conn);
                 // Suy ra tổng số trang
                 this.total_num_pages = (int)
@@ -48,22 +48,22 @@ class BriefCoursePage
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
         List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.get_query_creator();
-        if (search_by_course_name != null)
-        {
-            q.where_string_contains(Field.course__name, search_by_course_name);
-        }
-        if (search_by_teacher_name != null)
-        {
-            q.where_string_contains(Field.teacher__name, search_by_teacher_name);
-        }
-        if (search_by_subject_name != null)
-        {
-            q.where_string_contains(Field.subject__name, search_by_subject_name);
-        }
-        q.order_by(Field.semester__id, desc: true);
+        QueryCreator q = BriefCourseCard.get_query_creator();
+        // if (search_by_course_name != null)
+        // {
+        //     q.where_string_contains(Field.course__name, search_by_course_name);
+        // }
+        // if (search_by_teacher_name != null)
+        // {
+        //     q.where_string_contains(Field.teacher__name, search_by_teacher_name);
+        // }
+        // if (search_by_subject_name != null)
+        // {
+        //     q.where_string_contains(Field.subject__name, search_by_subject_name);
+        // }
+        q.orderBy(QPiece.orderBy(QPiece.dot(Tbl.semester, Fld.id), desc: true));
         q.offset(page, num_objs);
-        q.select(conn, reader => cards.Add(BriefCourseCard.get_card(conn, reader)));
+        cards = q.select<BriefCourseCard>(conn);
         stopwatch.Stop();
         TimeSpan elapsed = stopwatch.Elapsed;
         Console.WriteLine($"get_brief_course_cards");
