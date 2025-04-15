@@ -1,0 +1,46 @@
+<div class="modal modal fade" id="semTableModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Danh sách kỳ học của VDC toán 12</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-striped table-checkall">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Ngày bắt đầu</th>
+              <th scope="col">Ngày kết thúc</th>
+              <th scope="col">Tình trạng</th>
+              <th scope="col">Sĩ số</th>
+              <th scope="col">Học phí</th>
+              <th scope="col">Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td scope="row" class="table-index">1</td>
+              <td>4/15/2025</td>
+              <td>4/15/2026</td>
+              <td>đã kết thúc</td>
+              <td>31/50</td>
+              <td>2000000đ</td>
+              <td>
+                <div class="button-group-wrapper course-manager">
+                  <button class="card-btn course-detail">Xem chi tiết</button> 
+                  <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#studentTableModal">Xem danh sách học viên</button>   
+                  
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

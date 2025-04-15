@@ -28,6 +28,10 @@ public class SemesterController : Controller
         ViewBag.page = page;
         return View();
     }
+    public IActionResult Manage()
+    {    
+        return View();
+    }
 
     [HttpPost]
     public IActionResult add_semester(AddSemesterForm form)
