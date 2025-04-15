@@ -1,32 +1,32 @@
-@model int
+@model (int page, int max_index_page, string context_url, string context_component)
 
 <nav aria-label="pagination-wrapper">
                 <ul class="pagination">
                     <li class="page-item ">
-                        <a class='page-link 'data-index="@(Model-1)" >
+                        <a class='page-link 'data-index="@(Model.page-1)" >
                             <<
                         </a>
                     </li>
                     @{
-                        var left=Model-2;
-                        var right=Model+2;
+                        var left=Model.page-2;
+                        var right=Model.page+2;
                         if (left<1){
                             left=1;
                         }
-                        if (right>ViewBag.maxIndexPage){
-                            right=ViewBag.maxIndexPage;
+                        if (right>@Model.max_index_page){
+                            right=@Model.max_index_page;
                         }
                     }
-                    @for (int i = left; i <=  right; i++)
+                    @for (int i = left; i <= right; i++)
                     {
                         <li class="page-item ">
-                            <a class="page-link @(i == Model ? "pa-active" : "")" data-index="@i" >
+                            <a class="page-link @(i == Model.page ? "pa-active" : "")" data-index="@i" >
                                 @i
                             </a>
                         </li>
                     }
                      <li class="page-item ">
-                        <a class='page-link 'data-index="@(Model+1)">
+                        <a class='page-link 'data-index="@(Model.page+1)">
                             >>
                         </a>
                     </li>
@@ -36,16 +36,38 @@
  function attachPaginationEvents() {
     const PaginationLinks = document.querySelectorAll('.page-link');
     PaginationLinks.forEach((link) => {
-        link.addEventListener('click', function() {
+        const new_link = link.cloneNode(true); 
+        link.replaceWith(new_link);
+        new_link.addEventListener('click', function() {
             const pValue = this.dataset.index;
             console.log("click", pValue);
             $.ajax({
                 url: '/BPController/GetPagination',
                 type: 'GET',
-                data: { currentPage: pValue },
+                data: { currentPage: pValue,
+                  max_index_page: @Model.max_index_page,
+                  context_url: '@Model.context_url',
+                  context_component: '@Model.context_component'
+                },
                 success: function(response) {
                     console.log('Thành công:', response);
                     $('.review-pagination').html(response);
+                    // Gắn lại sự kiện sau khi load xong
+                    attachPaginationEvents();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi:', error);
+                }
+            });
+
+            $('@Model.context_component').html("");
+            $.ajax({
+                url: '@Model.context_url',
+                type: 'GET',
+                data: { currentPage: pValue },
+                success: function(response) {
+                    console.log('Thành công:', response);
+                    $('@Model.context_component').html(response);
                     // Gắn lại sự kiện sau khi load xong
                     attachPaginationEvents();
                 },

@@ -24,7 +24,6 @@ public class CourseController : Controller
         }
         BriefCoursePage course_page = new(page);
         ViewBag.courses = course_page.courses;
-        ViewBag.currentPage = page;
         ViewBag.maxIndexPage = course_page.total_num_pages;
         Console.WriteLine($"Fetched {course_page.courses.Count} courses");
         return View();
@@ -51,7 +50,6 @@ public class CourseController : Controller
             return Redirect("Index");
         ViewBag.page = course_page;
         ViewBag.currentPage = page;
-        ViewBag.maxIndexPage = course_page.total_num_pages;
         return View();
     }
 

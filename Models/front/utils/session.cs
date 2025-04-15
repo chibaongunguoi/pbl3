@@ -23,6 +23,21 @@ static class SessionForm
     public static bool displaying_error = false;
 }
 
+static class Session
+{
+    public static int? get_int(IQueryCollection query, string key)
+    {
+        string? value = query[key];
+        if (value is null)
+            return null;
+        int result = 0;
+        if (int.TryParse(value, out result))
+            return result;
+        else
+            return null;
+    }
+}
+
 static class SessionManager
 {
     public static void log_in(ISession session, Table table, int id)

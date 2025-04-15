@@ -2,6 +2,8 @@ using Microsoft.Data.SqlClient;
 
 class DetailedCoursePage
 {
+    public int course_id;
+    public int current_page;
     public List<BriefTeacherCard> teacher_lst = new();
     public List<DetailedCourseCard> course_lst = new();
 
@@ -16,6 +18,8 @@ class DetailedCoursePage
 
     public DetailedCoursePage(int course_id, int current_page = 1, int num_objs = 10)
     {
+        this.course_id = course_id;
+        this.current_page = current_page;
         void func(SqlConnection conn)
         {
             CourseQuery.get_avg_rating(conn, course_id, out averageRating, out numRatings);
