@@ -18,8 +18,8 @@ sealed class Teacher : User
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(thumbnail));
-        lst.Add(QPiece.ToStr(description));
+        lst.Add(QPiece.toStr(thumbnail));
+        lst.Add(QPiece.toStr(description));
         return lst;
     }
 

@@ -51,7 +51,7 @@ public class AddCourseForm
         // Start querying
 
         Query q = new(Tbl.teacher);
-        int c = q.Count(conn);
+        int c = q.count(conn);
         if (c == 0)
         {
             log.Add(ErrorKey.tch_id_not_exist);
@@ -61,7 +61,7 @@ public class AddCourseForm
         Query sbj_query = new(Tbl.subject);
         sbj_query.Where(Tbl.subject, Fld.name, subject);
         sbj_query.Where(Tbl.subject, Fld.grade, i_grade);
-        List<Subject> subjects = sbj_query.Select<Subject>(conn);
+        List<Subject> subjects = sbj_query.select<Subject>(conn);
 
         if (subjects.Count == 0)
         {
@@ -105,9 +105,9 @@ public class AddCourseForm
         };
 
         Query q1 = new(Tbl.course);
-        q1.Insert<Course>(conn, course);
+        q1.insert<Course>(conn, course);
         q1 = new(Tbl.semester);
-        q1.Insert<Semester>(conn, semester);
+        q1.insert<Semester>(conn, semester);
 
         log.course_id = course_id;
         log.semester_id = semester_id;

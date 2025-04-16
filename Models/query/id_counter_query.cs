@@ -28,8 +28,8 @@ sealed class IdCounterQuery
 
         Query q = new(Tbl.id_counter);
         q.WhereClause(QPiece.eq(Fld.name, table));
-        q.OutputClause(Fld.count, Fld.max_count);
-        q.Select(conn, func);
+        q.outputClause(Fld.count, Fld.max_count);
+        q.select(conn, func);
 
         if (count > max_count)
             s_last_state = State.id_hits_limit;
@@ -50,7 +50,7 @@ sealed class IdCounterQuery
         Query q = new(Tbl.id_counter);
         q.Where(Fld.name, table);
         q.Set(Fld.count, id + 1);
-        q.Update(conn);
+        q.update(conn);
         return true;
     }
 

@@ -18,8 +18,8 @@ class Account : IdObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(username));
-        lst.Add(QPiece.ToStr(password));
+        lst.Add(QPiece.toStr(username));
+        lst.Add(QPiece.toStr(password));
         return lst;
     }
 

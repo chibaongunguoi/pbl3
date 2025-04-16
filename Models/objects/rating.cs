@@ -23,11 +23,11 @@ sealed class Rating : DataObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(stu_id));
-        lst.Add(QPiece.ToStr(course_id));
-        lst.Add(QPiece.ToStr(date));
-        lst.Add(QPiece.ToStr(stars));
-        lst.Add(QPiece.ToStr(description));
+        lst.Add(QPiece.toStr(stu_id));
+        lst.Add(QPiece.toStr(course_id));
+        lst.Add(QPiece.toStr(date));
+        lst.Add(QPiece.toStr(stars));
+        lst.Add(QPiece.toStr(description));
         return lst;
     }
 

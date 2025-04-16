@@ -22,10 +22,10 @@ sealed class Course : IdObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(tch_id));
-        lst.Add(QPiece.ToStr(sbj_id));
-        lst.Add(QPiece.ToNStr(name));
-        lst.Add(QPiece.ToStr(state));
+        lst.Add(QPiece.toStr(tch_id));
+        lst.Add(QPiece.toStr(sbj_id));
+        lst.Add(QPiece.toNStr(name));
+        lst.Add(QPiece.toStr(state));
         return lst;
     }
 

@@ -25,7 +25,7 @@ class DetailedCoursePage
             CourseQuery.get_avg_rating(conn, course_id, out averageRating, out numRatings);
             Query q = new(Tbl.course);
             q.WhereClause(QPiece.eq(QPiece.dot(Tbl.course, Fld.id), course_id));
-            List<Course> course_lst = q.Select<Course>(conn);
+            List<Course> course_lst = q.select<Course>(conn);
             if (course_lst.Count == 0)
                 return;
 
@@ -37,7 +37,7 @@ class DetailedCoursePage
 
             q = RatingCard.get_query_creator();
             q.Where(Tbl.rating, Fld.course_id, course_id);
-            int count = q.Count(conn);
+            int count = q.count(conn);
             this.total_num_pages = (int)Math.Ceiling((double)count / num_objs);
 
             for (int i = 1; i <= 5; i++)
@@ -45,7 +45,7 @@ class DetailedCoursePage
                 q = RatingCard.get_query_creator();
                 q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.stars), i));
                 q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.course_id), course_id));
-                rating_counts.Add(i, q.Count(conn));
+                rating_counts.Add(i, q.count(conn));
             }
         }
         // thay thees delegate(SqlConnection conn);
@@ -63,7 +63,7 @@ class DetailedCoursePage
         Query q = RatingCard.get_query_creator();
         q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.course_id), courseId));
         q.offset(page, num_objs);
-        q.Select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
+        q.select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
         return cards;
     }
 
@@ -72,7 +72,7 @@ class DetailedCoursePage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.WhereClause(QPiece.eq(QPiece.dot(Tbl.teacher, Fld.id), tch_id));
-        return q.Select<BriefTeacherCard>(conn);
+        return q.select<BriefTeacherCard>(conn);
     }
 
     public static List<DetailedCourseCard> get_course_by_id(SqlConnection conn, int id)
@@ -80,6 +80,6 @@ class DetailedCoursePage
         List<DetailedCourseCard> cards = new();
         Query q = DetailedCourseCard.get_query_creator();
         q.WhereClause(QPiece.eq(QPiece.dot(Tbl.course, Fld.id), id));
-        return q.Select<DetailedCourseCard>(conn);
+        return q.select<DetailedCourseCard>(conn);
     }
 }

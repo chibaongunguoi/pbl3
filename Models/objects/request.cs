@@ -21,10 +21,10 @@ sealed class Request : DataObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(stu_id));
-        lst.Add(QPiece.ToStr(semester_id));
-        lst.Add(QPiece.ToStr(date));
-        lst.Add(QPiece.ToStr(state));
+        lst.Add(QPiece.toStr(stu_id));
+        lst.Add(QPiece.toStr(semester_id));
+        lst.Add(QPiece.toStr(date));
+        lst.Add(QPiece.toStr(state));
         return lst;
     }
 

@@ -14,17 +14,17 @@ static class GeneralQuery
             q.Where(Tbl.semester, Fld.state, SemesterState.waiting);
 
             Query course_ids_query = q;
-            course_ids_query.Output(Tbl.semester, Fld.course_id);
-            List<string> course_ids = Database.exec_query(conn, course_ids_query.SelectQuery());
+            course_ids_query.output(Tbl.semester, Fld.course_id);
+            List<string> course_ids = Database.exec_query(conn, course_ids_query.selectQuery());
 
             Query update_semester_query = q;
             update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.started);
-            update_semester_query.Update(conn);
+            update_semester_query.update(conn);
 
             Query update_course_query = new(Tbl.course);
             update_course_query.Set(Tbl.course, Fld.state, CourseState.started);
             update_course_query.Where(Tbl.course, Fld.id, course_ids);
-            update_course_query.Update(conn);
+            update_course_query.update(conn);
         }
 
         void finish_courses(SqlConnection conn)
@@ -34,17 +34,17 @@ static class GeneralQuery
             q.Where(Tbl.semester, Fld.state, SemesterState.started);
 
             Query course_ids_query = q;
-            course_ids_query.Output(Tbl.semester, Fld.course_id);
-            List<string> course_ids = Database.exec_query(conn, course_ids_query.SelectQuery());
+            course_ids_query.output(Tbl.semester, Fld.course_id);
+            List<string> course_ids = Database.exec_query(conn, course_ids_query.selectQuery());
 
             Query update_semester_query = q;
             update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.finished);
-            update_semester_query.Update(conn);
+            update_semester_query.update(conn);
 
             Query update_course_query = new(Tbl.course);
             update_course_query.Set(Tbl.course, Fld.state, CourseState.finished);
             update_course_query.Where(Tbl.course, Fld.id, course_ids);
-            update_course_query.Update(conn);
+            update_course_query.update(conn);
         }
 
         Database.exec(

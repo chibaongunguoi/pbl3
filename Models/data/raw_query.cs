@@ -50,11 +50,25 @@ sealed class RawQuery
     {
         int total_batches = (int)Math.Ceiling((double)data.Count / batch_size);
 
+        string queries = "";
         for (int batch_number = 0; batch_number < total_batches; batch_number++)
         {
             var batch = data.Skip(batch_number * batch_size).Take(batch_size).ToList();
             string query = InsertQuery(batch, table, table_config);
-            Database.exec_non_query(conn, query);
+            if (query.Length + queries.Length > 1000000)
+            {
+                Database.exec_non_query(conn, queries);
+                queries = query;
+            }
+            else
+            {
+                queries += $"{query} ";
+            }
+        }
+        if (queries != "")
+        {
+            queries = queries.TrimEnd(' ');
+            Database.exec_non_query(conn, queries);
         }
     }
 

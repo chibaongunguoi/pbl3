@@ -8,7 +8,7 @@ class CourseOption : DataObj
     public static Query get_query_creator()
     {
         Query q = new(Tbl.course);
-        q.OutputClause(Fld.id, Fld.name);
+        q.outputClause(Fld.id, Fld.name);
         return q;
     }
 
@@ -33,7 +33,7 @@ class AddSemesterPage
                 Query q = CourseOption.get_query_creator();
                 q.Where(Tbl.course, Fld.state, CourseState.finished);
                 q.Where(Tbl.course, Fld.tch_id, tch_id);
-                this.courses = q.Select<CourseOption>(conn);
+                this.courses = q.select<CourseOption>(conn);
             }
         );
     }

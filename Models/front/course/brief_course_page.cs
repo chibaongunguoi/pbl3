@@ -20,7 +20,7 @@ class BriefCoursePage
             {
                 // Truy vấn tổng số khóa học
                 Query q = new(Tbl.course);
-                int num_total_courses = q.Count(conn);
+                int num_total_courses = q.count(conn);
                 // Suy ra tổng số trang
                 this.total_num_pages = (int)
                     Math.Ceiling((double)num_total_courses / num_displayed_courses);
@@ -63,7 +63,7 @@ class BriefCoursePage
         // }
         q.orderByClause(QPiece.orderBy(QPiece.dot(Tbl.semester, Fld.id), desc: true));
         q.offset(page, num_objs);
-        cards = q.Select<BriefCourseCard>(conn);
+        cards = q.select<BriefCourseCard>(conn);
         stopwatch.Stop();
         TimeSpan elapsed = stopwatch.Elapsed;
         Console.WriteLine($"get_brief_course_cards");

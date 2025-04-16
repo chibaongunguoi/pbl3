@@ -15,7 +15,7 @@ class ManageCoursePage
             delegate(SqlConnection conn)
             {
                 int table_index = 1;
-                q.Select(
+                q.select(
                     conn,
                     reader => page.cards.Add(ManageCourseCard.get_card(reader, ref table_index))
                 );

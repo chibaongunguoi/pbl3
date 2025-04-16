@@ -18,8 +18,8 @@ class Subject : IdObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(QPiece.ToStr(name));
-        lst.Add(QPiece.ToStr(grade));
+        lst.Add(QPiece.toNStr(name));
+        lst.Add(QPiece.toStr(grade));
         return lst;
     }
 

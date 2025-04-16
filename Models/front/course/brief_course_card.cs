@@ -16,37 +16,40 @@ class BriefCourseCard : DataObj
     public static Query get_query_creator()
     {
         Query q = new(Tbl.course);
-        q.Join(Tbl.subject, Fld.id, Tbl.course, Fld.sbj_id);
-        q.Join(Tbl.teacher, Fld.id, Tbl.course, Fld.tch_id);
-        q.Join(Tbl.semester, Fld.course_id, Tbl.course, Fld.id);
+        q.join(Tbl.subject, Fld.id, Tbl.course, Fld.sbj_id);
+        q.join(Tbl.teacher, Fld.id, Tbl.course, Fld.tch_id);
+        q.join(Tbl.semester, Fld.course_id, Tbl.course, Fld.id);
         q.Where(Tbl.semester, Fld.state, [SemesterState.waiting, SemesterState.started]);
-        q.Output(Tbl.course, Fld.id);
-        q.Output(Tbl.semester, Fld.id);
-        q.Output(Tbl.course, Fld.name);
-        q.Output(Tbl.teacher, Fld.name);
-        q.Output(Tbl.subject, Fld.name);
-        q.Output(Tbl.subject, Fld.grade);
-        q.Output(Tbl.semester, Fld.start_date);
-        q.Output(Tbl.semester, Fld.finish_date);
-        q.Output(Tbl.semester, Fld.capacity);
-        q.Output(Tbl.semester, Fld.fee);
+        q.output(Tbl.course, Fld.id);
+        q.output(Tbl.semester, Fld.id);
+        q.output(Tbl.course, Fld.name);
+        q.output(Tbl.teacher, Fld.name);
+        q.output(Tbl.subject, Fld.name);
+        q.output(Tbl.subject, Fld.grade);
+        q.output(Tbl.semester, Fld.start_date);
+        q.output(Tbl.semester, Fld.finish_date);
+        q.output(Tbl.semester, Fld.capacity);
+        q.output(Tbl.semester, Fld.fee);
 
         string local_alias = "local_alias";
+        // rating avg
         Query q2 = new(QPiece.alias(Tbl.rating, local_alias));
         q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
-        q2.OutputClause(QPiece.avg(QPiece.cast_float(Fld.stars)));
-        q.OutputClause(QPiece.bracket(q2.SelectQuery()));
+        q2.outputClause(QPiece.avg(QPiece.castFloat(Fld.stars)));
+        q.outputClause(QPiece.bracket(q2.selectQuery()));
 
+        // rating count
         q2 = new(QPiece.alias(Tbl.rating, local_alias));
         q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
-        q2.OutputClause(QPiece.countAll);
-        q.OutputClause(QPiece.bracket(q2.SelectQuery()));
+        q2.outputClause(QPiece.countAll);
+        q.outputClause(QPiece.bracket(q2.selectQuery()));
 
+        // participants count
         q2 = new(QPiece.alias(Tbl.request, local_alias));
         q2.Where(local_alias, Fld.semester_id, Tbl.semester, Fld.id);
         q2.Where(local_alias, Fld.state, RequestState.joined);
-        q2.OutputClause(QPiece.countAll);
-        q.OutputClause(QPiece.bracket(q2.SelectQuery()));
+        q2.outputClause(QPiece.countAll);
+        q.outputClause(QPiece.bracket(q2.selectQuery()));
 
         return q;
     }

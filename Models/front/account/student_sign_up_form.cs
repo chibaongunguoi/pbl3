@@ -9,14 +9,6 @@ public class StudentSignUpForm
     public required string password { get; set; }
     public required string password_confirm { get; set; }
 
-    //         bday_empty = "bday_empty",
-    //         name_empty = "name_empty",
-    //         username_empty = "username_empty",
-    //         password_empty = "password_empty",
-    //         password_mismatch = "password_mismatch",
-    //         username_taken = "username_taken",
-    //         run_out_of_id = "run_out_of_id";
-
     public class Log
     {
         public int? stu_id;
@@ -59,7 +51,7 @@ public class StudentSignUpForm
 
         Query q = new(Tbl.student);
         q.WhereClause(QPiece.eq(Fld.username, username));
-        int count = q.Count(conn);
+        int count = q.count(conn);
 
         if (count > 0)
         {
@@ -84,7 +76,7 @@ public class StudentSignUpForm
             bday = bday ?? new(),
         };
         Query q1 = new(Tbl.student);
-        q1.Insert<Student>(conn, student);
+        q1.insert<Student>(conn, student);
 
         log.stu_id = id;
         return log;

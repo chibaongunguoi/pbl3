@@ -66,7 +66,7 @@ sealed class AccountQuery<T>
             Query q = new(table);
             q.WhereClause(QPiece.eqRaw(Fld.username, username));
             q.WhereClause(QPiece.eqRaw(Fld.password, password));
-            return q.Select<T>(conn);
+            return q.select<T>(conn);
         }
         if (string.IsNullOrEmpty(table))
         {

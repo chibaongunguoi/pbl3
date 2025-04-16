@@ -11,7 +11,7 @@ class BriefTeacherPage
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.teacher);
-                int total_num = q.Count(conn);
+                int total_num = q.count(conn);
                 this.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
                 this.teachers = BriefTeacherPage.get_page(conn, current_page, num_displayed_objs);
             }
@@ -28,7 +28,7 @@ class BriefTeacherPage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.offset(page, num_objs);
-        return q.Select<BriefTeacherCard>(conn);
+        return q.select<BriefTeacherCard>(conn);
     }
 }
 

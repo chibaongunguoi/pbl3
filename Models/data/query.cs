@@ -26,15 +26,15 @@ static class QPiece
 
     public static string bracket(string s) => $"({s})";
 
-    public static string cast_float(string field) => $"CAST({field} AS FLOAT)";
+    public static string castFloat(string field) => $"CAST({field} AS FLOAT)";
 
-    public static string ToStr(int value) => $"{value}";
+    public static string toStr(int value) => $"{value}";
 
-    public static string ToStr(DateOnly value) => $"'{IoUtils.conv_db(value)}'";
+    public static string toStr(DateOnly value) => $"'{IoUtils.conv_db(value)}'";
 
-    public static string ToStr(string value) => $"\'{value}\'";
+    public static string toStr(string value) => $"\'{value}\'";
 
-    public static string ToNStr(string value) => $"N\'{value}\'";
+    public static string toNStr(string value) => $"N\'{value}\'";
 
     public static string avg(string field, string? alias = null)
     {
@@ -103,7 +103,7 @@ sealed class Query
 
     // ========================================================================
     // INFO: Thêm trường vào danh sách trường cần lấy
-    public void OutputClause(params List<string> fields)
+    public void outputClause(params List<string> fields)
     {
         foreach (var field in fields)
         {
@@ -112,19 +112,19 @@ sealed class Query
         }
     }
 
-    public void OutputAvg(string field)
+    public void outputAvg(string field)
     {
-        OutputClause(QPiece.avg(field));
+        outputClause(QPiece.avg(field));
     }
 
-    public void OutputAvg(string table, string field)
+    public void outputAvg(string table, string field)
     {
-        OutputClause(QPiece.avg(QPiece.dot(table, field)));
+        outputClause(QPiece.avg(QPiece.dot(table, field)));
     }
 
-    public void Output(string table, string field)
+    public void output(string table, string field)
     {
-        OutputClause(QPiece.dot(table, field));
+        outputClause(QPiece.dot(table, field));
     }
 
     // ========================================================================
@@ -134,7 +134,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public void remove_offset()
+    public void removeOffset()
     {
         offset_string = null;
     }
@@ -244,7 +244,7 @@ sealed class Query
         }
     }
 
-    public void Join(string table_1, string field_1, string table_2, string field_2)
+    public void join(string table_1, string field_1, string table_2, string field_2)
     {
         JoinClause(
             QPiece.join(table_1, QPiece.dot(table_1, field_1), QPiece.dot(table_2, field_2))
@@ -252,7 +252,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public string get_where_clause()
+    public string getWhereClause()
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -262,7 +262,7 @@ sealed class Query
     }
 
     // ========================================================================
-    private string get_join_clause()
+    private string getJoinClause()
     {
         if (inner_joins.Count == 0)
             return "";
@@ -270,7 +270,7 @@ sealed class Query
     }
 
     // ========================================================================
-    private string get_order_clause()
+    private string getOrderClause()
     {
         string query = "";
         if (order_bys.Count > 0)
@@ -283,16 +283,16 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
-    public string SelectQuery(bool count_mode = false)
+    public string selectQuery(bool count_mode = false)
     {
         var output_fields_str =
             count_mode ? "COUNT(*)"
             : output_fields.Count > 0 ? string.Join(", ", output_fields)
             : "*";
         string query = $"SELECT {output_fields_str} FROM {table}";
-        query += get_join_clause();
-        query += get_where_clause();
-        query += get_order_clause();
+        query += getJoinClause();
+        query += getWhereClause();
+        query += getOrderClause();
         if (offset_string is not null)
         {
             if (order_bys.Count == 0)
@@ -304,14 +304,14 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn DELETE
-    public string DeleteQuery()
+    public string deleteQuery()
     {
-        return $"DELETE FROM {table}" + get_where_clause();
+        return $"DELETE FROM {table}" + getWhereClause();
     }
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn INSERT
-    public string InsertQuery<T>(T obj)
+    public string insertQuery<T>(T obj)
         where T : DataObj, new()
     {
         List<string> parts = obj.ToListString();
@@ -320,27 +320,27 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
-    public string UpdateQuery()
+    public string updateQuery()
     {
         string query = $"UPDATE {table} SET ";
         string set_fields_str = string.Join(", ", set_fields);
-        query += set_fields_str + get_where_clause();
+        query += set_fields_str + getWhereClause();
         return query;
     }
 
     // ========================================================================
-    public List<T> Select<T>(SqlConnection conn)
+    public List<T> select<T>(SqlConnection conn)
         where T : DataObj, new()
     {
-        return Database.exec_query<T>(conn, SelectQuery());
+        return Database.exec_query<T>(conn, selectQuery());
     }
 
     // ------------------------------------------------------------------------
-    public void Select(SqlConnection conn, Database.ReaderFunction f) =>
-        Database.exec_reader(conn, SelectQuery(), f);
+    public void select(SqlConnection conn, Database.ReaderFunction f) =>
+        Database.exec_reader(conn, selectQuery(), f);
 
     // ------------------------------------------------------------------------
-    public int Count(SqlConnection conn)
+    public int count(SqlConnection conn)
     {
         int result = 0;
         void func(SqlDataReader reader)
@@ -348,19 +348,19 @@ sealed class Query
             int pos = 0;
             result = DataReader.get_int(reader, ref pos);
         }
-        Database.exec_reader(conn, SelectQuery(count_mode: true), func);
+        Database.exec_reader(conn, selectQuery(count_mode: true), func);
         return result;
     }
 
     // ------------------------------------------------------------------------
-    public void Delete(SqlConnection conn) => Database.exec_non_query(conn, DeleteQuery());
+    public void delete(SqlConnection conn) => Database.exec_non_query(conn, deleteQuery());
 
     // ------------------------------------------------------------------------
-    public void Insert<T>(SqlConnection conn, T obj)
-        where T : DataObj, new() => Database.exec_non_query(conn, InsertQuery<T>(obj));
+    public void insert<T>(SqlConnection conn, T obj)
+        where T : DataObj, new() => Database.exec_non_query(conn, insertQuery<T>(obj));
 
     // ------------------------------------------------------------------------
-    public void Update(SqlConnection conn) => Database.exec_non_query(conn, UpdateQuery());
+    public void update(SqlConnection conn) => Database.exec_non_query(conn, updateQuery());
 
     // ========================================================================
 }

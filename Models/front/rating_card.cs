@@ -18,7 +18,7 @@ struct RatingCard
             )
         );
 
-        q.OutputClause(
+        q.outputClause(
             QPiece.dot(Tbl.student, Fld.name),
             QPiece.dot(Tbl.rating, Fld.stars),
             QPiece.dot(Tbl.rating, Fld.date),
