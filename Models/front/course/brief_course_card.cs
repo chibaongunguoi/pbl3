@@ -34,20 +34,20 @@ class BriefCourseCard : DataObj
         string local_alias = "local_alias";
         // rating avg
         Query q2 = new(QPiece.alias(Tbl.rating, local_alias));
-        q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
+        q2.WhereField(QPiece.dot(local_alias, Fld.course_id), Field.course__id);
         q2.outputAvgCastFloat(Fld.stars);
         q.outputQuery(q2.selectQuery());
 
         // rating count
         q2 = new(QPiece.alias(Tbl.rating, local_alias));
-        q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
+        q2.WhereField(QPiece.dot(local_alias, Fld.course_id), Field.course__id);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 
         // participants count
         q2 = new(QPiece.alias(Tbl.request, local_alias));
-        q2.Where(local_alias, Fld.semester_id, Tbl.semester, Fld.id);
-        q2.Where(local_alias, Fld.status, RequestStatus.joined);
+        q2.WhereField(QPiece.dot(local_alias, Fld.semester_id), Field.semester__id);
+        q2.Where(QPiece.dot(local_alias, Fld.status), RequestStatus.joined);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 

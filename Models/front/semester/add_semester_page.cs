@@ -31,8 +31,8 @@ class AddSemesterPage
             delegate(SqlConnection conn)
             {
                 Query q = CourseOption.get_query_creator();
-                q.Where(Tbl.course, Fld.status, CourseStatus.finished);
-                q.Where(Tbl.course, Fld.tch_id, tch_id);
+                q.Where(Field.course__status, CourseStatus.finished);
+                q.Where(Field.course__tch_id, tch_id);
                 this.courses = q.select<CourseOption>(conn);
             }
         );

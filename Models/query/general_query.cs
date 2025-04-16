@@ -10,7 +10,8 @@ static class GeneralQuery
         void start_courses(SqlConnection conn)
         {
             Query q = new(Tbl.semester);
-            q.Where(Field.semester__start_date, today);
+            // q.Where(Field.semester__start_date, today);
+            q.WhereClause($"{Field.semester__start_date} <= {QPiece.toStr(today)}");
             q.Where(Field.semester__status, SemesterStatus.waiting);
 
             Query course_ids_query = q;
@@ -31,13 +32,15 @@ static class GeneralQuery
         void finish_courses(SqlConnection conn)
         {
             Query q = new(Tbl.semester);
-            q.Where(Field.semester__finish_date, yesterday);
-            q.Where(Field.semester__status, SemesterStatus.started);
+            // q.Where(Field.semester__finish_date, yesterday);
+            // q.Where(Field.semester__status, SemesterStatus.started);
+            q.WhereClause($"{Field.semester__finish_date} <= {QPiece.toStr(yesterday)}");
+            q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
 
             Query course_ids_query = q;
             course_ids_query.output(Field.semester__course_id);
-            List<string> course_ids = new();
-            course_ids_query.select(conn, reader => course_ids.Add(DataReader.getStr(reader)));
+            List<int> course_ids = new();
+            course_ids_query.select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
 
             Query update_semester_query = q;
             update_semester_query.Set(Field.semester__status, SemesterStatus.finished);

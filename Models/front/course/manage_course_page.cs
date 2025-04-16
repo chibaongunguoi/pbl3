@@ -8,7 +8,7 @@ class ManageCoursePage
     {
         ManageCoursePage page = new();
         Query q = ManageCourseCard.get_query_creator();
-        q.Where(Tbl.course, Fld.tch_id, tch_id);
+        q.Where(Field.course__tch_id, tch_id);
         q.offset(page_idx, num_objs);
 
         Database.exec(

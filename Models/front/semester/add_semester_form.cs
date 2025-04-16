@@ -59,7 +59,7 @@ public class AddSemesterForm
             return log;
         }
         q = new(Tbl.course);
-        q.Where(Tbl.course, Fld.id, i_course_id);
+        q.Where(Field.course__id, i_course_id);
         List<Course> courses = q.select<Course>(conn);
         if (courses.Count == 0)
         {

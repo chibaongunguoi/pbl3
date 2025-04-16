@@ -33,19 +33,19 @@ static class QPiece
     public const string countAll = "COUNT(*)";
 
     // ------------------------------------------------------------------------
-    public static string eq<T>(string field, T value)
+    public static string eq<T>(string field, T value, string op = "=")
     {
-        return $"{field} = {value}";
+        return $"{field} {op} {value}";
     }
 
-    public static string eq(string field, string value)
+    public static string eq(string field, string value, string op = "=")
     {
-        return $"{field} = '{value}'";
+        return $"{field} {op} '{value}'";
     }
 
-    public static string eq(string field, DateOnly value)
+    public static string eq(string field, DateOnly value, string op = "=")
     {
-        return $"{field} = '{IoUtils.conv_db(value)}'";
+        return $"{field} {op} '{IoUtils.conv_db(value)}'";
     }
 
     // ------------------------------------------------------------------------
@@ -165,19 +165,9 @@ sealed class Query
         WhereClause(QPiece.eq(field, value));
     }
 
-    public void Where<T>(string table, string field, T value)
-    {
-        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
-    }
-
     public void Where(string field, string value)
     {
         WhereClause(QPiece.eq(field, value));
-    }
-
-    public void Where(string table, string field, string value)
-    {
-        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
     }
 
     public void Where(string field, DateOnly value)
@@ -185,15 +175,10 @@ sealed class Query
         WhereClause(QPiece.eq(field, value));
     }
 
-    public void Where(string table, string field, DateOnly value)
-    {
-        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
-    }
-
     // ------------------------------------------------------------------------
-    public void Where(string table, string field, string table_2, string field_2)
+    public void WhereField(string field_1, string field_2)
     {
-        WhereClause($"{QPiece.dot(table, field)} = {QPiece.dot(table_2, field_2)}");
+        WhereClause($"{field_1} = {field_2}");
     }
 
     // ------------------------------------------------------------------------
@@ -202,30 +187,15 @@ sealed class Query
         WhereClause($"{field} = N'{value}'");
     }
 
-    public void WhereNStr(string table, string field, string value)
-    {
-        WhereClause($"{QPiece.dot(table, field)} = N'{value}'");
-    }
-
     // ------------------------------------------------------------------------
     public void Where<T>(string field, List<T> value)
     {
         WhereClause(QPiece.inList(field, value));
     }
 
-    public void Where<T>(string table, string field, List<T> value)
-    {
-        WhereClause(QPiece.inList(QPiece.dot(table, field), value));
-    }
-
     public void Where(string field, List<string> value)
     {
         WhereClause(QPiece.inList(field, value));
-    }
-
-    public void Where(string table, string field, List<string> value)
-    {
-        WhereClause(QPiece.inList(QPiece.dot(table, field), value));
     }
 
     // ========================================================================
@@ -236,11 +206,6 @@ sealed class Query
             if (field.Length > 0)
                 order_bys.Add(field);
         }
-    }
-
-    public void orderBy(string table, string field, bool desc = false)
-    {
-        orderByClause(QPiece.orderBy(QPiece.dot(table, field), desc: desc));
     }
 
     public void orderBy(string field, bool desc = false)
@@ -256,16 +221,6 @@ sealed class Query
             if (field.Length > 0)
                 this.set_fields.Add(field);
         }
-    }
-
-    public void Set(string table, string field, string value)
-    {
-        SetClause($"{QPiece.dot(table, field)} = '{value}'");
-    }
-
-    public void Set(string table, string field, int value)
-    {
-        SetClause($"{QPiece.dot(table, field)} = {value}");
     }
 
     public void Set(string field, int value)
@@ -286,13 +241,6 @@ sealed class Query
             if (cmd.Length > 0)
                 inner_joins.Add(cmd);
         }
-    }
-
-    public void join(string table_1, string field_1, string table_2, string field_2)
-    {
-        JoinClause(
-            QPiece.join(table_1, QPiece.dot(table_1, field_1), QPiece.dot(table_2, field_2))
-        );
     }
 
     public void join(string field_1, string field_2)

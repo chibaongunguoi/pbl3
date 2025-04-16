@@ -300,7 +300,7 @@ for tch_id in teacher_ids:
 
         # create semesters
 
-        course_start_date= datetime.strptime("2025-1-1", "%Y-%m-%d") + timedelta(random.randint(0, 100))
+        course_start_date= datetime.strptime("2023-7-1", "%Y-%m-%d") + timedelta(random.randint(0, 100))
         semester_start_date = None
         semester_finish_date = None
             
@@ -396,11 +396,11 @@ json_output("rating", ratings)
 # -----------------------------------------------------------------------------
 
 id_counters = [
-    ["TblStudent", student_next_id, student_first_id, student_max_id],
-    ["TblTeacher", teacher_next_id, teacher_first_id, teacher_max_id],
-    ["TblCourse", course_next_id, 1, 0],
-    ["TblSemester", semester_next_id, 1, 0],
-    ["TblSubject", subject_next_id, 1, 0],
+    ["Student", student_next_id, student_first_id, student_max_id],
+    ["Teacher", teacher_next_id, teacher_first_id, teacher_max_id],
+    ["Course", course_next_id, 1, 0],
+    ["Semester", semester_next_id, 1, 0],
+    ["Subject", subject_next_id, 1, 0],
 ]
 
 json_output("id_counter", id_counters)

@@ -59,8 +59,8 @@ public class AddCourseForm
         }
 
         Query sbj_query = new(Tbl.subject);
-        sbj_query.Where(Tbl.subject, Fld.name, subject);
-        sbj_query.Where(Tbl.subject, Fld.grade, i_grade);
+        sbj_query.Where(Field.subject__name, subject);
+        sbj_query.Where(Field.subject__grade, i_grade);
         List<Subject> subjects = sbj_query.select<Subject>(conn);
 
         if (subjects.Count == 0)

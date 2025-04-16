@@ -24,7 +24,7 @@ class DetailedCoursePage
         {
             CourseQuery.get_avg_rating(conn, course_id, out averageRating, out numRatings);
             Query q = new(Tbl.course);
-            q.Where(Tbl.course, Fld.id, course_id);
+            q.Where(Field.course__id, course_id);
             List<Course> course_lst = q.select<Course>(conn);
             if (course_lst.Count == 0)
                 return;
@@ -36,15 +36,15 @@ class DetailedCoursePage
             this.cards = get_page(conn, course_id, current_page, num_objs);
 
             q = RatingCard.get_query_creator();
-            q.Where(Tbl.rating, Fld.course_id, course_id);
+            q.Where(Field.rating__course_id, course_id);
             int count = q.count(conn);
             this.total_num_pages = (int)Math.Ceiling((double)count / num_objs);
 
             for (int i = 1; i <= 5; i++)
             {
                 q = RatingCard.get_query_creator();
-                q.Where(Tbl.rating, Fld.stars, i);
-                q.Where(Tbl.rating, Fld.course_id, course_id);
+                q.Where(Field.rating__stars, i);
+                q.Where(Field.rating__course_id, course_id);
                 rating_counts.Add(i, q.count(conn));
             }
         }
@@ -61,7 +61,7 @@ class DetailedCoursePage
     {
         List<RatingCard> cards = new();
         Query q = RatingCard.get_query_creator();
-        q.Where(Tbl.rating, Fld.course_id, courseId);
+        q.Where(Field.rating__course_id, courseId);
         q.offset(page, num_objs);
         q.select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
         return cards;
@@ -71,7 +71,7 @@ class DetailedCoursePage
     {
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
-        q.Where(Tbl.teacher, Fld.id, tch_id);
+        q.Where(Field.teacher__id, tch_id);
         return q.select<BriefTeacherCard>(conn);
     }
 
@@ -79,7 +79,7 @@ class DetailedCoursePage
     {
         List<DetailedCourseCard> cards = new();
         Query q = DetailedCourseCard.get_query_creator();
-        q.Where(Tbl.course, Fld.id, id);
+        q.Where(Field.course__id, id);
         return q.select<DetailedCourseCard>(conn);
     }
 }

@@ -10,7 +10,7 @@ static class CourseQuery
     )
     {
         Query q = new(Tbl.rating);
-        q.Where(Tbl.rating, Fld.course_id, course_id);
+        q.Where(Field.rating__course_id, course_id);
         List<Rating> ratings = q.select<Rating>(conn);
         num_ratings = ratings.Count;
 
