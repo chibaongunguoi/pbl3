@@ -4,21 +4,21 @@ static class Gender
         female = "female";
 }
 
-static class SemesterState
+static class SemesterStatus
 {
     public const string waiting = "waiting",
         started = "started",
         finished = "finished";
 }
 
-static class CourseState
+static class CourseStatus
 {
     public const string waiting = "waiting",
         started = "started",
         finished = "finished";
 }
 
-static class RequestState
+static class RequestStatus
 {
     public const string waiting = "waiting",
         joined = "joined";

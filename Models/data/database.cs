@@ -1,10 +1,33 @@
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 
-class Database
+sealed class Database
 {
     // ========================================================================
-    static int query_counter = 0;
+    private static int query_counter = 0;
+    private static string server_only_conn_string = "";
+    private static string default_conn_string = "";
+
+    public static void init(string server_name, string database_name)
+    {
+        Database.server_only_conn_string = new SqlConnectionStringBuilder
+        {
+            DataSource = server_name,
+            IntegratedSecurity = true,
+            TrustServerCertificate = true,
+            ConnectTimeout = 60,
+            MultipleActiveResultSets = true,
+        }.ConnectionString;
+
+        Database.default_conn_string = new SqlConnectionStringBuilder
+        {
+            DataSource = server_name,
+            InitialCatalog = database_name,
+            IntegratedSecurity = true,
+            TrustServerCertificate = true,
+            ConnectTimeout = 60,
+        }.ConnectionString;
+    }
 
     // ========================================================================
     // INFO: Delegate cho các hàm nhận conn làm tham số.
@@ -12,9 +35,9 @@ class Database
 
     // ========================================================================
     // INFO: Tạo mới conn và truyền conn vào ConnFunction, sau đó ngắt kết nối.
-    public static void exec(ConnFunction conn_function, string? conn_string = null)
+    public static void exec(ConnFunction conn_function, bool server_only = false)
     {
-        conn_string = conn_string == null ? DatabaseUtils.get_default_conn_string() : conn_string;
+        string conn_string = server_only ? server_only_conn_string : default_conn_string;
         try
         {
             using (SqlConnection conn = new SqlConnection(conn_string))
@@ -90,12 +113,7 @@ class Database
         where T : DataObj, new()
     {
         List<T> results = new List<T>();
-        void func(SqlDataReader reader)
-        {
-            int pos = 0;
-            results.Add(DataReader.getDataObj<T>(reader, ref pos));
-        }
-        Database.exec_reader(conn, query, func);
+        Database.exec_reader(conn, query, reader => results.Add(DataReader.getDataObj<T>(reader)));
         return results;
     }
 

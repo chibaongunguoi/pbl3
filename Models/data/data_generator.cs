@@ -7,99 +7,27 @@ using Microsoft.Data.SqlClient;
 sealed class DataGenerator
 {
     // ========================================================================
+    public static void generate(string server_name, string database_name)
+    {
+        Database.exec(conn => drop_database(conn, database_name), server_only: true);
+        Database.exec(conn => create_tables(conn));
+    }
+
+    // ========================================================================
     private static void drop_database(SqlConnection conn, string database_name)
     {
         string query =
-            "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')";
-        SqlCommand command = new SqlCommand(query, conn);
+            $"SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb') AND name = '{database_name}'";
 
-        List<string> databases = new List<string>();
-
-        using (SqlDataReader reader = command.ExecuteReader())
-        {
-            while (reader.Read())
-            {
-                string result = reader["name"].ToString() ?? "";
-                if (result != database_name)
-                    continue;
-                databases.Add(result);
-                break;
-            }
-        }
-
-        foreach (string database in databases)
-        {
-            string drop_query = $"DROP DATABASE [{database}]";
-            Database.exec_non_query(conn, drop_query);
-        }
-    }
-
-    // ========================================================================
-    private static void create_database(SqlConnection conn, string database_name)
-    {
-        string query = $"CREATE DATABASE [{database_name}]";
-        Database.exec_non_query(conn, query);
-    }
-
-    // ========================================================================
-    private static void generate_1(SqlConnection conn)
-    {
-        string database_name = TableMngr.get_database_name();
-        drop_database(conn, database_name);
-        create_database(conn, database_name);
-    }
-
-    // ========================================================================
-    private static void generate_2(SqlConnection conn)
-    {
-        drop_all_tables(conn);
-        create_tables(conn);
-    }
-
-    // ========================================================================
-    public static void generate()
-    {
-        Database.exec(generate_1, DatabaseUtils.get_server_only_conn_string());
-        Database.exec(generate_2);
-    }
-
-    // ------------------------------------------------------------------------
-    private static void drop_all_tables(SqlConnection conn)
-    {
-        Database.exec_non_query(
-            conn,
-            "EXEC sp_MSforeachtable @command1='ALTER TABLE ? NOCHECK CONSTRAINT ALL'"
-        );
-
-        List<string> table_names = new List<string>();
-
-        using (
-            SqlCommand command = new SqlCommand(
-                "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'",
-                conn
-            )
-        )
-        {
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    string tableName = reader["TABLE_NAME"].ToString() ?? "";
-                    table_names.Add(tableName);
-                }
-            }
-        }
-
-        foreach (string tableName in table_names)
-        {
-            string query = $"DROP TABLE {tableName};";
-            Database.exec_non_query(conn, query);
-        }
-
-        Database.exec_non_query(
-            conn,
-            "EXEC sp_MSforeachtable @command1='ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'"
-        );
+        string? result = null;
+        Database.exec_reader(conn, query, reader => result = DataReader.getStr(reader));
+        if (result != null)
+            Database.exec_non_query(
+                conn,
+                $"DROP DATABASE [{database_name}] CREATE DATABASE [{database_name}]"
+            );
+        else
+            Database.exec_non_query(conn, $"CREATE DATABASE [{database_name}]");
     }
 
     // ========================================================================

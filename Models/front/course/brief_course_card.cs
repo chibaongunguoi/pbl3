@@ -19,7 +19,7 @@ class BriefCourseCard : DataObj
         q.join(Field.subject__id, Field.course__sbj_id);
         q.join(Field.teacher__id, Field.course__tch_id);
         q.join(Field.semester__course_id, Field.course__id);
-        q.Where(Field.semester__state, [SemesterState.waiting, SemesterState.started]);
+        q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         q.output(Field.course__id);
         q.output(Field.semester__id);
         q.output(Field.course__name);
@@ -47,7 +47,7 @@ class BriefCourseCard : DataObj
         // participants count
         q2 = new(QPiece.alias(Tbl.request, local_alias));
         q2.Where(local_alias, Fld.semester_id, Tbl.semester, Fld.id);
-        q2.Where(local_alias, Fld.state, RequestState.joined);
+        q2.Where(local_alias, Fld.status, RequestStatus.joined);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 

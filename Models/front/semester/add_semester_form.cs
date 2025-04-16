@@ -80,17 +80,17 @@ public class AddSemesterForm
             capacity = capacity,
             fee = fee,
             description = description,
-            state = SemesterState.waiting,
+            status = SemesterStatus.waiting,
         };
 
         Query q_ins_semester = new(Tbl.semester);
         q_ins_semester.insert<Semester>(conn, semester);
 
         Query q_update_course = new(Tbl.course);
-        q_update_course.Set(Fld.state, CourseState.waiting);
+        q_update_course.Set(Fld.status, CourseStatus.waiting);
         q_update_course.Where(Fld.id, i_course_id);
         q_update_course.update(conn);
-        course.state = CourseState.waiting;
+        course.status = CourseStatus.waiting;
 
         log.semester_id = semester_id;
         return log;

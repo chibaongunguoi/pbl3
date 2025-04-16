@@ -7,11 +7,14 @@ sealed class Backend
         {
             ConfigOptionManager.load();
             TableMngr.load();
+            string server_name = ConfigOptionManager.get_server_name();
+            string database_name = TableMngr.get_database_name();
+            Database.init(server_name, database_name);
             if (ConfigOptionManager.get_data_generator())
             {
-                DataGenerator.generate();
+                DataGenerator.generate(server_name, database_name);
             }
-            GeneralQuery.update_course_states();
+            GeneralQuery.update_course_status();
         }
         catch (Exception e)
         {

@@ -3,21 +3,21 @@ using Microsoft.Data.SqlClient;
 sealed class IdCounterQuery
 {
     // ========================================================================
-    public enum State
+    public enum Status
     {
         none,
         id_hits_limit,
     }
 
     // ------------------------------------------------------------------------
-    public static State s_last_state { get; private set; } = State.none;
+    public static Status s_last_status { get; private set; } = Status.none;
 
     // ========================================================================
     public static bool get_count(SqlConnection conn, string table, out int id)
     {
         int count = 1;
         int max_count = 0;
-        s_last_state = State.none;
+        s_last_status = Status.none;
 
         void func(SqlDataReader reader)
         {
@@ -32,13 +32,13 @@ sealed class IdCounterQuery
         q.select(conn, func);
 
         if (count > max_count)
-            s_last_state = State.id_hits_limit;
+            s_last_status = Status.id_hits_limit;
 
         if (max_count == 0)
-            s_last_state = State.none;
+            s_last_status = Status.none;
 
         id = count;
-        return s_last_state == State.none;
+        return s_last_status == Status.none;
     }
 
     // ========================================================================

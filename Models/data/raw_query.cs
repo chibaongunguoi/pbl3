@@ -20,7 +20,6 @@ sealed class RawQuery
                         s += $"{record[pos]},";
                         break;
                     case "NSTRING":
-                        // strip the double quotes
                         s += $"N'{record[pos]}',";
                         break;
                     case "STRING":

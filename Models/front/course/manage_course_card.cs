@@ -16,7 +16,7 @@ class ManageCourseCard
         q.join(Field.subject__id, Field.course__sbj_id);
         q.output(Field.course__id);
         q.output(Field.course__name);
-        q.output(Field.course__state);
+        q.output(Field.course__status);
         q.output(Field.subject__name);
         q.output(Field.subject__grade);
         string local_alias = "local_alias";
@@ -49,7 +49,7 @@ class ManageCourseCard
             table_index = current_table_index++,
             course_id = course_id,
             course_name = course_name,
-            course_state = course_state == CourseState.waiting ? "Đang diễn ra" : "Đã kết thúc",
+            course_state = course_state == CourseStatus.waiting ? "Đang diễn ra" : "Đã kết thúc",
             subject = subject,
             grade = grade,
             avg_rating = s_avg_rating,

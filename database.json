@@ -175,7 +175,7 @@
           "dtype": "NSTRING"
         },
         {
-          "name": "state",
+          "name": "status",
           "sql_type": "VARCHAR(20) NOT NULL",
           "dtype": "STRING"
         }
@@ -275,7 +275,7 @@
           "dtype": "NSTRING"
         },
         {
-          "name": "state",
+          "name": "status",
           "sql_type": "VARCHAR(20) NOT NULL",
           "dtype": "STRING"
         }
@@ -307,7 +307,7 @@
           "dtype": "STRING"
         },
         {
-          "name": "state",
+          "name": "status",
           "sql_type": "VARCHAR(20) NOT NULL",
           "dtype": "STRING"
         }

@@ -89,7 +89,7 @@ public class AddCourseForm
             tch_id = tch_id,
             sbj_id = sbj_id,
             name = course_name,
-            state = CourseState.waiting,
+            status = CourseStatus.waiting,
         };
 
         Semester semester = new()
@@ -101,7 +101,7 @@ public class AddCourseForm
             capacity = capacity,
             fee = fee,
             description = description,
-            state = SemesterState.waiting,
+            status = SemesterStatus.waiting,
         };
 
         Query q1 = new(Tbl.course);

@@ -5,14 +5,14 @@ using Microsoft.Data.SqlClient;
 sealed class DataReader
 {
     // ========================================================================
-    public static int getInt(SqlDataReader reader, int pos = 0)
+    public static int getInt(SqlDataReader reader, ref int pos)
     {
         return reader.GetInt32(pos++);
     }
 
-    public static int getInt(SqlDataReader reader, ref int pos)
+    public static int getInt(SqlDataReader reader, int pos = 0)
     {
-        return reader.GetInt32(pos++);
+        return getInt(reader, ref pos);
     }
 
     public static double getDouble(SqlDataReader reader, ref int pos)
@@ -52,6 +52,12 @@ sealed class DataReader
         T info = new T();
         info.fetch(reader, ref pos);
         return info;
+    }
+
+    public static T getDataObj<T>(SqlDataReader reader, int pos = 0)
+        where T : DataObj, new()
+    {
+        return getDataObj<T>(reader, ref pos);
     }
 
     // ========================================================================

@@ -32,23 +32,24 @@ static class QPiece
 
     public const string countAll = "COUNT(*)";
 
-    public static string inList(string field, List<string> values)
+    // ------------------------------------------------------------------------
+    public static string eq<T>(string field, T value)
     {
-        if (values.Count == 0)
-            return FALSE;
-        string str = string.Join(", ", values.Select(v => $"\'{v}\'"));
-        return $"{field} IN ({str})";
+        return $"{field} = {value}";
     }
 
-    public static string inList(string field, List<int> values)
+    public static string eq(string field, string value)
     {
-        if (values.Count == 0)
-            return FALSE;
-        string str = string.Join(", ", values.Select(v => $"\'{v}\'"));
-        return $"{field} IN ({str})";
+        return $"{field} = '{value}'";
     }
 
-    public static string inList(string field, List<object> values)
+    public static string eq(string field, DateOnly value)
+    {
+        return $"{field} = '{IoUtils.conv_db(value)}'";
+    }
+
+    // ------------------------------------------------------------------------
+    public static string inList<T>(string field, List<T> values)
     {
         if (values.Count == 0)
             return FALSE;
@@ -56,22 +57,13 @@ static class QPiece
         return $"{field} IN ({str})";
     }
 
-    public static string inRawList(string field, List<int> value)
+    public static string inList(string field, List<string> values)
     {
-        if (value.Count == 0)
-            return FALSE;
-        string str = string.Join(", ", value);
-        return $"{field} IN ({str})";
+        values = values.Select(v => $"\'{v}\'").ToList();
+        return inList<string>(field, values);
     }
 
-    public static string inRawList(string field, List<string> value)
-    {
-        if (value.Count == 0)
-            return FALSE;
-        string str = string.Join(", ", value);
-        return $"{field} IN ({str})";
-    }
-
+    // ------------------------------------------------------------------------
     public static string orderBy(string field, bool desc = false)
     {
         string s = field;
@@ -167,44 +159,47 @@ sealed class Query
         }
     }
 
-    public void Where(string table, string field, int value)
+    // ------------------------------------------------------------------------
+    public void Where<T>(string field, T value)
     {
-        WhereClause($"{QPiece.dot(table, field)} = {value}");
+        WhereClause(QPiece.eq(field, value));
     }
 
-    public void Where(string field, int value)
+    public void Where<T>(string table, string field, T value)
     {
-        WhereClause($"{field} = {value}");
+        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
     }
 
     public void Where(string field, string value)
     {
-        WhereClause($"{field} = '{value}'");
+        WhereClause(QPiece.eq(field, value));
     }
 
-    public void WhereRaw(string table, string field, string value)
+    public void Where(string table, string field, string value)
     {
-        WhereClause($"{QPiece.dot(table, field)} = {value}");
-    }
-
-    public void Where(string table, string field, DateOnly value)
-    {
-        WhereClause($"{QPiece.dot(table, field)} = '{IoUtils.conv_db(value)}'");
+        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
     }
 
     public void Where(string field, DateOnly value)
     {
-        WhereClause($"{field} = '{IoUtils.conv_db(value)}'");
+        WhereClause(QPiece.eq(field, value));
     }
 
+    public void Where(string table, string field, DateOnly value)
+    {
+        WhereClause(QPiece.eq(QPiece.dot(table, field), value));
+    }
+
+    // ------------------------------------------------------------------------
     public void Where(string table, string field, string table_2, string field_2)
     {
         WhereClause($"{QPiece.dot(table, field)} = {QPiece.dot(table_2, field_2)}");
     }
 
-    public void Where(string table, string field, string value)
+    // ------------------------------------------------------------------------
+    public void WhereNStr(string field, string value)
     {
-        WhereClause($"{QPiece.dot(table, field)} = '{value}'");
+        WhereClause($"{field} = N'{value}'");
     }
 
     public void WhereNStr(string table, string field, string value)
@@ -212,19 +207,15 @@ sealed class Query
         WhereClause($"{QPiece.dot(table, field)} = N'{value}'");
     }
 
-    public void Where(string table, string field, List<string> value)
+    // ------------------------------------------------------------------------
+    public void Where<T>(string field, List<T> value)
+    {
+        WhereClause(QPiece.inList(field, value));
+    }
+
+    public void Where<T>(string table, string field, List<T> value)
     {
         WhereClause(QPiece.inList(QPiece.dot(table, field), value));
-    }
-
-    public void WhereRaw(string table, string field, List<string> value)
-    {
-        WhereClause(QPiece.inRawList(QPiece.dot(table, field), value));
-    }
-
-    public void WhereRaw(string table, string field, List<int> values)
-    {
-        WhereClause(QPiece.inList(QPiece.dot(table, field), values));
     }
 
     public void Where(string field, List<string> value)
@@ -232,14 +223,9 @@ sealed class Query
         WhereClause(QPiece.inList(field, value));
     }
 
-    public void Where(string field, List<int> value)
+    public void Where(string table, string field, List<string> value)
     {
-        WhereClause(QPiece.inList(field, value));
-    }
-
-    public void Where(string field, List<object> value)
-    {
-        WhereClause(QPiece.inList(field, value));
+        WhereClause(QPiece.inList(QPiece.dot(table, field), value));
     }
 
     // ========================================================================
@@ -255,6 +241,11 @@ sealed class Query
     public void orderBy(string table, string field, bool desc = false)
     {
         orderByClause(QPiece.orderBy(QPiece.dot(table, field), desc: desc));
+    }
+
+    public void orderBy(string field, bool desc = false)
+    {
+        orderByClause(QPiece.orderBy(field, desc: desc));
     }
 
     // ========================================================================
@@ -345,7 +336,7 @@ sealed class Query
     public string selectQuery(bool count_mode = false)
     {
         var output_fields_str =
-            count_mode ? "COUNT(*)"
+            count_mode ? QPiece.countAll
             : output_fields.Count > 0 ? string.Join(", ", output_fields)
             : "*";
         string query = $"SELECT {output_fields_str} FROM {table}";
@@ -402,12 +393,11 @@ sealed class Query
     public int count(SqlConnection conn)
     {
         int result = 0;
-        void func(SqlDataReader reader)
-        {
-            int pos = 0;
-            result = DataReader.getInt(reader, ref pos);
-        }
-        Database.exec_reader(conn, selectQuery(count_mode: true), func);
+        Database.exec_reader(
+            conn,
+            selectQuery(count_mode: true),
+            reader => result = DataReader.getInt(reader)
+        );
         return result;
     }
 

@@ -17,7 +17,7 @@ static class Fld
     public const string tch_id = "tch_id";
     public const string count = "count";
     public const string capacity = "capacity";
-    public const string state = "state";
+    public const string status = "status";
     public const string name = "name";
     public const string gender = "gender";
     public const string course_id = "course_id";
@@ -69,7 +69,7 @@ static class Field
     public const string course__tch_id = "Course.tch_id";
     public const string course__sbj_id = "Course.sbj_id";
     public const string course__name = "Course.name";
-    public const string course__state = "Course.state";
+    public const string course__status = "Course.status";
     public const string rating__stu_id = "Rating.stu_id";
     public const string rating__course_id = "Rating.course_id";
     public const string rating__date = "Rating.date";
@@ -82,10 +82,9 @@ static class Field
     public const string semester__capacity = "Semester.capacity";
     public const string semester__fee = "Semester.fee";
     public const string semester__description = "Semester.description";
-    public const string semester__state = "Semester.state";
+    public const string semester__status = "Semester.status";
     public const string request__stu_id = "Request.stu_id";
     public const string request__semester_id = "Request.semester_id";
     public const string request__date = "Request.date";
-    public const string request__state = "Request.state";
+    public const string request__status = "Request.status";
 }
-

@@ -9,7 +9,7 @@ sealed class Semester : IdObj
     public int capacity { get; set; }
     public int fee { get; set; }
     public string description { get; set; } = "";
-    public string state { get; set; } = "";
+    public string status { get; set; } = "";
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
@@ -21,7 +21,7 @@ sealed class Semester : IdObj
         capacity = DataReader.getInt(reader, ref pos);
         fee = DataReader.getInt(reader, ref pos);
         description = DataReader.getStr(reader, ref pos);
-        state = DataReader.getStr(reader, ref pos);
+        status = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
@@ -34,7 +34,7 @@ sealed class Semester : IdObj
         lst.Add(QPiece.toStr(capacity));
         lst.Add(QPiece.toStr(fee));
         lst.Add(QPiece.toStr(description));
-        lst.Add(QPiece.toStr(state));
+        lst.Add(QPiece.toStr(status));
         return lst;
     }
 
