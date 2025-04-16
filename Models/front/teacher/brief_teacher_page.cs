@@ -10,7 +10,7 @@ class BriefTeacherPage
         Database.exec(
             delegate(SqlConnection conn)
             {
-                Query q = new(Table.teacher);
+                QueryCreator q = new(Tbl.teacher);
                 int total_num = q.count(conn);
                 this.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
                 this.teachers = BriefTeacherPage.get_page(conn, current_page, num_displayed_objs);
@@ -26,10 +26,9 @@ class BriefTeacherPage
     )
     {
         List<BriefTeacherCard> cards = new();
-        Query q = new(Table.teacher);
+        QueryCreator q = new(Tbl.teacher);
         q.offset(page, num_objs);
-        q.select(conn, reader => cards.Add(BriefTeacherCard.get_card(conn, reader)));
-        return cards;
+        return q.select<BriefTeacherCard>(conn);
     }
 }
 

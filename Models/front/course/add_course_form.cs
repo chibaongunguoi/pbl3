@@ -50,7 +50,7 @@ public class AddCourseForm
 
         // Start querying
 
-        Query q = new(Table.teacher);
+        QueryCreator q = new(Tbl.teacher);
         int c = q.count(conn);
         if (c == 0)
         {
@@ -58,9 +58,9 @@ public class AddCourseForm
             return log;
         }
 
-        Query sbj_query = new(Table.subject);
-        sbj_query.where_(Field.subject__name, subject);
-        sbj_query.where_(Field.subject__grade, i_grade);
+        QueryCreator sbj_query = new(Tbl.subject);
+        sbj_query.WhereStr(Tbl.subject, Fld.name, subject);
+        sbj_query.Where(Tbl.subject, Fld.grade, i_grade);
         List<Subject> subjects = sbj_query.select<Subject>(conn);
 
         if (subjects.Count == 0)
@@ -74,15 +74,15 @@ public class AddCourseForm
             semester_id;
 
         if (
-            !IdCounterQuery.get_count(conn, Table.course, out course_id)
-            || !IdCounterQuery.get_count(conn, Table.semester, out semester_id)
+            !IdCounterQuery.get_count(conn, Tbl.course, out course_id)
+            || !IdCounterQuery.get_count(conn, Tbl.semester, out semester_id)
         )
         {
             log.Add(ErrorKey.run_out_of_id);
             return log;
         }
-        IdCounterQuery.increment(conn, Table.course, out course_id);
-        IdCounterQuery.increment(conn, Table.semester, out semester_id);
+        IdCounterQuery.increment(conn, Tbl.course, out course_id);
+        IdCounterQuery.increment(conn, Tbl.semester, out semester_id);
         Course course = new()
         {
             id = course_id,
@@ -103,10 +103,10 @@ public class AddCourseForm
             state = SemesterState.waiting,
         };
 
-        q = new(Table.course);
-        q.insert<Course>(conn, course);
-        q = new(Table.semester);
-        q.insert<Semester>(conn, semester);
+        Query q1 = new(Table.course);
+        q1.insert<Course>(conn, course);
+        q1 = new(Table.semester);
+        q1.insert<Semester>(conn, semester);
 
         log.course_id = course_id;
         log.semester_id = semester_id;

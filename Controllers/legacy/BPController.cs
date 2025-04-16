@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using REPO.Models;
 
 namespace REPO.Controllers;
 
-[Route("BPController")] 
+[Route("BPController")]
 public class BPController : Controller
 {
     public IActionResult Index()
@@ -11,13 +10,20 @@ public class BPController : Controller
         int defaultPageIndex = 1;
         return View(defaultPageIndex);
     }
-    [HttpGet("GetPagination")]
-   public IActionResult GetPagination(int currentPage)
-    {
-        Console.WriteLine($"Received page: {currentPage}");
-        return PartialView("_PaginationAjax", currentPage);
-    }
 
+    [HttpGet("GetPagination")]
+    public IActionResult GetPagination(
+        int currentPage,
+        int max_index_page,
+        string context_url,
+        string context_component
+    )
+    {
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(currentPage, max_index_page, context_url, context_component)
+        );
+    }
 
     // public IActionResult GetData(int pageIndex)
     // {
@@ -25,3 +31,4 @@ public class BPController : Controller
     //     // return PartialView("_DataPartial", data);
     // }
 }
+

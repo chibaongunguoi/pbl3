@@ -9,11 +9,12 @@
       <div class="card-search-wrapper">
         @await Html.PartialAsync("_SearchSemSection")
       </div>
-      <div class="card-product-ul">
+      <div class="brief-course-cards card-product-ul">
         @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
       </div>
-      @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
-
+      <div class="review-pagination">
+        @await Html.PartialAsync("_PaginationAjax", (1, (int)ViewBag.maxIndexPage, $"/GetCourse/getBriefCourseCards", ".brief-course-cards"))
+      </div>
     </div>
   </div>
 </div>

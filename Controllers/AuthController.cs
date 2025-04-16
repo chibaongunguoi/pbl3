@@ -40,7 +40,7 @@ public class AuthController : BaseController
             return Redirect("SignUp");
         }
 
-        SessionManager.log_in(HttpContext.Session, Table.student, log.stu_id ?? 0);
+        SessionManager.log_in(HttpContext.Session, Tbl.student, log.stu_id ?? 0);
         return Redirect("/");
     }
 
@@ -61,7 +61,7 @@ public class AuthController : BaseController
         Console.WriteLine($"Password: {password}");
 
         List<Account> query_result = new();
-        Table table = Table.none;
+        string table = "";
         Database.exec(conn =>
             table = AccountQuery<Account>.get_account_by_username_password(
                 conn,

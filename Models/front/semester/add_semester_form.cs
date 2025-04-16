@@ -43,7 +43,7 @@ public class AddSemesterForm
 
         // Start querying
 
-        Query q = new(Table.teacher);
+        QueryCreator q = new(Tbl.teacher);
         int c = q.count(conn);
         if (c == 0)
         {
@@ -53,13 +53,13 @@ public class AddSemesterForm
 
         int semester_id;
 
-        if (!IdCounterQuery.get_count(conn, Table.semester, out semester_id))
+        if (!IdCounterQuery.get_count(conn, Tbl.semester, out semester_id))
         {
             log.success = false;
             return log;
         }
-        q = new(Table.course);
-        q.where_(Field.course__id, i_course_id);
+        q = new(Tbl.course);
+        q.Where(Tbl.course, Fld.id, i_course_id);
         List<Course> courses = q.select<Course>(conn);
         if (courses.Count == 0)
         {
@@ -69,7 +69,7 @@ public class AddSemesterForm
         Course course = courses[0];
 
         // success
-        IdCounterQuery.increment(conn, Table.semester, out semester_id);
+        IdCounterQuery.increment(conn, Tbl.semester, out semester_id);
 
         Semester semester = new()
         {
@@ -86,9 +86,9 @@ public class AddSemesterForm
         Query q_ins_semester = new(Table.semester);
         q_ins_semester.insert<Semester>(conn, semester);
 
-        Query q_update_course = new(Table.course);
-        q_update_course.set_(Field.course__state, CourseState.waiting);
-        q_update_course.where_(Field.course__id, i_course_id);
+        QueryCreator q_update_course = new(Tbl.course);
+        q_update_course.SetClause(QPiece.eq(Fld.state, CourseState.waiting));
+        q_update_course.WhereClause(QPiece.eq(Fld.id, i_course_id));
         q_update_course.update(conn);
         course.state = CourseState.waiting;
 

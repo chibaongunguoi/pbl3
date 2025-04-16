@@ -45,6 +45,12 @@ sealed class RawQuery
         conditions.Add($"{table_field} = '{value}'");
     }
 
+    // ------------------------------------------------------------------------
+    public void where_int(string table_field, string value)
+    {
+        conditions.Add($"{table_field} = {value}");
+    }
+
     // ========================================================================
     public void where_(string table, string table_field, int value)
     {

@@ -10,6 +10,11 @@ sealed class DataReader
         return reader.GetInt32(pos++);
     }
 
+    public static double get_double(SqlDataReader reader, ref int pos)
+    {
+        return reader.GetDouble(pos++);
+    }
+
     // ------------------------------------------------------------------------
     public static string get_string(SqlDataReader reader, ref int pos)
     {
