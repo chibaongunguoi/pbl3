@@ -26,7 +26,7 @@ sealed class AccountQuery<T>
     public static string any(QueryFunction f, out List<T> result)
     {
         result = new();
-        string latest_table = Tbl.none;
+        string latest_table = "";
         foreach (var table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
         {
             result = f(table);
@@ -74,7 +74,7 @@ sealed class AccountQuery<T>
         }
 
         result = func(table);
-        return Tbl.none;
+        return "";
     }
 
     // ========================================================================

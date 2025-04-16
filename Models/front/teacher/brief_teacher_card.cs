@@ -8,9 +8,9 @@ class BriefTeacherCard : DataObj
     public string bday = "";
     public string description = "";
 
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        Teacher teacher = DataReader.get_data_obj<Teacher>(reader, ref pos);
+        Teacher teacher = DataReader.getDataObj<Teacher>(reader, ref pos);
         this.id = teacher.id;
         this.name = teacher.name;
         this.gender = IoUtils.conv_gender(teacher.gender);

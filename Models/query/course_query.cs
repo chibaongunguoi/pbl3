@@ -11,7 +11,7 @@ static class CourseQuery
     {
         Query q = new(Tbl.rating);
         q.Where(Tbl.rating, Fld.course_id, course_id);
-        List<Rating> ratings = Database.exec_list(conn => q.select<Rating>(conn));
+        List<Rating> ratings = q.select<Rating>(conn);
         num_ratings = ratings.Count;
 
         int total_stars = 0;

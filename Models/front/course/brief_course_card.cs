@@ -16,20 +16,20 @@ class BriefCourseCard : DataObj
     public static Query get_query_creator()
     {
         Query q = new(Tbl.course);
-        q.join(Tbl.subject, Fld.id, Tbl.course, Fld.sbj_id);
-        q.join(Tbl.teacher, Fld.id, Tbl.course, Fld.tch_id);
-        q.join(Tbl.semester, Fld.course_id, Tbl.course, Fld.id);
-        q.Where(Tbl.semester, Fld.state, [SemesterState.waiting, SemesterState.started]);
-        q.output(Tbl.course, Fld.id);
-        q.output(Tbl.semester, Fld.id);
-        q.output(Tbl.course, Fld.name);
-        q.output(Tbl.teacher, Fld.name);
-        q.output(Tbl.subject, Fld.name);
-        q.output(Tbl.subject, Fld.grade);
-        q.output(Tbl.semester, Fld.start_date);
-        q.output(Tbl.semester, Fld.finish_date);
-        q.output(Tbl.semester, Fld.capacity);
-        q.output(Tbl.semester, Fld.fee);
+        q.join(Field.subject__id, Field.course__sbj_id);
+        q.join(Field.teacher__id, Field.course__tch_id);
+        q.join(Field.semester__course_id, Field.course__id);
+        q.Where(Field.semester__state, [SemesterState.waiting, SemesterState.started]);
+        q.output(Field.course__id);
+        q.output(Field.semester__id);
+        q.output(Field.course__name);
+        q.output(Field.teacher__name);
+        q.output(Field.subject__name);
+        q.output(Field.subject__grade);
+        q.output(Field.semester__start_date);
+        q.output(Field.semester__finish_date);
+        q.output(Field.semester__capacity);
+        q.output(Field.semester__fee);
 
         string local_alias = "local_alias";
         // rating avg
@@ -54,21 +54,21 @@ class BriefCourseCard : DataObj
         return q;
     }
 
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        int course_id = DataReader.get_int(reader, ref pos);
-        int semester_id = DataReader.get_int(reader, ref pos);
-        var course_name = DataReader.get_string(reader, ref pos);
-        var tch_name = DataReader.get_string(reader, ref pos);
-        var subject = DataReader.get_string(reader, ref pos);
-        var grade = DataReader.get_int(reader, ref pos);
-        var start_date = DataReader.get_date(reader, ref pos);
-        var finish_date = DataReader.get_date(reader, ref pos);
-        var capacity = DataReader.get_int(reader, ref pos);
-        var fee = DataReader.get_int(reader, ref pos);
-        var avg_rating = DataReader.get_double(reader, ref pos);
-        int num_ratings = DataReader.get_int(reader, ref pos);
-        int num_participants = DataReader.get_int(reader, ref pos);
+        int course_id = DataReader.getInt(reader, ref pos);
+        int semester_id = DataReader.getInt(reader, ref pos);
+        var course_name = DataReader.getStr(reader, ref pos);
+        var tch_name = DataReader.getStr(reader, ref pos);
+        var subject = DataReader.getStr(reader, ref pos);
+        var grade = DataReader.getInt(reader, ref pos);
+        var start_date = DataReader.getDate(reader, ref pos);
+        var finish_date = DataReader.getDate(reader, ref pos);
+        var capacity = DataReader.getInt(reader, ref pos);
+        var fee = DataReader.getInt(reader, ref pos);
+        var avg_rating = DataReader.getDouble(reader, ref pos);
+        int num_ratings = DataReader.getInt(reader, ref pos);
+        int num_participants = DataReader.getInt(reader, ref pos);
 
         this.course_id = course_id;
         this.course_name = course_name;

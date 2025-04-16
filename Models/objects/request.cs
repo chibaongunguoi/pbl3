@@ -9,12 +9,12 @@ sealed class Request : DataObj
     public string state { get; set; } = "";
 
     // ========================================================================
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        stu_id = DataReader.get_int(reader, ref pos);
-        semester_id = DataReader.get_int(reader, ref pos);
-        date = DataReader.get_date(reader, ref pos);
-        state = DataReader.get_string(reader, ref pos);
+        stu_id = DataReader.getInt(reader, ref pos);
+        semester_id = DataReader.getInt(reader, ref pos);
+        date = DataReader.getDate(reader, ref pos);
+        state = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

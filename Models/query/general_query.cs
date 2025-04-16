@@ -10,40 +10,42 @@ static class GeneralQuery
         void start_courses(SqlConnection conn)
         {
             Query q = new(Tbl.semester);
-            q.Where(Tbl.semester, Fld.start_date, today);
-            q.Where(Tbl.semester, Fld.state, SemesterState.waiting);
+            q.Where(Field.semester__start_date, today);
+            q.Where(Field.semester__state, SemesterState.waiting);
 
             Query course_ids_query = q;
-            course_ids_query.output(Tbl.semester, Fld.course_id);
-            List<string> course_ids = Database.exec_query(conn, course_ids_query.selectQuery());
+            course_ids_query.output(Field.semester__course_id);
+            List<int> course_ids = new();
+            course_ids_query.select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
 
             Query update_semester_query = q;
-            update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.started);
+            update_semester_query.Set(Field.semester__state, SemesterState.started);
             update_semester_query.update(conn);
 
             Query update_course_query = new(Tbl.course);
-            update_course_query.Set(Tbl.course, Fld.state, CourseState.started);
-            update_course_query.Where(Tbl.course, Fld.id, course_ids);
+            update_course_query.Set(Field.course__state, CourseState.started);
+            update_course_query.Where(Field.course__id, course_ids);
             update_course_query.update(conn);
         }
 
         void finish_courses(SqlConnection conn)
         {
             Query q = new(Tbl.semester);
-            q.Where(Tbl.semester, Fld.finish_date, yesterday);
-            q.Where(Tbl.semester, Fld.state, SemesterState.started);
+            q.Where(Field.semester__finish_date, yesterday);
+            q.Where(Field.semester__state, SemesterState.started);
 
             Query course_ids_query = q;
-            course_ids_query.output(Tbl.semester, Fld.course_id);
-            List<string> course_ids = Database.exec_query(conn, course_ids_query.selectQuery());
+            course_ids_query.output(Field.semester__course_id);
+            List<string> course_ids = new();
+            course_ids_query.select(conn, reader => course_ids.Add(DataReader.getStr(reader)));
 
             Query update_semester_query = q;
-            update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.finished);
+            update_semester_query.Set(Field.semester__state, SemesterState.finished);
             update_semester_query.update(conn);
 
             Query update_course_query = new(Tbl.course);
-            update_course_query.Set(Tbl.course, Fld.state, CourseState.finished);
-            update_course_query.Where(Tbl.course, Fld.id, course_ids);
+            update_course_query.Set(Field.course__state, CourseState.finished);
+            update_course_query.Where(Field.course__id, course_ids);
             update_course_query.update(conn);
         }
 

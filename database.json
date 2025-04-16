@@ -1,7 +1,7 @@
 {
   "database_name": "DbMaster",
   "tables": {
-    "TblIdCounter": {
+    "IdCounter": {
       "json_file": "data/id_counter.json",
       "fields": [
         {
@@ -27,7 +27,7 @@
       ],
       "foreign_keys": []
     },
-    "TblAdmin": {
+    "Admin": {
       "json_file": "data/admin.json",
       "fields": [
         {
@@ -48,7 +48,7 @@
       ],
       "foreign_keys": []
     },
-    "TblStudent": {
+    "Student": {
       "json_file": "data/student.json",
       "fields": [
         {
@@ -84,7 +84,7 @@
       ],
       "foreign_keys": []
     },
-    "TblTeacher": {
+    "Teacher": {
       "json_file": "data/teacher.json",
       "fields": [
         {
@@ -130,7 +130,7 @@
       ],
       "foreign_keys": []
     },
-    "TblSubject": {
+    "Subject": {
       "json_file": "data/subject.json",
       "fields": [
         {
@@ -151,7 +151,7 @@
       ],
       "foreign_keys": []
     },
-    "TblCourse": {
+    "Course": {
       "json_file": "data/course.json",
       "fields": [
         {
@@ -183,18 +183,18 @@
       "foreign_keys": [
         {
           "field": "tch_id",
-          "ref_table": "TblTeacher",
+          "ref_table": "Teacher",
           "ref_field": "id"
         },
         {
           "field": "sbj_id",
-          "ref_table": "TblSubject",
+          "ref_table": "Subject",
           "ref_field": "id"
         }
       ]
     },
-    "TblRating": {
-      "name": "TblRating",
+    "Rating": {
+      "name": "Rating",
       "json_file": "data/rating.json",
       "fields": [
         {
@@ -226,17 +226,17 @@
       "foreign_keys": [
         {
           "field": "stu_id",
-          "ref_table": "TblStudent",
+          "ref_table": "Student",
           "ref_field": "id"
         },
         {
           "field": "course_id",
-          "ref_table": "TblCourse",
+          "ref_table": "Course",
           "ref_field": "id"
         }
       ]
     },
-    "TblSemester": {
+    "Semester": {
       "json_file": "data/semester.json",
       "fields": [
         {
@@ -283,12 +283,12 @@
       "foreign_keys": [
         {
           "field": "course_id",
-          "ref_table": "TblCourse",
+          "ref_table": "Course",
           "ref_field": "id"
         }
       ]
     },
-    "TblRequest": {
+    "Request": {
       "json_file": "data/request.json",
       "fields": [
         {
@@ -315,12 +315,12 @@
       "foreign_keys": [
         {
           "field": "stu_id",
-          "ref_table": "TblStudent",
+          "ref_table": "Student",
           "ref_field": "id"
         },
         {
           "field": "semester_id",
-          "ref_table": "TblSemester",
+          "ref_table": "Semester",
           "ref_field": "id"
         }
       ]

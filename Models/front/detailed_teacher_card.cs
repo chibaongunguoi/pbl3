@@ -7,3 +7,5 @@ struct DetailedTeacherCard
     public required string subjects;
     public required string description;
 }
+
+/* EOF */

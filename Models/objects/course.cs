@@ -9,13 +9,13 @@ sealed class Course : IdObj
     public string state { get; set; } = "";
 
     // ========================================================================
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch_data(reader, ref pos);
-        tch_id = DataReader.get_int(reader, ref pos);
-        sbj_id = DataReader.get_int(reader, ref pos);
-        name = DataReader.get_string(reader, ref pos);
-        state = DataReader.get_string(reader, ref pos);
+        base.fetch(reader, ref pos);
+        tch_id = DataReader.getInt(reader, ref pos);
+        sbj_id = DataReader.getInt(reader, ref pos);
+        name = DataReader.getStr(reader, ref pos);
+        state = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

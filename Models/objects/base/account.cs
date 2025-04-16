@@ -7,11 +7,11 @@ class Account : IdObj
     public string password { get; set; } = "";
 
     // ========================================================================
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch_data(reader, ref pos);
-        password = DataReader.get_string(reader, ref pos);
-        username = DataReader.get_string(reader, ref pos);
+        base.fetch(reader, ref pos);
+        password = DataReader.getStr(reader, ref pos);
+        username = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

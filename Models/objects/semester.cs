@@ -12,16 +12,16 @@ sealed class Semester : IdObj
     public string state { get; set; } = "";
 
     // ========================================================================
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch_data(reader, ref pos);
-        course_id = DataReader.get_int(reader, ref pos);
-        start_date = DataReader.get_date(reader, ref pos);
-        finish_date = DataReader.get_date(reader, ref pos);
-        capacity = DataReader.get_int(reader, ref pos);
-        fee = DataReader.get_int(reader, ref pos);
-        description = DataReader.get_string(reader, ref pos);
-        state = DataReader.get_string(reader, ref pos);
+        base.fetch(reader, ref pos);
+        course_id = DataReader.getInt(reader, ref pos);
+        start_date = DataReader.getDate(reader, ref pos);
+        finish_date = DataReader.getDate(reader, ref pos);
+        capacity = DataReader.getInt(reader, ref pos);
+        fee = DataReader.getInt(reader, ref pos);
+        description = DataReader.getStr(reader, ref pos);
+        state = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

@@ -10,22 +10,21 @@ struct RatingCard
     public static Query get_query_creator()
     {
         Query q = new(Tbl.rating);
-        q.join(Tbl.student, Fld.id, Tbl.rating, Fld.stu_id);
-
-        q.output(Tbl.student, Fld.name);
-        q.output(Tbl.rating, Fld.stars);
-        q.output(Tbl.rating, Fld.date);
-        q.output(Tbl.rating, Fld.description);
+        q.join(Field.student__id, Field.rating__stu_id);
+        q.output(Field.student__name);
+        q.output(Field.rating__stars);
+        q.output(Field.rating__date);
+        q.output(Field.rating__description);
         return q;
     }
 
     public static RatingCard get_card(SqlConnection conn, SqlDataReader reader)
     {
         int pos = 0;
-        string name = DataReader.get_string(reader, ref pos);
-        int score = DataReader.get_int(reader, ref pos);
-        var date = DataReader.get_date(reader, ref pos);
-        string descrip = DataReader.get_string(reader, ref pos);
+        string name = DataReader.getStr(reader, ref pos);
+        int score = DataReader.getInt(reader, ref pos);
+        var date = DataReader.getDate(reader, ref pos);
+        string descrip = DataReader.getStr(reader, ref pos);
 
         RatingCard ra = new()
         {

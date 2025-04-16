@@ -7,11 +7,11 @@ class Subject : IdObj
     public int grade;
 
     // ========================================================================
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch_data(reader, ref pos);
-        name = DataReader.get_string(reader, ref pos);
-        grade = DataReader.get_int(reader, ref pos);
+        base.fetch(reader, ref pos);
+        name = DataReader.getStr(reader, ref pos);
+        grade = DataReader.getInt(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

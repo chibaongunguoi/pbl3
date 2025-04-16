@@ -11,9 +11,9 @@ class DetailedCourseCard : BriefCourseCard
         return q;
     }
 
-    public override void fetch_data(SqlDataReader reader, ref int pos)
+    public override void fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch_data(reader, ref pos);
-        this.description = DataReader.get_string(reader, ref pos);
+        base.fetch(reader, ref pos);
+        this.description = DataReader.getStr(reader, ref pos);
     }
 }

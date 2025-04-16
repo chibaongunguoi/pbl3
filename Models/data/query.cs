@@ -13,8 +13,6 @@ static class QPiece
 
     public static string dot(string table, string field) => $"[{table}].[{field}]";
 
-    public static string bracket(string s) => $"({s})";
-
     public static string castFloat(string field) => $"CAST({field} AS FLOAT)";
 
     public static string toStr(int value) => $"{value}";
@@ -25,12 +23,9 @@ static class QPiece
 
     public static string toNStr(string value) => $"N\'{value}\'";
 
-    public static string avg(string field, string? alias = null)
+    public static string avg(string field)
     {
-        string s = $"ISNULL(AVG({field}), 0)";
-        if (alias is null)
-            return s;
-        return $"{s} AS {alias}";
+        return $"ISNULL(AVG({field}), 0)";
     }
 
     public static string alias(string field, string? alias)
@@ -42,11 +37,35 @@ static class QPiece
 
     public const string countAll = "COUNT(*)";
 
-    public static string inStrList(string field, List<string> value)
+    public static string inList(string field, List<string> values)
+    {
+        if (values.Count == 0)
+            return FALSE;
+        string str = string.Join(", ", values.Select(v => $"\'{v}\'"));
+        return $"{field} IN ({str})";
+    }
+
+    public static string inList(string field, List<int> values)
+    {
+        if (values.Count == 0)
+            return FALSE;
+        string str = string.Join(", ", values.Select(v => $"\'{v}\'"));
+        return $"{field} IN ({str})";
+    }
+
+    public static string inList(string field, List<object> values)
+    {
+        if (values.Count == 0)
+            return FALSE;
+        string str = string.Join(", ", values);
+        return $"{field} IN ({str})";
+    }
+
+    public static string inRawList(string field, List<int> value)
     {
         if (value.Count == 0)
             return FALSE;
-        string str = string.Join(", ", value.Select(v => $"\'{v}\'"));
+        string str = string.Join(", ", value);
         return $"{field} IN ({str})";
     }
 
@@ -128,7 +147,7 @@ sealed class Query
 
     public void outputQuery(string query)
     {
-        outputClause(QPiece.bracket(query));
+        outputClause($"({query})");
     }
 
     // ========================================================================
@@ -178,6 +197,11 @@ sealed class Query
         WhereClause($"{QPiece.dot(table, field)} = '{IoUtils.conv_db(value)}'");
     }
 
+    public void Where(string field, DateOnly value)
+    {
+        WhereClause($"{field} = '{IoUtils.conv_db(value)}'");
+    }
+
     public void Where(string table, string field, string table_2, string field_2)
     {
         WhereClause($"{QPiece.dot(table, field)} = {QPiece.dot(table_2, field_2)}");
@@ -195,7 +219,32 @@ sealed class Query
 
     public void Where(string table, string field, List<string> value)
     {
-        WhereClause(QPiece.inStrList(QPiece.dot(table, field), value));
+        WhereClause(QPiece.inList(QPiece.dot(table, field), value));
+    }
+
+    public void WhereRaw(string table, string field, List<string> value)
+    {
+        WhereClause(QPiece.inRawList(QPiece.dot(table, field), value));
+    }
+
+    public void WhereRaw(string table, string field, List<int> values)
+    {
+        WhereClause(QPiece.inList(QPiece.dot(table, field), values));
+    }
+
+    public void Where(string field, List<string> value)
+    {
+        WhereClause(QPiece.inList(field, value));
+    }
+
+    public void Where(string field, List<int> value)
+    {
+        WhereClause(QPiece.inList(field, value));
+    }
+
+    public void Where(string field, List<object> value)
+    {
+        WhereClause(QPiece.inList(field, value));
     }
 
     // ========================================================================
@@ -258,6 +307,12 @@ sealed class Query
         JoinClause(
             QPiece.join(table_1, QPiece.dot(table_1, field_1), QPiece.dot(table_2, field_2))
         );
+    }
+
+    public void join(string field_1, string field_2)
+    {
+        string table_1 = field_1.Split('.')[0];
+        JoinClause(QPiece.join(table_1, field_1, field_2));
     }
 
     // ========================================================================
@@ -355,7 +410,7 @@ sealed class Query
         void func(SqlDataReader reader)
         {
             int pos = 0;
-            result = DataReader.get_int(reader, ref pos);
+            result = DataReader.getInt(reader, ref pos);
         }
         Database.exec_reader(conn, selectQuery(count_mode: true), func);
         return result;

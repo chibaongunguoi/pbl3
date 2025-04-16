@@ -9,7 +9,6 @@ class Database
     // ========================================================================
     // INFO: Delegate cho các hàm nhận conn làm tham số.
     public delegate void ConnFunction(SqlConnection conn);
-    public delegate List<T> ConnFunction<T>(SqlConnection conn);
 
     // ========================================================================
     // INFO: Tạo mới conn và truyền conn vào ConnFunction, sau đó ngắt kết nối.
@@ -30,14 +29,6 @@ class Database
         }
     }
 
-    // ------------------------------------------------------------------------
-    public static List<T> exec_list<T>(ConnFunction<T> conn_function, string? conn_string = null)
-    {
-        List<T> results = new();
-        exec(conn => results = conn_function(conn), conn_string);
-        return results;
-    }
-
     // ========================================================================
     // INFO:
     // Đây là hàm chạy trên một conn cụ thể.
@@ -46,7 +37,6 @@ class Database
     {
         int counter = ++query_counter;
         Console.WriteLine($"[START] query #{counter}: {query[..Math.Min(100, query.Length)]}");
-        // Console.WriteLine(query);
         Stopwatch stopwatch = Stopwatch.StartNew();
         using (SqlCommand command = new SqlCommand(query, conn))
         {
@@ -103,22 +93,7 @@ class Database
         void func(SqlDataReader reader)
         {
             int pos = 0;
-            results.Add(DataReader.get_data_obj<T>(reader, ref pos));
-        }
-        Database.exec_reader(conn, query, func);
-        return results;
-    }
-
-    // ------------------------------------------------------------------------
-    // INFO:
-    // Đây là hàm chạy trên một conn cụ thể.
-    // Trả về biểu diễn dạng xâu của các bản ghi thu được từ query.
-    public static List<string> exec_query(SqlConnection conn, string query)
-    {
-        List<string> results = new List<string>();
-        void func(SqlDataReader reader)
-        {
-            results.Add(string.Join(",", DataReader.get_sql_repr(reader)));
+            results.Add(DataReader.getDataObj<T>(reader, ref pos));
         }
         Database.exec_reader(conn, query, func);
         return results;
