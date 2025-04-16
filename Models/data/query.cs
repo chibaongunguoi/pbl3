@@ -1,10 +1,5 @@
 using Microsoft.Data.SqlClient;
 
-// INFO: Class tạo truy vấn
-// Class truy vấn này được biệt hóa để sử dụng với kiểu
-// dữ liệu Table (bảng) và Field (trường) được định nghĩa
-// chỉ dành riêng cho dự án này.
-
 static class QPiece
 {
     public const string FALSE = "1 = 0";

@@ -1,10 +1,8 @@
-using Microsoft.Data.SqlClient;
-
 sealed class RawQuery
 {
     // ------------------------------------------------------------------------
     public static string insertQuery(
-        List<List<string>> data,
+        ref List<List<string>> data,
         string table,
         DatabaseTableConfig table_config
     )
@@ -40,35 +38,21 @@ sealed class RawQuery
     }
 
     // ------------------------------------------------------------------------
-    public static void Insert(
-        SqlConnection conn,
-        List<List<string>> data,
+    public static void getInsertQueries(
+        ref List<List<string>> data,
         string table,
         DatabaseTableConfig table_config,
+        ref List<string> queries,
         int batch_size = 1000
     )
     {
         int total_batches = (int)Math.Ceiling((double)data.Count / batch_size);
 
-        string queries = "";
         for (int batch_number = 0; batch_number < total_batches; batch_number++)
         {
             var batch = data.Skip(batch_number * batch_size).Take(batch_size).ToList();
-            string query = insertQuery(batch, table, table_config);
-            if (query.Length + queries.Length > 1000000)
-            {
-                Database.exec_non_query(conn, queries);
-                queries = query;
-            }
-            else
-            {
-                queries += $"{query} ";
-            }
-        }
-        if (queries != "")
-        {
-            queries = queries.TrimEnd(' ');
-            Database.exec_non_query(conn, queries);
+            string query = insertQuery(ref batch, table, table_config);
+            queries.Add(query);
         }
     }
 

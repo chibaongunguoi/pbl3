@@ -108,6 +108,7 @@ sealed class DataGenerator
         Stopwatch stopwatch = Stopwatch.StartNew();
         var table_configs = TableMngr.get_table_configs();
 
+        List<string> queries = new List<string>();
         foreach (var (table, table_config) in table_configs)
         {
             string query = $"CREATE TABLE {table} (";
@@ -123,7 +124,7 @@ sealed class DataGenerator
 
             query = query.TrimEnd(',');
             query += ");";
-            Database.exec_non_query(conn, query);
+            queries.Add(query);
 
             string json_file = table_config.json_file;
             if (json_file == "")
@@ -132,8 +133,26 @@ sealed class DataGenerator
             }
             string database_config_json = File.ReadAllText(json_file);
             var lst = JsonSerializer.Deserialize<List<List<string>>>(database_config_json) ?? new();
-            RawQuery.Insert(conn, lst, table, table_config);
+            RawQuery.getInsertQueries(ref lst, table, table_config, ref queries);
         }
+
+        string big_query = "";
+
+        foreach (var query in queries)
+        {
+            big_query += $" {query}";
+            if (big_query.Length > 1000000)
+            {
+                Database.exec_non_query(conn, big_query);
+                big_query = "";
+            }
+        }
+
+        if (big_query.Length > 0)
+        {
+            Database.exec_non_query(conn, big_query);
+        }
+
         stopwatch.Stop();
         TimeSpan elapsed = stopwatch.Elapsed;
         Console.WriteLine($"DataGenerator - Time taken: {elapsed.TotalMilliseconds} ms");
