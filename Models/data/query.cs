@@ -38,9 +38,10 @@ static class QPiece
 
     public static string avg(string field, string? alias = null)
     {
+        string s = $"ISNULL(AVG({field}), 0)";
         if (alias is null)
-            return $"AVG({field})";
-        return $"AVG({field}) AS {alias}";
+            return s;
+        return $"{s} AS {alias}";
     }
 
     public static string alias(string field, string? alias)
@@ -160,7 +161,7 @@ sealed class Query
 
     public void Where(string field, string value)
     {
-        WhereClause($"{field} = {value}");
+        WhereClause($"{field} = '{value}'");
     }
 
     public void WhereRaw(string table, string field, string value)
@@ -355,7 +356,7 @@ sealed class Query
     public void Delete(SqlConnection conn) => Database.exec_non_query(conn, DeleteQuery());
 
     // ------------------------------------------------------------------------
-    public void insert<T>(SqlConnection conn, T obj)
+    public void Insert<T>(SqlConnection conn, T obj)
         where T : DataObj, new() => Database.exec_non_query(conn, InsertQuery<T>(obj));
 
     // ------------------------------------------------------------------------

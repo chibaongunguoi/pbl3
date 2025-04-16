@@ -84,7 +84,7 @@ public class AddSemesterForm
         };
 
         Query q_ins_semester = new(Tbl.semester);
-        q_ins_semester.insert<Semester>(conn, semester);
+        q_ins_semester.Insert<Semester>(conn, semester);
 
         Query q_update_course = new(Tbl.course);
         q_update_course.Set(Fld.state, CourseState.waiting);

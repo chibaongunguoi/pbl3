@@ -17,7 +17,6 @@ class DatabaseTableField
 // ============================================================================
 class DatabaseTableConfig
 {
-    public string name { get; set; } = "";
     public string json_file { get; set; } = "";
     public List<DatabaseTableField> fields { get; set; } = new();
     public List<DatabaseTableForeignKey> foreign_keys { get; set; } = new();

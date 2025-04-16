@@ -108,9 +108,9 @@ sealed class DataGenerator
         Stopwatch stopwatch = Stopwatch.StartNew();
         var table_configs = TableMngr.get_table_configs();
 
-        foreach (var (_, table_config) in table_configs)
+        foreach (var (table, table_config) in table_configs)
         {
-            string query = $"CREATE TABLE {table_config.name} (";
+            string query = $"CREATE TABLE {table} (";
             foreach (var field in table_config.fields)
             {
                 query += $"{field.name} {field.sql_type},";
@@ -118,8 +118,7 @@ sealed class DataGenerator
 
             foreach (var fk in table_config.foreign_keys)
             {
-                query +=
-                    $"FOREIGN KEY ({fk.field}) REFERENCES {TableMngr.conv(fk.ref_table)}({fk.ref_field}),";
+                query += $"FOREIGN KEY ({fk.field}) REFERENCES {fk.ref_table}({fk.ref_field}),";
             }
 
             query = query.TrimEnd(',');
@@ -133,7 +132,7 @@ sealed class DataGenerator
             }
             string database_config_json = File.ReadAllText(json_file);
             var lst = JsonSerializer.Deserialize<List<List<string>>>(database_config_json) ?? new();
-            RawQuery.insert(conn, lst, table_config);
+            RawQuery.Insert(conn, lst, table, table_config);
         }
         stopwatch.Stop();
         TimeSpan elapsed = stopwatch.Elapsed;

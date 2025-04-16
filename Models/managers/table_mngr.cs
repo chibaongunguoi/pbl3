@@ -11,9 +11,6 @@ class TableMngr
     // ========================================================================
     public static void load(string table, DatabaseTableConfig table_config)
     {
-        string table_name = table_config.name;
-
-        s_table_name_dict[table] = table_name;
         s_table_config_dict[table] = table_config;
     }
 
@@ -23,18 +20,14 @@ class TableMngr
         string database_config_json = File.ReadAllText("database.json");
         var db_config = JsonSerializer.Deserialize<DatabaseConfig>(database_config_json) ?? new();
         s_database_name = db_config.database_name;
-
-        foreach (var (table_key, table_config) in db_config.tables)
+        foreach (var (table, table_config) in db_config.tables)
         {
-            load(table_key, table_config);
+            load(table, table_config);
         }
     }
 
     // ========================================================================
     public static string get_database_name() => s_database_name;
-
-    // ========================================================================
-    public static string conv(string table) => s_table_name_dict[table];
 
     // ------------------------------------------------------------------------
     public static Dictionary<string, DatabaseTableConfig> get_table_configs() =>

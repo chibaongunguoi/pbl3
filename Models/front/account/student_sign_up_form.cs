@@ -84,7 +84,7 @@ public class StudentSignUpForm
             bday = bday ?? new(),
         };
         Query q1 = new(Tbl.student);
-        q1.insert<Student>(conn, student);
+        q1.Insert<Student>(conn, student);
 
         log.stu_id = id;
         return log;

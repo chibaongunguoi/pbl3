@@ -48,8 +48,8 @@ sealed class IdCounterQuery
             return false;
 
         Query q = new(Tbl.id_counter);
-        q.Set(Fld.count, id + 1);
         q.Where(Fld.name, table);
+        q.Set(Fld.count, id + 1);
         q.Update(conn);
         return true;
     }

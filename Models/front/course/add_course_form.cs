@@ -89,6 +89,7 @@ public class AddCourseForm
             tch_id = tch_id,
             sbj_id = sbj_id,
             name = course_name,
+            state = CourseState.waiting,
         };
 
         Semester semester = new()
@@ -104,9 +105,9 @@ public class AddCourseForm
         };
 
         Query q1 = new(Tbl.course);
-        q1.insert<Course>(conn, course);
+        q1.Insert<Course>(conn, course);
         q1 = new(Tbl.semester);
-        q1.insert<Semester>(conn, semester);
+        q1.Insert<Semester>(conn, semester);
 
         log.course_id = course_id;
         log.semester_id = semester_id;

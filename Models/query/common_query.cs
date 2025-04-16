@@ -27,7 +27,7 @@ class CommonQuery<T>
     public static void insert_record(SqlConnection conn, T obj, string table)
     {
         Query q = new(table);
-        q.insert<T>(conn, obj);
+        q.Insert<T>(conn, obj);
     }
 
     // ========================================================================

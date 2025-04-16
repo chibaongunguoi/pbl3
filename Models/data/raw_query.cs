@@ -3,9 +3,13 @@ using Microsoft.Data.SqlClient;
 sealed class RawQuery
 {
     // ------------------------------------------------------------------------
-    public static string get_insert_query(List<List<string>> data, DatabaseTableConfig table_config)
+    public static string InsertQuery(
+        List<List<string>> data,
+        string table,
+        DatabaseTableConfig table_config
+    )
     {
-        string query = $"INSERT INTO {table_config.name} VALUES ";
+        string query = $"INSERT INTO {table} VALUES ";
         foreach (var record in data)
         {
             int pos = 0;
@@ -36,9 +40,10 @@ sealed class RawQuery
     }
 
     // ------------------------------------------------------------------------
-    public static void insert(
+    public static void Insert(
         SqlConnection conn,
         List<List<string>> data,
+        string table,
         DatabaseTableConfig table_config,
         int batch_size = 1000
     )
@@ -48,7 +53,7 @@ sealed class RawQuery
         for (int batch_number = 0; batch_number < total_batches; batch_number++)
         {
             var batch = data.Skip(batch_number * batch_size).Take(batch_size).ToList();
-            string query = get_insert_query(batch, table_config);
+            string query = InsertQuery(batch, table, table_config);
             Database.exec_non_query(conn, query);
         }
     }

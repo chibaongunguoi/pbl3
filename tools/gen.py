@@ -396,11 +396,11 @@ json_output("rating", ratings)
 # -----------------------------------------------------------------------------
 
 id_counters = [
-    ["student", student_next_id, student_first_id, student_max_id],
-    ["teacher", teacher_next_id, teacher_first_id, teacher_max_id],
-    ["course", course_next_id, 1, 0],
-    ["semester", semester_next_id, 1, 0],
-    ["subject", 1, 1, 0],
+    ["TblStudent", student_next_id, student_first_id, student_max_id],
+    ["TblTeacher", teacher_next_id, teacher_first_id, teacher_max_id],
+    ["TblCourse", course_next_id, 1, 0],
+    ["TblSemester", semester_next_id, 1, 0],
+    ["TblSubject", subject_next_id, 1, 0],
 ]
 
 json_output("id_counter", id_counters)
