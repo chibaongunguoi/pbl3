@@ -7,9 +7,9 @@ struct RatingCard
     public string date;
     public string description;
 
-    public static QueryCreator get_query_creator()
+    public static Query get_query_creator()
     {
-        QueryCreator q = new(Tbl.rating);
+        Query q = new(Tbl.rating);
         q.JoinClause(
             QPiece.join(
                 Tbl.student,
@@ -18,7 +18,7 @@ struct RatingCard
             )
         );
 
-        q.output(
+        q.OutputClause(
             QPiece.dot(Tbl.student, Fld.name),
             QPiece.dot(Tbl.rating, Fld.stars),
             QPiece.dot(Tbl.rating, Fld.date),

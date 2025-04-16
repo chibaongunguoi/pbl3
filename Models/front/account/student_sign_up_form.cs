@@ -57,9 +57,9 @@ public class StudentSignUpForm
             return log;
         }
 
-        QueryCreator q = new(Tbl.student);
+        Query q = new(Tbl.student);
         q.WhereClause(QPiece.eq(Fld.username, username));
-        int count = q.count(conn);
+        int count = q.Count(conn);
 
         if (count > 0)
         {
@@ -83,7 +83,7 @@ public class StudentSignUpForm
             gender = gender,
             bday = bday ?? new(),
         };
-        Query q1 = new Query(Table.student);
+        Query q1 = new(Tbl.student);
         q1.insert<Student>(conn, student);
 
         log.stu_id = id;

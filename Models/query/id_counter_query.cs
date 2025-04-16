@@ -26,10 +26,10 @@ sealed class IdCounterQuery
             max_count = DataReader.get_int(reader, ref pos);
         }
 
-        QueryCreator q = new(Tbl.id_counter);
-        q.WhereClause(QPiece.eqStr(Fld.name, table));
-        q.output(Fld.count, Fld.max_count);
-        q.select(conn, func);
+        Query q = new(Tbl.id_counter);
+        q.WhereClause(QPiece.eq(Fld.name, table));
+        q.OutputClause(Fld.count, Fld.max_count);
+        q.Select(conn, func);
 
         if (count > max_count)
             s_last_state = State.id_hits_limit;
@@ -47,10 +47,10 @@ sealed class IdCounterQuery
         if (!get_count(conn, table, out id))
             return false;
 
-        QueryCreator q = new(Tbl.id_counter);
-        q.SetClause(QPiece.eq(Fld.count, id + 1));
-        q.WhereClause(QPiece.eq(Fld.name, table));
-        q.update(conn);
+        Query q = new(Tbl.id_counter);
+        q.Set(Fld.count, id + 1);
+        q.Where(Fld.name, table);
+        q.Update(conn);
         return true;
     }
 

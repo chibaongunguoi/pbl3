@@ -8,13 +8,6 @@ class QueryUtils
     // INFO: Định dạng bao bọc tên trong SQL, ví dụ "SELECT [table_name].[field_name]"
     public static string bracket(string table_name, string field) =>
         "[" + table_name + "].[" + field + "]";
-
-    // ========================================================================
-    public static Field cat(Table table, FieldSuffix suffix)
-    {
-        return Enum.Parse<Field>($"{table}__{suffix}");
-    }
-    // ========================================================================
 }
 
 /* EOF */

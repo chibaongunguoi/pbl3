@@ -9,48 +9,42 @@ static class GeneralQuery
 
         void start_courses(SqlConnection conn)
         {
-            QueryCreator q = new(Tbl.semester);
+            Query q = new(Tbl.semester);
             q.Where(Tbl.semester, Fld.start_date, today);
-            q.WhereStr(Tbl.semester, Fld.state, SemesterState.waiting);
+            q.Where(Tbl.semester, Fld.state, SemesterState.waiting);
 
-            QueryCreator course_ids_query = q;
-            course_ids_query.output(QPiece.dot(Tbl.semester, Fld.course_id));
-            List<string> course_ids = Database.exec_query(
-                conn,
-                course_ids_query.get_select_query()
-            );
+            Query course_ids_query = q;
+            course_ids_query.Output(Tbl.semester, Fld.course_id);
+            List<string> course_ids = Database.exec_query(conn, course_ids_query.SelectQuery());
 
-            QueryCreator update_semester_query = q;
-            update_semester_query.SetStr(Tbl.semester, Fld.state, SemesterState.started);
-            update_semester_query.update(conn);
+            Query update_semester_query = q;
+            update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.started);
+            update_semester_query.Update(conn);
 
-            QueryCreator update_course_query = new(Tbl.course);
-            update_course_query.SetStr(Tbl.course, Fld.state, CourseState.started);
-            update_course_query.WhereStrList(Tbl.course, Fld.id, course_ids);
-            update_course_query.update(conn);
+            Query update_course_query = new(Tbl.course);
+            update_course_query.Set(Tbl.course, Fld.state, CourseState.started);
+            update_course_query.Where(Tbl.course, Fld.id, course_ids);
+            update_course_query.Update(conn);
         }
 
         void finish_courses(SqlConnection conn)
         {
-            QueryCreator q = new(Tbl.semester);
+            Query q = new(Tbl.semester);
             q.Where(Tbl.semester, Fld.finish_date, yesterday);
-            q.WhereStr(Tbl.semester, Fld.state, SemesterState.started);
+            q.Where(Tbl.semester, Fld.state, SemesterState.started);
 
-            QueryCreator course_ids_query = q;
-            course_ids_query.output(QPiece.dot(Tbl.semester, Fld.course_id));
-            List<string> course_ids = Database.exec_query(
-                conn,
-                course_ids_query.get_select_query()
-            );
+            Query course_ids_query = q;
+            course_ids_query.Output(Tbl.semester, Fld.course_id);
+            List<string> course_ids = Database.exec_query(conn, course_ids_query.SelectQuery());
 
-            QueryCreator update_semester_query = q;
-            update_semester_query.SetStr(Tbl.semester, Fld.state, SemesterState.finished);
-            update_semester_query.update(conn);
+            Query update_semester_query = q;
+            update_semester_query.Set(Tbl.semester, Fld.state, SemesterState.finished);
+            update_semester_query.Update(conn);
 
-            QueryCreator update_course_query = new(Tbl.course);
-            update_course_query.SetStr(Tbl.course, Fld.state, CourseState.finished);
-            update_course_query.WhereStrList(Tbl.course, Fld.id, course_ids);
-            update_course_query.update(conn);
+            Query update_course_query = new(Tbl.course);
+            update_course_query.Set(Tbl.course, Fld.state, CourseState.finished);
+            update_course_query.Where(Tbl.course, Fld.id, course_ids);
+            update_course_query.Update(conn);
         }
 
         Database.exec(

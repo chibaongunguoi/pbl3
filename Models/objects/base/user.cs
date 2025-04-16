@@ -20,9 +20,9 @@ class User : Account
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add(name);
-        lst.Add(gender);
-        lst.Add(bday.ToString());
+        lst.Add(QPiece.ToNStr(name));
+        lst.Add(QPiece.ToStr(gender));
+        lst.Add(QPiece.ToStr(bday));
         return lst;
     }
 

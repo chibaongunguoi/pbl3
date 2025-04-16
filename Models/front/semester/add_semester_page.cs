@@ -5,10 +5,10 @@ class CourseOption : DataObj
     public int id;
     public string name = "";
 
-    public static QueryCreator get_query_creator()
+    public static Query get_query_creator()
     {
-        QueryCreator q = new(Tbl.course);
-        q.output(Fld.id, Fld.name);
+        Query q = new(Tbl.course);
+        q.OutputClause(Fld.id, Fld.name);
         return q;
     }
 
@@ -30,10 +30,10 @@ class AddSemesterPage
         Database.exec(
             delegate(SqlConnection conn)
             {
-                QueryCreator q = CourseOption.get_query_creator();
-                q.WhereStr(Tbl.course, Fld.state, CourseState.finished);
+                Query q = CourseOption.get_query_creator();
+                q.Where(Tbl.course, Fld.state, CourseState.finished);
                 q.Where(Tbl.course, Fld.tch_id, tch_id);
-                this.courses = q.select<CourseOption>(conn);
+                this.courses = q.Select<CourseOption>(conn);
             }
         );
     }

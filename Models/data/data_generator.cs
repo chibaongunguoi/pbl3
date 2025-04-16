@@ -118,9 +118,8 @@ sealed class DataGenerator
 
             foreach (var fk in table_config.foreign_keys)
             {
-                Table ref_table = Enum.Parse<Table>(fk.ref_table);
                 query +=
-                    $"FOREIGN KEY ({fk.field}) REFERENCES {TableMngr.conv(ref_table)}({fk.ref_field}),";
+                    $"FOREIGN KEY ({fk.field}) REFERENCES {TableMngr.conv(fk.ref_table)}({fk.ref_field}),";
             }
 
             query = query.TrimEnd(',');
