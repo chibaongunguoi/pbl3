@@ -7,7 +7,7 @@ class DetailedCourseCard : BriefCourseCard
     public static new Query get_query_creator()
     {
         Query q = BriefCourseCard.get_query_creator();
-        q.outputClause(QPiece.dot(Tbl.semester, Fld.description));
+        q.output(Tbl.semester, Fld.description);
         return q;
     }
 

@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 sealed class RawQuery
 {
     // ------------------------------------------------------------------------
-    public static string InsertQuery(
+    public static string insertQuery(
         List<List<string>> data,
         string table,
         DatabaseTableConfig table_config
@@ -54,7 +54,7 @@ sealed class RawQuery
         for (int batch_number = 0; batch_number < total_batches; batch_number++)
         {
             var batch = data.Skip(batch_number * batch_size).Take(batch_size).ToList();
-            string query = InsertQuery(batch, table, table_config);
+            string query = insertQuery(batch, table, table_config);
             if (query.Length + queries.Length > 1000000)
             {
                 Database.exec_non_query(conn, queries);

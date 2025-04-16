@@ -50,7 +50,7 @@ public class StudentSignUpForm
         }
 
         Query q = new(Tbl.student);
-        q.WhereClause(QPiece.eq(Fld.username, username));
+        q.Where(Fld.username, username);
         int count = q.count(conn);
 
         if (count > 0)

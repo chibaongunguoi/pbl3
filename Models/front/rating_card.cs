@@ -10,20 +10,12 @@ struct RatingCard
     public static Query get_query_creator()
     {
         Query q = new(Tbl.rating);
-        q.JoinClause(
-            QPiece.join(
-                Tbl.student,
-                QPiece.dot(Tbl.rating, Fld.stu_id),
-                QPiece.dot(Tbl.student, Fld.id)
-            )
-        );
+        q.join(Tbl.student, Fld.id, Tbl.rating, Fld.stu_id);
 
-        q.outputClause(
-            QPiece.dot(Tbl.student, Fld.name),
-            QPiece.dot(Tbl.rating, Fld.stars),
-            QPiece.dot(Tbl.rating, Fld.date),
-            QPiece.dot(Tbl.rating, Fld.description)
-        );
+        q.output(Tbl.student, Fld.name);
+        q.output(Tbl.rating, Fld.stars);
+        q.output(Tbl.rating, Fld.date);
+        q.output(Tbl.rating, Fld.description);
         return q;
     }
 

@@ -61,7 +61,7 @@ class BriefCoursePage
         // {
         //     q.where_string_contains(Field.subject__name, search_by_subject_name);
         // }
-        q.orderByClause(QPiece.orderBy(QPiece.dot(Tbl.semester, Fld.id), desc: true));
+        q.orderBy(Tbl.semester, Fld.id, desc: true);
         q.offset(page, num_objs);
         cards = q.select<BriefCourseCard>(conn);
         stopwatch.Stop();

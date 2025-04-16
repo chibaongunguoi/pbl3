@@ -9,17 +9,6 @@ static class QPiece
 {
     public const string FALSE = "1 = 0";
 
-    public static string eq(string field, int value) => $"{field} = {value}";
-
-    public static string eqRaw(string field, string value) => $"{field} = {value}";
-
-    public static string eq(string field, DateOnly value) =>
-        $"{field} = '{IoUtils.conv_db(value)}'";
-
-    public static string eq(string field, string value) => $"{field} = '{value}'";
-
-    public static string eqNStr(string field, string value) => $"{field} = N'{value}'";
-
     public static string containsStr(string field, string value) => $"{field} LIKE '%{value}%'";
 
     public static string dot(string table, string field) => $"[{table}].[{field}]";
@@ -61,7 +50,7 @@ static class QPiece
         return $"{field} IN ({str})";
     }
 
-    public static string inIntList(string field, List<string> value)
+    public static string inRawList(string field, List<string> value)
     {
         if (value.Count == 0)
             return FALSE;
@@ -202,6 +191,11 @@ sealed class Query
             if (field.Length > 0)
                 order_bys.Add(field);
         }
+    }
+
+    public void orderBy(string table, string field, bool desc = false)
+    {
+        orderByClause(QPiece.orderBy(QPiece.dot(table, field), desc: desc));
     }
 
     // ========================================================================

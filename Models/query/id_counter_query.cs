@@ -27,7 +27,7 @@ sealed class IdCounterQuery
         }
 
         Query q = new(Tbl.id_counter);
-        q.WhereClause(QPiece.eq(Fld.name, table));
+        q.Where(Fld.name, table);
         q.outputClause(Fld.count, Fld.max_count);
         q.select(conn, func);
 

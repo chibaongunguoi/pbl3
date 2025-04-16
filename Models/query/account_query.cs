@@ -64,8 +64,8 @@ sealed class AccountQuery<T>
         List<T> func(string table)
         {
             Query q = new(table);
-            q.WhereClause(QPiece.eqRaw(Fld.username, username));
-            q.WhereClause(QPiece.eqRaw(Fld.password, password));
+            q.Where(Fld.username, username);
+            q.Where(Fld.password, password);
             return q.select<T>(conn);
         }
         if (string.IsNullOrEmpty(table))

@@ -24,7 +24,7 @@ class DetailedCoursePage
         {
             CourseQuery.get_avg_rating(conn, course_id, out averageRating, out numRatings);
             Query q = new(Tbl.course);
-            q.WhereClause(QPiece.eq(QPiece.dot(Tbl.course, Fld.id), course_id));
+            q.Where(Tbl.course, Fld.id, course_id);
             List<Course> course_lst = q.select<Course>(conn);
             if (course_lst.Count == 0)
                 return;
@@ -43,8 +43,8 @@ class DetailedCoursePage
             for (int i = 1; i <= 5; i++)
             {
                 q = RatingCard.get_query_creator();
-                q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.stars), i));
-                q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.course_id), course_id));
+                q.Where(Tbl.rating, Fld.stars, i);
+                q.Where(Tbl.rating, Fld.course_id, course_id);
                 rating_counts.Add(i, q.count(conn));
             }
         }
@@ -61,7 +61,7 @@ class DetailedCoursePage
     {
         List<RatingCard> cards = new();
         Query q = RatingCard.get_query_creator();
-        q.WhereClause(QPiece.eq(QPiece.dot(Tbl.rating, Fld.course_id), courseId));
+        q.Where(Tbl.rating, Fld.course_id, courseId);
         q.offset(page, num_objs);
         q.select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
         return cards;
@@ -71,7 +71,7 @@ class DetailedCoursePage
     {
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
-        q.WhereClause(QPiece.eq(QPiece.dot(Tbl.teacher, Fld.id), tch_id));
+        q.Where(Tbl.teacher, Fld.id, tch_id);
         return q.select<BriefTeacherCard>(conn);
     }
 
@@ -79,7 +79,7 @@ class DetailedCoursePage
     {
         List<DetailedCourseCard> cards = new();
         Query q = DetailedCourseCard.get_query_creator();
-        q.WhereClause(QPiece.eq(QPiece.dot(Tbl.course, Fld.id), id));
+        q.Where(Tbl.course, Fld.id, id);
         return q.select<DetailedCourseCard>(conn);
     }
 }
