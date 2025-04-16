@@ -36,7 +36,7 @@ class BriefCourseCard : DataObj
         Query q2 = new(QPiece.alias(Tbl.rating, local_alias));
         q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
         q2.outputAvgCastFloat(Fld.stars);
-        q.outputClause(QPiece.bracket(q2.selectQuery()));
+        q.outputQuery(q2.selectQuery());
 
         // rating count
         q2 = new(QPiece.alias(Tbl.rating, local_alias));
