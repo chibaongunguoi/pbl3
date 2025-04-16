@@ -16,7 +16,7 @@ class IdObj : DataObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add($"{id}");
+        lst.Add(QPiece.ToStr(id));
         return lst;
     }
 

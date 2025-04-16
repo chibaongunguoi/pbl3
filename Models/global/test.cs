@@ -28,7 +28,7 @@ class Test
             bday = new DateOnly(2012, 12, 12),
         };
 
-        Database.exec(conn => CommonQuery.insert_record_with_id(conn, new_student, Table.student));
+        // Database.exec(conn => CommonQuery.insert_record_with_id(conn, new_student, Table.student));
 
         // IoUtils.print_list(
         //     Database.exec_list(conn => CommonQuery.get_all_records(conn, Table.student))

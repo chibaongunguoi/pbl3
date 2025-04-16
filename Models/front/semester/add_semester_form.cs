@@ -43,8 +43,8 @@ public class AddSemesterForm
 
         // Start querying
 
-        QueryCreator q = new(Tbl.teacher);
-        int c = q.count(conn);
+        Query q = new(Tbl.teacher);
+        int c = q.Count(conn);
         if (c == 0)
         {
             log.success = false;
@@ -60,7 +60,7 @@ public class AddSemesterForm
         }
         q = new(Tbl.course);
         q.Where(Tbl.course, Fld.id, i_course_id);
-        List<Course> courses = q.select<Course>(conn);
+        List<Course> courses = q.Select<Course>(conn);
         if (courses.Count == 0)
         {
             log.success = false;
@@ -83,13 +83,13 @@ public class AddSemesterForm
             state = SemesterState.waiting,
         };
 
-        Query q_ins_semester = new(Table.semester);
+        Query q_ins_semester = new(Tbl.semester);
         q_ins_semester.insert<Semester>(conn, semester);
 
-        QueryCreator q_update_course = new(Tbl.course);
-        q_update_course.SetClause(QPiece.eq(Fld.state, CourseState.waiting));
-        q_update_course.WhereClause(QPiece.eq(Fld.id, i_course_id));
-        q_update_course.update(conn);
+        Query q_update_course = new(Tbl.course);
+        q_update_course.Set(Fld.state, CourseState.waiting);
+        q_update_course.Where(Fld.id, i_course_id);
+        q_update_course.Update(conn);
         course.state = CourseState.waiting;
 
         log.semester_id = semester_id;

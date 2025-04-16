@@ -4,10 +4,10 @@ class DetailedCourseCard : BriefCourseCard
 {
     public string description = "";
 
-    public static new QueryCreator get_query_creator()
+    public static new Query get_query_creator()
     {
-        QueryCreator q = BriefCourseCard.get_query_creator();
-        q.output(QPiece.dot(Tbl.semester, Fld.description));
+        Query q = BriefCourseCard.get_query_creator();
+        q.OutputClause(QPiece.dot(Tbl.semester, Fld.description));
         return q;
     }
 

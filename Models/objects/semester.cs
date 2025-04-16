@@ -28,13 +28,13 @@ sealed class Semester : IdObj
     public override List<string> ToListString()
     {
         var lst = base.ToListString();
-        lst.Add($"{course_id}");
-        lst.Add(IoUtils.conv_db(start_date));
-        lst.Add(IoUtils.conv_db(finish_date));
-        lst.Add($"{capacity}");
-        lst.Add($"{fee}");
-        lst.Add(description);
-        lst.Add(state);
+        lst.Add(QPiece.ToStr(course_id));
+        lst.Add(QPiece.ToStr(start_date));
+        lst.Add(QPiece.ToStr(finish_date));
+        lst.Add(QPiece.ToStr(capacity));
+        lst.Add(QPiece.ToStr(fee));
+        lst.Add(QPiece.ToStr(description));
+        lst.Add(QPiece.ToStr(state));
         return lst;
     }
 

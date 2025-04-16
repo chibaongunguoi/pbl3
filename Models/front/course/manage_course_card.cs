@@ -10,11 +10,11 @@ class ManageCourseCard
     public string subject = "";
     public int grade;
 
-    public static QueryCreator get_query_creator()
+    public static Query get_query_creator()
     {
-        QueryCreator q = new(Tbl.course);
+        Query q = new(Tbl.course);
         q.Join(Tbl.subject, Fld.id, Tbl.course, Fld.sbj_id);
-        q.output(
+        q.OutputClause(
             QPiece.dot(Tbl.course, Fld.id),
             QPiece.dot(Tbl.course, Fld.name),
             QPiece.dot(Tbl.course, Fld.state),
@@ -22,15 +22,15 @@ class ManageCourseCard
             QPiece.dot(Tbl.subject, Fld.grade)
         );
         string local_alias = "local_alias";
-        QueryCreator q2 = new(QPiece.alias(Tbl.rating, local_alias));
+        Query q2 = new(QPiece.alias(Tbl.rating, local_alias));
         q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
-        q2.output(QPiece.avg(QPiece.cast_float(Fld.stars)));
-        q.output(QPiece.bracket(q2.get_select_query()));
+        q2.OutputClause(QPiece.avg(QPiece.cast_float(Fld.stars)));
+        q.OutputClause(QPiece.bracket(q2.SelectQuery()));
 
         q2 = new(QPiece.alias(Tbl.rating, local_alias));
         q2.Where(local_alias, Fld.course_id, Tbl.course, Fld.id);
-        q2.output(QPiece.countAll);
-        q.output(QPiece.bracket(q2.get_select_query()));
+        q2.OutputClause(QPiece.countAll);
+        q.OutputClause(QPiece.bracket(q2.SelectQuery()));
         return q;
     }
 
