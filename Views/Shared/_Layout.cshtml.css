@@ -215,7 +215,7 @@ button.accept-policy {
   position: relative;
   top: 0 !important;
   width: 100%;
-  z-index: 0;
+  z-index: 2;
   /* position: fixed; */
 }
 .container {
