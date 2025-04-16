@@ -106,6 +106,11 @@ sealed class Query
         outputClause(QPiece.avg(field));
     }
 
+    public void outputAvgCastFloat(string field)
+    {
+        outputClause(QPiece.avg(QPiece.castFloat(field)));
+    }
+
     public void outputAvg(string table, string field)
     {
         outputClause(QPiece.avg(QPiece.dot(table, field)));
@@ -114,6 +119,16 @@ sealed class Query
     public void output(string table, string field)
     {
         outputClause(QPiece.dot(table, field));
+    }
+
+    public void output(string field)
+    {
+        outputClause(field);
+    }
+
+    public void outputQuery(string query)
+    {
+        outputClause(QPiece.bracket(query));
     }
 
     // ========================================================================
