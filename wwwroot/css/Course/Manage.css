@@ -115,3 +115,14 @@
   color: #787272;
   padding-left: 4px;
 }
+/* user-profile */
+.user-profile {
+  width: 100% !important;
+}
+.user-id-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.user-profile-text {
+  font-weight: bold;
+}
