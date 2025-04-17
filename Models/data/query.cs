@@ -12,7 +12,10 @@ static class QPiece
 
     public static string toStr(int value) => $"{value}";
 
-    public static string toStr(DateOnly value) => $"'{IoUtils.conv_db(value)}'";
+    public static string toStr(DateOnly value) => $"'{value.Year}-{value.Month:D2}-{value.Day:D2}'";
+
+    public static string toStr(DateTime value) =>
+        $"'{value.Year}-{value.Month:D2}-{value.Day:D2} {value.Hour:D2}:{value.Minute:D2}:{value.Second:D2}'";
 
     public static string toStr(string value) => $"\'{value}\'";
 
@@ -30,7 +33,19 @@ static class QPiece
         return $"{field} AS {alias}";
     }
 
+    public static string dotAlias(string field, string? alias = null)
+    {
+        if (alias is null)
+        {
+            return field;
+        }
+        field = field.Split('.')[1];
+        return $"{alias}.{field}";
+    }
+
     public const string countAll = "COUNT(*)";
+
+    public static string allFieldsOf(string table) => $"[{table}].*";
 
     // ------------------------------------------------------------------------
     public static string eq<T>(string field, T value, string op = "=")
@@ -45,7 +60,12 @@ static class QPiece
 
     public static string eq(string field, DateOnly value, string op = "=")
     {
-        return $"{field} {op} '{IoUtils.conv_db(value)}'";
+        return $"{field} {op} {QPiece.toStr(value)}";
+    }
+
+    public static string eq(string field, DateTime value, string op = "=")
+    {
+        return $"{field} {op} {QPiece.toStr(value)}";
     }
 
     // ------------------------------------------------------------------------
@@ -72,9 +92,9 @@ static class QPiece
         return s;
     }
 
-    public static string join(string table, string field_1, string field_2)
+    public static string join(string table_1, string field_1, string field_2)
     {
-        return $"INNER JOIN {table} ON {field_1} = {field_2}";
+        return $"INNER JOIN {table_1} ON {field_1} = {field_2}";
     }
 }
 
@@ -91,9 +111,17 @@ sealed class Query
 
     // ========================================================================
     // INFO: Bắt đầu với một bảng
-    public Query(string table)
+    public Query(string table, string? alias = null)
     {
-        this.table = table;
+        if (alias is not null)
+            this.table = QPiece.alias(table, alias);
+        else
+            this.table = table;
+    }
+
+    public Query()
+    {
+        this.table = "";
     }
 
     // ========================================================================
@@ -112,9 +140,9 @@ sealed class Query
         outputClause(QPiece.avg(field));
     }
 
-    public void outputAvgCastFloat(string field)
+    public void outputAvgCastFloat(string field, string? alias = null)
     {
-        outputClause(QPiece.avg(QPiece.castFloat(field)));
+        outputClause(QPiece.avg(QPiece.castFloat(QPiece.dotAlias(field, alias))));
     }
 
     public void outputAvg(string table, string field)
@@ -130,6 +158,16 @@ sealed class Query
     public void output(string field)
     {
         outputClause(field);
+    }
+
+    public void outputTop(string field, int top = 1)
+    {
+        outputClause($"TOP {top} {field}");
+    }
+
+    public void outputTopAlias(string field_, string? alias_, int top = 1)
+    {
+        outputClause($"TOP {top} {QPiece.dotAlias(field_, alias_)}");
     }
 
     public void outputQuery(string query)
@@ -181,6 +219,22 @@ sealed class Query
         WhereClause($"{field_1} = {field_2}");
     }
 
+    public void WhereQuery(string field, string query)
+    {
+        WhereClause($"{field} = ({query})");
+    }
+
+    public void WhereFieldAlias(
+        string field_1,
+        string? alias_1,
+        string field_2,
+        string? alias_2 = null
+    )
+    {
+        field_2 = alias_2 is null ? field_2 : QPiece.dotAlias(field_2, alias_2);
+        WhereClause($"{QPiece.dotAlias(field_1, alias_1)} = {field_2}");
+    }
+
     // ------------------------------------------------------------------------
     public void WhereNStr(string field, string value)
     {
@@ -211,6 +265,11 @@ sealed class Query
     public void orderBy(string field, bool desc = false)
     {
         orderByClause(QPiece.orderBy(field, desc: desc));
+    }
+
+    public void orderByAlias(string field_, string? alias_, bool desc = false)
+    {
+        orderByClause(QPiece.orderBy(QPiece.dotAlias(field_, alias_), desc: desc));
     }
 
     // ========================================================================
@@ -247,6 +306,23 @@ sealed class Query
     {
         string table_1 = field_1.Split('.')[0];
         JoinClause(QPiece.join(table_1, field_1, field_2));
+    }
+
+    public void join(string table, string field_1, string field_2)
+    {
+        JoinClause(QPiece.join(table, field_1, field_2));
+    }
+
+    public void joinAlias(string field_1, string? alias_1, string field_2, string? alias_2 = null)
+    {
+        string table_1 = field_1.Split('.')[0];
+        JoinClause(
+            QPiece.join(
+                QPiece.alias(table_1, alias_1),
+                QPiece.dotAlias(field_1, alias_1),
+                QPiece.dotAlias(field_2, alias_2)
+            )
+        );
     }
 
     // ========================================================================
@@ -287,7 +363,9 @@ sealed class Query
             count_mode ? QPiece.countAll
             : output_fields.Count > 0 ? string.Join(", ", output_fields)
             : "*";
-        string query = $"SELECT {output_fields_str} FROM {table}";
+        string query = $"SELECT {output_fields_str}";
+        if (table.Length > 0)
+            query += $" FROM {table}";
         query += getJoinClause();
         query += getWhereClause();
         query += getOrderClause();

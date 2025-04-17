@@ -5,7 +5,7 @@ sealed class Request : DataObj
     // ========================================================================
     public int stu_id { get; set; }
     public int semester_id { get; set; }
-    public DateOnly date { get; set; } = new();
+    public DateTime timestamp { get; set; } = new();
     public string status { get; set; } = "";
 
     // ========================================================================
@@ -13,7 +13,7 @@ sealed class Request : DataObj
     {
         stu_id = DataReader.getInt(reader, ref pos);
         semester_id = DataReader.getInt(reader, ref pos);
-        date = DataReader.getDate(reader, ref pos);
+        timestamp = DataReader.getDateTime(reader, ref pos);
         status = DataReader.getStr(reader, ref pos);
     }
 
@@ -23,7 +23,7 @@ sealed class Request : DataObj
         var lst = base.ToListString();
         lst.Add(QPiece.toStr(stu_id));
         lst.Add(QPiece.toStr(semester_id));
-        lst.Add(QPiece.toStr(date));
+        lst.Add(QPiece.toStr(timestamp));
         lst.Add(QPiece.toStr(status));
         return lst;
     }

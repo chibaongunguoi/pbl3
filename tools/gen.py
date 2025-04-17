@@ -9,6 +9,8 @@ today = datetime.today()
 if not os.path.exists("data"):
     os.makedirs("data")
 
+with open("tools/ratings.json", 'r',encoding="utf-8" ) as f:
+    comments = json.load(f)
 
 def json_output(file_name, lst):
     with open(f"data/{file_name}.json", "w", encoding="utf-8", newline="") as f:
@@ -78,8 +80,8 @@ def generate_gender_name():
         if gender == "male":
             name_1 = random.choice(male_first_names)
             name_2 = random.choice(male_first_names)
-        else:
-            name_1 = random.choice(female_first_names)
+        else: # female
+            name_1 = random.choice(female_first_names + ["Thị"])
             name_2 = random.choice(female_first_names)
 
         name = " ".join([surname, name_1, name_2])
@@ -150,25 +152,33 @@ student_grades :dict[int, list] = {grade: [] for grade in grades}
 
 def create_request(stu_id, semester_id, semester_start_date, semester_finish_date, request_state):
     semester_finish_date = min(semester_finish_date, today)
-    joined_day = random_date(semester_start_date, semester_finish_date)
-    joined_day_str = f"{joined_day.year}-{joined_day.month}-{joined_day.day}"
+    request_time = random.randint(0, 24 * 60 * 60 - 1)
+    request_time_str = f"{request_time // 3600:02d}:{(request_time % 3600) // 60:02d}:{request_time % 60:02d}"
+    semester_start_date =semester_start_date - timedelta(days=random.randint(0, 30))
+    middle_date = semester_start_date + (semester_finish_date - semester_start_date) / 2
+    joined_day = random_date(semester_start_date, middle_date)
+    joined_day_str = f"{joined_day.year}-{joined_day.month}-{joined_day.day} {request_time_str}"
     request = (stu_id, semester_id, joined_day_str, request_state)
     requests.append(request)
+    return request
 
 
 
-def create_rating(stu_id, course_start_date, course_finish_date):
-    course_finish_date = min(course_finish_date, today)
-    rating_date = random_date(course_start_date, course_finish_date)
+def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
+    random_days = random.randint(0, 5)
+    end_date = course_finish_date + timedelta(days=random_days)
+    rating_date = min(today, end_date)
+    rating_time = random.randint(0, 24 * 60 * 60 - 1)
+    rating_time_str = f"{rating_time // 3600:02d}:{(rating_time % 3600) // 60:02d}:{rating_time % 60:02d}"
     rating_date_str = (
-        f"{rating_date.year}-{rating_date.month}-{rating_date.day}"
+        f"{rating_date.year}-{rating_date.month}-{rating_date.day} {rating_time_str}"
     )
-    rating_description = """Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
     rating_score = random.choices([1,2,3,4,5], weights=[0.05, 0.05, 0.05, 0.05, 0.80], k=1)[0]
+    rating_description = random.choice(comments[f"{rating_score}"])
     # score = random.choice([1, 2, 3, 4, 5])
     rating = (
         stu_id,
-        course_id,
+        sem_id,
         rating_date_str,
         rating_score,
         rating_description,
@@ -314,9 +324,11 @@ for tch_id in teacher_ids:
             semester_next_id += 1
             semester_capacity = random.choice([30, 40, 50, 60])
             semester_finish_date = semester_start_date + timedelta(random.randint(90, 120))
-            semester_state = "finished"
-            if semester_finish_date > today:
-                semester_state = "waiting"
+            semester_state = "waiting"
+            if semester_start_date <= today:
+                semester_state = "started"
+            if semester_finish_date < today:
+                semester_state = "finished"
 
             semester = create_semester(semester_id, semester_start_date, semester_finish_date, grade, semester_capacity, semester_state)
             semesters.append(semester)
@@ -332,6 +344,11 @@ for tch_id in teacher_ids:
         for i, sem in enumerate(course_semesters):
             sem_id = sem[0]
             sem_capacity = sem[4]
+            sem_start_date = sem[2]
+            sem_finish_date = sem[3]
+            sem_start_date = datetime.strptime(sem_start_date, "%Y-%m-%d")
+            sem_finish_date = datetime.strptime(sem_finish_date, "%Y-%m-%d")
+            sem_state = sem[7]
             joined_students = []
             for stu_id in student_grades[grade]:
                 if random.random() > 0.5:
@@ -344,16 +361,19 @@ for tch_id in teacher_ids:
                 if i == len(course_semesters) - 1 and course_state == "waiting":
                     request_state = random.choice(["joined", "waiting"])
 
-                create_request(stu_id, sem_id, semester_start_date, semester_finish_date, request_state)
+                request_date_ = None
+                the_request = create_request(stu_id, sem_id, sem_start_date, sem_finish_date, request_state)
+
+                the_request_time = datetime.strptime(the_request[2], "%Y-%m-%d %H:%M:%S")
+                the_request_state = the_request[3]
+
+                if random.random() > 0.5 or the_request_state == "waiting" or sem_state != "finished":
+                    continue
+                create_rating(stu_id, sem_id, the_request_time, sem_finish_date)
 
 
         if course_state == "waiting" and len(semesters) > 0:
             semesters[-1][-1] = "waiting"
-
-        for stu_id in student_grades[grade]:
-            if random.random() > 0.5:
-                continue
-            create_rating(stu_id, course_start_date, course_finish_date)
 
         course = (course_id, tch_id, sbj_id, f"Khóa học VDC {sbj}", course_state)
         courses.append(course)

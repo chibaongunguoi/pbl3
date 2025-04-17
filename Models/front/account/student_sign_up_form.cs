@@ -62,7 +62,7 @@ public class StudentSignUpForm
         int id = 0;
         if (!IdCounterQuery.increment(conn, Tbl.student, out id))
         {
-            log.errors[ErrorKey.run_out_of_id] = "Đã hết ID cho bảng sinh viên";
+            log.errors[ErrorKey.run_out_of_id] = "Đã đạt giới hạn số lượng học viên";
             return log;
         }
 

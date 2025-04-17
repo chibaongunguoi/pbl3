@@ -19,7 +19,7 @@ class BriefCourseCard : DataObj
         q.join(Field.subject__id, Field.course__sbj_id);
         q.join(Field.teacher__id, Field.course__tch_id);
         q.join(Field.semester__course_id, Field.course__id);
-        q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
+        q.WhereQuery(Field.semester__id, SemesterQuery.get_latest_semester_id_query("s"));
         q.output(Field.course__id);
         q.output(Field.semester__id);
         q.output(Field.course__name);
@@ -31,23 +31,27 @@ class BriefCourseCard : DataObj
         q.output(Field.semester__capacity);
         q.output(Field.semester__fee);
 
-        string local_alias = "local_alias";
+        string local_semester = "LocalSemester";
+        string local_request = "LocalRequest";
+        string local_rating = "LocalRating";
         // rating avg
-        Query q2 = new(QPiece.alias(Tbl.rating, local_alias));
-        q2.WhereField(QPiece.dot(local_alias, Fld.course_id), Field.course__id);
-        q2.outputAvgCastFloat(Fld.stars);
+        Query q2 = new(Tbl.rating, local_rating);
+        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
+        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
+        q2.outputAvgCastFloat(Field.rating__stars, local_rating);
         q.outputQuery(q2.selectQuery());
 
         // rating count
-        q2 = new(QPiece.alias(Tbl.rating, local_alias));
-        q2.WhereField(QPiece.dot(local_alias, Fld.course_id), Field.course__id);
+        q2 = new(Tbl.rating, local_rating);
+        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
+        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 
         // participants count
-        q2 = new(QPiece.alias(Tbl.request, local_alias));
-        q2.WhereField(QPiece.dot(local_alias, Fld.semester_id), Field.semester__id);
-        q2.Where(QPiece.dot(local_alias, Fld.status), RequestStatus.joined);
+        q2 = new(Tbl.request, local_request);
+        q2.WhereFieldAlias(Field.request__semester_id, local_request, Field.semester__id);
+        q2.Where(QPiece.dotAlias(Field.request__status, local_request), RequestStatus.joined);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 

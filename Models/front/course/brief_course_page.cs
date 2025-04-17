@@ -20,6 +20,9 @@ class BriefCoursePage
             {
                 // Truy vấn tổng số khóa học
                 Query q = new(Tbl.course);
+                q.join(Field.semester__course_id, Field.course__id);
+                q.WhereQuery(Field.semester__id, SemesterQuery.get_latest_semester_id_query("s"));
+                q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
                 int num_total_courses = q.count(conn);
                 // Suy ra tổng số trang
                 this.total_num_pages = (int)
@@ -49,6 +52,7 @@ class BriefCoursePage
         Stopwatch stopwatch = Stopwatch.StartNew();
         List<BriefCourseCard> cards = new();
         Query q = BriefCourseCard.get_query_creator();
+        q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         // if (search_by_course_name != null)
         // {
         //     q.where_string_contains(Field.course__name, search_by_course_name);

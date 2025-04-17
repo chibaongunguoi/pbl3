@@ -193,49 +193,6 @@
         }
       ]
     },
-    "Rating": {
-      "name": "Rating",
-      "json_file": "data/rating.json",
-      "fields": [
-        {
-          "name": "stu_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "course_id",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "date",
-          "sql_type": "DATE NOT NULL",
-          "dtype": "STRING"
-        },
-        {
-          "name": "stars",
-          "sql_type": "INT NOT NULL",
-          "dtype": "INT"
-        },
-        {
-          "name": "description",
-          "sql_type": "NVARCHAR(2000) NOT NULL",
-          "dtype": "STRING"
-        }
-      ],
-      "foreign_keys": [
-        {
-          "field": "stu_id",
-          "ref_table": "Student",
-          "ref_field": "id"
-        },
-        {
-          "field": "course_id",
-          "ref_table": "Course",
-          "ref_field": "id"
-        }
-      ]
-    },
     "Semester": {
       "json_file": "data/semester.json",
       "fields": [
@@ -288,6 +245,49 @@
         }
       ]
     },
+    "Rating": {
+      "name": "Rating",
+      "json_file": "data/rating.json",
+      "fields": [
+        {
+          "name": "stu_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "semester_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "timestamp",
+          "sql_type": "DATETIME NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "stars",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "description",
+          "sql_type": "NVARCHAR(2000) NOT NULL",
+          "dtype": "NSTRING"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "stu_id",
+          "ref_table": "Student",
+          "ref_field": "id"
+        },
+        {
+          "field": "semester_id",
+          "ref_table": "Semester",
+          "ref_field": "id"
+        }
+      ]
+    },
     "Request": {
       "json_file": "data/request.json",
       "fields": [
@@ -302,8 +302,8 @@
           "dtype": "INT"
         },
         {
-          "name": "date",
-          "sql_type": "DATE NOT NULL",
+          "name": "timestamp",
+          "sql_type": "DATETIME NOT NULL",
           "dtype": "STRING"
         },
         {

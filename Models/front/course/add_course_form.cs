@@ -4,11 +4,9 @@ public class AddCourseForm
 {
     public class Log
     {
-        public List<string> errors = new();
+        public Dictionary<string, string> errors = new();
         public int? course_id = null;
         public int? semester_id = null;
-
-        public void Add(string error) => errors.Add(error);
 
         public bool success => errors.Count == 0;
     }
@@ -26,26 +24,13 @@ public class AddCourseForm
     {
         Log log = new();
         int i_grade;
-        bool valid = true;
         if (!int.TryParse(grade, out i_grade))
         {
-            log.Add(ErrorKey.grade_must_be_int);
-            valid = false;
+            log.errors[ErrorKey.grade_invalid] = "Khối lớp không hợp lệ";
         }
+        Checking.check_start_finish_dates(ref log.errors, start_date, finish_date);
 
-        if (start_date is null)
-        {
-            log.Add(ErrorKey.start_date_missing);
-            valid = false;
-        }
-
-        if (finish_date is null)
-        {
-            log.Add(ErrorKey.finish_date_missing);
-            valid = false;
-        }
-
-        if (!valid)
+        if (!log.success)
             return log;
 
         // Start querying
@@ -54,7 +39,7 @@ public class AddCourseForm
         int c = q.count(conn);
         if (c == 0)
         {
-            log.Add(ErrorKey.tch_id_not_exist);
+            log.errors[ErrorKey.tch_id_not_exist] = "Gia sư không tồn tại";
             return log;
         }
 
@@ -65,7 +50,7 @@ public class AddCourseForm
 
         if (subjects.Count == 0)
         {
-            log.Add(ErrorKey.run_out_of_id);
+            log.errors[ErrorKey.subject_invalid] = "Không tồn tại môn học";
             return log;
         }
 
@@ -78,7 +63,8 @@ public class AddCourseForm
             || !IdCounterQuery.get_count(conn, Tbl.semester, out semester_id)
         )
         {
-            log.Add(ErrorKey.run_out_of_id);
+            log.errors[ErrorKey.run_out_of_id] =
+                "Đã đạt đến giới hạn số lượng khóa học hoặc kì học";
             return log;
         }
         IdCounterQuery.increment(conn, Tbl.course, out course_id);

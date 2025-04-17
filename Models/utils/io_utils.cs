@@ -34,9 +34,15 @@ class IoUtils
     }
 
     // ------------------------------------------------------------------------
+    public static string conv(DateTime date)
+    {
+        return $"{date.Day:D2}/{date.Month:D2}/{date.Year} {date.Hour:D2}:{date.Minute:D2}";
+    }
+
+    // ------------------------------------------------------------------------
     public static string conv_db(DateOnly date)
     {
-        return $"{date.Year}-{date.Month:D2}-{date.Day:D2}";
+        return $"";
     }
 
     // ------------------------------------------------------------------------

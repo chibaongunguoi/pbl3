@@ -32,22 +32,24 @@ public class CourseController : Controller
     public IActionResult Detail()
     {
         string? course_id_ = Request.Query["course_id"];
-        int course_id = -1;
-        if (course_id_ is not null)
-        {
-            course_id = int.Parse(course_id_);
-        }
-
         string? page_ = Request.Query["page"];
+        int course_id = -1;
         int page = 1;
-        if (page_ is not null)
+        try
         {
-            page = int.Parse(page_);
+            course_id = int.Parse(course_id_ ?? "-1");
+            page = int.Parse(page_ ?? "1");
+        }
+        catch (Exception)
+        {
+            return Redirect("Index");
         }
 
         DetailedCoursePage course_page = new(course_id, page);
         if (course_page.invalid)
+        {
             return Redirect("Index");
+        }
         ViewBag.page = course_page;
         ViewBag.currentPage = page;
         return View();

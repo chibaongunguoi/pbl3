@@ -13,30 +13,30 @@ static class Tbl
 
 static class Fld
 {
-    public const string finish_date = "finish_date";
-    public const string tch_id = "tch_id";
-    public const string count = "count";
-    public const string capacity = "capacity";
-    public const string status = "status";
-    public const string name = "name";
-    public const string gender = "gender";
-    public const string course_id = "course_id";
-    public const string password = "password";
-    public const string grade = "grade";
-    public const string start_date = "start_date";
     public const string semester_id = "semester_id";
-    public const string id = "id";
-    public const string date = "date";
-    public const string stu_id = "stu_id";
-    public const string stars = "stars";
-    public const string fee = "fee";
+    public const string password = "password";
     public const string sbj_id = "sbj_id";
-    public const string min_count = "min_count";
-    public const string max_count = "max_count";
-    public const string username = "username";
-    public const string thumbnail = "thumbnail";
-    public const string description = "description";
+    public const string grade = "grade";
     public const string bday = "bday";
+    public const string thumbnail = "thumbnail";
+    public const string finish_date = "finish_date";
+    public const string capacity = "capacity";
+    public const string max_count = "max_count";
+    public const string stu_id = "stu_id";
+    public const string fee = "fee";
+    public const string tch_id = "tch_id";
+    public const string gender = "gender";
+    public const string stars = "stars";
+    public const string id = "id";
+    public const string timestamp = "timestamp";
+    public const string status = "status";
+    public const string description = "description";
+    public const string start_date = "start_date";
+    public const string username = "username";
+    public const string name = "name";
+    public const string min_count = "min_count";
+    public const string course_id = "course_id";
+    public const string count = "count";
 }
 
 static class Field
@@ -71,8 +71,8 @@ static class Field
     public const string course__name = "Course.name";
     public const string course__status = "Course.status";
     public const string rating__stu_id = "Rating.stu_id";
-    public const string rating__course_id = "Rating.course_id";
-    public const string rating__date = "Rating.date";
+    public const string rating__semester_id = "Rating.semester_id";
+    public const string rating__timestamp = "Rating.timestamp";
     public const string rating__stars = "Rating.stars";
     public const string rating__description = "Rating.description";
     public const string semester__id = "Semester.id";
@@ -85,6 +85,7 @@ static class Field
     public const string semester__status = "Semester.status";
     public const string request__stu_id = "Request.stu_id";
     public const string request__semester_id = "Request.semester_id";
-    public const string request__date = "Request.date";
+    public const string request__timestamp = "Request.timestamp";
     public const string request__status = "Request.status";
 }
+

@@ -2,7 +2,8 @@ using Microsoft.Data.SqlClient;
 
 public class AddSemesterFormLog
 {
-    public bool success = true;
+    public Dictionary<string, string> errors = new();
+    public bool success => errors.Count == 0;
     public int semester_id;
 }
 
@@ -19,25 +20,15 @@ public class AddSemesterForm
     {
         AddSemesterFormLog log = new();
         int i_course_id;
-        bool valid = true;
         if (!int.TryParse(course_id, out i_course_id))
         {
-            valid = false;
+            log.errors[ErrorKey.course_invalid] = "Khóa học không hợp lệ";
         }
 
-        if (start_date is null)
-        {
-            valid = false;
-        }
+        Checking.check_start_finish_dates(ref log.errors, start_date, finish_date);
 
-        if (finish_date is null)
+        if (!log.success)
         {
-            valid = false;
-        }
-
-        if (!valid)
-        {
-            log.success = false;
             return log;
         }
 
@@ -47,7 +38,7 @@ public class AddSemesterForm
         int c = q.count(conn);
         if (c == 0)
         {
-            log.success = false;
+            log.errors[ErrorKey.tch_id_not_exist] = "Gia sư không tồn tại";
             return log;
         }
 
@@ -55,7 +46,7 @@ public class AddSemesterForm
 
         if (!IdCounterQuery.get_count(conn, Tbl.semester, out semester_id))
         {
-            log.success = false;
+            log.errors[ErrorKey.run_out_of_id] = "Đã đạt giới hạn số lượng kì học";
             return log;
         }
         q = new(Tbl.course);
@@ -63,7 +54,7 @@ public class AddSemesterForm
         List<Course> courses = q.select<Course>(conn);
         if (courses.Count == 0)
         {
-            log.success = false;
+            log.errors[ErrorKey.course_invalid] = "Khóa học không tồn tại";
             return log;
         }
         Course course = courses[0];
