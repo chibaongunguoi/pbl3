@@ -1,9 +1,9 @@
 @{
-    Layout = "_NoFooterLayout"; // Kế thừa từ layout chính
+    Layout = "Layout/_AdminLayout"; // Kế thừa từ layout chính
 }
 
 <div id="page-body" class="d-flex">
-<div id="sidebar" class="bg-white">
+<div id="sidebar" class="admin-sidebar bg-white">
     <ul id="sidebar-menu">
         <li class="nav-link">
             <div class="sidebar-link-title">
@@ -50,10 +50,10 @@
             <ul class="sub-menu" style="display: block;">
                 <li class="">
                     <a href="/Student/Request" class="position-relative">Học viên chờ xác nhận
-                        <span class="link-badge position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+                        <!-- <span class="link-badge position-absolute top-0 translate-middle badge rounded-pill bg-danger">
                         5
                         <span class="visually-hidden">unread messages</span>
-                     </span>
+                     </span> -->
                     </a>
                 </li>
                 <!-- <li class="">
@@ -99,7 +99,9 @@
 </div>
 <div id="wp-content">
       <div class="container-fluid padding-container-fluid">
-      @RenderBody()
+        <!-- <div class="container-fluid"> -->
+            @RenderBody()
+        <!-- </div> -->
       </div>
 </div>
 </div>

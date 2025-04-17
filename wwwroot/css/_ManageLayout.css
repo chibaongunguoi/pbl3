@@ -57,7 +57,7 @@ a {
   z-index: 0;
   padding-top: 3.625rem;
   position: fixed;
-  top: 1.5rem;
+  top: 2.25rem;
 }
 /* @media (max-width: 1000px) {
   #sidebar {
@@ -184,8 +184,8 @@ a.navbar-brand {
   font-weight: 400;
 }
 
-.section-header {
-}
+/* .section-header {
+} */
 
 .section-title,
 .navbar-option {
@@ -454,4 +454,23 @@ button.accept-policy {
   padding: 3px 4px !important;
   right: -2px;
   top: 2px !important;
+}
+/* AdminLayout */
+.admin-content-wrapper {
+  padding-top: 3rem;
+}
+.admin-auth-login {
+  min-height: 100vh;
+}
+.admin-auth-wapper {
+  width: 444px !important;
+  min-height: 445px;
+  padding: 140px 0 !important;
+  text-align: center;
+}
+.admin-sidebar {
+  top: -0.5rem !important;
+}
+.padding-container-fluid {
+  padding-top: 6px;
 }

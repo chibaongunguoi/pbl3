@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string? user_role = HttpContextAccessor.HttpContext.Session.GetString(SessionKey.user_role);
+    string? display_role = null;
+    string? display_name = null;
+    switch (user_role)
+    {
+      case SessionRole.teacher:
+        display_role = "Gia sư";
+        break;
+
+      case SessionRole.student:
+        display_role = "Học viên";
+        break;
+
+      case SessionRole.admin:
+        display_role = "Quản trị viên";
+        break;
+    }
+
+    switch (user_role)
+    {
+      case SessionRole.student or SessionRole.teacher:
+        display_name = HttpContextAccessor.HttpContext.Session.GetString(SessionKey.user_name);
+        break;
+    }
+}
+
+<head>
+
+    @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+    {
+        ViewBag.name = HttpContextAccessor.HttpContext.Session.GetString("userName");
+    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trung Tâm Tiên Tiến </title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Rating.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/_ManageLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid ">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TRUNG TÂM TIÊN TIẾN</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex">
+                        <div class="nav-item">
+                            <a href="/Auth/Login" class="nav-link text-dark">Trang Quản Lý</a>
+                        </div>
+                    </ul>
+                    <div class="navbar-nav flex user-link-wrapper">
+                    @if (user_role is null){
+                          
+                    }
+                    else if (user_role == SessionRole.student || user_role == SessionRole.teacher) {
+                        <div class="nav-item ">
+                            <a id="user-info" class="text-dark user-link">
+                                <div class="user-role">
+                                    @display_role
+                                </div>
+                                <div class="user-name">
+                                    @display_name
+                                </div>
+                                <div class="user-icon down-arrow">
+                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                                    </svg>
+                                </div>
+                                <div class="noti-dropdown" id="user-dropdown" style="display:none">
+                                    <div class="user-content-wrapper">
+                                        <div class="user-item-list">
+                                            <div class="user-item">
+                                                <a class="user-item-title" href="/User/Profile">
+                                                    Thông tin tài khoản
+                                                </a>
+                                            </div>
+                                            <div class="logout-item ">
+                                                <form action="/Auth/Logout" method="POST">
+                                                    <button type='submit' class="user-item-title logout-button">
+                                                        đăng xuất
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }        
+                    else {
+                        <div class="nav-item ">
+                            <a id="user-info" class="text-dark user-link">
+                                <div class="user-role">
+                                    @display_role
+                                </div>
+                                <div class="user-icon down-arrow">
+                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                                    </svg>
+                                </div>
+                                <div class="noti-dropdown" id="user-dropdown" style="display:none">
+                                    <div class="user-content-wrapper">
+                                        <div class="user-item-list">
+                                            <div class="user-item">
+                                                <a class="user-item-title" href="">
+                                                    Thông tin tài khoản
+                                                </a>
+                                            </div>
+                                            <div class="logout-item ">
+                                                <form action="/Auth/Logout" method="POST">
+                                                    <button type='submit' class="user-item-title logout-button">
+                                                        đăng xuất
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }        
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="admin-content-wrapper">
+            <main role="main" class="pb-3 ">
+            <div class="clearfix">
+                @RenderBody()
+            <div>    
+            </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        let userInfo = document.getElementById("user-info");
+        if (userInfo) 
+        {
+                userInfo.addEventListener("click", function () {
+                let dropdown = document.getElementById("user-dropdown");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";      
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+        const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
+        const eyeClose = document.querySelector(".eye-close");
+        const eyeOpen = document.querySelector(".eye-open");
+        const passwordInput = document.querySelector("input[name='password']");
+        eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
+
+    eyeIconWrapper.addEventListener("click", function () {
+        if (eyeClose.style.display === "none") {
+            eyeClose.style.display = "block";
+            eyeOpen.style.display = "none";
+            passwordInput.type = "password";
+        } else {
+            eyeClose.style.display = "none";
+            eyeOpen.style.display = "block";
+            passwordInput.type = "text";
+        }
+    });
+});
+
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

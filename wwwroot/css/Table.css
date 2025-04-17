@@ -12,12 +12,27 @@
   font-weight: bold;
   color: #2e86de;
 }
-.card-header {
+/* .card-header {
   background-color: white;
-}
+} */
 .table-title {
   font-size: 18px;
 }
 .card-body {
   padding: 10px 16px;
 }
+/* chart */
+.chart-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 12px;
+}
+#myChart,
+#semChart {
+  background-color: white; /* Light gray or any color */
+  height: 305px !important;
+  /* width: 50% !important; */
+}
+
+/* Số lượng học viên đăng ký khóa học theo tháng */

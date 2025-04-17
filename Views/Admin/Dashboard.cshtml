@@ -1,0 +1,172 @@
+@{
+Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+}
+<div class="row py-3">
+  <!-- ĐƠN HÀNG THÀNH CÔNG -->
+  <div class="col">
+    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+      <div class="card-header">HỌC VIÊN</div>
+      <div class="card-body">
+        <h5 class="card-title">2.680</h5>
+        <p class="card-text">Số lượng học viên sử dụng hệ thống</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ĐANG XỬ LÝ -->
+  <div class="col">
+    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+      <div class="card-header">KHÓA HỌC</div>
+      <div class="card-body">
+        <h5 class="card-title">10</h5>
+        <p class="card-text">Số lượng khóa học đã tổ chức</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOANH SỐ -->
+  <div class="col">
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+      <div class="card-header">KỲ HỌC</div>
+      <div class="card-body">
+        <h5 class="card-title">2.5 tỷ</h5>
+        <p class="card-text">Số lượng kỳ học đã mở</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ĐƠN HÀNG HỦY -->
+  <div class="col">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+      <div class="card-header">ĐÁNH GIÁ</div>
+      <div class="card-body">
+        <h5 class="card-title">125</h5>
+        <p class="card-text">Số lượt đánh giá trong hệ thống</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" chart-wrapper">
+  <canvas id="myChart"></canvas>
+  <canvas id="semChart"></canvas>
+  <!-- <canvas id="ratingChart"></canvas> -->
+</div>
+<div class="">
+  
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['9/2024', '10/2024', '11/2024', '12/2024', '1/2025', '2/2025',"3/2025","4/2025"],
+      datasets: [{
+        label: 'Số lượng học viên',
+        data: [12, 19, 3, 5, 2, 3,4,5],
+        borderWidth: 1,
+         barThickness: 40
+      }]
+    },
+    options: { 
+  //     responsive: false,
+  // maintainAspectRatio: false,
+      plugins: {
+         legend: {
+      position: 'bottom' 
+    },
+            title: {
+                display: true,
+                align: 'start',
+                text: 'SỐ LƯỢNG HỌC VIÊN ĐĂNG KÝ KHÓA HỌC THEO THÁNG',
+                 font: 
+                 {
+                        size: 16,
+
+                  },
+                    padding: {
+                      top:10,
+                    bottom: 14 
+                  }
+              },
+             
+        },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+        layout: {
+    padding: {
+      // top: 30,
+      bottom: 10,
+      left: 20,
+      right: 20,
+    }
+  },
+    }
+  });
+
+  const ctx2 = document.getElementById('semChart');
+
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['2021', '2023', '2024', '2025'],
+      datasets: [
+        {
+          label: 'Kỳ học bắt đầu',
+          data: [12, 19, 3, 5],
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          barThickness: 20
+        },
+        {
+          label: 'Kỳ học kết thúc',
+          data: [8, 15, 6, 7],
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          barThickness: 20
+        }
+      ]
+    },
+    options: { 
+  //     responsive: false,
+  // maintainAspectRatio: false,
+      plugins: {
+         legend: {
+      position: 'bottom' 
+    },
+            title: {
+                display: true,
+                align: 'start',
+                text: 'SỐ LƯỢNG KỲ HỌC THEO NĂM',
+                 font: 
+                 {
+                        size: 16,
+
+                  },
+                    padding: {
+                      top:10,
+                    bottom: 14 
+                  }
+              },
+             
+        },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+        layout: {
+    padding: {
+      // top: 30,
+      bottom: 10,
+      left: 20,
+      right: 20,
+    }
+  },
+    }
+  });
+
+</script>
