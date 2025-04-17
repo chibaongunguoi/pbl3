@@ -50,11 +50,11 @@ sealed class DataReader
     }
 
     // ------------------------------------------------------------------------
-    public static T getEnum<T>(SqlDataReader reader, ref int pos)
-        where T : Enum
-    {
-        return (T)Enum.ToObject(typeof(T), reader.GetInt32(pos++));
-    }
+    // public static T getEnum<T>(SqlDataReader reader, ref int pos)
+    //     where T : Enum
+    // {
+    //     return (T)Enum.ToObject(typeof(T), reader.GetInt32(pos++));
+    // }
 
     // ========================================================================
     public static T getDataObj<T>(SqlDataReader reader, ref int pos)

@@ -21,8 +21,7 @@ class ConfigOptionManager
     }
 
     // ========================================================================
-    public static string get_server_name() => s_server_name;
-
+    public static string get_server_name() => s_server_name;    
     // ------------------------------------------------------------------------
     public static bool get_data_generator() => s_config_option.data_generator;
 
