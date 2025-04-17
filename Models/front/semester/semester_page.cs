@@ -10,10 +10,17 @@ class SemesterPage
     	q.Where(Field.course__tch_id, teacher_id);
         q.offset(page_ix, num_objs);
 
-        string connectionString = ConfigOptionManager.get_server_name(); 
-        SqlConnection conn = new SqlConnection(connectionString);
-
-        num_pages = q.count(conn);
+        string connectionString = ConfigOptionManager.get_server_name();
+        if (connectionString == null)
+            throw new Exception("connectionstring is null");
+        else
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                num_pages = (int)Math.Ceiling((double)q.count(conn) / num_objs);
+            }
+        }
 
         Database.exec(
             delegate (SqlConnection conn)
