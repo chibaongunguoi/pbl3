@@ -15,9 +15,9 @@ class Account : IdObj
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toStr(username));
         lst.Add(QPiece.toStr(password));
         return lst;

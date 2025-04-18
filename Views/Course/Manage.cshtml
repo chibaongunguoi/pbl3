@@ -40,7 +40,7 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
             <tr>
               <td scope="row" class="table-index">@card.table_index</td>
               <td>
-                <a class="course-table-name" href='/Course/Detail?course_id=@card.course_id' target="_blank">
+                <a class="course-table-name" href='/Course/Detail?courseId=@card.course_id' target="_blank">
                   @card.course_name
                 </a>
               </td>
@@ -50,10 +50,10 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
               <td>@card.grade</td>
               <td>
                 <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail" onclick="window.location.href='/Semester/Manage?course_id=@card.course_id'">Xem
+                  <button class="card-btn course-detail" onclick="window.location.href='/Semester/Manage?courseId=@card.course_id'">Xem
                     các kì học </button>
                     @await Html.PartialAsync("Popup/_StudentTablePopup")
-                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=@card.course_id'">Xem chi tiết</button>
+                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@card.course_id'">Xem chi tiết</button>
                   <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Đánh giá</button>
                    @await Html.PartialAsync("Popup/_RatingFormPopup")
 

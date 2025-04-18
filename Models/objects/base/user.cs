@@ -17,9 +17,9 @@ class User : Account
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toNStr(name));
         lst.Add(QPiece.toStr(gender));
         lst.Add(QPiece.toStr(bday));

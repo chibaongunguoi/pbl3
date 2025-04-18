@@ -1,8 +1,8 @@
 using Microsoft.Data.SqlClient;
 
-
 class SemesterCard
 {
+    public int tableIdx { get; set; }
     public int semester_id { get; set; }
     public string course_name { get; set; } = "";
     public string start_date { get; set; } = "";
@@ -25,15 +25,14 @@ class SemesterCard
         q.output(Field.semester__capacity);
 
         Query q2 = new Query(Tbl.request);
-        q2.join(Field.semester__id, Field.request__semester_id);
         q2.Where(Field.request__status, RequestStatus.joined);
+        q2.WhereField(Field.request__semester_id, Field.semester__id);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
         return q;
-
     }
 
-    public static SemesterCard get_card(SqlDataReader reader, ref int current_table_index)
+    public static SemesterCard get_card(SqlDataReader reader, ref int tableIdx)
     {
         int pos = 0;
         int semester_id = DataReader.getInt(reader, ref pos);
@@ -41,7 +40,7 @@ class SemesterCard
         DateOnly start_date = DataReader.getDate(reader, ref pos);
         DateOnly finish_date = DataReader.getDate(reader, ref pos);
         string status = DataReader.getStr(reader, ref pos);
-        switch(status)
+        switch (status)
         {
             case SemesterStatus.waiting:
                 status = "Sắp diễn ra";
@@ -53,23 +52,23 @@ class SemesterCard
                 status = "Đã kết thúc";
                 break;
         }
-        string fee = DataReader.getStr(reader, ref pos);
+        int fee = DataReader.getInt(reader, ref pos);
         int capacity = DataReader.getInt(reader, ref pos);
         int num_participants = DataReader.getInt(reader, ref pos);
 
         SemesterCard card = new()
         {
+            tableIdx = tableIdx++,
             semester_id = semester_id,
             course_name = course_name,
             start_date = IoUtils.conv(start_date),
             finish_date = IoUtils.conv(finish_date),
             status = status,
-            fee = fee,
+            fee = IoUtils.conv_fee(fee),
             capacity = capacity,
-            num_participants = num_participants
+            num_participants = num_participants,
         };
         return card;
     }
-
-
 }
+

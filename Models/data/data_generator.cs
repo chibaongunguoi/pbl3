@@ -20,14 +20,14 @@ sealed class DataGenerator
             $"SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb') AND name = '{database_name}'";
 
         string? result = null;
-        Database.exec_reader(conn, query, reader => result = DataReader.getStr(reader));
+        Database.execQuery(conn, query, reader => result = DataReader.getStr(reader));
         if (result != null)
-            Database.exec_non_query(
+            Database.execQuery(
                 conn,
                 $"DROP DATABASE [{database_name}] CREATE DATABASE [{database_name}]"
             );
         else
-            Database.exec_non_query(conn, $"CREATE DATABASE [{database_name}]");
+            Database.execQuery(conn, $"CREATE DATABASE [{database_name}]");
     }
 
     // ========================================================================
@@ -60,8 +60,8 @@ sealed class DataGenerator
                 continue;
             }
             string database_config_json = File.ReadAllText(json_file);
-            var lst = JsonSerializer.Deserialize<List<List<string>>>(database_config_json) ?? new();
-            RawQuery.getInsertQueries(ref lst, table, table_config, ref queries);
+            var lst = JsonSerializer.Deserialize<List<string>>(database_config_json) ?? new();
+            RawQuery.getInsertQueries(ref lst, table, ref queries);
         }
 
         string big_query = "";
@@ -71,14 +71,14 @@ sealed class DataGenerator
             big_query += $" {query}";
             if (big_query.Length > 1000000)
             {
-                Database.exec_non_query(conn, big_query);
+                Database.execQuery(conn, big_query);
                 big_query = "";
             }
         }
 
         if (big_query.Length > 0)
         {
-            Database.exec_non_query(conn, big_query);
+            Database.execQuery(conn, big_query);
         }
 
         stopwatch.Stop();

@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+
 // Note: Field trong dự án này có format: Table.Field
 static class QPiece
 {
@@ -240,6 +241,7 @@ sealed class Query
     {
         WhereClause($"{field} = N'{value}'");
     }
+
     // ------------------------------------------------------------------------
     public void Where<T>(string field, List<T> value)
     {
@@ -389,8 +391,8 @@ sealed class Query
     public string insertQuery<T>(T obj) // lấy lệnh insert
         where T : DataObj, new()
     {
-        List<string> parts = obj.ToListString();
-        string query = $"INSERT INTO {table} VALUES ({string.Join(", ", parts)})";
+        List<string> parts = obj.ToList();
+        string query = $"INSERT INTO {table} VALUES ({string.Join(",", parts)})";
         return query;
     }
 
@@ -407,18 +409,18 @@ sealed class Query
     public List<T> select<T>(SqlConnection conn) // trả về một list các đối tượng T kế thừa từ Obj, mỗi đối tượng T là một recor trong Database
         where T : DataObj, new()
     {
-        return Database.exec_query<T>(conn, selectQuery());
+        return Database.execQuery<T>(conn, selectQuery());
     }
 
     // ------------------------------------------------------------------------
     public void select(SqlConnection conn, Database.ReaderFunction f) =>
-        Database.exec_reader(conn, selectQuery(), f);
+        Database.execQuery(conn, selectQuery(), f);
 
     // ------------------------------------------------------------------------
     public int count(SqlConnection conn)
     {
         int result = 0;
-        Database.exec_reader(
+        Database.execQuery(
             conn,
             selectQuery(count_mode: true),
             reader => result = DataReader.getInt(reader)
@@ -427,14 +429,14 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
-    public void delete(SqlConnection conn) => Database.exec_non_query(conn, deleteQuery());
+    public void delete(SqlConnection conn) => Database.execQuery(conn, deleteQuery());
 
     // ------------------------------------------------------------------------
     public void insert<T>(SqlConnection conn, T obj)
-        where T : DataObj, new() => Database.exec_non_query(conn, insertQuery<T>(obj));
+        where T : DataObj, new() => Database.execQuery(conn, insertQuery<T>(obj));
 
     // ------------------------------------------------------------------------
-    public void update(SqlConnection conn) => Database.exec_non_query(conn, updateQuery());
+    public void update(SqlConnection conn) => Database.execQuery(conn, updateQuery());
 
     // ========================================================================
 }

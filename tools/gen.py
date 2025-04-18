@@ -1,8 +1,109 @@
 import random
 from datetime import datetime, timedelta
+from dataclasses import dataclass, fields
 import os
 import json
+from datetime import datetime,date
+from typing import Any
 
+class nstr(str):
+    pass
+
+def conv(instance: Any) -> str:
+    value_list = []
+    for field in fields(instance):
+        field_name = field.name
+        field_value = getattr(instance, field_name)
+        if field_value is None:
+            value_list.append("NULL")
+        elif isinstance(field_value, nstr):
+            value_list.append(f"N'{field_value}'")
+        elif isinstance(field_value, str):
+            value_list.append(f"'{field_value}'")
+        elif isinstance(field_value, date):
+            value_list.append(f"'{field_value.year}-{field_value.month:02d}-{field_value.day:02d}'")
+        elif isinstance(field_value, bool):
+            value_list.append(str(field_value).upper())
+        elif isinstance(field_value, datetime):
+            value_list.append(f"'{field_value.year}-{field_value.month:02d}-{field_value.day:02d} {field_value.hour:02d}:{field_value.minute:02d}'")
+        else:
+            value_list.append(str(field_value))
+    
+    result =  ",".join(value_list)
+    return result
+
+@dataclass
+class IdCounter:
+    name: str
+    count:int
+    min_id : int
+    max_id: int
+
+@dataclass
+class Account:
+    id: int
+    username: str
+    password: str
+
+@dataclass
+class Admin(Account):
+    pass
+
+@dataclass
+class User(Account):
+    name: nstr
+    gender: str
+    bday: date
+
+@dataclass
+class Course:
+    id: int
+    tch_id : int
+    sbj_id : int
+    name: nstr
+    status: str
+
+@dataclass
+class Rating:
+    stu_id: int
+    semester_id: int
+    timestamp: datetime
+    stars :int
+    description: nstr
+
+@dataclass
+class Request:
+    stu_id: int
+    semester_id: int
+    timestamp: datetime
+    status: str
+
+@dataclass
+class Semester:
+    id: int
+    course_id: int
+    start_date: date
+    finish_date: date
+    capacity: int
+    fee: int
+    description: nstr
+    status: str
+
+@dataclass
+class Student(User):
+    pass
+
+
+@dataclass
+class Subject:
+    id: int
+    name :nstr
+    grade: int
+
+@dataclass
+class Teacher(User):
+    thumbnail: str
+    description: nstr
 
 today = datetime.today()
 
@@ -17,8 +118,7 @@ def json_output(file_name, lst):
         f.write(
             "["
             + ",\n".join(
-                json.dumps([str(item) for item in obj], ensure_ascii=False)
-                for obj in lst
+                json.dumps(conv(obj), ensure_ascii=False) for obj in lst
             )
             + "]"
         )
@@ -116,7 +216,7 @@ def generate_day(start_date, end_date):
         result = start + timedelta(
             seconds=random.randint(0, int((end - start).total_seconds()))
         )
-        yield f"{result.year}-{result.month}-{result.day}"
+        yield result
 
 
 def generate_addr():
@@ -150,15 +250,14 @@ student_grades :dict[int, list] = {grade: [] for grade in grades}
 
 # -----------------------------------------------------------------------------
 
-def create_request(stu_id, semester_id, semester_start_date, semester_finish_date, request_state):
+def create_request(stu_id, semester_id, semester_start_date, semester_finish_date, request_status):
     semester_finish_date = min(semester_finish_date, today)
     request_time = random.randint(0, 24 * 60 * 60 - 1)
-    request_time_str = f"{request_time // 3600:02d}:{(request_time % 3600) // 60:02d}:{request_time % 60:02d}"
     semester_start_date =semester_start_date - timedelta(days=random.randint(0, 30))
     middle_date = semester_start_date + (semester_finish_date - semester_start_date) / 2
     joined_day = random_date(semester_start_date, middle_date)
-    joined_day_str = f"{joined_day.year}-{joined_day.month}-{joined_day.day} {request_time_str}"
-    request = (stu_id, semester_id, joined_day_str, request_state)
+    joined_date = joined_day + timedelta(seconds=request_time)
+    request = Request(stu_id, semester_id, joined_date, request_status)
     requests.append(request)
     return request
 
@@ -169,41 +268,35 @@ def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
     end_date = course_finish_date + timedelta(days=random_days)
     rating_date = min(today, end_date)
     rating_time = random.randint(0, 24 * 60 * 60 - 1)
-    rating_time_str = f"{rating_time // 3600:02d}:{(rating_time % 3600) // 60:02d}:{rating_time % 60:02d}"
-    rating_date_str = (
-        f"{rating_date.year}-{rating_date.month}-{rating_date.day} {rating_time_str}"
-    )
+    rating_time = rating_date + timedelta(seconds=rating_time)
     rating_score = random.choices([1,2,3,4,5], weights=[0.05, 0.05, 0.05, 0.05, 0.80], k=1)[0]
     rating_description = random.choice(comments[f"{rating_score}"])
     # score = random.choice([1, 2, 3, 4, 5])
-    rating = (
+    rating = Rating(
         stu_id,
         sem_id,
-        rating_date_str,
+        rating_time,
         rating_score,
         rating_description,
     )
     ratings.append(rating)
 
-def create_semester(semester_id, semester_start_date, semester_finish_date, grade, capacity, semester_state):
+def create_semester(semester_id, semester_start_date, semester_finish_date, grade, capacity, semester_status):
     global semester_next_id,student_grades
 
     # format: yyyy-mm-dd
 
-    start_date_str = f"{semester_start_date.year}-{semester_start_date.month}-{semester_start_date.day}"
-    finish_date_str = f"{semester_finish_date.year}-{semester_finish_date.month}-{semester_finish_date.day}"
-
-    fee = random.choice(["1250000", "1500000", "1750000", "2000000", "2150000"])
-    semester = [
+    fee = random.choice([1250000, 1500000, 1750000, 2000000, 2150000])
+    semester = Semester(
         semester_id,
         course_id,
-        start_date_str,
-        finish_date_str,
+        semester_start_date,
+        semester_finish_date,
         capacity,
         fee,
-        semester_description,
-        semester_state
-    ]
+        nstr(semester_description),
+        semester_status
+    )
     return semester
 
     # choose 10-20 students
@@ -223,7 +316,8 @@ for stu_id in student_ids:
     tel = next(tel_gen)
     bday = next(student_birthday_gen)
     # addr = next(addr_gen)
-    students.append((stu_id, username, password, name, gender, bday))
+    student = Student(stu_id, str(username), str(password), nstr(name), gender, bday)
+    students.append(student)
     grade = random.choice([6, 7, 8, 9, 10, 11, 12])
     student_grades[grade].append(stu_id)
 
@@ -244,7 +338,8 @@ subject_infos = dict()
 with open("tools/subject.csv", encoding="utf-8") as f:
     for line in f.readlines():
         tup = line.strip().split(",")
-        subjects.append((subject_next_id, *tup[:3]))
+        subject = Subject(subject_next_id, nstr(tup[0]), int(tup[1]))
+        subjects.append(subject)
         sbj_name = tup[0]
         grade = tup[1]
         subject_dict[sbj_name + " " + grade] = subject_next_id
@@ -287,9 +382,8 @@ for tch_id in teacher_ids:
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
 """
-    teachers.append(
-        (tch_id, username, password, name, gender, bday, thumbnail, description)
-    )
+    teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday, thumbnail, nstr(description))
+    teachers.append(teacher)
 
     subjects_ = random.choice(subject_groups)
     sbj_name = random.choice(subjects_[0])
@@ -318,37 +412,35 @@ for tch_id in teacher_ids:
         last_index = len(indices) - 1
         semester_start_date = course_start_date
         course_semesters = []
-        semester_state = None
+        semester_status = None
         for i in indices:
             semester_id = semester_next_id
             semester_next_id += 1
             semester_capacity = random.choice([30, 40, 50, 60])
             semester_finish_date = semester_start_date + timedelta(random.randint(90, 120))
-            semester_state = "waiting"
+            semester_status = "waiting"
             if semester_start_date <= today:
-                semester_state = "started"
+                semester_status = "started"
             if semester_finish_date < today:
-                semester_state = "finished"
+                semester_status = "finished"
 
-            semester = create_semester(semester_id, semester_start_date, semester_finish_date, grade, semester_capacity, semester_state)
+            semester = create_semester(semester_id, semester_start_date, semester_finish_date, grade, semester_capacity, semester_status)
             semesters.append(semester)
             course_semesters.append(semester)
             semester_start_date = semester_finish_date + timedelta(random.randint(30, 60))
 
-            if semester_state == "waiting":
+            if semester_status == "waiting":
                 break
 
         course_finish_date = semester_finish_date
-        course_state = semester_state
+        course_status = semester_status
 
         for i, sem in enumerate(course_semesters):
-            sem_id = sem[0]
-            sem_capacity = sem[4]
-            sem_start_date = sem[2]
-            sem_finish_date = sem[3]
-            sem_start_date = datetime.strptime(sem_start_date, "%Y-%m-%d")
-            sem_finish_date = datetime.strptime(sem_finish_date, "%Y-%m-%d")
-            sem_state = sem[7]
+            sem_id = sem.id
+            sem_capacity = sem.capacity
+            sem_start_date = sem.start_date
+            sem_finish_date = sem.finish_date
+            sem_status = sem.status
             joined_students = []
             for stu_id in student_grades[grade]:
                 if random.random() > 0.5:
@@ -357,25 +449,25 @@ for tch_id in teacher_ids:
                 if len(joined_students) >= sem_capacity:
                     break
 
-                request_state = "joined"
-                if i == len(course_semesters) - 1 and course_state == "waiting":
-                    request_state = random.choice(["joined", "waiting"])
+                request_status = "joined"
+                if i == len(course_semesters) - 1 and course_status == "waiting":
+                    request_status = random.choice(["joined", "waiting"])
 
                 request_date_ = None
-                the_request = create_request(stu_id, sem_id, sem_start_date, sem_finish_date, request_state)
+                the_request = create_request(stu_id, sem_id, sem_start_date, sem_finish_date, request_status)
 
-                the_request_time = datetime.strptime(the_request[2], "%Y-%m-%d %H:%M:%S")
-                the_request_state = the_request[3]
+                the_request_time = the_request.timestamp
+                the_request_status = the_request.status
 
-                if random.random() > 0.5 or the_request_state == "waiting" or sem_state != "finished":
+                if random.random() > 0.5 or the_request_status == "waiting" or sem_status != "finished":
                     continue
                 create_rating(stu_id, sem_id, the_request_time, sem_finish_date)
 
 
-        if course_state == "waiting" and len(semesters) > 0:
-            semesters[-1][-1] = "waiting"
+        if course_status == "waiting" and len(semesters) > 0:
+            semesters[-1].status = "waiting"
 
-        course = (course_id, tch_id, sbj_id, f"Khóa học VDC {sbj}", course_state)
+        course = Course(course_id, tch_id, sbj_id, nstr(f"Khóa học VDC {sbj}"), str(course_status))
         courses.append(course)
         course_next_id += 1
 
@@ -416,17 +508,17 @@ json_output("rating", ratings)
 # -----------------------------------------------------------------------------
 
 id_counters = [
-    ["Student", student_next_id, student_first_id, student_max_id],
-    ["Teacher", teacher_next_id, teacher_first_id, teacher_max_id],
-    ["Course", course_next_id, 1, 0],
-    ["Semester", semester_next_id, 1, 0],
-    ["Subject", subject_next_id, 1, 0],
+    IdCounter("Student", student_next_id, student_first_id, student_max_id),
+    IdCounter("Teacher", teacher_next_id, teacher_first_id, teacher_max_id),
+    IdCounter("Course", course_next_id, 1, 0),
+    IdCounter("Semester", semester_next_id, 1, 0),
+    IdCounter("Subject", subject_next_id, 1, 0),
 ]
 
 json_output("id_counter", id_counters)
 
 # -----------------------------------------------------------------------------
-json_output("admin", [(1, "admin", "admin")])
+json_output("admin", [Admin(1, "admin", "admin")])
 
 # -----------------------------------------------------------------------------
 print("Generated successfully!")

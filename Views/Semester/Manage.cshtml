@@ -1,6 +1,7 @@
 @{
 Layout = "_ManageLayout"; // Sử dụng layout admin
-
+  var p = (SemesterPage)ViewBag.Page;
+  var semesters = p.semesters;
 }
 
   <div id="content" class="container-fluid">
@@ -31,18 +32,18 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
             </tr>
           </thead>
           <tbody>
-
+          @foreach(var semester in semesters) {
             <tr>
-              <td scope="row" class="table-index">1</td>
+              <td scope="row" class="table-index">@semester.tableIdx</td>
               <td>
-                <a class="course-table-name" href='/Course/Detail?course_id=1' target="_blank">
-                  VDC toán 12
+                <a class="course-table-name" href='/Course/Detail?courseId=@p.courseId' target="_blank">
+                  @semester.course_name
                 </a>
               </td>
-              <td>4/15/2025 - 4/15/2026</td>
-              <td>đã kết thúc</td>
-              <td>31/50</td>
-              <td>2000000đ</td>
+              <td>@($"{semester.start_date} - {semester.finish_date}")</td>
+              <td>@semester.status</td>
+              <td>@($"{semester.num_participants}/{semester.capacity}")</td>
+              <td>@($"{semester.fee}đ")</td>
               <td>
                 <div class="button-group-wrapper course-manager">
                   <button class="card-btn course-detail">Xem chi tiết</button> 
@@ -51,6 +52,7 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
                 </div>
               </td>
             </tr>
+          }
           </tbody>
         </table>
       </div>

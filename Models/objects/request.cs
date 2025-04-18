@@ -18,9 +18,9 @@ sealed class Request : DataObj
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toStr(stu_id));
         lst.Add(QPiece.toStr(semester_id));
         lst.Add(QPiece.toStr(timestamp));

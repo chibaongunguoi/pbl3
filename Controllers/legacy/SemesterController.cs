@@ -28,8 +28,16 @@ public class SemesterController : Controller
         ViewBag.page = page;
         return View();
     }
+
     public IActionResult Manage()
-    {    
+    {
+        int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
+        if (courseId is null)
+        {
+            return Redirect("Index");
+        }
+        SemesterPage page = new(courseId.Value);
+        ViewBag.page = page;
         return View();
     }
 

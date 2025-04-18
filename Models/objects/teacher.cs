@@ -15,9 +15,9 @@ sealed class Teacher : User
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toStr(thumbnail));
         lst.Add(QPiece.toStr(description));
         return lst;

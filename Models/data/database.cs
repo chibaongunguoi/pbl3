@@ -56,7 +56,7 @@ sealed class Database
     // INFO:
     // Đây là hàm chạy trên một conn cụ thể.
     // Chạy non_query (query kiểu hành động, không trả về dữ liệu)
-    public static void exec_non_query(SqlConnection conn, string query)
+    public static void execQuery(SqlConnection conn, string query)
     {
         int counter = ++query_counter;
         Console.WriteLine($"[START] query #{counter}: {query[..Math.Min(100, query.Length)]}");
@@ -83,7 +83,7 @@ sealed class Database
 
     // ========================================================================
     // INFO: Tạo reader và truyền reader vào reader_function.
-    public static void exec_reader(SqlConnection conn, string query, ReaderFunction f)
+    public static void execQuery(SqlConnection conn, string query, ReaderFunction f)
     {
         int counter = ++query_counter;
         Console.WriteLine($"[START] query #{counter}: {query}");
@@ -109,11 +109,11 @@ sealed class Database
     // INFO:
     // Đây là hàm chạy trên một conn cụ thể.
     // Trả về các DataObj thu được từ query.
-    public static List<T> exec_query<T>(SqlConnection conn, string query)
+    public static List<T> execQuery<T>(SqlConnection conn, string query)
         where T : DataObj, new()
     {
-        List<T> results = new List<T>();
-        Database.exec_reader(conn, query, reader => results.Add(DataReader.getDataObj<T>(reader)));
+        List<T> results = new();
+        Database.execQuery(conn, query, reader => results.Add(DataReader.getDataObj<T>(reader)));
         return results;
     }
 

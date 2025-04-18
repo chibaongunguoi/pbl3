@@ -19,9 +19,9 @@ sealed class Course : IdObj
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toStr(tch_id));
         lst.Add(QPiece.toStr(sbj_id));
         lst.Add(QPiece.toNStr(name));

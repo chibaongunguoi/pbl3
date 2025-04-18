@@ -12,8 +12,7 @@ abstract class DataObj
     }
 
     // ------------------------------------------------------------------------
-    // INFO: Chuyển đổi sang dạng xâu csv
-    public virtual List<string> ToListString()
+    public virtual List<string> ToList()
     {
         return [];
     }

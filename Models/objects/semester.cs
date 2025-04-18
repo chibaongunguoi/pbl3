@@ -25,9 +25,9 @@ sealed class Semester : IdObj
     }
 
     // ------------------------------------------------------------------------
-    public override List<string> ToListString()
+    public override List<string> ToList()
     {
-        var lst = base.ToListString();
+        var lst = base.ToList();
         lst.Add(QPiece.toStr(course_id));
         lst.Add(QPiece.toStr(start_date));
         lst.Add(QPiece.toStr(finish_date));
