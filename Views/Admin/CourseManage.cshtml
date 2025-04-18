@@ -1,0 +1,68 @@
+@{
+Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+}
+
+
+
+  <div id="content" class="container-fluid">
+    <div class="card">
+      <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+        <div class="m-0 table-title">Danh sách khóa học trong hệ thống</div>
+        <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+        </div>
+        <div class="col-12">
+          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+        </div>
+      </form> -->
+      </div>
+
+      <div class="card-body">
+        <table class="table table-striped table-checkall">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên khóa học</th>
+              <th scope="col">Đánh giá</th>
+              <th scope="col">Tình trạng</th>
+              <th scope="col">Môn học</th>
+              <th scope="col">Lớp</th>
+              <th scope="col">Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row" class="table-index">card.table_index</td>
+              <td>
+                <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
+                  card.course_name
+                </a>
+              </td>
+              <td>card.avg_rating</td>
+              <td>card.course_state</td>
+              <td>card.subject</td>
+              <td>card.grade</td>
+              <td>
+                <div class="button-group-wrapper course-manager">
+                  <button class="card-btn course-detail" onclick="window.location.href='/Admin/SemesterManage?course_id=card.course_id'">Xem
+                    các kì học </button>
+                    @await Html.PartialAsync("Popup/_StudentTablePopup")
+                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=card.course_id'">Xem chi tiết</button>
+
+                </div>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<style>
+  /* Làm mờ nền khi modal mở */
+  .modal.show {
+    backdrop-filter: blur(5px); /* Hiệu ứng blur */
+    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+  }
+</style>

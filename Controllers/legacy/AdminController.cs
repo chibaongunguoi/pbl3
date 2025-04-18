@@ -17,6 +17,22 @@ public class AdminController : Controller
     {
         return View();
     }
+    public IActionResult CourseManage()
+    {
+        return View();
+    }
+    public IActionResult SemesterManage()
+    {
+        return View();
+    }
+    public IActionResult StudentManage()
+    {
+        return View();
+    }
+    public IActionResult TeacherManage()
+    {
+        return View();
+    }
     public IActionResult Dashboard()
     {
         return View();
