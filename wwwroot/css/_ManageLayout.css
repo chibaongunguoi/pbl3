@@ -354,7 +354,7 @@ button.accept-policy {
 }
 .navbar {
   padding: 5px 0px;
-  z-index: 1;
+  z-index: 3 !important;
 }
 .navbar-link-wrapper {
   cursor: pointer;
@@ -454,6 +454,10 @@ button.accept-policy {
   padding: 3px 4px !important;
   right: -2px;
   top: 2px !important;
+}
+.course-manage-badget-home {
+  top: 25%;
+  right: -18px;
 }
 /* AdminLayout */
 .admin-content-wrapper {

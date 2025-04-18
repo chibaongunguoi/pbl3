@@ -50,9 +50,8 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
               <td>@card.grade</td>
               <td>
                 <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail"data-bs-toggle="modal" data-bs-target="#semTableModal">Xem
+                  <button class="card-btn course-detail" onclick="window.location.href='/Semester/Manage?course_id=@card.course_id'">Xem
                     các kì học </button>
-                    @await Html.PartialAsync("Popup/_SemTablePopup")
                     @await Html.PartialAsync("Popup/_StudentTablePopup")
                   <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=@card.course_id'">Xem chi tiết</button>
                   <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Đánh giá</button>
