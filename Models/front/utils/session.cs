@@ -1,5 +1,12 @@
 using Microsoft.Data.SqlClient;
 
+static class UrlKey
+{
+    public const string tchId = "tchId",
+        courseId = "courseId",
+        page = "page";
+}
+
 static class SessionRole
 {
     public const string none = "",
@@ -21,11 +28,16 @@ static class SessionForm
 {
     public static Dictionary<string, string> errors = new();
     public static bool displaying_error = false;
+
+    public static bool contains(string key)
+    {
+        return errors.ContainsKey(key);
+    }
 }
 
 static class Session
 {
-    public static int? get_int(IQueryCollection query, string key)
+    public static int? getInt(IQueryCollection query, string key)
     {
         string? value = query[key];
         if (value is null)
@@ -35,6 +47,12 @@ static class Session
             return result;
         else
             return null;
+    }
+
+    public static string? getStr(IQueryCollection query, string key)
+    {
+        string? value = query[key];
+        return value;
     }
 }
 
