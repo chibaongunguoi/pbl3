@@ -4,9 +4,9 @@ class DetailedCourseCard : BriefCourseCard
 {
     public string description = "";
 
-    public static new Query get_query_creator()
+    public static new Query getQueryCreator()
     {
-        Query q = BriefCourseCard.get_query_creator();
+        Query q = BriefCourseCard.getQueryCreator();
         q.output(Tbl.semester, Fld.description);
         return q;
     }

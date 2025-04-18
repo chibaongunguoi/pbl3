@@ -15,7 +15,7 @@ public class TeacherController : Controller
 
     public IActionResult Index()
     {
-        string? page_ = Request.Query["page"];
+        string? page_ = Request.Query[UrlKey.page];
         int page = 1;
         if (page_ is not null)
         {
@@ -30,12 +30,11 @@ public class TeacherController : Controller
 
     public IActionResult Profile()
     {
-        // TODO: Trang chi tiết gia sư.
-        // Tạm thời lấy danh sách toàn bộ các khóa học
-        List<BriefCourseCard> courses = new();
-        Database.exec(conn => courses = BriefCoursePage.get_page(conn, 1));
-        ViewBag.courses = courses;
-        ViewBag.currentPage = 1;
+        int? tchId = Session.getInt(Request.Query, UrlKey.tchId);
+        if (tchId is null)
+            return Redirect("Index");
+        DetailedTeacherPage page = new(tchId.Value);
+        ViewBag.page = page;
         return View();
     }
 

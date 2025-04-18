@@ -31,27 +31,11 @@ public class CourseController : Controller
 
     public IActionResult Detail()
     {
-        string? course_id_ = Request.Query["course_id"];
-        string? page_ = Request.Query["page"];
-        int course_id = -1;
-        int page = 1;
-        try
-        {
-            course_id = int.Parse(course_id_ ?? "-1");
-            page = int.Parse(page_ ?? "1");
-        }
-        catch (Exception)
-        {
+        int? course_id = Session.getInt(Request.Query, UrlKey.courseId);
+        if (course_id is null)
             return Redirect("Index");
-        }
-
-        DetailedCoursePage course_page = new(course_id, page);
-        if (course_page.invalid)
-        {
-            return Redirect("Index");
-        }
-        ViewBag.page = course_page;
-        ViewBag.currentPage = page;
+        DetailedCoursePage page = new(course_id.Value);
+        ViewBag.page = page;
         return View();
     }
 

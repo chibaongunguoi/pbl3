@@ -13,7 +13,7 @@ class BriefCourseCard : DataObj
     public int num_ratings;
     public string fee = "";
 
-    public static Query get_query_creator()
+    public static Query getQueryCreator()
     {
         Query q = new(Tbl.course);
         q.join(Field.subject__id, Field.course__sbj_id);

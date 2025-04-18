@@ -1,3 +1,7 @@
+@{
+    var p = (DetailedTeacherPage)ViewBag.page;
+    var teacher = p.teacherCard[0];
+}
 
 <div class="shop-section-wrapper container">
 <div class="teacher-profile-wrapper clearfix" style="clear: both;">
@@ -12,40 +16,21 @@
                 <img src="/images/thumbnail/thumbnail.jpg" style="width:100%; height:110px;">
             </div>
             <div style="line-height:150% !important; font-size:14px;">
-                <div class="teacher-card-field"><strong>Mã số:</strong> 2001</div>
+                <div class="teacher-card-field"><strong>Mã số:</strong> @teacher.id</div>
                 <div class="teacher-card-field">
                     <strong>Tên gia sư:</strong> 
                     <strong style="color:#008eff;">
-                        <a href="/gia-su-2918.html">Nguyễn Chí Bảo</a>
+                        <a href="/gia-su-2918.html">@teacher.name</a>
                     </strong>
                 </div>
-                <div class="teacher-card-field"><strong>Giới tính:</strong> Nam</div>
-                <div class="teacher-card-field teacher-down"><strong>Ngày sinh:</strong> 20/11/2231</div>
+                <div class="teacher-card-field"><strong>Giới tính:</strong> @teacher.gender</div>
+                <div class="teacher-card-field teacher-down"><strong>Ngày sinh:</strong> @teacher.bday</div>
             </div>
         </div>
 
         <div class="teacher-card-desc">
             <div class="teacher-card-field"><strong>Mô tả:</strong></div>
-            <div class="card-sem-des-content" >
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>
-                <div>- Giúp bạn out trình mấy con gà không đi học thêm</div>
-                <div>- Không sợ out meta, top 1 tri thức hệ toán</div>
-                <div>- VDC không còn khó, đại học Vinh chỉ còn là cái tên</div>                    
-            </div>
+            <div class="card-sem-des-content" >@teacher.description</div>
         </div>
 </div>
 </div>
@@ -59,11 +44,10 @@
             <div class="card-search-wrapper">
                 @await Html.PartialAsync("_SearchSemSection")
             </div>
-            <div class="card-product-ul">
-                @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
+            <div class="course-subpage card-product-ul">
+                @await Html.PartialAsync(PartialViewKey.semesterCardList, (object)p.courses)
             </div>
-
-            @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
+        @await Html.PartialAsync("_PaginationAjax", (1, p.numCoursePages, $"/GetCourse/getBriefCourseCardsByTchId?{UrlKey.tchId}={p.tchId}", ".course-subpage"))
         </div>
     </div>
      </div>

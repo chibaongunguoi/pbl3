@@ -13,7 +13,7 @@ class BriefTeacherCard : DataObj
         Teacher teacher = DataReader.getDataObj<Teacher>(reader, ref pos);
         this.id = teacher.id;
         this.name = teacher.name;
-        this.gender = IoUtils.conv_gender(teacher.gender);
+        this.gender = IoUtils.convGender(teacher.gender);
         this.bday = IoUtils.conv(teacher.bday);
         this.description = teacher.description;
     }

@@ -51,7 +51,7 @@ class BriefCoursePage
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
         List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.get_query_creator();
+        Query q = BriefCourseCard.getQueryCreator();
         q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         // if (search_by_course_name != null)
         // {
