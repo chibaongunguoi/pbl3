@@ -37,7 +37,7 @@ sealed class RawQuery
     }
 
     // ------------------------------------------------------------------------
-    public static void getInsertQueries(
+    public static void getInsertQueries( // thực hiện nhiều bản ghi mà gọi insertQuery
         ref List<List<string>> data,
         string table,
         DatabaseTableConfig table_config,

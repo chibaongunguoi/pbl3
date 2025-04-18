@@ -94,7 +94,7 @@ class DetailedCoursePage
     public static List<DetailedCourseCard> get_course_by_id(SqlConnection conn, int id)
     {
         List<DetailedCourseCard> cards = new();
-        Query q = DetailedCourseCard.get_query_creator();
+        Query q = DetailedCourseCard.getQueryCreator();
         q.Where(Field.course__id, id);
         return q.select<DetailedCourseCard>(conn);
     }

@@ -1,5 +1,5 @@
 using Microsoft.Data.SqlClient;
-
+// Note: Field trong dự án này có format: Table.Field
 static class QPiece
 {
     public const string FALSE = "1 = 0";
@@ -45,7 +45,7 @@ static class QPiece
 
     public const string countAll = "COUNT(*)";
 
-    public static string allFieldsOf(string table) => $"[{table}].*";
+    public static string allFieldsOf(string table) => $"[{table}].*"; // select all
 
     // ------------------------------------------------------------------------
     public static string eq<T>(string field, T value, string op = "=")
@@ -69,7 +69,7 @@ static class QPiece
     }
 
     // ------------------------------------------------------------------------
-    public static string inList<T>(string field, List<T> values)
+    public static string inList<T>(string field, List<T> values) // thực hiện pehps IN
     {
         if (values.Count == 0)
             return FALSE;
@@ -221,7 +221,7 @@ sealed class Query
 
     public void WhereQuery(string field, string query)
     {
-        WhereClause($"{field} = ({query})");
+        WhereClause($"{field} = ({query})"); // ==> query trả về một giá trị duy nhất (MAX, AVG,...)
     }
 
     public void WhereFieldAlias(
@@ -240,7 +240,6 @@ sealed class Query
     {
         WhereClause($"{field} = N'{value}'");
     }
-
     // ------------------------------------------------------------------------
     public void Where<T>(string field, List<T> value)
     {
@@ -273,7 +272,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public void SetClause(params List<string> set_fields)
+    public void SetClause(params List<string> set_fields) // thêm A = ..., B = ... vào danh sách set_fields
     {
         foreach (var field in set_fields)
         {
@@ -287,13 +286,13 @@ sealed class Query
         SetClause($"{field} = {value}");
     }
 
-    public void Set(string field, string value)
+    public void Set(string field, string value) // set 1 trường cho string
     {
         SetClause($"{field} = '{value}'");
     }
 
     // ------------------------------------------------------------------------
-    public void JoinClause(params List<string> join_cmd)
+    public void JoinClause(params List<string> join_cmd) // ADD(Join:B on ....) vào danh sách inner_joins
     {
         foreach (var cmd in join_cmd)
         {
@@ -308,7 +307,7 @@ sealed class Query
         JoinClause(QPiece.join(table_1, field_1, field_2));
     }
 
-    public void join(string table, string field_1, string field_2)
+    public void join(string table, string field_1, string field_2) // đài vào field có dạng Table.Field => mục đích trả về phép Join table Field1 = field2
     {
         JoinClause(QPiece.join(table, field_1, field_2));
     }
@@ -326,7 +325,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public string getWhereClause()
+    public string getWhereClause() // thực hiện phép And giữa các điều kiện rôi trả về điều kiện WHERE
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -336,7 +335,7 @@ sealed class Query
     }
 
     // ========================================================================
-    private string getJoinClause()
+    private string getJoinClause() // chưa hiện hiện Form A
     {
         if (inner_joins.Count == 0)
             return "";
@@ -344,7 +343,7 @@ sealed class Query
     }
 
     // ========================================================================
-    private string getOrderClause()
+    private string getOrderClause() // trả về câu lệnh ORDER BY hoàn chỉnh
     {
         string query = "";
         if (order_bys.Count > 0)
@@ -357,7 +356,7 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
-    public string selectQuery(bool count_mode = false)
+    public string selectQuery(bool count_mode = false) // nếu là true sẽ dùng countAll, ngược lại lấy lệnh truy vấn hoanf chỉnh
     {
         var output_fields_str =
             count_mode ? QPiece.countAll
@@ -387,7 +386,7 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn INSERT
-    public string insertQuery<T>(T obj)
+    public string insertQuery<T>(T obj) // lấy lệnh insert
         where T : DataObj, new()
     {
         List<string> parts = obj.ToListString();
@@ -396,7 +395,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
-    public string updateQuery()
+    public string updateQuery() // lấy lệnh update
     {
         string query = $"UPDATE {table} SET ";
         string set_fields_str = string.Join(", ", set_fields);
@@ -405,7 +404,7 @@ sealed class Query
     }
 
     // ========================================================================
-    public List<T> select<T>(SqlConnection conn)
+    public List<T> select<T>(SqlConnection conn) // trả về một list các đối tượng T kế thừa từ Obj, mỗi đối tượng T là một recor trong Database
         where T : DataObj, new()
     {
         return Database.exec_query<T>(conn, selectQuery());

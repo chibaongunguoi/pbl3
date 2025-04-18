@@ -20,7 +20,7 @@ class ManageCourseCard
         q.output(Field.subject__name);
         q.output(Field.subject__grade);
 
-        string local_semester = "LocalSemester";
+        string local_semester = "LocalSemester"; // Alias
         string local_rating = "LocalRating";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);

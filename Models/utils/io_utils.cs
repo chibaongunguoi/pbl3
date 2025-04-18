@@ -14,7 +14,7 @@ class IoUtils
     }
 
     // ========================================================================
-    public static string conv_gender(string gender)
+    public static string convGender(string gender)
     {
         switch (gender)
         {

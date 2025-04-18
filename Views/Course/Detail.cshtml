@@ -1,5 +1,5 @@
 ﻿@{
-  DetailedCoursePage page = (DetailedCoursePage)ViewBag.page;
+  var page = (DetailedCoursePage)ViewBag.page;
   var teacher = page.teacher_lst[0];
   var course = page.course_lst[0];
 }
@@ -35,7 +35,7 @@
         </div>
         <div class="reviews-item">
             <div class="review-pagination">
-          @await Html.PartialAsync("_PaginationAjax", (page.current_page, page.total_num_pages, $"/GetCourse/getRatingCards?course_id={page.course_id}", ".rating-card-list"))
+          @await Html.PartialAsync("_PaginationAjax", (page.current_page, page.total_num_pages, $"/GetCourse/getRatingCards?{UrlKey.courseId}={page.course_id}", ".rating-card-list"))
             </div> 
         </div>    
         </div>

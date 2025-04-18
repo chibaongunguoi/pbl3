@@ -43,7 +43,7 @@ sealed class Database
             using (SqlConnection conn = new SqlConnection(conn_string))
             {
                 conn.Open();
-                conn_function(conn);
+                conn_function(conn); // khả năng thì nó nhận một biểu thức lambda và thực thi một phương thức truy vấn nào đó...
             }
         }
         catch (SqlException e)
