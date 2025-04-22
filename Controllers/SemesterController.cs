@@ -37,7 +37,7 @@ public class SemesterController : BaseController
     [Authorize]
     public IActionResult Manage()
     {
-        int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
+        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
         if (courseId is null)
         {
             return RedirectToAction("Index", "Course");

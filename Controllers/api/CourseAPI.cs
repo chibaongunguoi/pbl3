@@ -23,7 +23,7 @@ public class CourseAPI : BaseController
     [HttpGet("TeacherProfile")]
     public IActionResult teacherProfile(int currentPage)
     {
-        int? teacherId = Session.getInt(Request.Query, UrlKey.tchId);
+        int? teacherId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
         int numObjs = 20;
         List<BriefCourseCard> cards = new();
         Query q = BriefCourseCard.getQueryCreator();

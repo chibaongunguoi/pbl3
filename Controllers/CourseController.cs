@@ -17,19 +17,13 @@ public class CourseController : BaseController
 
     public IActionResult Index()
     {
-        string? page_ = Request.Query["page"];
-        int page = 1;
-        if (page_ is not null)
-        {
-            page = int.Parse(page_);
-        }
-        ViewBag.page = new BriefCoursePage(page);
+        ViewBag.page = new BriefCoursePage();
         return View();
     }
 
     public IActionResult Detail()
     {
-        int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
+        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
         if (courseId is null)
             return RedirectToAction("Index");
 

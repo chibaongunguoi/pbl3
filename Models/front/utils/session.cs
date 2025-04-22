@@ -5,12 +5,6 @@ public static class UrlKey
         page = "page";
 }
 
-public static class SessionKey
-{
-    public const string TRUE = "TRUE",
-        FALSE = "FALSE";
-}
-
 public static class SessionForm
 {
     public static Dictionary<string, string> errors = new();
@@ -22,7 +16,7 @@ public static class SessionForm
     }
 }
 
-public static class Session
+public static class UrlQuery
 {
     public static int? getInt(IQueryCollection query, string key)
     {

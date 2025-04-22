@@ -34,7 +34,7 @@ public class TeacherController : BaseController
         else
         {
             // Otherwise use the ID from query params for public profile viewing
-            tchId = Session.getInt(Request.Query, UrlKey.tchId);
+            tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
         }
 
         if (tchId is null)

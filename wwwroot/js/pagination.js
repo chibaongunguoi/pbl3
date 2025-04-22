@@ -10,6 +10,9 @@ function getPagination(pageNum, maxPageNum, contextUrl, contextComponent) {
 }
 
 function getPaginationData(pageNum, contextUrl, contextComponent) {
+    $(contextComponent).html(
+        '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
+    )
     $.get(contextUrl, { currentPage: pageNum })
         .done(function(data) {
             $(contextComponent).html(data);

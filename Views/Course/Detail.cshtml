@@ -2,21 +2,20 @@
   var p = (DetailedCoursePage)ViewBag.page;
   var teacher = p.teacherLst[0];
   var course = p.courseLst[0];
-  var contextUrl = $"/ratingAPI/DetailedCoursePage/{p.courseId}";
+  var contextUrl = $"/ratingAPI/DetailedCoursePage?courseId={p.courseId}";
   var contextComponent = ".pagination-list";
 }
 
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
-            <div class="shop-section-title">
+            <div class="shop-section-title section-title">
                 Chi tiết khóa học
             </div>
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
               @await Html.PartialAsync("Card/_BriefTeacherCard", (object)teacher)
-
               @await Html.PartialAsync("Card/_DetailedCourseCard", (object)course)
             </div>         
         </div>
@@ -24,7 +23,7 @@
 
     <div class="shop-section-wrapper container rating-wrapper">
         <div class="shop-section-header">
-            <div class="shop-section-title">
+            <div class="shop-section-title section-title">
                 Đánh giá khóa học
             </div>
         </div>

@@ -11,7 +11,7 @@ public class RatingAPI : BaseController
     [Authorize]
     public IActionResult detailedCoursePage(int currentPage)
     {
-        int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
+        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
         if (courseId is null)
         {
             return PartialView(PartialList.RatingCard, new List<RatingCard>());

@@ -6,8 +6,8 @@ class BriefCoursePage
 {
     public int maxPageNum;
 
+    const int num_displayed_courses = 20;
     public BriefCoursePage(
-        int num_displayed_courses = 20
     )
     {
         QDatabase.exec(
@@ -18,11 +18,8 @@ class BriefCoursePage
                 q.join(Field.semester__course_id, Field.course__id);
                 q.WhereQuery(Field.semester__id, SemesterQuery.get_latest_semester_id_query("s"));
                 q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
-                int num_total_courses = q.count(conn);
-                // Suy ra tổng số trang
-                this.maxPageNum = (int)
-                    Math.Ceiling((double)num_total_courses / num_displayed_courses);
-                // Danh sách khóa học
+                maxPageNum = (int)
+                    Math.Ceiling((double)q.count(conn) / num_displayed_courses);
             }
         );
     }
