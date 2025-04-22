@@ -14,7 +14,7 @@ public class GetCourseController : Controller
             return PartialView("_RatingCardList", new List<RatingCard>());
         }
         List<RatingCard> rating_cards = new();
-        Database.exec(conn =>
+        QDatabase.exec(conn =>
             rating_cards = DetailedCoursePage.get_page(conn, course_id.Value, currentPage)
         );
         return PartialView("_RatingCardList", rating_cards);
@@ -24,7 +24,7 @@ public class GetCourseController : Controller
     public IActionResult getBriefCourseCards(int currentPage)
     {
         List<BriefCourseCard> cards = new();
-        Database.exec(conn => cards = BriefCoursePage.get_page(conn, currentPage));
+        QDatabase.exec(conn => cards = BriefCoursePage.get_page(conn, currentPage));
         return PartialView(PartialViewKey.semesterCardList, cards);
     }
 
@@ -41,7 +41,7 @@ public class GetCourseController : Controller
         q.Where(Field.teacher__id, tchId);
         q.orderBy(Field.semester__id, desc: true);
         q.offset(currentPage, 20);
-        Database.exec(conn => cards = q.select<BriefCourseCard>(conn));
+        QDatabase.exec(conn => cards = q.select<BriefCourseCard>(conn));
         return PartialView(PartialViewKey.semesterCardList, cards);
     }
 }

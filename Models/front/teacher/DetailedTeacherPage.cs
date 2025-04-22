@@ -12,7 +12,7 @@ class DetailedTeacherPage
     public DetailedTeacherPage(int tchId, int numObjs = 20)
     {
         this.tchId = tchId;
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.course);
@@ -38,7 +38,7 @@ class DetailedTeacherPage
         Query q = BriefCourseCard.getQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.offset(currentPage, numObjs);
-        cards = q.select<BriefCourseCard>(conn);
+        q.select(conn, reader => cards.Add(DataReader.getDataObj<BriefCourseCard>(reader)));
         return cards;
     }
 }

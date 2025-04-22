@@ -65,7 +65,7 @@ class DetailedCoursePage
             );
         }
         // thay thees delegate(SqlConnection conn);
-        Database.exec(func);
+        QDatabase.exec(func);
     }
 
     public static List<RatingCard> get_page(
@@ -88,7 +88,8 @@ class DetailedCoursePage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.Where(Field.teacher__id, tch_id);
-        return q.select<BriefTeacherCard>(conn);
+        q.select(conn, reader => cards.Add(DataReader.getDataObj<BriefTeacherCard>(reader)));
+        return cards;
     }
 
     public static List<DetailedCourseCard> get_course_by_id(SqlConnection conn, int id)
@@ -96,6 +97,7 @@ class DetailedCoursePage
         List<DetailedCourseCard> cards = new();
         Query q = DetailedCourseCard.getQueryCreator();
         q.Where(Field.course__id, id);
-        return q.select<DetailedCourseCard>(conn);
+        q.select(conn, reader => cards.Add(DataReader.getDataObj<DetailedCourseCard>(reader)));
+        return cards;
     }
 }

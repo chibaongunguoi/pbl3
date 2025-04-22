@@ -62,7 +62,7 @@ public class AuthController : BaseController
 
         List<Account> query_result = new();
         string table = "";
-        Database.exec(conn =>
+        QDatabase.exec(conn =>
             table = AccountQuery<Account>.get_account_by_username_password(
                 conn,
                 username,

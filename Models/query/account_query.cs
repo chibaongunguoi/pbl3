@@ -63,10 +63,12 @@ sealed class AccountQuery<T>
     {
         List<T> func(string table)
         {
+            List<T> result = new();
             Query q = new(table);
             q.Where(Fld.username, username);
             q.Where(Fld.password, password);
-            return q.select<T>(conn);
+            q.select(conn, reader => result.Add(DataReader.getDataObj<T>(reader)));
+            return result;
         }
         if (string.IsNullOrEmpty(table))
         {

@@ -2,15 +2,13 @@ using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
 
-// HACK: Đây là class dùng để chuyển đổi dữ liệu từ file csv sang cơ sở
-// dữ liệu SQL Server.
 sealed class DataGenerator
 {
     // ========================================================================
     public static void generate(string server_name, string database_name)
     {
-        Database.exec(conn => drop_database(conn, database_name), server_only: true);
-        Database.exec(conn => create_tables(conn));
+        QDatabase.exec(conn => drop_database(conn, database_name), server_only: true);
+        QDatabase.exec(conn => create_tables(conn));
     }
 
     // ========================================================================
@@ -20,14 +18,14 @@ sealed class DataGenerator
             $"SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb') AND name = '{database_name}'";
 
         string? result = null;
-        Database.execQuery(conn, query, reader => result = DataReader.getStr(reader));
+        QDatabase.execQuery(conn, query, reader => result = DataReader.getStr(reader));
         if (result != null)
-            Database.execQuery(
+            QDatabase.execQuery(
                 conn,
                 $"DROP DATABASE [{database_name}] CREATE DATABASE [{database_name}]"
             );
         else
-            Database.execQuery(conn, $"CREATE DATABASE [{database_name}]");
+            QDatabase.execQuery(conn, $"CREATE DATABASE [{database_name}]");
     }
 
     // ========================================================================
@@ -71,14 +69,14 @@ sealed class DataGenerator
             big_query += $" {query}";
             if (big_query.Length > 1000000)
             {
-                Database.execQuery(conn, big_query);
+                QDatabase.execQuery(conn, big_query);
                 big_query = "";
             }
         }
 
         if (big_query.Length > 0)
         {
-            Database.execQuery(conn, big_query);
+            QDatabase.execQuery(conn, big_query);
         }
 
         stopwatch.Stop();

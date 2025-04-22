@@ -6,14 +6,9 @@ static class SemesterQuery
     )
     {
         Query q = new(Tbl.semester, semester_alias);
-        q.WhereFieldAlias(
-            Field.semester__course_id,
-            semester_alias,
-            Field.course__id,
-            course_alias
-        );
-        q.orderByAlias(Field.semester__start_date, semester_alias, desc: true);
-        q.outputTopAlias(Field.semester__id, semester_alias);
+        q.WhereField(Field.semester__course_id, Field.course__id, semester_alias, course_alias);
+        q.orderBy(Field.semester__start_date, desc: true, semester_alias);
+        q.outputTop(Field.semester__id, 1, semester_alias);
         return q.selectQuery();
     }
 }

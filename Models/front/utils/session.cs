@@ -79,7 +79,7 @@ static class SessionManager
         {
             case Tbl.student
             or Tbl.teacher:
-                Database.exec(
+                QDatabase.exec(
                     delegate(SqlConnection conn)
                     {
                         List<User> users = CommonQuery<User>.get_record_by_id(conn, table, id);

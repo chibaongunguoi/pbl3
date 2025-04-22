@@ -46,7 +46,8 @@ public class AddCourseForm
         Query sbj_query = new(Tbl.subject);
         sbj_query.Where(Field.subject__name, subject);
         sbj_query.Where(Field.subject__grade, i_grade);
-        List<Subject> subjects = sbj_query.select<Subject>(conn);
+        List<Subject> subjects = new();
+        sbj_query.select(conn, reader => subjects.Add(DataReader.getDataObj<Subject>(reader)));
 
         if (subjects.Count == 0)
         {
@@ -91,9 +92,9 @@ public class AddCourseForm
         };
 
         Query q1 = new(Tbl.course);
-        q1.insert<Course>(conn, course);
+        q1.insert(conn, string.Join(", ", course.ToList()));
         q1 = new(Tbl.semester);
-        q1.insert<Semester>(conn, semester);
+        q1.insert(conn, string.Join(", ", semester.ToList()));
 
         log.course_id = course_id;
         log.semester_id = semester_id;
@@ -103,7 +104,7 @@ public class AddCourseForm
     public Log execute(int tch_id)
     {
         Log log = new();
-        Database.exec(conn => log = execute(conn, tch_id));
+        QDatabase.exec(conn => log = execute(conn, tch_id));
         return log;
     }
 

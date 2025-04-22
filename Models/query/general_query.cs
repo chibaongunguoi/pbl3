@@ -52,7 +52,7 @@ static class GeneralQuery
             update_course_query.update(conn);
         }
 
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 start_courses(conn);

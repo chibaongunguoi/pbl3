@@ -75,7 +75,7 @@ public class AddSemesterForm
         };
 
         Query q_ins_semester = new(Tbl.semester);
-        q_ins_semester.insert<Semester>(conn, semester);
+        q_ins_semester.insert(conn, string.Join(", ", semester.ToList()));
 
         Query q_update_course = new(Tbl.course);
         q_update_course.Set(Fld.status, CourseStatus.waiting);
@@ -90,7 +90,7 @@ public class AddSemesterForm
     public AddSemesterFormLog execute()
     {
         AddSemesterFormLog log = new();
-        Database.exec(conn => log = execute(conn));
+        QDatabase.exec(conn => log = execute(conn));
         return log;
     }
 

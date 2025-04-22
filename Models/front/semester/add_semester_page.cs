@@ -27,13 +27,16 @@ class AddSemesterPage
 
     public AddSemesterPage(int tch_id)
     {
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 Query q = CourseOption.get_query_creator();
                 q.Where(Field.course__status, CourseStatus.finished);
                 q.Where(Field.course__tch_id, tch_id);
-                this.courses = q.select<CourseOption>(conn);
+                q.select(
+                    conn,
+                    reader => this.courses.Add(DataReader.getDataObj<CourseOption>(reader))
+                );
             }
         );
     }

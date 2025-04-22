@@ -11,7 +11,7 @@ class ManageCoursePage
         q.Where(Field.course__tch_id, tch_id);
         q.offset(page_idx, num_objs);
 
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 int table_index = 1;

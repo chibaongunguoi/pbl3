@@ -1,132 +1,24 @@
 using Microsoft.Data.SqlClient;
 
-// Note: Field trong dự án này có format: Table.Field
-static class QPiece
-{
-    public const string FALSE = "1 = 0";
-
-    public static string containsStr(string field, string value) => $"{field} LIKE '%{value}%'";
-
-    public static string dot(string table, string field) => $"[{table}].[{field}]";
-
-    public static string castFloat(string field) => $"CAST({field} AS FLOAT)";
-
-    public static string toStr(int value) => $"{value}";
-
-    public static string toStr(DateOnly value) => $"'{value.Year}-{value.Month:D2}-{value.Day:D2}'";
-
-    public static string toStr(DateTime value) =>
-        $"'{value.Year}-{value.Month:D2}-{value.Day:D2} {value.Hour:D2}:{value.Minute:D2}:{value.Second:D2}'";
-
-    public static string toStr(string value) => $"\'{value}\'";
-
-    public static string toNStr(string value) => $"N\'{value}\'";
-
-    public static string avg(string field)
-    {
-        return $"ISNULL(AVG({field}), 0)";
-    }
-
-    public static string alias(string field, string? alias)
-    {
-        if (alias is null)
-            return field;
-        return $"{field} AS {alias}";
-    }
-
-    public static string dotAlias(string field, string? alias = null)
-    {
-        if (alias is null)
-        {
-            return field;
-        }
-        field = field.Split('.')[1];
-        return $"{alias}.{field}";
-    }
-
-    public const string countAll = "COUNT(*)";
-
-    public static string allFieldsOf(string table) => $"[{table}].*"; // select all
-
-    // ------------------------------------------------------------------------
-    public static string eq<T>(string field, T value, string op = "=")
-    {
-        return $"{field} {op} {value}";
-    }
-
-    public static string eq(string field, string value, string op = "=")
-    {
-        return $"{field} {op} '{value}'";
-    }
-
-    public static string eq(string field, DateOnly value, string op = "=")
-    {
-        return $"{field} {op} {QPiece.toStr(value)}";
-    }
-
-    public static string eq(string field, DateTime value, string op = "=")
-    {
-        return $"{field} {op} {QPiece.toStr(value)}";
-    }
-
-    // ------------------------------------------------------------------------
-    public static string inList<T>(string field, List<T> values) // thực hiện pehps IN
-    {
-        if (values.Count == 0)
-            return FALSE;
-        string str = string.Join(", ", values);
-        return $"{field} IN ({str})";
-    }
-
-    public static string inList(string field, List<string> values)
-    {
-        values = values.Select(v => $"\'{v}\'").ToList();
-        return inList<string>(field, values);
-    }
-
-    // ------------------------------------------------------------------------
-    public static string orderBy(string field, bool desc = false)
-    {
-        string s = field;
-        if (desc)
-            s += " DESC";
-        return s;
-    }
-
-    public static string join(string table_1, string field_1, string field_2)
-    {
-        return $"INNER JOIN {table_1} ON {field_1} = {field_2}";
-    }
-}
-
-sealed class Query
+class Query
 {
     // ========================================================================
-    private string table;
+    protected string? table = null;
     private List<string> output_fields = new();
     private List<string> conditions = new();
     private List<string> inner_joins = new();
     private List<string> order_bys = new();
     private List<string> set_fields = new();
+    private List<string> group_bys = new();
     private string? offset_string = null;
 
     // ========================================================================
-    // INFO: Bắt đầu với một bảng
-    public Query(string table, string? alias = null)
+    public Query(string? table = null, string? alias = null)
     {
-        if (alias is not null)
-            this.table = QPiece.alias(table, alias);
-        else
-            this.table = table;
-    }
-
-    public Query()
-    {
-        this.table = "";
+        this.table = table is not null ? QPiece.tableAlias(table, alias) : null;
     }
 
     // ========================================================================
-    // INFO: Thêm trường vào danh sách trường cần lấy
     public void outputClause(params List<string> fields)
     {
         foreach (var field in fields)
@@ -136,44 +28,43 @@ sealed class Query
         }
     }
 
-    public void outputAvg(string field)
-    {
-        outputClause(QPiece.avg(field));
-    }
-
     public void outputAvgCastFloat(string field, string? alias = null)
     {
-        outputClause(QPiece.avg(QPiece.castFloat(QPiece.dotAlias(field, alias))));
+        outputClause(QPiece.avg(QPiece.castFloat(QPiece.dot(field, alias))));
     }
 
-    public void outputAvg(string table, string field)
+    public void outputAvg(string field, string? alias = null)
     {
-        outputClause(QPiece.avg(QPiece.dot(table, field)));
+        outputClause(QPiece.avg(QPiece.dot(field, alias)));
     }
 
-    public void output(string table, string field)
+    public void output(string field, string? alias = null)
     {
-        outputClause(QPiece.dot(table, field));
+        outputClause(QPiece.dot(field, alias));
     }
 
-    public void output(string field)
+    public void outputTop(string field_, int top = 1, string? alias_ = null)
     {
-        outputClause(field);
-    }
-
-    public void outputTop(string field, int top = 1)
-    {
-        outputClause($"TOP {top} {field}");
-    }
-
-    public void outputTopAlias(string field_, string? alias_, int top = 1)
-    {
-        outputClause($"TOP {top} {QPiece.dotAlias(field_, alias_)}");
+        outputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
     }
 
     public void outputQuery(string query)
     {
         outputClause($"({query})");
+    }
+
+    public void groupByClause(params List<string> fields)
+    {
+        foreach (var field in fields)
+        {
+            if (field.Length > 0)
+                group_bys.Add(field);
+        }
+    }
+
+    public void groupBy(string field_, string? alias_ = null)
+    {
+        groupByClause(QPiece.dot(field_, alias_));
     }
 
     // ========================================================================
@@ -199,58 +90,52 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
-    public void Where<T>(string field, T value)
+    public void Where<T>(string field, T value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(field, value));
+        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
     }
 
-    public void Where(string field, string value)
+    public void Where(string field, string value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(field, value));
+        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
     }
 
-    public void Where(string field, DateOnly value)
+    public void Where(string field, DateOnly value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(field, value));
+        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
     }
 
     // ------------------------------------------------------------------------
-    public void WhereField(string field_1, string field_2)
+    public void WhereQuery(string field, string query, string? alias_ = null)
     {
-        WhereClause($"{field_1} = {field_2}");
+        WhereClause($"{QPiece.dot(field, alias_)} = ({query})");
     }
 
-    public void WhereQuery(string field, string query)
-    {
-        WhereClause($"{field} = ({query})"); // ==> query trả về một giá trị duy nhất (MAX, AVG,...)
-    }
-
-    public void WhereFieldAlias(
+    public void WhereField(
         string field_1,
-        string? alias_1,
         string field_2,
+        string? alias_1 = null,
         string? alias_2 = null
     )
     {
-        field_2 = alias_2 is null ? field_2 : QPiece.dotAlias(field_2, alias_2);
-        WhereClause($"{QPiece.dotAlias(field_1, alias_1)} = {field_2}");
+        WhereClause($"{QPiece.dot(field_1, alias_1)} = {QPiece.dot(field_2, alias_2)}");
     }
 
     // ------------------------------------------------------------------------
-    public void WhereNStr(string field, string value)
+    public void WhereNStr(string field, string value, string? alias_ = null)
     {
-        WhereClause($"{field} = N'{value}'");
+        WhereClause($"{QPiece.dot(field, alias_)} = N'{value}'");
     }
 
     // ------------------------------------------------------------------------
-    public void Where<T>(string field, List<T> value)
+    public void Where<T>(string field, List<T> value, string? alias_ = null)
     {
-        WhereClause(QPiece.inList(field, value));
+        WhereClause(QPiece.inList(QPiece.dot(field, alias_), value));
     }
 
-    public void Where(string field, List<string> value)
+    public void Where(string field, List<string> value, string? alias_ = null)
     {
-        WhereClause(QPiece.inList(field, value));
+        WhereClause(QPiece.inList(QPiece.dot(field, alias_), value));
     }
 
     // ========================================================================
@@ -263,18 +148,13 @@ sealed class Query
         }
     }
 
-    public void orderBy(string field, bool desc = false)
+    public void orderBy(string field_, bool desc = false, string? alias_ = null)
     {
-        orderByClause(QPiece.orderBy(field, desc: desc));
-    }
-
-    public void orderByAlias(string field_, string? alias_, bool desc = false)
-    {
-        orderByClause(QPiece.orderBy(QPiece.dotAlias(field_, alias_), desc: desc));
+        orderByClause(QPiece.orderBy(QPiece.dot(field_, alias_), desc: desc));
     }
 
     // ========================================================================
-    public void SetClause(params List<string> set_fields) // thêm A = ..., B = ... vào danh sách set_fields
+    public void SetClause(params List<string> set_fields)
     {
         foreach (var field in set_fields)
         {
@@ -283,18 +163,23 @@ sealed class Query
         }
     }
 
-    public void Set(string field, int value)
+    public void Set(string field, int value, string? alias_ = null)
     {
-        SetClause($"{field} = {value}");
+        SetClause($"{QPiece.dot(field, alias_)} = {value}");
     }
 
-    public void Set(string field, string value) // set 1 trường cho string
+    public void Set(string field, string value, string? alias_ = null)
     {
-        SetClause($"{field} = '{value}'");
+        SetClause($"{QPiece.dot(field, alias_)} = '{value}'");
+    }
+
+    public void Set(string field, DateOnly value, string? alias_ = null)
+    {
+        SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
     }
 
     // ------------------------------------------------------------------------
-    public void JoinClause(params List<string> join_cmd) // ADD(Join:B on ....) vào danh sách inner_joins
+    public void JoinClause(params List<string> join_cmd)
     {
         foreach (var cmd in join_cmd)
         {
@@ -303,31 +188,20 @@ sealed class Query
         }
     }
 
-    public void join(string field_1, string field_2)
+    public void join(string field_1, string field_2, string? alias_1 = null, string? alias_2 = null)
     {
-        string table_1 = field_1.Split('.')[0];
-        JoinClause(QPiece.join(table_1, field_1, field_2));
-    }
-
-    public void join(string table, string field_1, string field_2) // đài vào field có dạng Table.Field => mục đích trả về phép Join table Field1 = field2
-    {
-        JoinClause(QPiece.join(table, field_1, field_2));
-    }
-
-    public void joinAlias(string field_1, string? alias_1, string field_2, string? alias_2 = null)
-    {
-        string table_1 = field_1.Split('.')[0];
+        string table_1 = field_1.Split('.')[0].Trim('[').Trim(']');
         JoinClause(
             QPiece.join(
-                QPiece.alias(table_1, alias_1),
-                QPiece.dotAlias(field_1, alias_1),
-                QPiece.dotAlias(field_2, alias_2)
+                QPiece.tableAlias(table_1, alias_1),
+                QPiece.dot(field_1, alias_1),
+                QPiece.dot(field_2, alias_2)
             )
         );
     }
 
     // ========================================================================
-    public string getWhereClause() // thực hiện phép And giữa các điều kiện rôi trả về điều kiện WHERE
+    public string getWhereClause()
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -337,7 +211,7 @@ sealed class Query
     }
 
     // ========================================================================
-    private string getJoinClause() // chưa hiện hiện Form A
+    private string getJoinClause()
     {
         if (inner_joins.Count == 0)
             return "";
@@ -345,7 +219,19 @@ sealed class Query
     }
 
     // ========================================================================
-    private string getOrderClause() // trả về câu lệnh ORDER BY hoàn chỉnh
+    private string getGroupByClause()
+    {
+        string query = "";
+        if (group_bys.Count > 0)
+        {
+            var s = string.Join(", ", group_bys);
+            query += $" GROUP BY {s}";
+        }
+        return query;
+    }
+
+    // ========================================================================
+    private string getOrderClause()
     {
         string query = "";
         if (order_bys.Count > 0)
@@ -358,17 +244,17 @@ sealed class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
-    public string selectQuery(bool count_mode = false) // nếu là true sẽ dùng countAll, ngược lại lấy lệnh truy vấn hoanf chỉnh
+    public string selectQuery()
     {
-        var output_fields_str =
-            count_mode ? QPiece.countAll
-            : output_fields.Count > 0 ? string.Join(", ", output_fields)
-            : "*";
+        var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str}";
-        if (table.Length > 0)
+        if (table is not null)
+        {
             query += $" FROM {table}";
+        }
         query += getJoinClause();
         query += getWhereClause();
+        query += getGroupByClause();
         query += getOrderClause();
         if (offset_string is not null)
         {
@@ -387,17 +273,7 @@ sealed class Query
     }
 
     // ------------------------------------------------------------------------
-    // INFO: Trả về truy vấn INSERT
-    public string insertQuery<T>(T obj) // lấy lệnh insert
-        where T : DataObj, new()
-    {
-        List<string> parts = obj.ToList();
-        string query = $"INSERT INTO {table} VALUES ({string.Join(",", parts)})";
-        return query;
-    }
-
-    // ------------------------------------------------------------------------
-    public string updateQuery() // lấy lệnh update
+    public string updateQuery()
     {
         string query = $"UPDATE {table} SET ";
         string set_fields_str = string.Join(", ", set_fields);
@@ -405,38 +281,62 @@ sealed class Query
         return query;
     }
 
+    public string insertQuery(string data)
+    {
+        string query = $"INSERT INTO {table} VALUES ({data})";
+        return query;
+    }
+
     // ========================================================================
-    public List<T> select<T>(SqlConnection conn) // trả về một list các đối tượng T kế thừa từ Obj, mỗi đối tượng T là một recor trong Database
+    public void select(SqlConnection conn, QDatabase.ReaderFunction f) =>
+        QDatabase.execQuery(conn, selectQuery(), f);
+
+    // ------------------------------------------------------------------------
+    public T scalar<T>(SqlConnection conn)
+    {
+        SqlCommand command = new SqlCommand(selectQuery(), conn);
+        return (T)command.ExecuteScalar();
+    }
+
+    private int scalar(SqlConnection conn)
+    {
+        return scalar<int>(conn);
+    }
+
+    // ------------------------------------------------------------------------
+    public void delete(SqlConnection conn) => QDatabase.execQuery(conn, deleteQuery());
+
+    // ------------------------------------------------------------------------
+    public void insert(SqlConnection conn, string data) =>
+        QDatabase.execQuery(conn, insertQuery(data));
+
+    // ------------------------------------------------------------------------
+    public void update(SqlConnection conn) => QDatabase.execQuery(conn, updateQuery());
+
+    // ------------------------------------------------------------------------
+    public List<T> select<T>(SqlConnection conn)
         where T : DataObj, new()
     {
-        return Database.execQuery<T>(conn, selectQuery());
+        List<T> results = new();
+        QDatabase.execQuery(
+            conn,
+            selectQuery(),
+            reader => results.Add(DataReader.getDataObj<T>(reader))
+        );
+        return results;
     }
 
-    // ------------------------------------------------------------------------
-    public void select(SqlConnection conn, Database.ReaderFunction f) =>
-        Database.execQuery(conn, selectQuery(), f);
+    public void insert<T>(SqlConnection conn, T obj)
+        where T : DataObj, new()
+    {
+        insert(conn, string.Join(", ", obj.ToList()));
+    }
 
-    // ------------------------------------------------------------------------
     public int count(SqlConnection conn)
     {
-        int result = 0;
-        Database.execQuery(
-            conn,
-            selectQuery(count_mode: true),
-            reader => result = DataReader.getInt(reader)
-        );
-        return result;
+        output(QPiece.countAll);
+        return scalar(conn);
     }
-
-    // ------------------------------------------------------------------------
-    public void delete(SqlConnection conn) => Database.execQuery(conn, deleteQuery());
-
-    // ------------------------------------------------------------------------
-    public void insert<T>(SqlConnection conn, T obj)
-        where T : DataObj, new() => Database.execQuery(conn, insertQuery<T>(obj));
-
-    // ------------------------------------------------------------------------
-    public void update(SqlConnection conn) => Database.execQuery(conn, updateQuery());
 
     // ========================================================================
 }

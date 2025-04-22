@@ -19,7 +19,7 @@ def gen_code(filename):
         for field in fields:
             field_name = field['name']
             code_2.add(f"public const string {field_name} = \"{field_name}\";")
-            code_3.append(f"public const string {table_name}__{field_name} = \"{table}.{field_name}\";")
+            code_3.append(f"public const string {table_name}__{field_name} = \"[{table}].[{field_name}]\";")
 
     code = "static class Tbl {" + "\n".join(code_1) + "\n}\n" + "static class Fld {" + "\n".join(code_2) + "\n}" + "static class Field {" + "\n".join(code_3) + "\n}"
     return code

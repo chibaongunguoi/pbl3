@@ -36,22 +36,22 @@ class BriefCourseCard : DataObj
         string local_rating = "LocalRating";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);
-        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
-        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
+        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.outputAvgCastFloat(Field.rating__stars, local_rating);
         q.outputQuery(q2.selectQuery());
 
         // rating count
         q2 = new(Tbl.rating, local_rating);
-        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
-        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
+        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 
         // participants count
         q2 = new(Tbl.request, local_request);
-        q2.WhereFieldAlias(Field.request__semester_id, local_request, Field.semester__id);
-        q2.Where(QPiece.dotAlias(Field.request__status, local_request), RequestStatus.joined);
+        q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
+        q2.Where(Field.request__status, RequestStatus.joined, local_request);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
 

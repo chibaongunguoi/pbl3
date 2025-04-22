@@ -7,7 +7,7 @@ class DetailedCourseCard : BriefCourseCard
     public static new Query getQueryCreator()
     {
         Query q = BriefCourseCard.getQueryCreator();
-        q.output(Tbl.semester, Fld.description);
+        q.output(Field.semester__description);
         return q;
     }
 
@@ -17,3 +17,5 @@ class DetailedCourseCard : BriefCourseCard
         this.description = DataReader.getStr(reader, ref pos);
     }
 }
+
+/* EOF */

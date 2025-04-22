@@ -7,7 +7,7 @@ class BriefTeacherPage
 
     public BriefTeacherPage(int current_page = 1, int num_displayed_objs = 20)
     {
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.teacher);
@@ -28,7 +28,8 @@ class BriefTeacherPage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.offset(page, num_objs);
-        return q.select<BriefTeacherCard>(conn);
+        q.select(conn, reader => cards.Add(DataReader.getDataObj<BriefTeacherCard>(reader)));
+        return cards;
     }
 }
 

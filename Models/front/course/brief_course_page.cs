@@ -15,7 +15,7 @@ class BriefCoursePage
         string? search_by_subject_name = null
     )
     {
-        Database.exec(
+        QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 // Truy vấn tổng số khóa học

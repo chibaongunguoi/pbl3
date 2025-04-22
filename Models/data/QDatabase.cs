@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 
-sealed class Database
+sealed class QDatabase
 {
     // ========================================================================
     private static int query_counter = 0;
@@ -10,7 +10,7 @@ sealed class Database
 
     public static void init(string server_name, string database_name)
     {
-        Database.server_only_conn_string = new SqlConnectionStringBuilder
+        QDatabase.server_only_conn_string = new SqlConnectionStringBuilder
         {
             DataSource = server_name,
             IntegratedSecurity = true,
@@ -19,7 +19,7 @@ sealed class Database
             MultipleActiveResultSets = true,
         }.ConnectionString;
 
-        Database.default_conn_string = new SqlConnectionStringBuilder
+        QDatabase.default_conn_string = new SqlConnectionStringBuilder
         {
             DataSource = server_name,
             InitialCatalog = database_name,
@@ -103,18 +103,6 @@ sealed class Database
         Console.WriteLine(
             $"[FINISH] query #{counter} - Time taken: {elapsed.TotalMilliseconds} ms"
         );
-    }
-
-    // ========================================================================
-    // INFO:
-    // Đây là hàm chạy trên một conn cụ thể.
-    // Trả về các DataObj thu được từ query.
-    public static List<T> execQuery<T>(SqlConnection conn, string query)
-        where T : DataObj, new()
-    {
-        List<T> results = new();
-        Database.execQuery(conn, query, reader => results.Add(DataReader.getDataObj<T>(reader)));
-        return results;
     }
 
     // ========================================================================

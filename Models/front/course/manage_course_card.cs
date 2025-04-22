@@ -24,15 +24,15 @@ class ManageCourseCard
         string local_rating = "LocalRating";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);
-        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
-        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
+        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.outputAvgCastFloat(Field.rating__stars, local_rating);
         q.outputQuery(q2.selectQuery());
 
         // rating count
-        q2 = new(QPiece.alias(Tbl.rating, local_rating));
-        q2.joinAlias(Field.semester__id, local_semester, Field.rating__semester_id, local_rating);
-        q2.WhereFieldAlias(Field.semester__course_id, local_semester, Field.course__id);
+        q2 = new(Tbl.rating, local_rating);
+        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.output(QPiece.countAll);
         q.outputQuery(q2.selectQuery());
         return q;

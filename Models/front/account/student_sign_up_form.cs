@@ -76,7 +76,7 @@ public class StudentSignUpForm
             bday = bday ?? new(),
         };
         Query q1 = new(Tbl.student);
-        q1.insert<Student>(conn, student);
+        q1.insert(conn, string.Join(", ", student.ToList()));
 
         log.stu_id = id;
         return log;
@@ -85,7 +85,7 @@ public class StudentSignUpForm
     public Log execute()
     {
         Log log = new();
-        Database.exec(conn => log = execute(conn));
+        QDatabase.exec(conn => log = execute(conn));
         return log;
     }
 }
