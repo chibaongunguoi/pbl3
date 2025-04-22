@@ -1,21 +1,21 @@
-class AccountUtils
+public class AccountUtils
 {
     // ========================================================================
-    // INFO: Xác định vai trò của người dùng bằng id
-    // public static Table get_account_type(int id)
-    // {
-    //     if (1000 <= id && id < 2000)
-    //     {
-    //         return Table.student;
-    //     }
-    //     else if (2000 <= id && id < 3000)
-    //     {
-    //         return Table.teacher;
-    //     }
-    //
-    //     return Table.admin;
-    // }
-    //
+    public static int? getAdminTeacherId()
+    {
+        int? teacherId = null;
+        QDatabase.exec(conn =>
+        {
+            Query q = new(Tbl.teacher);
+            // q.Where(Field.is_admin, true);
+            q.select(conn, reader =>
+            {
+                teacherId = DataReader.getInt(reader, 0);
+            });
+        });
+        return teacherId;
+    }
+
     // ========================================================================
 }
 

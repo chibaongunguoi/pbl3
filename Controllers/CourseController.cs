@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using REPO.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace REPO.Controllers;
 
-public class CourseController : Controller
+public class CourseController : BaseController
 {
     private readonly ILogger<CourseController> _logger;
 
@@ -22,75 +23,120 @@ public class CourseController : Controller
         {
             page = int.Parse(page_);
         }
-        BriefCoursePage course_page = new(page);
-        ViewBag.courses = course_page.courses;
-        ViewBag.maxIndexPage = course_page.total_num_pages;
-        Console.WriteLine($"Fetched {course_page.courses.Count} courses");
+        ViewBag.page = new BriefCoursePage(page);
         return View();
     }
 
     public IActionResult Detail()
     {
-        int? course_id = Session.getInt(Request.Query, UrlKey.courseId);
-        if (course_id is null)
-            return Redirect("Index");
-        DetailedCoursePage page = new(course_id.Value);
+        int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
+        if (courseId is null)
+            return RedirectToAction("Index");
+
+        // If user is logged in, check if they own/manage this course
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        bool isOwner = false;
+        if (userRole is UserRole.Teacher or UserRole.Admin)
+        {
+            int? teacherId = null;
+            
+            if (userRole == UserRole.Teacher)
+            {
+                teacherId = int.Parse(userId ?? "0");
+            }
+            else if (userRole == UserRole.Admin)
+            {
+                teacherId = AccountUtils.getAdminTeacherId();
+            }
+
+            // Verify if course belongs to this teacher
+            QDatabase.exec(conn =>
+            {
+                Query q = new(Tbl.course);
+                q.Where(Field.course__id, courseId);
+                q.Where(Field.teacher__id, teacherId);
+                isOwner = q.count(conn) > 0;
+            });
+        }
+
+        DetailedCoursePage page = new(courseId.Value);
         ViewBag.page = page;
+        ViewBag.isOwner = isOwner;
         return View();
     }
 
+    [Authorize(Roles = "Teacher,Admin")]
     public IActionResult Manage()
     {
-        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        switch (user_role)
+        
+        switch (userRole)
         {
-            case SessionRole.teacher:
-                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+            case UserRole.Teacher:
+                tch_id = int.Parse(userId ?? "0");
                 break;
-            case SessionRole.admin:
-                // TODO:
-                tch_id = 2001;
+            case UserRole.Admin:
+                tch_id = AccountUtils.getAdminTeacherId();
                 break;
         }
-        if (tch_id is null)
-            return RedirectToAction("Add");
+        
         ManageCoursePage page = ManageCoursePage.get_by_tch_id(tch_id ?? 0);
         ViewBag.page = page;
         return View();
     }
 
+    [Authorize(Roles = "Teacher,Admin")]
     public IActionResult Add()
     {
         return View();
     }
 
+    [Authorize]
     public IActionResult Payment()
     {
-        string? course_id_ = Request.Query["course_id"];
-        int course_id = 0;
-        if (!int.TryParse(course_id_, out course_id))
+        string? courseId_ = Request.Query["course_id"];
+        int courseId = 0;
+        if (!int.TryParse(courseId_, out courseId))
             return Redirect("/");
+            
+        // Verify course exists
+        bool courseExists = false;
+        QDatabase.exec(conn =>
+        {
+            Query q = new(Tbl.course);
+            q.Where(Field.course__id, courseId);
+            courseExists = q.count(conn) > 0;
+        });
+        
+        if (!courseExists)
+            return RedirectToAction("Index");
+
+        ViewBag.courseId = courseId;
         return View();
     }
 
+    [Authorize(Roles = "Teacher,Admin")]
     [HttpPost]
     public IActionResult add_course(AddCourseForm form)
     {
-        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        switch (user_role)
+        
+        switch (userRole)
         {
-            case SessionRole.teacher:
-                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+            case UserRole.Teacher:
+                tch_id = int.Parse(userId ?? "0");
                 break;
-            case SessionRole.admin:
-                // TODO:
-                tch_id = 2001;
+            case UserRole.Admin:
+                tch_id = AccountUtils.getAdminTeacherId();
                 break;
         }
-        if (tch_id is null)
-            return RedirectToAction("Add");
+            
         AddCourseForm.Log log = form.execute(tch_id ?? 0);
         if (!log.success)
             return RedirectToAction("Add");
@@ -103,13 +149,5 @@ public class CourseController : Controller
         StringValues course_name_;
         Request.Form.TryGetValue("course_name", out course_name_);
         return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(
-            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
-        );
     }
 }

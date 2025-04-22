@@ -262,6 +262,7 @@ class Query
                 query += " ORDER BY (SELECT NULL)";
             query += " " + offset_string;
         }
+        Console.WriteLine(query);
         return query;
     }
 

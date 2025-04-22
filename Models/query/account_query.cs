@@ -23,21 +23,18 @@ sealed class AccountQuery<T>
     // ------------------------------------------------------------------------
     // INFO: Tìm kiếm trên tất cả các bảng tài khoản.
     // Khi có kết quả thì dừng việc tìm kiếm.
-    public static string any(QueryFunction f, out List<T> result)
+    public static void any(QueryFunction f, out List<T> result, ref string outTable)
     {
         result = new();
-        string latest_table = "";
         foreach (var table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
         {
             result = f(table);
             if (result.Count > 0)
             {
-                latest_table = table;
+                outTable = table;
                 break;
             }
         }
-
-        return latest_table;
     }
 
     // ========================================================================
@@ -47,17 +44,18 @@ sealed class AccountQuery<T>
     }
 
     // ========================================================================
-    public static string get_account_by_id(SqlConnection conn, int id, out List<T> result)
+    public static void get_account_by_id(SqlConnection conn, int id, out List<T> result, ref string outTable)
     {
-        return any(table => CommonQuery<T>.get_record_by_id(conn, table, id), out result);
+        any(table => CommonQuery<T>.get_record_by_id(conn, table, id), out result, ref outTable);
     }
 
     // ------------------------------------------------------------------------
-    public static string get_account_by_username_password(
+    public static void getAccountByUsernamePassword(
         SqlConnection conn,
         string username,
         string password,
         out List<T> result,
+        ref string outTable,
         string? table = null
     )
     {
@@ -72,11 +70,11 @@ sealed class AccountQuery<T>
         }
         if (string.IsNullOrEmpty(table))
         {
-            return any(func, out result);
+            any(func, out result, ref outTable);
+            return;
         }
 
         result = func(table);
-        return "";
     }
 
     // ========================================================================

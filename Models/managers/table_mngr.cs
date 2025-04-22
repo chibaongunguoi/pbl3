@@ -1,7 +1,7 @@
 using System.Text.Json;
 
 // ============================================================================
-class DatabaseTableForeignKey
+public class DatabaseTableForeignKey
 {
     public string field { get; set; } = "";
     public string ref_table { get; set; } = "";
@@ -9,7 +9,7 @@ class DatabaseTableForeignKey
 }
 
 // ============================================================================
-class DatabaseTableField
+public class DatabaseTableField
 {
     public string name { get; set; } = "";
     public string sql_type { get; set; } = "";
@@ -17,7 +17,7 @@ class DatabaseTableField
 }
 
 // ============================================================================
-class DatabaseTableConfig
+public class DatabaseTableConfig
 {
     public string json_file { get; set; } = "";
     public List<DatabaseTableField> fields { get; set; } = new();
@@ -25,13 +25,13 @@ class DatabaseTableConfig
 }
 
 // ============================================================================
-class DatabaseConfig
+public class DatabaseConfig
 {
     public string database_name { get; set; } = "";
     public Dictionary<string, DatabaseTableConfig> tables { get; set; } = new();
 }
 
-class TableMngr
+public class TableMngr
 {
     // ========================================================================
     private static string s_database_name = "";

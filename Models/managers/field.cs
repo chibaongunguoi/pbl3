@@ -1,4 +1,4 @@
-static class Tbl
+public static class Tbl
 {
     public const string id_counter = "IdCounter";
     public const string admin = "Admin";
@@ -11,7 +11,7 @@ static class Tbl
     public const string request = "Request";
 }
 
-static class Fld
+public static class Fld
 {
     public const string name = "name";
     public const string username = "username";
@@ -39,7 +39,7 @@ static class Fld
     public const string finish_date = "finish_date";
 }
 
-static class Field
+public static class Field
 {
     public const string id_counter__name = "[IdCounter].[name]";
     public const string id_counter__count = "[IdCounter].[count]";

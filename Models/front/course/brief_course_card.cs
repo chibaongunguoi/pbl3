@@ -32,8 +32,8 @@ class BriefCourseCard : DataObj
         q.output(Field.semester__fee);
 
         string local_semester = "LocalSemester";
-        string local_request = "LocalRequest";
         string local_rating = "LocalRating";
+        string local_request = "LocalRequest";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);
         q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);

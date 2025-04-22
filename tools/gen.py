@@ -277,7 +277,7 @@ def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
         sem_id,
         rating_time,
         rating_score,
-        rating_description,
+        nstr(rating_description),
     )
     ratings.append(rating)
 

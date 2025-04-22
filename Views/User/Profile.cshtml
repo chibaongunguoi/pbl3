@@ -1,13 +1,11 @@
 @{
-    Layout = "_ManageLayout"; // Sử dụng layout admin
-
+    Layout = "_ManageLayout";
 }
 
 <div class="pt-add-content-wrapper">
     <div class="pt-add-content ">
         <div class="pt-add-title">Thông tin tài khoản</div>
         <div class="pt-add-form">
-            <!-- <form id="pt-add" action="AddCourse" enctype="multipart/form-data" method="POST"> -->
             <form action="add_course" id="pt-add" method="POST">
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
@@ -17,7 +15,7 @@
                     </div>
                     <div class="pt-add-input-wrapper user-id-wrapper">
                         <div class="user-profile-text">
-                            1001
+                            @ViewBag.userId
                         </div>
                     </div>
                 </div>
@@ -28,59 +26,31 @@
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input"value="chibaongunguoi" type="text" name="username" placeholder="Nhập vào" maxlength="150">
+                        <div class="user-profile-text">
+                            @ViewBag.userName
+                        </div>
                     </div>
                 </div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label for="">
-                            Họ và tên
+                            Vai trò
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input"value="Nguyễn Chí Bảo" type="text" name="fullname" placeholder="Nhập vào" maxlength="150">
-                    </div>
-                </div>
-                <div class="pt-add-form-item">
-                    <div class="pt-add-label">
-                        <label for="cat">
-                            Giới tính
-                        </label>
-                    </div>
-                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-                         <div class="auth-radio-wapper"> 
-                            <label class="auth-label-radio">
-                                Nam
-                                <input value="male" name="gender" type="radio" class="auth-radio" checked/>
-                            </label>
-                            <label class="auth-label-radio">
-                                Nữ
-                                <input value="female" name="gender" type="radio" class="auth-radio" />
-                            </label>
+                        <div class="user-profile-text">
+                            @(ViewBag.userRole switch
+                            {
+                                UserRole.Student => "Học viên",
+                                UserRole.Teacher => "Gia sư",
+                                UserRole.Admin => "Quản trị viên",
+                                _ => ""
+                            })
                         </div>
                     </div>
                 </div>
-                <div class="pt-add-form-item">     
-                     <div class="pt-add-label">
-                        <label for="cat">
-                            Ngày sinh
-                        </label>
-                    </div>
-                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-                       <input class="input cb" value = "2005-09-05"type="date" name="start_date" >
-                    </div>
-                </div>
-                <div class="pt-add-form-item">
-                    <div class="pt-add-label">
-                        <label for="description">Mô tả bản thân
-                        </label>
-                    </div>
-                    <div class="pt-add-input-wrapper">
-                        <textarea class="pt-add-form-input detail-input" name="description" id="description"></textarea>
-                    </div>
-                </div> 
-                <div class="pt-add-btn-group">
-                    <button class="hl-btn"><span>Lưu</span></button>
+                <div class="user-action-buttons">
+                    <a href="/User/ChangePassword" class="auth-button card-btn">Đổi mật khẩu</a>
                 </div>
             </form>
         </div>

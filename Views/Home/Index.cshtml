@@ -1,4 +1,9 @@
-﻿
+﻿@{
+    var contextComponent = ".pagination-list";
+    var contextUrl = "/teacherAPI/getBriefTeacherCards";
+    var p = (BriefTeacherPage)ViewBag.page;
+}
+
 <div class="text-center">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header section-header">
@@ -10,13 +15,14 @@
             <div class="card-search-wrapper">
                 @await Html.PartialAsync("_SearchTeacherSection")
             </div>
-            <div class="card-product-ul">
-                @await Html.PartialAsync("_TeacherCardList", (object)ViewBag.teachers)
-            </div>
-
-            @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
-
-
-        </div>
+            <div class="card-product-ul pagination-list"> </div>
+            <div class="pagination-bar"></div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
+    <script>
+        initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
+    </script>
+}

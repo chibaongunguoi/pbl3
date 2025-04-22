@@ -1,7 +1,9 @@
 ﻿@{
-  var page = (DetailedCoursePage)ViewBag.page;
-  var teacher = page.teacher_lst[0];
-  var course = page.course_lst[0];
+  var p = (DetailedCoursePage)ViewBag.page;
+  var teacher = p.teacherLst[0];
+  var course = p.courseLst[0];
+  var contextUrl = $"/ratingAPI/DetailedCoursePage/{p.courseId}";
+  var contextComponent = ".pagination-list";
 }
 
 <div class="course-content-wrapper">
@@ -13,9 +15,9 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-              @await Html.PartialAsync("_TeacherCard", (object)teacher)
+              @await Html.PartialAsync("Card/_BriefTeacherCard", (object)teacher)
 
-              @await Html.PartialAsync("_SemesterCardDetail", (object)course)
+              @await Html.PartialAsync("Card/_DetailedCourseCard", (object)course)
             </div>         
         </div>
     </div>
@@ -27,17 +29,18 @@
             </div>
         </div>
         <div class="shop-section-content">
-        @await Html.PartialAsync("_RatingTable", (page.averageRating, page.numRatings, page.rating_counts))
+        @await Html.PartialAsync("_RatingTable", (p.averageRating, p.numRatings, p.rating_counts))
         <div class="rating-comment-wapper">
-        <div class="rating-card-list">
-            @await Html.PartialAsync("_RatingCardList", (object)page.cards)
+        <div class="pagination-list"></div>
         </div>
-        </div>
-        <div class="reviews-item">
-            <div class="review-pagination">
-          @await Html.PartialAsync("_PaginationAjax", (page.current_page, page.total_num_pages, $"/GetCourse/getRatingCards?{UrlKey.courseId}={page.course_id}", ".rating-card-list"))
-            </div> 
-        </div>    
+        <div class="pagination-bar"></div>    
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script src="~/js/pagination.js" asp-append-version="true"></script>
+<script>
+  initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
+</script>
+}

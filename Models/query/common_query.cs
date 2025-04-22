@@ -19,7 +19,7 @@ class CommonQuery<T>
     public static List<T> get_record_by_id(SqlConnection conn, string table, int id)
     {
         Query q = new(table);
-        q.Where(QPiece.dot(table, Fld.id), id);
+        q.Where($"[{table}].[{Fld.id}]", id);
         return q.select<T>(conn);
     }
 

@@ -1,4 +1,4 @@
-class IoUtils
+public class IoUtils
 {
     // ========================================================================
     // INFO: In lần lượt các phần tử của một list ra màn hình.

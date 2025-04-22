@@ -1,6 +1,8 @@
 @{
     var p = (DetailedTeacherPage)ViewBag.page;
     var teacher = p.teacherCard[0];
+    var contextUrl = "/courseAPI/TeacherProfile";
+    var contextComponent = ".pagination-list";
 }
 
 <div class="shop-section-wrapper container">
@@ -44,10 +46,15 @@
             <div class="card-search-wrapper">
                 @await Html.PartialAsync("_SearchSemSection")
             </div>
-            <div class="course-subpage card-product-ul">
-                @await Html.PartialAsync(PartialViewKey.semesterCardList, (object)p.courses)
-            </div>
-        @await Html.PartialAsync("_PaginationAjax", (1, p.numCoursePages, $"/GetCourse/getBriefCourseCardsByTchId?{UrlKey.tchId}={p.tchId}", ".course-subpage"))
+            <div class="pagination-list card-product-ul"></div>
+            <div class="pagination-bar"></div>
         </div>
     </div>
      </div>
+
+@section Scripts {
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
+    <script>
+        initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
+    </script>
+}

@@ -1,4 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
+    string? display_role = null;
+    string? display_name = user?.FindFirst(ClaimTypes.Name)?.Value;
+
+    switch (user_role)
+    {
+        case UserRole.Teacher:
+            display_role = "Gia sư";
+            break;
+
+        case UserRole.Student:
+            display_role = "Học viên";
+            break;
+
+        case UserRole.Admin:
+            display_role = "Quản trị viên";
+            break;
+    }
+
     Layout = "Layout/_AdminLayout"; // Kế thừa từ layout chính
 }
 

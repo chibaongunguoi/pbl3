@@ -1,4 +1,4 @@
-class QueryUtils
+public class QueryUtils
 {
     // ========================================================================
     // INFO: Định dạng bao bọc tên trong SQL, ví dụ "CREATE DATABSE" [database_name]

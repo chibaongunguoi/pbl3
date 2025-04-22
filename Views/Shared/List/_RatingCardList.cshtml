@@ -1,0 +1,6 @@
+@model List<RatingCard>
+
+@foreach (var card in @Model)
+{
+  @await Html.PartialAsync("Card/_RatingCard", (object)card)      
+}

@@ -1,4 +1,9 @@
-﻿<div class="text-center">
+﻿@{
+    var contextComponent = ".pagination-list";
+    var contextUrl = "/GetTeacher/getBriefTeacherCards";
+}
+
+<div class="text-center">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
             <div class="shop-section-title section-title">
@@ -19,14 +24,14 @@
                     <button type="submit" class="submit-form-btn">Tìm kiếm</button>
                 </form>
             </div>
-            <div class="card-product-ul">
-                @await Html.PartialAsync("_TeacherCardList", (object)ViewBag.teachers)
-
-            </div>
-
-            @await Html.PartialAsync("_Pagination", (int)ViewBag.currentPage)
-
-
-        </div>
+            <div class="card-product-ul pagination-list"> </div>
+            <div class="pagination-bar"></div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
+    <script>
+        initPagination(1, @ViewBag.maxIndexPage, "@contextUrl", "@contextComponent")
+    </script>
+}

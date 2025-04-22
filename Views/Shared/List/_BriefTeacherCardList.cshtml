@@ -1,0 +1,5 @@
+@model List<BriefTeacherCard>
+@foreach (var teacher in Model)
+{
+   @await Html.PartialAsync("Card/_BriefTeacherCard", (object)teacher)
+}

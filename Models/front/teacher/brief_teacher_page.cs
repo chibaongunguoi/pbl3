@@ -2,18 +2,15 @@ using Microsoft.Data.SqlClient;
 
 class BriefTeacherPage
 {
-    public int total_num_pages;
-    public List<BriefTeacherCard> teachers = new();
-
-    public BriefTeacherPage(int current_page = 1, int num_displayed_objs = 20)
+    public int maxPageNum;
+    public BriefTeacherPage(int num_displayed_objs = 20)
     {
         QDatabase.exec(
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.teacher);
                 int total_num = q.count(conn);
-                this.total_num_pages = (int)Math.Ceiling((double)total_num / num_displayed_objs);
-                this.teachers = BriefTeacherPage.get_page(conn, current_page, num_displayed_objs);
+                this.maxPageNum = (int)Math.Ceiling((double)total_num / num_displayed_objs);
             }
         );
     }

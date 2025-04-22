@@ -1,62 +1,72 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using REPO.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace REPO.Controllers;
 
-public class SemesterController : Controller
+public class SemesterController : BaseController
 {
+    [Authorize(Roles = "Teacher,Admin")]
     public IActionResult Add()
     {
-        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        switch (user_role)
+        
+        switch (userRole)
         {
-            case SessionRole.teacher:
-                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+            case UserRole.Teacher:
+                tch_id = int.Parse(userId ?? "0");
                 break;
-            case SessionRole.admin:
-                // TODO:
-                tch_id = 2001;
+            case UserRole.Admin:
+                tch_id = AccountUtils.getAdminTeacherId();
                 break;
         }
+        
         if (tch_id is null)
         {
             return Redirect("/Home");
         }
+        
         AddSemesterPage page = new(tch_id ?? 0);
         ViewBag.page = page;
         return View();
     }
 
+    [Authorize]
     public IActionResult Manage()
     {
         int? courseId = Session.getInt(Request.Query, UrlKey.courseId);
         if (courseId is null)
         {
-            return Redirect("Index");
+            return RedirectToAction("Index", "Course");
         }
+
         SemesterPage page = new(courseId.Value);
         ViewBag.page = page;
         return View();
     }
 
+    [Authorize(Roles = "Teacher,Admin")]
     [HttpPost]
     public IActionResult add_semester(AddSemesterForm form)
     {
         form.print_log();
-        string? user_role = HttpContext.Session.GetString(SessionKey.user_role);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        switch (user_role)
+        
+        switch (userRole)
         {
-            case SessionRole.teacher:
-                tch_id = HttpContext.Session.GetInt32(SessionKey.user_id);
+            case UserRole.Teacher:
+                tch_id = int.Parse(userId ?? "0");
                 break;
-            case SessionRole.admin:
-                // TODO:
-                tch_id = 2001;
+            case UserRole.Admin:
+                tch_id = AccountUtils.getAdminTeacherId();
                 break;
         }
+        
         if (tch_id is null)
             return RedirectToAction("Add");
         AddSemesterFormLog log = form.execute();

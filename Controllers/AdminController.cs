@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using REPO.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace REPO.Controllers;
 
-public class AdminController : Controller
+[Authorize(Roles = "Admin")]
+public class AdminController : BaseController
 {
     private readonly ILogger<AdminController> _logger;
 
@@ -17,26 +18,29 @@ public class AdminController : Controller
     {
         return View();
     }
+
     public IActionResult CourseManage()
     {
         return View();
     }
+
     public IActionResult SemesterManage()
     {
         return View();
     }
+
     public IActionResult StudentManage()
     {
         return View();
     }
+
     public IActionResult TeacherManage()
     {
         return View();
     }
+
     public IActionResult Dashboard()
     {
         return View();
     }
-
-
 }

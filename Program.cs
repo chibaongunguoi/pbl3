@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 // Các tag dùng để note bao gồm:
 // INFO: Thông tin về code
 // NOTE: Ghi chú, mô tả chung về code.
@@ -16,6 +18,17 @@ Backend.start();
 
 // WARN: Từ đây trở về sau là code của hệ thống, hạn chế sửa đổi.
 var builder = WebApplication.CreateBuilder(args);
+
+// Add authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.LogoutPath = "/Auth/Logout";
+        options.AccessDeniedPath = "/Auth/Login";
+        options.Cookie.Name = "AuthCookie";
+    });
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -27,6 +40,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 app.UseSession();
+
+// Add authentication middleware
+app.UseAuthentication();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -36,7 +53,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
-
 app.MapStaticAssets();
 
 // NOTE: Có thể thay đổi `pattern` để thay đổi trang khởi đầu của web.

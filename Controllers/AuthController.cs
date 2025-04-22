@@ -1,22 +1,30 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 namespace REPO.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 
-// using Microsoft.IdentityModel.Tokens;
-
 public class AuthController : BaseController
 {
-    // ========================================================================
-
     public IActionResult Login()
     {
-        // var user1001 = DemoUserQuery.get_demo_user_by_id(1002);
-        // ViewBag.oneuser = user1001.IsNullOrEmpty() ? "Empty" : user1001[0].ToString();
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            return Redirect("/");
+        }
         return View("Login");
     }
 
     public IActionResult SignUp()
     {
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            return Redirect("/");
+        }
+
         if (SessionForm.displaying_error)
         {
             SessionForm.displaying_error = false;
@@ -25,12 +33,11 @@ public class AuthController : BaseController
         {
             SessionForm.errors.Clear();
         }
-        SessionManager.log_out(HttpContext.Session);
         return View("SignUp");
     }
 
     [HttpPost]
-    public IActionResult submit_sign_up(StudentSignUpForm form)
+    public async Task<IActionResult> submit_sign_up(StudentSignUpForm form)
     {
         StudentSignUpForm.Log log = form.execute();
         if (!log.success)
@@ -40,34 +47,58 @@ public class AuthController : BaseController
             return Redirect("SignUp");
         }
 
-        SessionManager.log_in(HttpContext.Session, Tbl.student, log.stu_id ?? 0);
+        int studentId = log.stu_id ?? 0;
+        string name = "";
+
+        // Get student name
+        QDatabase.exec(conn =>
+        {
+            List<User> users = CommonQuery<User>.get_record_by_id(conn, Tbl.student, studentId);
+            name = users[0].name;
+        });
+
+        var claims = new List<Claim>{
+        
+            new Claim(ClaimTypes.NameIdentifier, studentId.ToString()),
+            new Claim(ClaimTypes.Role, UserRole.Student),
+            new Claim(ClaimTypes.Name, name)
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+        };
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties);
         return Redirect("/");
     }
 
+    [Authorize(Roles = "Admin")]
     public IActionResult Listuser()
     {
-        // var user = DemoUserQuery.get_all_demo_users();
-        // ViewBag.user = user;
         return View("ListUser");
     }
 
     [HttpPost]
-    public IActionResult store(LoginForm form)
+    public async Task<IActionResult> store(LoginForm form)
     {
         string username = form.username;
         string password = form.password;
 
-        Console.WriteLine($"Username: {username}");
-        Console.WriteLine($"Password: {password}");
-
         List<Account> query_result = new();
         string table = "";
         QDatabase.exec(conn =>
-            table = AccountQuery<Account>.get_account_by_username_password(
+             AccountQuery<Account>.getAccountByUsernamePassword(
                 conn,
                 username,
                 password,
-                out query_result
+                out query_result,
+                ref table
             )
         );
 
@@ -77,26 +108,60 @@ public class AuthController : BaseController
         }
 
         int id = query_result[0].id;
-        // ViewBag.oneuser =
-        //     $"Vai trò: {AccountQuery<User>.get_latest_table().ToString()}, Họ và tên: {user.name}.";
-        //
-        SessionManager.log_in(HttpContext.Session, table, id);
-        HttpContext.Session.SetInt32("userId", id);
+        string role = "";
+        string name = "";
+
+        // Get user role and name
+        switch (table)
+        {
+            case Tbl.student:
+                role = UserRole.Student;
+                break;
+            case Tbl.teacher:
+                role = UserRole.Teacher;
+                break;
+            case Tbl.admin:
+                role = UserRole.Admin;
+                break;
+        }
+
+        // Get name for students and teachers
+        if (table is Tbl.student or Tbl.teacher)
+        {
+            QDatabase.exec(conn =>
+            {
+                List<User> users = CommonQuery<User>.get_record_by_id(conn, table, id);
+                name = users[0].name;
+            });
+        }
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Name, name)
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+        };
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties);
+
         return Redirect("/");
     }
 
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        HttpContext.Session.Remove("userName"); // Xóa một session cụ thể
-        HttpContext.Session.Remove("userId");
-
-        SessionManager.log_out(HttpContext.Session);
-
-        HttpContext.Session.Clear();
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Redirect("/Auth/Login");
     }
-
-    // ========================================================================
 }
 
 /* EOF */

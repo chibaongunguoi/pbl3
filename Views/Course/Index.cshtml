@@ -1,20 +1,33 @@
-﻿<div class="course-content-wrapper">
+﻿@{
+  var contextUrl = "/courseAPI/BriefCoursePage";
+  var contextComponent = ".brief-course-cards";
+  var p = (BriefCoursePage)ViewBag.page;
+  int maxPageNum = p.maxPageNum;
+}
+
+<div class="course-content-wrapper">
   <div class="shop-section-wrapper container">
     <div class="shop-section-header section-header">
       <div class="shop-section-title section-title">
         Danh sách khóa học
       </div>
     </div>
-    <div class="shop-section-content">
-      <div class="card-search-wrapper">
+    using Microsoft.AspNetCore.Mvc.TagHelpers;
+#line default
+e default
+e default
+  <div class="card-search-wrapper">
         @await Html.PartialAsync("_SearchSemSection")
       </div>
-      <div class="brief-course-cards card-product-ul">
-        @await Html.PartialAsync("_SemesterCardList", (object)ViewBag.courses)
-      </div>
-      <div class="review-pagination">
-        @await Html.PartialAsync("_PaginationAjax", (1, (int)ViewBag.maxIndexPage, $"/GetCourse/getBriefCourseCards", ".brief-course-cards"))
-      </div>
+      <div class="brief-course-cards card-product-ul"> </div>
+      <div class="pagination-bar"></div>
     </div>
   </div>
 </div>
+
+@section Scripts {
+<script src="~/js/pagination.js" asp-append-version="true"></script>
+<script>
+  initPagination(1, @maxPageNum, "@contextUrl", "@contextComponent")
+</script>
+}

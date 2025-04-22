@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 class DetailedTeacherPage
 {
     public int tchId;
-    public int numCoursePages = 0;
+    public int maxPageNum = 0;
     public List<DetailedTeacherCard> teacherCard = new();
     public List<BriefCourseCard> courses = new();
 
@@ -18,7 +18,7 @@ class DetailedTeacherPage
                 Query q = new(Tbl.course);
                 q.Where(Field.course__tch_id, tchId);
                 q.output(QPiece.countAll);
-                q.select(conn, reader => numCoursePages = DataReader.getInt(reader));
+                q.select(conn, reader => maxPageNum = DataReader.getInt(reader));
                 Query q1 = DetailedTeacherCard.getQueryCreator();
                 q1.Where(Field.teacher__id, tchId);
                 q1.select(conn, reader => teacherCard.Add(DetailedTeacherCard.getCard(reader)));

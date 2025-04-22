@@ -1,6 +1,0 @@
-@model List<BriefCourseCard>
-
-@foreach (var course in Model)
-{
-    @await Html.PartialAsync("_SemesterCard", (object)course);
-}
