@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 
-class JoinQuery {
+class JoinQuery
+{
     readonly string table;
     readonly string? alias_;
     readonly List<string> joins = [];
@@ -15,7 +16,7 @@ class JoinQuery {
         joins.Add(QPiece.eqField(QPiece.dot(field_1, alias_), QPiece.dot(field_2, alias_2)));
     }
 
-    public void Add(string field_1, int value)
+    public void Add<T>(string field_1, T value)
     {
         joins.Add(QPiece.eq(QPiece.dot(field_1, alias_), value));
     }
@@ -303,7 +304,7 @@ class Query
         {
             query += $" FROM {table}";
         }
-        query += GetJoinClause();
+        query += GetJoinClause() ;
         query += GetWhereClause();
         query += GetGroupByClause();
         query += GetOrderClause();

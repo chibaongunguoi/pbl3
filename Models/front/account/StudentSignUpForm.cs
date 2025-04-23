@@ -5,6 +5,7 @@ public class StudentSignUpForm
     public required string Name { get; set; }
     public required string Gender { get; set; }
     public DateOnly? Bday { get; set; }
+    public required string Tel { get; set; }
     public required string Username { get; set; }
     public required string Password { get; set; }
     public required string PasswordConfirm { get; set; }
@@ -74,6 +75,7 @@ public class StudentSignUpForm
             Name = Name,
             Gender = Gender,
             Bday = Bday ?? new(),
+            Tel = Tel,
         };
         Query q1 = new(Tbl.student);
         q1.Insert(conn, string.Join(", ", student.ToList()));

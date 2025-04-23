@@ -54,12 +54,12 @@
                 
             </div>
             <div class="button-group-wrapper sem-btn-group sem-detail-btn-group">
-                <form method="post" action="/Course/Payment" id="payment-form">
+                <form method="post" action="/Course/SubmitPayment" id="payment-form">
                     <input type="hidden" name="courseId" value="@Model.courseId" />
                     <input type="hidden" name="semesterId" value="@Model.semesterId" />
                     <input type="hidden" name="stuId" value="@Model.stuId" />
                     <button class="card-btn choose">Tôi đã thanh toán</button>
-                </form>>
+                </form>
                 @* <button class="card-btn choose" onClick="window.location.href='/Course/Manage'">Tôi đã thanh toán</button> *@
             </div>
         </div>

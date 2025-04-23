@@ -13,15 +13,16 @@ class ManageCourseCard
     public int stars;
     public string comment = "";
 
-    public static Query GetQueryCreator()
+    public static Query GetQueryCreator(bool stuMode =false)
     {
         Query q = new(Tbl.course);
         q.Join(Field.subject__id, Field.course__sbj_id);
         q.Join(Field.semester__course_id, Field.course__id);
-        q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+        if (!stuMode)
+            q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
         q.Output(Field.course__id);
         q.Output(Field.course__name);
-        q.Output(Field.course__status);
+        q.Output(Field.semester__status);
         q.Output(Field.subject__name);
         q.Output(Field.subject__grade);
         q.Output(Field.semester__id);
@@ -89,10 +90,16 @@ class ManageCourseCard
 
     public static Query GetStudentCourseQueryCreator(int stuId)
     {
-        Query q = GetQueryCreator();
-        q.Join(Field.request__semester_id, Field.semester__id);
-        q.Where(Field.request__stu_id, stuId);
-        q.OrderBy(Field.request__timestamp, desc: true);
+        Query q = GetQueryCreator(stuMode: true);
+
+        Query q2 = new(Tbl.request, "R");
+        q2.Where(Field.request__stu_id, stuId, "R");
+        q2.OrderBy(Field.request__semester_id, desc: true, "R");
+        q2.OutputTop(Field.request__semester_id, 1, "R");
+
+        q2.Join(Field.semester__id, Field.request__semester_id, "S", "R");
+        q2.WhereField(Field.semester__course_id, Field.course__id, "S");
+        q.WhereQuery(Field.semester__id, q2.SelectQuery());
 
         JoinQuery j = new(Tbl.rating);
         j.AddField(Field.rating__semester_id, Field.semester__id);

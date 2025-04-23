@@ -93,24 +93,24 @@ public class CourseController : BaseController
     }
 
     [Authorize(Roles = UserRole.Student)]
-    public IActionResult Payment(int course_id)
+    public IActionResult Payment(int courseId)
     {
         int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
         bool enrolled = false;
-        QDatabase.Exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, course_id, stuId));
+        QDatabase.Exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, courseId, stuId));
 
         if (enrolled)
         {
-            return RedirectToAction(nameof(Detail), new { courseId = course_id });
+            return RedirectToAction(nameof(Detail), new { courseId = courseId });
         }
 
-        ViewBag.page = new CoursePaymentPage(course_id, stuId);
+        ViewBag.page = new CoursePaymentPage(courseId, stuId);
         return View();
     }
 
     [Authorize(Roles = UserRole.Student)]
     [HttpPost]
-    public IActionResult Payment(int courseId, int semesterId, int stuId)
+    public IActionResult SubmitPayment(int courseId, int semesterId, int stuId)
     {
         Request request = new()
         {
@@ -125,7 +125,7 @@ public class CourseController : BaseController
         {
             q.Insert(conn, request);
         });
-        return View(nameof(Detail), new { courseId = courseId });
+        return RedirectToAction(nameof(Detail), new { courseId = courseId });
     }
 
     [Authorize(Roles = "Teacher,Admin")]

@@ -7,6 +7,8 @@ class User : Account
     public string Gender { get; set; } = "";
     public DateOnly Bday { get; set; } = new();
 
+    public string Tel {get;set; } = "";
+
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
@@ -14,6 +16,7 @@ class User : Account
         Name = DataReader.getStr(reader, ref pos);
         Gender = DataReader.getStr(reader, ref pos);
         Bday = DataReader.getDate(reader, ref pos);
+        Tel = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
@@ -23,6 +26,7 @@ class User : Account
         lst.Add(QPiece.toNStr(Name));
         lst.Add(QPiece.toStr(Gender));
         lst.Add(QPiece.toStr(Bday));
+        lst.Add(QPiece.toStr(Tel));
         return lst;
     }
 

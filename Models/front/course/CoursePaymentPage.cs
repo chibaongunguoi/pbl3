@@ -16,6 +16,7 @@ class CoursePaymentPage
         Query q = new(Tbl.course);
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.Join(Field.semester__course_id, Field.course__id);
+        q.Where(Field.course__id, courseId);
         q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
         q.Output(Field.teacher__name);
         q.Output(Field.semester__fee);

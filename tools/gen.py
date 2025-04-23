@@ -6,6 +6,20 @@ import json
 from datetime import datetime,date
 from typing import Any
 
+START_DATE = "2024-1-1"
+COURSE_RATE = 0.1
+REQUEST_RATE = 0.3
+RATING_RATE = 0.7
+
+SEM_RANGE_START = 2
+SEM_RANGE_END = 3
+
+SEMESTER_CAPACITIES = [10, 15, 20, 25, 30]
+
+DURATION_RANGE_START = 150
+DURATION_RANGE_END = 240
+LATEST_START_DATE = 400
+
 class nstr(str):
     pass
 
@@ -54,6 +68,7 @@ class User(Account):
     name: nstr
     gender: str
     bday: date
+    tel: str
 
 @dataclass
 class Course:
@@ -308,6 +323,8 @@ def create_semester(semester_id, semester_start_date, semester_finish_date, grad
 
 # -----------------------------------------------------------------------------
 
+studentSemesterLimit = {}
+
 for stu_id in student_ids:
     username = stu_id
     password = stu_id
@@ -315,10 +332,11 @@ for stu_id in student_ids:
     tel = next(tel_gen)
     bday = next(student_birthday_gen)
     # addr = next(addr_gen)
-    student = Student(stu_id, str(username), str(password), nstr(name), gender, bday)
+    student = Student(stu_id, str(username), str(password), nstr(name), gender, bday, tel)
     students.append(student)
     grade = random.choice([6, 7, 8, 9, 10, 11, 12])
     student_grades[grade].append(stu_id)
+    studentSemesterLimit[stu_id] = random.randint(4, 10)
 
 json_output("student", students)
 
@@ -381,7 +399,7 @@ for tch_id in teacher_ids:
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
 """
-    teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday, thumbnail, nstr(description))
+    teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday,tel, thumbnail, nstr(description))
     teachers.append(teacher)
 
     subjects_ = random.choice(subject_groups)
@@ -390,7 +408,7 @@ for tch_id in teacher_ids:
     teacher_subjects = []
     for grade in subjects_[1]:
         random_result = random.random()
-        if random_result > 0.5:
+        if random_result > COURSE_RATE:
             continue
         sbj = sbj_name + " " + str(grade)
         sbj_id = subject_dict[sbj]
@@ -403,11 +421,12 @@ for tch_id in teacher_ids:
 
         # create semesters
 
-        course_start_date= datetime.strptime("2023-7-1", "%Y-%m-%d") + timedelta(random.randint(0, 100))
+        course_start_date= datetime.strptime(START_DATE, "%Y-%m-%d") + timedelta(random.randint(0, LATEST_START_DATE))
         semester_start_date = None
         semester_finish_date = None
             
-        indices = list(range(1, 5))
+        numSemesters = random.randint(SEM_RANGE_START, SEM_RANGE_END)
+        indices = list(range(1, numSemesters + 1))
         last_index = len(indices) - 1
         semester_start_date = course_start_date
         course_semesters = []
@@ -415,8 +434,8 @@ for tch_id in teacher_ids:
         for i in indices:
             semester_id = semester_next_id
             semester_next_id += 1
-            semester_capacity = random.choice([30, 40, 50, 60])
-            semester_finish_date = semester_start_date + timedelta(random.randint(90, 120))
+            semester_capacity = random.choice(SEMESTER_CAPACITIES)
+            semester_finish_date = semester_start_date + timedelta(random.randint(DURATION_RANGE_START, DURATION_RANGE_END))
             semester_status = "waiting"
             if semester_start_date <= today:
                 semester_status = "started"
@@ -442,11 +461,16 @@ for tch_id in teacher_ids:
             sem_status = sem.status
             joined_students = []
             for stu_id in student_grades[grade]:
-                if random.random() > 0.5:
-                    continue
-
                 if len(joined_students) >= sem_capacity:
                     break
+
+                if studentSemesterLimit[stu_id] == 0:
+                    continue                
+
+                if random.random() > REQUEST_RATE:
+                    continue
+
+                studentSemesterLimit[stu_id] -= 1
 
                 joined_students.append(stu_id)
                 request_status = "joined"
@@ -459,7 +483,7 @@ for tch_id in teacher_ids:
                 the_request_time = the_request.timestamp
                 the_request_status = the_request.status
 
-                if random.random() > 0.5 or the_request_status == "waiting" or sem_status != "finished":
+                if random.random() > RATING_RATE or the_request_status == "waiting" or sem_status != "finished":
                     continue
                 create_rating(stu_id, sem_id, the_request_time, sem_finish_date)
 
