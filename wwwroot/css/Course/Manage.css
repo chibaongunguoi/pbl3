@@ -15,8 +15,11 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   position: relative;
+}
+.pt-add-form-text {
+  margin-bottom: 15px;
 }
 .required-icon {
   display: inline-block;
