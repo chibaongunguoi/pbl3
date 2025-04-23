@@ -8,7 +8,7 @@ class CourseOption : DataObj
     public static Query get_query_creator()
     {
         Query q = new(Tbl.course);
-        q.outputClause(Fld.id, Fld.name);
+        q.OutputClause(Fld.id, Fld.name);
         return q;
     }
 
@@ -27,7 +27,7 @@ class AddSemesterPage
 
     public AddSemesterPage(int tch_id)
     {
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 Query q = CourseOption.get_query_creator();

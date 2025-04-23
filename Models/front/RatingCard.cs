@@ -13,12 +13,12 @@ struct RatingCard
         Query q = new(Tbl.rating);
         q.Join(Field.semester__id, Field.rating__semester_id);
         q.Join(Field.student__id, Field.rating__stu_id);
-        q.output(Field.student__name);
-        q.output(Field.rating__stars);
-        q.output(Field.rating__timestamp);
-        q.output(Field.semester__start_date);
-        q.output(Field.semester__finish_date);
-        q.output(Field.rating__description);
+        q.Output(Field.student__name);
+        q.Output(Field.rating__stars);
+        q.Output(Field.rating__timestamp);
+        q.Output(Field.semester__start_date);
+        q.Output(Field.semester__finish_date);
+        q.Output(Field.rating__description);
         return q;
     }
 

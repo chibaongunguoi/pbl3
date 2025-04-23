@@ -4,7 +4,7 @@ public class AccountUtils
     public static int? getAdminTeacherId()
     {
         int? teacherId = null;
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
         {
             Query q = new(Tbl.teacher);
             // q.Where(Field.is_admin, true);

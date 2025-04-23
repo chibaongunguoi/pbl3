@@ -41,7 +41,7 @@ public class CourseController : BaseController
             }
 
             // Verify if course belongs to this teacher
-            QDatabase.exec(conn =>
+            QDatabase.Exec(conn =>
             {
                 Query q = new(Tbl.course);
                 q.Where(Field.course__id, courseId);
@@ -97,7 +97,7 @@ public class CourseController : BaseController
     {
         int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
         bool enrolled = false;
-        QDatabase.exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, course_id, stuId));
+        QDatabase.Exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, course_id, stuId));
 
         if (enrolled)
         {
@@ -121,7 +121,7 @@ public class CourseController : BaseController
         };
 
         Query q = new(Tbl.request);
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
         {
             q.Insert(conn, request);
         });

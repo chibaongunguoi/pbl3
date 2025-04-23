@@ -28,7 +28,7 @@ sealed class IdCounterQuery
 
         Query q = new(Tbl.id_counter);
         q.Where(Fld.name, table);
-        q.outputClause(Fld.count, Fld.max_count);
+        q.OutputClause(Fld.count, Fld.max_count);
         q.Select(conn, func);
 
         if (count > max_count)

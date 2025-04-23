@@ -8,7 +8,7 @@ class SemesterPage
     public SemesterPage(int courseId)
     {
         this.courseId = courseId;
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 int tableIdx = 1;

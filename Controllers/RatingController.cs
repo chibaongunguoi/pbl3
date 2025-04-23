@@ -49,7 +49,7 @@ public class RatingController : BaseController
         q.Where(Field.rating__semester_id, semesterId);
         q.Where(Field.rating__stu_id, stuId);
         int count = 0;
-        QDatabase.exec(conn => count = q.Count(conn) ); 
+        QDatabase.Exec(conn => count = q.Count(conn) ); 
         if (count > 0)
         {
             Query updateQ = new(Tbl.rating);
@@ -57,7 +57,7 @@ public class RatingController : BaseController
             updateQ.Set(Field.rating__description, comment);
             updateQ.Where(Field.rating__semester_id, semesterId);
             updateQ.Where(Field.rating__stu_id, stuId);
-            QDatabase.exec(conn => updateQ.Update(conn));
+            QDatabase.Exec(conn => updateQ.Update(conn));
         }
         else 
         {
@@ -70,7 +70,7 @@ public class RatingController : BaseController
                 Description = comment
             };
             Query insertQ = new(Tbl.rating);
-            QDatabase.exec(conn => insertQ.Insert(conn, rating));
+            QDatabase.Exec(conn => insertQ.Insert(conn, rating));
         }
         return Redirect("/Student/Course");
     }

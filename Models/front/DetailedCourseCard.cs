@@ -7,7 +7,7 @@ class DetailedCourseCard : BriefCourseCard
     public static new Query getQueryCreator()
     {
         Query q = BriefCourseCard.getQueryCreator();
-        q.output(Field.semester__description);
+        q.Output(Field.semester__description);
         return q;
     }
 

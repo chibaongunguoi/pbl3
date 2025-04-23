@@ -17,14 +17,14 @@ class CoursePaymentPage
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.Join(Field.semester__course_id, Field.course__id);
         q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
-        q.output(Field.teacher__name);
-        q.output(Field.semester__fee);
-        q.output(Field.course__name);
-        q.output(Field.semester__id);
+        q.Output(Field.teacher__name);
+        q.Output(Field.semester__fee);
+        q.Output(Field.course__name);
+        q.Output(Field.semester__id);
 
         Query q2 = new(Tbl.student);
         q2.Where(Field.student__id, stuId);
-        q2.output(Field.student__name);
+        q2.Output(Field.student__name);
 
         string studentName = "";
         string courseName = "";
@@ -47,7 +47,7 @@ class CoursePaymentPage
             });
         }
 
-        QDatabase.exec(func);
+        QDatabase.Exec(func);
         this.description = $"{stuId} - {studentName} - {courseName}";
     }
 

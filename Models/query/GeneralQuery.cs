@@ -15,7 +15,7 @@ static class GeneralQuery
             q.Where(Field.semester__status, SemesterStatus.waiting);
 
             Query course_ids_query = q;
-            course_ids_query.output(Field.semester__course_id);
+            course_ids_query.Output(Field.semester__course_id);
             List<int> course_ids = new();
             course_ids_query.Select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
 
@@ -38,7 +38,7 @@ static class GeneralQuery
             q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
 
             Query course_ids_query = q;
-            course_ids_query.output(Field.semester__course_id);
+            course_ids_query.Output(Field.semester__course_id);
             List<int> course_ids = new();
             course_ids_query.Select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
 
@@ -52,7 +52,7 @@ static class GeneralQuery
             update_course_query.Update(conn);
         }
 
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 start_courses(conn);

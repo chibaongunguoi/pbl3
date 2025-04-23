@@ -43,8 +43,8 @@ class DetailedCoursePage
                 q0.Join(Field.semester__id, Field.rating__semester_id);
                 q0.Where(Field.semester__course_id, course_id);
                 q0.Where(Field.rating__stars, i);
-                q0.output(QPiece.countAll);
-                rating_counts_q.outputQuery(q0.SelectQuery());
+                q0.Output(QPiece.countAll);
+                rating_counts_q.OutputQuery(q0.SelectQuery());
             }
             rating_counts_q.Select(
                 conn,
@@ -60,7 +60,7 @@ class DetailedCoursePage
             );
         }
         // thay thees delegate(SqlConnection conn);
-        QDatabase.exec(func);
+        QDatabase.Exec(func);
     }
 
     public static List<RatingCard> get_page(
@@ -74,7 +74,7 @@ class DetailedCoursePage
         Query q = RatingCard.get_query_creator();
         q.Where(Field.semester__course_id, courseId);
         q.OrderBy(Field.rating__timestamp, desc: true);
-        q.offset(page, num_objs);
+        q.Offset(page, num_objs);
         q.Select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
         return cards;
     }

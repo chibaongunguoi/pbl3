@@ -85,7 +85,7 @@ public class StudentSignUpForm
     public Log execute()
     {
         Log log = new();
-        QDatabase.exec(conn => log = execute(conn));
+        QDatabase.Exec(conn => log = execute(conn));
         return log;
     }
 }

@@ -12,12 +12,12 @@ class DetailedTeacherPage
     public DetailedTeacherPage(int tchId, int numObjs = 20)
     {
         this.tchId = tchId;
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.course);
                 q.Where(Field.course__tch_id, tchId);
-                q.output(QPiece.countAll);
+                q.Output(QPiece.countAll);
                 q.Select(conn, reader => maxPageNum = DataReader.getInt(reader));
                 Query q1 = DetailedTeacherCard.getQueryCreator();
                 q1.Where(Field.teacher__id, tchId);
@@ -37,7 +37,7 @@ class DetailedTeacherPage
         List<BriefCourseCard> cards = new();
         Query q = BriefCourseCard.getQueryCreator();
         q.Where(Field.teacher__id, tchId);
-        q.offset(currentPage, numObjs);
+        q.Offset(currentPage, numObjs);
         q.Select(conn, reader => cards.Add(DataReader.getDataObj<BriefCourseCard>(reader)));
         return cards;
     }

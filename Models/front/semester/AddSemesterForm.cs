@@ -90,7 +90,7 @@ public class AddSemesterForm
     public AddSemesterFormLog execute()
     {
         AddSemesterFormLog log = new();
-        QDatabase.exec(conn => log = execute(conn));
+        QDatabase.Exec(conn => log = execute(conn));
         return log;
     }
 

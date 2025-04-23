@@ -8,7 +8,7 @@ sealed class QDatabase
     private static string server_only_conn_string = "";
     private static string default_conn_string = "";
 
-    public static void init(string server_name, string database_name)
+    public static void Init(string server_name, string database_name)
     {
         QDatabase.server_only_conn_string = new SqlConnectionStringBuilder
         {
@@ -35,7 +35,7 @@ sealed class QDatabase
 
     // ========================================================================
     // INFO: Tạo mới conn và truyền conn vào ConnFunction, sau đó ngắt kết nối.
-    public static void exec(ConnFunction conn_function, bool server_only = false)
+    public static void Exec(ConnFunction conn_function, bool server_only = false)
     {
         string conn_string = server_only ? server_only_conn_string : default_conn_string;
         try
@@ -56,7 +56,7 @@ sealed class QDatabase
     // INFO:
     // Đây là hàm chạy trên một conn cụ thể.
     // Chạy non_query (query kiểu hành động, không trả về dữ liệu)
-    public static void execQuery(SqlConnection conn, string query)
+    public static void ExecQuery(SqlConnection conn, string query)
     {
         int counter = ++query_counter;
         Console.WriteLine($"[START] query #{counter}: {query[..Math.Min(100, query.Length)]}");
@@ -83,7 +83,7 @@ sealed class QDatabase
 
     // ========================================================================
     // INFO: Tạo reader và truyền reader vào reader_function.
-    public static void execQuery(SqlConnection conn, string query, ReaderFunction f)
+    public static void ExecQuery(SqlConnection conn, string query, ReaderFunction f)
     {
         int counter = ++query_counter;
         Console.WriteLine($"[START] query #{counter}: {query}");

@@ -9,9 +9,9 @@ class ManageCoursePage
         ManageCoursePage page = new();
         Query q = ManageCourseCard.GetQueryCreator();
         q.Where(Field.course__tch_id, tch_id);
-        q.offset(page_idx, num_objs);
+        q.Offset(page_idx, num_objs);
 
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 int table_index = 1;

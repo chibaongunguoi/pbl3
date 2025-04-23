@@ -55,7 +55,7 @@ class Query
     }
 
     // ========================================================================
-    public void outputClause(params List<string> fields)
+    public void OutputClause(params List<string> fields)
     {
         foreach (var field in fields)
         {
@@ -64,35 +64,35 @@ class Query
         }
     }
 
-    public void outputAvgCastFloat(string field, string? alias = null)
+    public void OutputAvgCastFloat(string field, string? alias = null)
     {
-        outputClause(QPiece.avg(QPiece.castFloat(QPiece.dot(field, alias))));
+        OutputClause(QPiece.avg(QPiece.castFloat(QPiece.dot(field, alias))));
     }
 
-    public void outputAvg(string field, string? alias = null)
+    public void OutputAvg(string field, string? alias = null)
     {
-        outputClause(QPiece.avg(QPiece.dot(field, alias)));
+        OutputClause(QPiece.avg(QPiece.dot(field, alias)));
     }
 
-    public void output(string field, string? alias = null)
+    public void Output(string field, string? alias = null)
     {
-        outputClause(QPiece.dot(field, alias));
+        OutputClause(QPiece.dot(field, alias));
     }
 
-    public void outputTop(string field_, int top = 1, string? alias_ = null)
+    public void OutputTop(string field_, int top = 1, string? alias_ = null)
     {
-        outputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
+        OutputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
     }
 
-    public void outputQuery(string query, string? alias_ = null)
+    public void OutputQuery(string query, string? alias_ = null)
     {
         if (alias_ is not null)
-            outputClause($"({query}) AS {alias_}");
+            OutputClause($"({query}) AS {alias_}");
         else
-            outputClause($"({query})");
+            OutputClause($"({query})");
     }
 
-    public void groupByClause(params List<string> fields)
+    public void GroupByClause(params List<string> fields)
     {
         foreach (var field in fields)
         {
@@ -101,19 +101,19 @@ class Query
         }
     }
 
-    public void groupBy(string field_, string? alias_ = null)
+    public void GroupBy(string field_, string? alias_ = null)
     {
-        groupByClause(QPiece.dot(field_, alias_));
+        GroupByClause(QPiece.dot(field_, alias_));
     }
 
     // ========================================================================
-    public void offset(int page, int num_objs)
+    public void Offset(int page, int num_objs)
     {
         offset_string = $"OFFSET {(page - 1) * num_objs} ROWS FETCH NEXT {num_objs} ROWS ONLY";
     }
 
     // ========================================================================
-    public void removeOffset()
+    public void RemoveOffset()
     {
         offset_string = null;
     }
@@ -178,7 +178,7 @@ class Query
     }
 
     // ========================================================================
-    public void orderByClause(params List<string> order_by)
+    public void OrderByClause(params List<string> order_by)
     {
         foreach (var field in order_by)
         {
@@ -189,7 +189,7 @@ class Query
 
     public void OrderBy(string field_, bool desc = false, string? alias_ = null)
     {
-        orderByClause(QPiece.orderBy(QPiece.dot(field_, alias_), desc: desc));
+        OrderByClause(QPiece.orderBy(QPiece.dot(field_, alias_), desc: desc));
     }
 
     // ========================================================================
@@ -340,7 +340,7 @@ class Query
 
     // ========================================================================
     public void Select(SqlConnection conn, QDatabase.ReaderFunction f) =>
-        QDatabase.execQuery(conn, SelectQuery(), f);
+        QDatabase.ExecQuery(conn, SelectQuery(), f);
 
     // ------------------------------------------------------------------------
     public T Scalar<T>(SqlConnection conn)
@@ -355,21 +355,21 @@ class Query
     }
 
     // ------------------------------------------------------------------------
-    public void Delete(SqlConnection conn) => QDatabase.execQuery(conn, DeleteQuery());
+    public void Delete(SqlConnection conn) => QDatabase.ExecQuery(conn, DeleteQuery());
 
     // ------------------------------------------------------------------------
     public void Insert(SqlConnection conn, string data) =>
-        QDatabase.execQuery(conn, InsertQuery(data));
+        QDatabase.ExecQuery(conn, InsertQuery(data));
 
     // ------------------------------------------------------------------------
-    public void Update(SqlConnection conn) => QDatabase.execQuery(conn, UpdateQuery());
+    public void Update(SqlConnection conn) => QDatabase.ExecQuery(conn, UpdateQuery());
 
     // ------------------------------------------------------------------------
     public List<T> Select<T>(SqlConnection conn)
         where T : DataObj, new()
     {
         List<T> results = new();
-        QDatabase.execQuery(
+        QDatabase.ExecQuery(
             conn,
             SelectQuery(),
             reader => results.Add(DataReader.getDataObj<T>(reader))
@@ -385,7 +385,7 @@ class Query
 
     public int Count(SqlConnection conn)
     {
-        output(QPiece.countAll);
+        Output(QPiece.countAll);
         return Scalar(conn);
     }
 

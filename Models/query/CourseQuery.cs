@@ -14,15 +14,15 @@ static class CourseQuery
         Query q2 = new(Tbl.rating);
         q2.Join(Field.semester__id, Field.rating__semester_id);
         q2.Where(Field.semester__course_id, course_id);
-        q2.outputAvgCastFloat(Field.rating__stars);
-        q.outputQuery(q2.SelectQuery());
+        q2.OutputAvgCastFloat(Field.rating__stars);
+        q.OutputQuery(q2.SelectQuery());
 
         // rating count
         q2 = new(Tbl.rating);
         q2.Join(Field.semester__id, Field.rating__semester_id);
         q2.Where(Field.semester__course_id, course_id);
-        q2.output(QPiece.countAll);
-        q.outputQuery(q2.SelectQuery());
+        q2.Output(QPiece.countAll);
+        q.OutputQuery(q2.SelectQuery());
 
         double temp_avg_rating = 0;
         int temp_num_ratings = 0;

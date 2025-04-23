@@ -8,7 +8,7 @@ static class SemesterQuery
         Query q = new(Tbl.semester, semester_alias);
         q.WhereField(Field.semester__course_id, Field.course__id, semester_alias, course_alias);
         q.OrderBy(Field.semester__start_date, desc: true, semester_alias);
-        q.outputTop(Field.semester__id, 1, semester_alias);
+        q.OutputTop(Field.semester__id, 1, semester_alias);
         return q.SelectQuery();
     }
 }

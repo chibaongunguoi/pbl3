@@ -51,7 +51,7 @@ public class AuthController : BaseController
         string name = "";
 
         // Get student name
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
         {
             List<User> users = CommonQuery<User>.get_record_by_id(conn, Tbl.student, studentId);
             name = users[0].Name;
@@ -93,7 +93,7 @@ public class AuthController : BaseController
     {
         List<Account> query_result = new();
         string table = "";
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
             AccountQuery<Account>.getAccountByUsernamePassword(
                 conn,
                 form.Username,
@@ -129,7 +129,7 @@ public class AuthController : BaseController
         // Get name for students and teachers
         if (table is Tbl.student or Tbl.teacher)
         {
-            QDatabase.exec(conn =>
+            QDatabase.Exec(conn =>
             {
                 List<User> users = CommonQuery<User>.get_record_by_id(conn, table, id);
                 name = users[0].Name;

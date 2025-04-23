@@ -1,7 +1,7 @@
 sealed class RawQuery
 {
     // ------------------------------------------------------------------------
-    public static string insertQuery(ref List<string> data, string table)
+    public static string InsertQuery(ref List<string> data, string table)
     {
         string query = $"INSERT INTO {table} VALUES ";
         foreach (var record in data)
@@ -14,7 +14,7 @@ sealed class RawQuery
     }
 
     // ------------------------------------------------------------------------
-    public static void getInsertQueries( // thực hiện nhiều bản ghi mà gọi insertQuery
+    public static void GetInsertQueries( // thực hiện nhiều bản ghi mà gọi insertQuery
         ref List<string> data,
         string table,
         ref List<string> queries,
@@ -26,7 +26,7 @@ sealed class RawQuery
         for (int batch_number = 0; batch_number < total_batches; batch_number++)
         {
             var batch = data.Skip(batch_number * batch_size).Take(batch_size).ToList();
-            string query = insertQuery(ref batch, table);
+            string query = InsertQuery(ref batch, table);
             queries.Add(query);
         }
     }

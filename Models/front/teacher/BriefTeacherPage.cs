@@ -5,7 +5,7 @@ class BriefTeacherPage
     public int maxPageNum;
     public BriefTeacherPage(int num_displayed_objs = 20)
     {
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 Query q = new(Tbl.teacher);
@@ -24,7 +24,7 @@ class BriefTeacherPage
     {
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
-        q.offset(page, num_objs);
+        q.Offset(page, num_objs);
         q.Select(conn, reader => cards.Add(DataReader.getDataObj<BriefTeacherCard>(reader)));
         return cards;
     }

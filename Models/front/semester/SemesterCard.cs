@@ -16,18 +16,18 @@ class SemesterCard
     {
         Query q = new Query(Tbl.semester);
         q.Join(Field.course__id, Field.semester__course_id);
-        q.output(Field.semester__id);
-        q.output(Field.course__name);
-        q.output(Field.semester__start_date);
-        q.output(Field.semester__finish_date);
-        q.output(Field.semester__status);
-        q.output(Field.semester__fee);
-        q.output(Field.semester__capacity);
+        q.Output(Field.semester__id);
+        q.Output(Field.course__name);
+        q.Output(Field.semester__start_date);
+        q.Output(Field.semester__finish_date);
+        q.Output(Field.semester__status);
+        q.Output(Field.semester__fee);
+        q.Output(Field.semester__capacity);
 
         Query q2 = new Query(Tbl.request);
         q2.WhereField(Field.request__semester_id, Field.semester__id);
-        q2.output(QPiece.countAll);
-        q.outputQuery(q2.SelectQuery());
+        q2.Output(QPiece.countAll);
+        q.OutputQuery(q2.SelectQuery());
         return q;
     }
 

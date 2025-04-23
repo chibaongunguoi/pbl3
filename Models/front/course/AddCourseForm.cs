@@ -104,7 +104,7 @@ public class AddCourseForm
     public Log execute(int tch_id)
     {
         Log log = new();
-        QDatabase.exec(conn => log = execute(conn, tch_id));
+        QDatabase.Exec(conn => log = execute(conn, tch_id));
         return log;
     }
 

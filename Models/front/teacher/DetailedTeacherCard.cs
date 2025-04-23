@@ -11,11 +11,11 @@ class DetailedTeacherCard
     public static Query getQueryCreator()
     {
         Query q = new(Tbl.teacher);
-        q.output(Field.teacher__id);
-        q.output(Field.teacher__name);
-        q.output(Field.teacher__gender);
-        q.output(Field.teacher__bday);
-        q.output(Field.teacher__description);
+        q.Output(Field.teacher__id);
+        q.Output(Field.teacher__name);
+        q.Output(Field.teacher__gender);
+        q.Output(Field.teacher__bday);
+        q.Output(Field.teacher__description);
         return q;
     }
 

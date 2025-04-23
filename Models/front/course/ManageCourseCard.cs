@@ -19,12 +19,12 @@ class ManageCourseCard
         q.Join(Field.subject__id, Field.course__sbj_id);
         q.Join(Field.semester__course_id, Field.course__id);
         q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
-        q.output(Field.course__id);
-        q.output(Field.course__name);
-        q.output(Field.course__status);
-        q.output(Field.subject__name);
-        q.output(Field.subject__grade);
-        q.output(Field.semester__id);
+        q.Output(Field.course__id);
+        q.Output(Field.course__name);
+        q.Output(Field.course__status);
+        q.Output(Field.subject__name);
+        q.Output(Field.subject__grade);
+        q.Output(Field.semester__id);
 
         string local_semester = "LocalSemester"; // Alias
         string local_rating = "LocalRating";
@@ -32,15 +32,15 @@ class ManageCourseCard
         Query q2 = new(Tbl.rating, local_rating);
         q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.outputAvgCastFloat(Field.rating__stars, local_rating);
-        q.outputQuery(q2.SelectQuery());
+        q2.OutputAvgCastFloat(Field.rating__stars, local_rating);
+        q.OutputQuery(q2.SelectQuery());
 
         // rating count
         q2 = new(Tbl.rating, local_rating);
         q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.output(QPiece.countAll);
-        q.outputQuery(q2.SelectQuery());
+        q2.Output(QPiece.countAll);
+        q.OutputQuery(q2.SelectQuery());
         return q;
     }
 
@@ -98,8 +98,8 @@ class ManageCourseCard
         j.AddField(Field.rating__semester_id, Field.semester__id);
         j.Add(Field.rating__stu_id, stuId);
         q.JoinClause(j.LeftJoin());
-        q.output(Field.rating__stars);
-        q.output(Field.rating__description);
+        q.Output(Field.rating__stars);
+        q.Output(Field.rating__description);
         return q;
     }
 

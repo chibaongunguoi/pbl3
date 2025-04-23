@@ -19,7 +19,7 @@ public class RatingAPI : BaseController
         
         // Verify course exists
         bool courseExists = false;
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
         {
             Query q = new(Tbl.course);
             q.Where(Field.course__id, courseId);
@@ -32,7 +32,7 @@ public class RatingAPI : BaseController
         }
 
         List<RatingCard> ratingCards = new();
-        QDatabase.exec(conn =>
+        QDatabase.Exec(conn =>
             ratingCards = DetailedCoursePage.get_page(conn, courseId.Value, currentPage)
         );
         return PartialView(PartialList.RatingCard, ratingCards);

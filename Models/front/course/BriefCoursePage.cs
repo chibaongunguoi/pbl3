@@ -10,7 +10,7 @@ class BriefCoursePage
     public BriefCoursePage(
     )
     {
-        QDatabase.exec(
+        QDatabase.Exec(
             delegate(SqlConnection conn)
             {
                 // Truy vấn tổng số khóa học
