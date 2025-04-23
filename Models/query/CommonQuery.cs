@@ -12,7 +12,7 @@ class CommonQuery<T>
     public static List<T> get_all_records(SqlConnection conn, string table)
     {
         Query q = new(table);
-        return q.select<T>(conn);
+        return q.Select<T>(conn);
     }
 
     // ------------------------------------------------------------------------
@@ -20,14 +20,14 @@ class CommonQuery<T>
     {
         Query q = new(table);
         q.Where($"[{table}].[{Fld.id}]", id);
-        return q.select<T>(conn);
+        return q.Select<T>(conn);
     }
 
     // ------------------------------------------------------------------------
     public static void insert_record(SqlConnection conn, T obj, string table)
     {
         Query q = new(table);
-        q.insert<T>(conn, obj);
+        q.Insert<T>(conn, obj);
     }
 
     // ========================================================================

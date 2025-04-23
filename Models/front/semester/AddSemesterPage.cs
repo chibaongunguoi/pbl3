@@ -33,7 +33,7 @@ class AddSemesterPage
                 Query q = CourseOption.get_query_creator();
                 q.Where(Field.course__status, CourseStatus.finished);
                 q.Where(Field.course__tch_id, tch_id);
-                q.select(
+                q.Select(
                     conn,
                     reader => this.courses.Add(DataReader.getDataObj<CourseOption>(reader))
                 );

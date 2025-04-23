@@ -62,6 +62,11 @@ static class QPiece
         return $"{field} {op} '{value}'";
     }
 
+    public static string eqField(string field, string value, string op = "=")
+    {
+        return $"{field} {op} {value}";
+    }
+
     public static string eq(string field, DateOnly value, string op = "=")
     {
         return $"{field} {op} {QPiece.toStr(value)}";
@@ -101,6 +106,11 @@ static class QPiece
     public static string join(string table_1, string field_1, string field_2)
     {
         return $"INNER JOIN {table_1} ON {field_1} = {field_2}";
+    }
+
+    public static string LeftJoin(string table_1, string field_1, string field_2)
+    {
+        return $"LEFT JOIN {table_1} ON {field_1} = {field_2}";
     }
 }
 

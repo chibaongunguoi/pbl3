@@ -14,12 +14,11 @@ public class HomeController : BaseController
 
     public IActionResult Index()
     {
+        if (User.IsInRole(UserRole.Admin))
+        {
+            return Redirect("/Admin/Dashboard");
+        }
         ViewBag.page = new BriefTeacherPage();
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
         return View();
     }
 }

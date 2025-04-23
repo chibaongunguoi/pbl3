@@ -36,7 +36,7 @@ public class AddCourseForm
         // Start querying
 
         Query q = new(Tbl.teacher);
-        int c = q.count(conn);
+        int c = q.Count(conn);
         if (c == 0)
         {
             log.errors[ErrorKey.tch_id_not_exist] = "Gia sư không tồn tại";
@@ -47,7 +47,7 @@ public class AddCourseForm
         sbj_query.Where(Field.subject__name, Subject);
         sbj_query.Where(Field.subject__grade, i_grade);
         List<Subject> subjects = new();
-        sbj_query.select(conn, reader => subjects.Add(DataReader.getDataObj<Subject>(reader)));
+        sbj_query.Select(conn, reader => subjects.Add(DataReader.getDataObj<Subject>(reader)));
 
         if (subjects.Count == 0)
         {
@@ -92,9 +92,9 @@ public class AddCourseForm
         };
 
         Query q1 = new(Tbl.course);
-        q1.insert(conn, string.Join(", ", course.ToList()));
+        q1.Insert(conn, string.Join(", ", course.ToList()));
         q1 = new(Tbl.semester);
-        q1.insert(conn, string.Join(", ", semester.ToList()));
+        q1.Insert(conn, string.Join(", ", semester.ToList()));
 
         log.course_id = course_id;
         log.semester_id = semester_id;

@@ -1,0 +1,20 @@
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+
+@{
+    Layout = "Manage/_StudentCourseManageLayout";
+    var user = HttpContextAccessor.HttpContext?.User;
+    int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
+}
+
+
+@section StudentCourseManageScripts {
+    <script>
+        $('.api-content').html("");
+        $.get("/courseAPI/StudentCourse", {stuId: @stuId})
+        .done(function(data){
+            $('.api-content').html(data);
+        })
+    </script>
+}

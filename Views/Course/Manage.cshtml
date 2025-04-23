@@ -35,32 +35,7 @@ List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
             </tr>
           </thead>
           <tbody>
-            @foreach(var card in cards)
-            {
-            <tr>
-              <td scope="row" class="table-index">@card.table_index</td>
-              <td>
-                <a class="course-table-name" href='/Course/Detail?courseId=@card.course_id' target="_blank">
-                  @card.course_name
-                </a>
-              </td>
-              <td>@card.avg_rating</td>
-              <td>@card.course_state</td>
-              <td>@card.subject</td>
-              <td>@card.grade</td>
-              <td>
-                <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail" onclick="window.location.href='/Semester/Manage?courseId=@card.course_id'">Xem
-                    các kì học </button>
-                    @await Html.PartialAsync("Popup/_StudentTablePopup")
-                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@card.course_id'">Xem chi tiết</button>
-                  <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Đánh giá</button>
-                   @await Html.PartialAsync("Popup/_RatingFormPopup")
-
-                </div>
-              </td>
-            </tr>
-            }
+              @await Html.PartialAsync("List/_ManageCourseCardList", (object)cards)
           </tbody>
         </table>
       </div>

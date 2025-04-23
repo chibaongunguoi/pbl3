@@ -21,21 +21,16 @@ public class CourseController : BaseController
         return View();
     }
 
-    public IActionResult Detail()
+    public IActionResult Detail(int courseId)
     {
-        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
-        if (courseId is null)
-            return RedirectToAction("Index");
-
-        // If user is logged in, check if they own/manage this course
         var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+
         bool isOwner = false;
         if (userRole is UserRole.Teacher or UserRole.Admin)
         {
             int? teacherId = null;
-            
+
             if (userRole == UserRole.Teacher)
             {
                 teacherId = int.Parse(userId ?? "0");
@@ -51,36 +46,44 @@ public class CourseController : BaseController
                 Query q = new(Tbl.course);
                 q.Where(Field.course__id, courseId);
                 q.Where(Field.teacher__id, teacherId);
-                isOwner = q.count(conn) > 0;
+                isOwner = q.Count(conn) > 0;
             });
         }
 
-        DetailedCoursePage page = new(courseId.Value);
+        DetailedCoursePage page = new(courseId);
         ViewBag.page = page;
         ViewBag.isOwner = isOwner;
         return View();
     }
 
-    [Authorize(Roles = "Teacher,Admin")]
+    [Authorize]
     public IActionResult Manage()
     {
         var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        
+
         switch (userRole)
         {
             case UserRole.Teacher:
                 tch_id = int.Parse(userId ?? "0");
                 break;
             case UserRole.Admin:
-                tch_id = AccountUtils.getAdminTeacherId();
+                tch_id = 2001;
                 break;
         }
-        
-        ManageCoursePage page = ManageCoursePage.get_by_tch_id(tch_id ?? 0);
-        ViewBag.page = page;
-        return View();
+        switch (userRole)
+        {
+            case UserRole.Teacher or UserRole.Admin:
+                ManageCoursePage page = ManageCoursePage.get_by_tch_id(tch_id ?? 0);
+                ViewBag.page = page;
+                return View();
+
+            case UserRole.Student:
+                return Redirect("/Student/Course");
+        }
+
+        return Redirect("/");
     }
 
     [Authorize(Roles = "Teacher,Admin")]
@@ -89,28 +92,40 @@ public class CourseController : BaseController
         return View();
     }
 
-    [Authorize]
-    public IActionResult Payment()
+    [Authorize(Roles = UserRole.Student)]
+    public IActionResult Payment(int course_id)
     {
-        string? courseId_ = Request.Query["course_id"];
-        int courseId = 0;
-        if (!int.TryParse(courseId_, out courseId))
-            return Redirect("/");
-            
-        // Verify course exists
-        bool courseExists = false;
+        int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
+        bool enrolled = false;
+        QDatabase.exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, course_id, stuId));
+
+        if (enrolled)
+        {
+            return RedirectToAction(nameof(Detail), new { courseId = course_id });
+        }
+
+        ViewBag.page = new CoursePaymentPage(course_id, stuId);
+        return View();
+    }
+
+    [Authorize(Roles = UserRole.Student)]
+    [HttpPost]
+    public IActionResult Payment(int courseId, int semesterId, int stuId)
+    {
+        Request request = new()
+        {
+            StuId = stuId,
+            SemesterId = semesterId,
+            Timestamp = DateTime.Now,
+            Status = RequestStatus.waiting
+        };
+
+        Query q = new(Tbl.request);
         QDatabase.exec(conn =>
         {
-            Query q = new(Tbl.course);
-            q.Where(Field.course__id, courseId);
-            courseExists = q.count(conn) > 0;
+            q.Insert(conn, request);
         });
-        
-        if (!courseExists)
-            return RedirectToAction("Index");
-
-        ViewBag.courseId = courseId;
-        return View();
+        return View(nameof(Detail), new { courseId = courseId });
     }
 
     [Authorize(Roles = "Teacher,Admin")]
@@ -120,7 +135,7 @@ public class CourseController : BaseController
         var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int? tch_id = null;
-        
+
         switch (userRole)
         {
             case UserRole.Teacher:
@@ -130,18 +145,11 @@ public class CourseController : BaseController
                 tch_id = AccountUtils.getAdminTeacherId();
                 break;
         }
-            
+
         AddCourseForm.Log log = form.execute(tch_id ?? 0);
         if (!log.success)
             return RedirectToAction("Add");
 
         return Redirect($"Detail/?course_id={log.course_id}");
-    }
-
-    public IActionResult Privacy()
-    {
-        StringValues course_name_;
-        Request.Form.TryGetValue("course_name", out course_name_);
-        return View();
     }
 }

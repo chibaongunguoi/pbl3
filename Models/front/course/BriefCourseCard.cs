@@ -16,10 +16,10 @@ class BriefCourseCard : DataObj
     public static Query getQueryCreator()
     {
         Query q = new(Tbl.course);
-        q.join(Field.subject__id, Field.course__sbj_id);
-        q.join(Field.teacher__id, Field.course__tch_id);
-        q.join(Field.semester__course_id, Field.course__id);
-        q.WhereQuery(Field.semester__id, SemesterQuery.get_latest_semester_id_query("s"));
+        q.Join(Field.subject__id, Field.course__sbj_id);
+        q.Join(Field.teacher__id, Field.course__tch_id);
+        q.Join(Field.semester__course_id, Field.course__id);
+        q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
         q.output(Field.course__id);
         q.output(Field.semester__id);
         q.output(Field.course__name);
@@ -36,25 +36,24 @@ class BriefCourseCard : DataObj
         string local_request = "LocalRequest";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);
-        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.outputAvgCastFloat(Field.rating__stars, local_rating);
-        q.outputQuery(q2.selectQuery());
+        q.outputQuery(q2.SelectQuery());
 
         // rating count
         q2 = new(Tbl.rating, local_rating);
-        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.output(QPiece.countAll);
-        q.outputQuery(q2.selectQuery());
+        q.outputQuery(q2.SelectQuery());
 
         // participants count
         q2 = new(Tbl.request, local_request);
         q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
-        q2.Where(Field.request__status, RequestStatus.joined, local_request);
+        // q2.Where(Field.request__status, RequestStatus.joined, local_request);
         q2.output(QPiece.countAll);
-        q.outputQuery(q2.selectQuery());
-
+        q.outputQuery(q2.SelectQuery());
         return q;
     }
 

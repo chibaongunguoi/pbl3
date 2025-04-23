@@ -1,3 +1,6 @@
+@{
+    var p = (CoursePaymentPage)ViewBag.page;
+}
 
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
@@ -9,8 +12,7 @@
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
               @await Html.PartialAsync("_QRCard")
-
-              @await Html.PartialAsync("_PaymentDetail")
+              @await Html.PartialAsync("_PaymentDetail", (object)p)
             </div>         
         </div>
     </div>

@@ -8,7 +8,7 @@ public class AccountUtils
         {
             Query q = new(Tbl.teacher);
             // q.Where(Field.is_admin, true);
-            q.select(conn, reader =>
+            q.Select(conn, reader =>
             {
                 teacherId = DataReader.getInt(reader, 0);
             });

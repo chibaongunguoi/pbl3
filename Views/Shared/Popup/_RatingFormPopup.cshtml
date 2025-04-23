@@ -1,4 +1,10 @@
-<div class="modal modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+@model (int semesterId, int initStars, string initComment)
+
+@{
+  int initStars = Model.initStars == 0 ? 5 : Model.initStars;
+}
+
+<div class="modal modal fade" id=@($"myModal{Model.semesterId}") tabindex="-1" aria-hidden="true" semesterId="@Model.semesterId">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -9,16 +15,17 @@
 
       <div class="modal-body">
         <div class="pt-add-form">
-          <form action="add_course" id="pt-add" method="POST">
+          <form action="/Rating/SubmitRating" id="pt-add" method="POST">
             <!-- Tên khóa học -->
             <div class="pt-add-form-item">
               <div class="pt-add-label star-label ">
-                <label >
-                  <div class="required-icon">*</div> Đánh giá 
+                <label>
+                  <div class="required-icon">*</div> Đánh giá
                 </label>
               </div>
               <div class="pt-add-input-wrapper star-input">
                 @await Html.PartialAsync("RatingPopup/_Rating5StarList", (float)0.0)
+                <input type="hidden" name="stars" id="rating" value="@initStars" />
               </div>
             </div>
             <!-- Mô tả -->
@@ -29,60 +36,20 @@
                 </label>
               </div>
               <div class="pt-add-input-wrapper">
-                <textarea class="pt-add-form-input detail-input" name="comment" id="comment"></textarea>
+                <textarea class="pt-add-form-input detail-input" name="comment"
+                  id="comment">@Model.initComment</textarea>
               </div>
             </div>
-
-            <!-- Nút xác nhận -->
+            <input type="hidden" name="semesterId" value="@Model.semesterId" />
             <div class="pt-add-btn-group">
               <button class="hl-btn"><span>Xác nhận</span></button>
             </div>
-
           </form>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const starWrappers = document.querySelectorAll('.rating-star-wrapper');
-    const closeButton = document.querySelector('.close-popup');
-    let selectedRating = 0;
-    starWrappers.forEach((wrapper, index) => {
-      // Sự kiện mouseover
-      wrapper.addEventListener('mouseover', () => {
-        highlightStars(index + 1);
-      });
-      
-      // Sự kiện click
-      wrapper.addEventListener('click', () => {
-        selectedRating = index + 1;
-      });
-    });
-     closeButton.addEventListener('click', () => {
-       highlightStars(0);
-        selectedRating = 0;
-      });
-    // Sự kiện mouseout cho container chính
-    document.querySelector('.card-product-rating-star').addEventListener('mouseout', () => {
-      if (selectedRating > 0) {
-        highlightStars(selectedRating);
-      } else {
-        // Reset về trạng thái ban đầu nếu không có rating nào được chọn
-        starWrappers.forEach(wrapper => {
-          const fillElement = wrapper.querySelector('.rating-star-fill');
-          fillElement.style.width = '@Model%'; // Hoặc giá trị mặc định của bạn
-        });
-      }
-    });
-    
-    function highlightStars(count) {
-      starWrappers.forEach((wrapper, idx) => {
-        const fillElement = wrapper.querySelector('.rating-star-fill');
-        fillElement.style.width = idx < count ? '100%' : '0%';
-      });
-    }
-  });
+initRatingPopupStars(@Model.semesterId, @initStars)
 </script>

@@ -29,7 +29,7 @@ sealed class IdCounterQuery
         Query q = new(Tbl.id_counter);
         q.Where(Fld.name, table);
         q.outputClause(Fld.count, Fld.max_count);
-        q.select(conn, func);
+        q.Select(conn, func);
 
         if (count > max_count)
             s_last_status = Status.id_hits_limit;
@@ -50,7 +50,7 @@ sealed class IdCounterQuery
         Query q = new(Tbl.id_counter);
         q.Where(Fld.name, table);
         q.Set(Fld.count, id + 1);
-        q.update(conn);
+        q.Update(conn);
         return true;
     }
 

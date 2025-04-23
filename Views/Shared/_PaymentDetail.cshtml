@@ -1,3 +1,5 @@
+@model CoursePaymentPage
+
     <div class="card-product-li sem-li sem-detail payment-card-content-wrapper">
         <div class="card-sem-li-content payment-card-content">
             <div class="card-sem-detail-wrapper">
@@ -12,7 +14,7 @@
                             Tên tài khoản:
                         </div>
                         <div class="card-sem-item-content">
-                            Nguyễn Chí Bảo
+                            @Model.teacherName
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -36,7 +38,7 @@
                             Số tiền:
                         </div>
                          <div class="card-sem-item-content">
-                           <div class="sem-price">2000000</div> 
+                           <div class="sem-price">@Model.fee</div> 
                             <span class="currency">đ</span>
                         </div>
                     </div>
@@ -45,14 +47,20 @@
                             Nội dung:
                         </div>
                         <div class="card-sem-item-content payment-pass-content">
-                            1001 - NGUYEN VAN A - VCD TOAN 12 
+                            @Model.description
                         </div>
                     </div>
                 </div>
                 
             </div>
             <div class="button-group-wrapper sem-btn-group sem-detail-btn-group">
-                <button class="card-btn choose" onclick="window.location.href='/Course/Manage'">Tôi đã thanh toán</button>
+                <form method="post" action="/Course/Payment" id="payment-form">
+                    <input type="hidden" name="courseId" value="@Model.courseId" />
+                    <input type="hidden" name="semesterId" value="@Model.semesterId" />
+                    <input type="hidden" name="stuId" value="@Model.stuId" />
+                    <button class="card-btn choose">Tôi đã thanh toán</button>
+                </form>>
+                @* <button class="card-btn choose" onClick="window.location.href='/Course/Manage'">Tôi đã thanh toán</button> *@
             </div>
         </div>
     </div>

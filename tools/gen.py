@@ -20,12 +20,12 @@ def conv(instance: Any) -> str:
             value_list.append(f"N'{field_value}'")
         elif isinstance(field_value, str):
             value_list.append(f"'{field_value}'")
+        elif isinstance(field_value, datetime):
+            value_list.append(f"'{field_value.year}-{field_value.month:02d}-{field_value.day:02d} {field_value.hour:02d}:{field_value.minute:02d}'")
         elif isinstance(field_value, date):
             value_list.append(f"'{field_value.year}-{field_value.month:02d}-{field_value.day:02d}'")
         elif isinstance(field_value, bool):
             value_list.append(str(field_value).upper())
-        elif isinstance(field_value, datetime):
-            value_list.append(f"'{field_value.year}-{field_value.month:02d}-{field_value.day:02d} {field_value.hour:02d}:{field_value.minute:02d}'")
         else:
             value_list.append(str(field_value))
     
@@ -267,15 +267,14 @@ def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
     random_days = random.randint(0, 5)
     end_date = course_finish_date + timedelta(days=random_days)
     rating_date = min(today, end_date)
-    rating_time = random.randint(0, 24 * 60 * 60 - 1)
-    rating_time = rating_date + timedelta(seconds=rating_time)
+    rating_datetime = rating_date + timedelta(seconds=random.randint(0, 24 * 60 * 60 - 1))
     rating_score = random.choices([1,2,3,4,5], weights=[0.05, 0.05, 0.05, 0.05, 0.80], k=1)[0]
     rating_description = random.choice(comments[f"{rating_score}"])
     # score = random.choice([1, 2, 3, 4, 5])
     rating = Rating(
         stu_id,
         sem_id,
-        rating_time,
+        rating_datetime,
         rating_score,
         nstr(rating_description),
     )
@@ -449,6 +448,7 @@ for tch_id in teacher_ids:
                 if len(joined_students) >= sem_capacity:
                     break
 
+                joined_students.append(stu_id)
                 request_status = "joined"
                 if i == len(course_semesters) - 1 and course_status == "waiting":
                     request_status = random.choice(["joined", "waiting"])

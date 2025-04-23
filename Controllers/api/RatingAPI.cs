@@ -23,7 +23,7 @@ public class RatingAPI : BaseController
         {
             Query q = new(Tbl.course);
             q.Where(Field.course__id, courseId);
-            courseExists = q.count(conn) > 0;
+            courseExists = q.Count(conn) > 0;
         });
         
         if (!courseExists)

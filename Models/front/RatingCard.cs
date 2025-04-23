@@ -11,8 +11,8 @@ struct RatingCard
     public static Query get_query_creator()
     {
         Query q = new(Tbl.rating);
-        q.join(Field.semester__id, Field.rating__semester_id);
-        q.join(Field.student__id, Field.rating__stu_id);
+        q.Join(Field.semester__id, Field.rating__semester_id);
+        q.Join(Field.student__id, Field.rating__stu_id);
         q.output(Field.student__name);
         q.output(Field.rating__stars);
         q.output(Field.rating__timestamp);

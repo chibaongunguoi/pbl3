@@ -1,0 +1,18 @@
+@{
+    Layout = "_NoFooterLayout"; // Kế thừa từ layout chính
+}
+
+<div id="page-body" class="d-flex">
+<div id="sidebar" class="bg-white">
+    @await RenderSectionAsync("Sidebar", required: false)
+</div>
+<div id="wp-content">
+    <div class="container-fluid padding-container-fluid">
+    <div class="api-content">Content goes here</div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    @await RenderSectionAsync("CourseManageScripts", required: false)
+}

@@ -35,7 +35,7 @@ public class AddSemesterForm
         // Start querying
 
         Query q = new(Tbl.teacher);
-        int c = q.count(conn);
+        int c = q.Count(conn);
         if (c == 0)
         {
             log.errors[ErrorKey.tch_id_not_exist] = "Gia sư không tồn tại";
@@ -51,7 +51,7 @@ public class AddSemesterForm
         }
         q = new(Tbl.course);
         q.Where(Field.course__id, i_course_id);
-        List<Course> courses = q.select<Course>(conn);
+        List<Course> courses = q.Select<Course>(conn);
         if (courses.Count == 0)
         {
             log.errors[ErrorKey.course_invalid] = "Khóa học không tồn tại";
@@ -75,12 +75,12 @@ public class AddSemesterForm
         };
 
         Query q_ins_semester = new(Tbl.semester);
-        q_ins_semester.insert(conn, string.Join(", ", semester.ToList()));
+        q_ins_semester.Insert(conn, string.Join(", ", semester.ToList()));
 
         Query q_update_course = new(Tbl.course);
         q_update_course.Set(Fld.status, CourseStatus.waiting);
         q_update_course.Where(Fld.id, i_course_id);
-        q_update_course.update(conn);
+        q_update_course.Update(conn);
         course.Status = CourseStatus.waiting;
 
         log.semester_id = semester_id;

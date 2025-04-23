@@ -15,7 +15,7 @@ class SemesterCard
     public static Query get_query_creator()
     {
         Query q = new Query(Tbl.semester);
-        q.join(Field.course__id, Field.semester__course_id);
+        q.Join(Field.course__id, Field.semester__course_id);
         q.output(Field.semester__id);
         q.output(Field.course__name);
         q.output(Field.semester__start_date);
@@ -25,10 +25,9 @@ class SemesterCard
         q.output(Field.semester__capacity);
 
         Query q2 = new Query(Tbl.request);
-        q2.Where(Field.request__status, RequestStatus.joined);
         q2.WhereField(Field.request__semester_id, Field.semester__id);
         q2.output(QPiece.countAll);
-        q.outputQuery(q2.selectQuery());
+        q.outputQuery(q2.SelectQuery());
         return q;
     }
 

@@ -2,53 +2,60 @@ using Microsoft.Data.SqlClient;
 
 class ManageCourseCard
 {
-    public int table_index { get; set; }
+    public int table_index;
     public int course_id { get; set; }
+    public int semesterId = 0;
     public string course_name { get; set; } = "";
     public string course_state { get; set; } = "";
     public string avg_rating { get; set; } = "";
     public string subject { get; set; } = "";
     public int grade { get; set; }
+    public int stars;
+    public string comment = "";
 
-    public static Query get_query_creator()
+    public static Query GetQueryCreator()
     {
         Query q = new(Tbl.course);
-        q.join(Field.subject__id, Field.course__sbj_id);
+        q.Join(Field.subject__id, Field.course__sbj_id);
+        q.Join(Field.semester__course_id, Field.course__id);
+        q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
         q.output(Field.course__id);
         q.output(Field.course__name);
         q.output(Field.course__status);
         q.output(Field.subject__name);
         q.output(Field.subject__grade);
+        q.output(Field.semester__id);
 
         string local_semester = "LocalSemester"; // Alias
         string local_rating = "LocalRating";
         // rating avg
         Query q2 = new(Tbl.rating, local_rating);
-        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.outputAvgCastFloat(Field.rating__stars, local_rating);
-        q.outputQuery(q2.selectQuery());
+        q.outputQuery(q2.SelectQuery());
 
         // rating count
         q2 = new(Tbl.rating, local_rating);
-        q2.join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
+        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
         q2.output(QPiece.countAll);
-        q.outputQuery(q2.selectQuery());
+        q.outputQuery(q2.SelectQuery());
         return q;
     }
 
-    public static ManageCourseCard get_card(SqlDataReader reader, ref int current_table_index)
+    public static ManageCourseCard GetCard(SqlDataReader reader, ref int pos, ref int current_table_index)
     {
-        int pos = 0;
+        pos = 0;
         int course_id = DataReader.getInt(reader, ref pos);
         string course_name = DataReader.getStr(reader, ref pos);
         string course_state = DataReader.getStr(reader, ref pos);
         var subject = DataReader.getStr(reader, ref pos);
         var grade = DataReader.getInt(reader, ref pos);
-
+        int semesterId = DataReader.getInt(reader, ref pos);
         var avg_rating = DataReader.getDouble(reader, ref pos);
         int num_ratings = DataReader.getInt(reader, ref pos);
+
         string s_avg_rating = $"{Math.Round(avg_rating, 1)}/5 ({num_ratings})";
 
         string course_state_ui = "";
@@ -74,8 +81,33 @@ class ManageCourseCard
             subject = subject,
             grade = grade,
             avg_rating = s_avg_rating,
+            semesterId = semesterId
         };
 
+        return card;
+    }
+
+    public static Query GetStudentCourseQueryCreator(int stuId)
+    {
+        Query q = GetQueryCreator();
+        q.Join(Field.request__semester_id, Field.semester__id);
+        q.Where(Field.request__stu_id, stuId);
+        q.OrderBy(Field.request__timestamp, desc: true);
+
+        JoinQuery j = new(Tbl.rating);
+        j.AddField(Field.rating__semester_id, Field.semester__id);
+        j.Add(Field.rating__stu_id, stuId);
+        q.JoinClause(j.LeftJoin());
+        q.output(Field.rating__stars);
+        q.output(Field.rating__description);
+        return q;
+    }
+
+    public static ManageCourseCard getStudentCourseCard(SqlDataReader reader, ref int pos, ref int current_table_index)
+    {
+        ManageCourseCard card = GetCard(reader, ref pos, ref current_table_index);
+        card.stars = reader.IsDBNull(pos) ? 0 : DataReader.getInt(reader, ref pos);
+        card.comment = reader.IsDBNull(pos) ? "" : DataReader.getStr(reader, ref pos);
         return card;
     }
 }

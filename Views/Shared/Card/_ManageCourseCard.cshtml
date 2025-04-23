@@ -1,0 +1,51 @@
+@model ManageCourseCard
+
+@using System.Security.Claims
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+<tr>
+    <td scope="row" class="table-index">@Model.table_index</td>
+    <td>
+        <a class="course-table-name" href='/Course/Detail?courseId=@Model.course_id' target="_blank">
+            @Model.course_name
+        </a>
+    </td>
+    <td>@Model.avg_rating</td>
+    <td>@Model.course_state</td>
+    <td>@Model.subject</td>
+    <td>@Model.grade</td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            @if (user_role == UserRole.Teacher)
+            {
+                <button class="card-btn course-detail"
+                    onclick="window.location.href='/Semester/Manage?courseId=@Model.course_id'">Xem
+                    các kì học </button>
+                @await Html.PartialAsync("Popup/_StudentTablePopup")
+            }
+            <button class="card-btn course-detail"
+                onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
+            @if (user_role == UserRole.Student)
+            {
+                int stuId = int.Parse(user?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                <button class="card-btn choose" data-bs-toggle="modal" data-bs-target=@($"#myModal{Model.semesterId}")>
+                    @if(Model.stars == 0)
+                    {
+                        <span>Viết đánh giá</span>
+                    }
+                    else
+                    {
+                        <span>Xem đánh giá</span>
+                    }
+                </button>
+                @await Html.PartialAsync("Popup/_RatingFormPopup", (@Model.semesterId, @Model.stars, @Model.comment))
+            }
+        </div>
+    </td>
+</tr>

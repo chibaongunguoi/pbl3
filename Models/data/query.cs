@@ -1,5 +1,41 @@
 using Microsoft.Data.SqlClient;
 
+class JoinQuery {
+    readonly string table;
+    readonly string? alias_;
+    readonly List<string> joins = [];
+    public JoinQuery(string table, string? alias_ = null)
+    {
+        this.table = QPiece.tableAlias(table, alias_);
+        this.alias_ = alias_;
+    }
+
+    public void AddField(string field_1, string field_2, string? alias_2 = null)
+    {
+        joins.Add(QPiece.eqField(QPiece.dot(field_1, alias_), QPiece.dot(field_2, alias_2)));
+    }
+
+    public void Add(string field_1, int value)
+    {
+        joins.Add(QPiece.eq(QPiece.dot(field_1, alias_), value));
+    }
+
+    private string GetOnClause()
+    {
+        return $"{table} ON {string.Join(" AND ", joins)}";
+    }
+
+    public string Join()
+    {
+        return $"INNER JOIN {GetOnClause()}";
+    }
+
+    public string LeftJoin()
+    {
+        return $"LEFT JOIN {GetOnClause()}";
+    }
+}
+
 class Query
 {
     // ========================================================================
@@ -48,9 +84,12 @@ class Query
         outputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
     }
 
-    public void outputQuery(string query)
+    public void outputQuery(string query, string? alias_ = null)
     {
-        outputClause($"({query})");
+        if (alias_ is not null)
+            outputClause($"({query}) AS {alias_}");
+        else
+            outputClause($"({query})");
     }
 
     public void groupByClause(params List<string> fields)
@@ -148,7 +187,7 @@ class Query
         }
     }
 
-    public void orderBy(string field_, bool desc = false, string? alias_ = null)
+    public void OrderBy(string field_, bool desc = false, string? alias_ = null)
     {
         orderByClause(QPiece.orderBy(QPiece.dot(field_, alias_), desc: desc));
     }
@@ -188,7 +227,7 @@ class Query
         }
     }
 
-    public void join(string field_1, string field_2, string? alias_1 = null, string? alias_2 = null)
+    public void Join(string field_1, string field_2, string? alias_1 = null, string? alias_2 = null)
     {
         string table_1 = field_1.Split('.')[0].Trim('[').Trim(']');
         JoinClause(
@@ -200,8 +239,20 @@ class Query
         );
     }
 
+    public void LeftJoin(string field_1, string field_2, string? alias_1 = null, string? alias_2 = null)
+    {
+        string table_1 = field_1.Split('.')[0].Trim('[').Trim(']');
+        JoinClause(
+            QPiece.LeftJoin(
+                QPiece.tableAlias(table_1, alias_1),
+                QPiece.dot(field_1, alias_1),
+                QPiece.dot(field_2, alias_2)
+            )
+        );
+    }
+
     // ========================================================================
-    public string getWhereClause()
+    public string GetWhereClause()
     {
         var conditions_str = string.Join(" AND ", conditions);
         string query = "";
@@ -211,7 +262,7 @@ class Query
     }
 
     // ========================================================================
-    private string getJoinClause()
+    private string GetJoinClause()
     {
         if (inner_joins.Count == 0)
             return "";
@@ -219,7 +270,7 @@ class Query
     }
 
     // ========================================================================
-    private string getGroupByClause()
+    private string GetGroupByClause()
     {
         string query = "";
         if (group_bys.Count > 0)
@@ -231,7 +282,7 @@ class Query
     }
 
     // ========================================================================
-    private string getOrderClause()
+    private string GetOrderClause()
     {
         string query = "";
         if (order_bys.Count > 0)
@@ -244,7 +295,7 @@ class Query
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn SELECT
-    public string selectQuery()
+    public string SelectQuery()
     {
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str}";
@@ -252,91 +303,90 @@ class Query
         {
             query += $" FROM {table}";
         }
-        query += getJoinClause();
-        query += getWhereClause();
-        query += getGroupByClause();
-        query += getOrderClause();
+        query += GetJoinClause();
+        query += GetWhereClause();
+        query += GetGroupByClause();
+        query += GetOrderClause();
         if (offset_string is not null)
         {
             if (order_bys.Count == 0)
                 query += " ORDER BY (SELECT NULL)";
             query += " " + offset_string;
         }
-        Console.WriteLine(query);
         return query;
     }
 
     // ------------------------------------------------------------------------
     // INFO: Trả về truy vấn DELETE
-    public string deleteQuery()
+    public string DeleteQuery()
     {
-        return $"DELETE FROM {table}" + getWhereClause();
+        return $"DELETE FROM {table}" + GetWhereClause();
     }
 
     // ------------------------------------------------------------------------
-    public string updateQuery()
+    public string UpdateQuery()
     {
         string query = $"UPDATE {table} SET ";
         string set_fields_str = string.Join(", ", set_fields);
-        query += set_fields_str + getWhereClause();
+        query += set_fields_str + GetWhereClause();
         return query;
     }
 
-    public string insertQuery(string data)
+    public string InsertQuery(string data)
     {
         string query = $"INSERT INTO {table} VALUES ({data})";
         return query;
     }
 
     // ========================================================================
-    public void select(SqlConnection conn, QDatabase.ReaderFunction f) =>
-        QDatabase.execQuery(conn, selectQuery(), f);
+    public void Select(SqlConnection conn, QDatabase.ReaderFunction f) =>
+        QDatabase.execQuery(conn, SelectQuery(), f);
 
     // ------------------------------------------------------------------------
-    public T scalar<T>(SqlConnection conn)
+    public T Scalar<T>(SqlConnection conn)
     {
-        SqlCommand command = new SqlCommand(selectQuery(), conn);
+        SqlCommand command = new SqlCommand(SelectQuery(), conn);
         return (T)command.ExecuteScalar();
     }
 
-    private int scalar(SqlConnection conn)
+    private int Scalar(SqlConnection conn)
     {
-        return scalar<int>(conn);
+        return Scalar<int>(conn);
     }
 
     // ------------------------------------------------------------------------
-    public void delete(SqlConnection conn) => QDatabase.execQuery(conn, deleteQuery());
+    public void Delete(SqlConnection conn) => QDatabase.execQuery(conn, DeleteQuery());
 
     // ------------------------------------------------------------------------
-    public void insert(SqlConnection conn, string data) =>
-        QDatabase.execQuery(conn, insertQuery(data));
+    public void Insert(SqlConnection conn, string data) =>
+        QDatabase.execQuery(conn, InsertQuery(data));
 
     // ------------------------------------------------------------------------
-    public void update(SqlConnection conn) => QDatabase.execQuery(conn, updateQuery());
+    public void Update(SqlConnection conn) => QDatabase.execQuery(conn, UpdateQuery());
 
     // ------------------------------------------------------------------------
-    public List<T> select<T>(SqlConnection conn)
+    public List<T> Select<T>(SqlConnection conn)
         where T : DataObj, new()
     {
         List<T> results = new();
         QDatabase.execQuery(
             conn,
-            selectQuery(),
+            SelectQuery(),
             reader => results.Add(DataReader.getDataObj<T>(reader))
         );
         return results;
     }
 
-    public void insert<T>(SqlConnection conn, T obj)
+    public void Insert<T>(SqlConnection conn, T obj)
         where T : DataObj, new()
     {
-        insert(conn, string.Join(", ", obj.ToList()));
+        Insert(conn, string.Join(", ", obj.ToList()));
     }
 
-    public int count(SqlConnection conn)
+    public int Count(SqlConnection conn)
     {
         output(QPiece.countAll);
-        return scalar(conn);
+        return Scalar(conn);
     }
 
     // ========================================================================

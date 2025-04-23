@@ -51,7 +51,7 @@ public class StudentSignUpForm
 
         Query q = new(Tbl.student);
         q.Where(Fld.username, Username);
-        int count = q.count(conn);
+        int count = q.Count(conn);
 
         if (count > 0)
         {
@@ -76,7 +76,7 @@ public class StudentSignUpForm
             Bday = Bday ?? new(),
         };
         Query q1 = new(Tbl.student);
-        q1.insert(conn, string.Join(", ", student.ToList()));
+        q1.Insert(conn, string.Join(", ", student.ToList()));
 
         log.stu_id = id;
         return log;

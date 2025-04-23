@@ -15,11 +15,11 @@ class BriefCoursePage
             {
                 // Truy vấn tổng số khóa học
                 Query q = new(Tbl.course);
-                q.join(Field.semester__course_id, Field.course__id);
-                q.WhereQuery(Field.semester__id, SemesterQuery.get_latest_semester_id_query("s"));
+                q.Join(Field.semester__course_id, Field.course__id);
+                q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
                 q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
                 maxPageNum = (int)
-                    Math.Ceiling((double)q.count(conn) / num_displayed_courses);
+                    Math.Ceiling((double)q.Count(conn) / num_displayed_courses);
             }
         );
     }
