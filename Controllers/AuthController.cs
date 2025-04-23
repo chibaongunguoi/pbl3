@@ -1,6 +1,6 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace REPO.Controllers;
@@ -54,27 +54,31 @@ public class AuthController : BaseController
         QDatabase.exec(conn =>
         {
             List<User> users = CommonQuery<User>.get_record_by_id(conn, Tbl.student, studentId);
-            name = users[0].name;
+            name = users[0].Name;
         });
 
-        var claims = new List<Claim>{
-        
+        var claims = new List<Claim>
+        {
             new Claim(ClaimTypes.NameIdentifier, studentId.ToString()),
             new Claim(ClaimTypes.Role, UserRole.Student),
-            new Claim(ClaimTypes.Name, name)
+            new Claim(ClaimTypes.Name, name),
         };
 
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsIdentity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme
+        );
         var authProperties = new AuthenticationProperties
         {
             IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
         };
 
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity),
-            authProperties);
+            authProperties
+        );
         return Redirect("/");
     }
 
@@ -87,16 +91,13 @@ public class AuthController : BaseController
     [HttpPost]
     public async Task<IActionResult> store(LoginForm form)
     {
-        string username = form.username;
-        string password = form.password;
-
         List<Account> query_result = new();
         string table = "";
         QDatabase.exec(conn =>
-             AccountQuery<Account>.getAccountByUsernamePassword(
+            AccountQuery<Account>.getAccountByUsernamePassword(
                 conn,
-                username,
-                password,
+                form.Username,
+                form.Password,
                 out query_result,
                 ref table
             )
@@ -107,7 +108,7 @@ public class AuthController : BaseController
             return Redirect("Login");
         }
 
-        int id = query_result[0].id;
+        int id = query_result[0].Id;
         string role = "";
         string name = "";
 
@@ -131,7 +132,7 @@ public class AuthController : BaseController
             QDatabase.exec(conn =>
             {
                 List<User> users = CommonQuery<User>.get_record_by_id(conn, table, id);
-                name = users[0].name;
+                name = users[0].Name;
             });
         }
 
@@ -139,20 +140,24 @@ public class AuthController : BaseController
         {
             new Claim(ClaimTypes.NameIdentifier, id.ToString()),
             new Claim(ClaimTypes.Role, role),
-            new Claim(ClaimTypes.Name, name)
+            new Claim(ClaimTypes.Name, name),
         };
 
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsIdentity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme
+        );
         var authProperties = new AuthenticationProperties
         {
             IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
         };
 
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity),
-            authProperties);
+            authProperties
+        );
 
         return Redirect("/");
     }

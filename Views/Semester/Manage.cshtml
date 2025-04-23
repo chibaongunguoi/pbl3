@@ -37,12 +37,12 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
               <td scope="row" class="table-index">@semester.tableIdx</td>
               <td>
                 <a class="course-table-name" href='/Course/Detail?courseId=@p.courseId' target="_blank">
-                  @semester.course_name
+                  @semester.courseName
                 </a>
               </td>
-              <td>@($"{semester.start_date} - {semester.finish_date}")</td>
+              <td>@($"{semester.startDate} - {semester.finishDate}")</td>
               <td>@semester.status</td>
-              <td>@($"{semester.num_participants}/{semester.capacity}")</td>
+              <td>@($"{semester.numParticipants}/{semester.capacity}")</td>
               <td>@($"{semester.fee}đ")</td>
               <td>
                 <div class="button-group-wrapper course-manager">

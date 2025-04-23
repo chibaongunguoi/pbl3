@@ -21,7 +21,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper">
-              <select class="pt-add-form-input pt-course-input" id="comboBox" name="course_id">
+              <select class="pt-add-form-input pt-course-input" id="comboBox" name="CourseID">
                 <option value="">Chọn khóa học đã có sẵn</option>
                 @foreach(var course in courses)
                 {
@@ -38,7 +38,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-              <input class="input cb" type="date" name="start_date">
+              <input class="input cb" type="date" name="StartDate">
             </div>
             <div class="pt-add-label">
               <label for="cat">
@@ -46,7 +46,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper pt-add-class-wrapper">
-              <input class="input cb" type="date" name="finish_date">
+              <input class="input cb" type="date" name="FinishDate">
             </div>
           </div>
           <div class="pt-add-form-item">
@@ -56,7 +56,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper">
-              <input class="pt-add-form-input pt-name-input" type="number" name="capacity" placeholder="Nhập vào"
+              <input class="pt-add-form-input pt-name-input" type="number" name="Capacity" placeholder="Nhập vào"
                 maxlength="150">
             </div>
           </div>
@@ -67,7 +67,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper">
-              <input class="pt-add-form-input pt-add-price-input" type="number" name="fee" placeholder="Nhập vào"
+              <input class="pt-add-form-input pt-add-price-input" type="number" name="Fee" placeholder="Nhập vào"
                 maxlength="150" value="">
               <div class="money-detail">₫</div>
             </div>
@@ -79,7 +79,7 @@ List<CourseOption> courses = ((AddSemesterPage)ViewBag.page).courses;
               </label>
             </div>
             <div class="pt-add-input-wrapper">
-              <textarea class="pt-add-form-input detail-input" name="description" id="description"></textarea>
+              <textarea class="pt-add-form-input detail-input" name="Description" id="description"></textarea>
             </div>
           </div>
           <div class="pt-add-btn-group">

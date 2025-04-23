@@ -3,31 +3,31 @@ using Microsoft.Data.SqlClient;
 sealed class Rating : DataObj
 {
     // ========================================================================
-    public int stu_id { get; set; }
-    public int semester_id { get; set; }
-    public DateTime timestamp { get; set; } = new();
-    public int stars { get; set; }
-    public string description { get; set; } = "";
+    public int StuId { get; set; }
+    public int SemesterId { get; set; }
+    public DateTime Timestamp { get; set; } = new();
+    public int Stars { get; set; }
+    public string Description { get; set; } = "";
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
-        stu_id = DataReader.getInt(reader, ref pos);
-        semester_id = DataReader.getInt(reader, ref pos);
-        timestamp = DataReader.getDateTime(reader, ref pos);
-        stars = DataReader.getInt(reader, ref pos);
-        description = DataReader.getStr(reader, ref pos);
+        StuId = DataReader.getInt(reader, ref pos);
+        SemesterId = DataReader.getInt(reader, ref pos);
+        Timestamp = DataReader.getDateTime(reader, ref pos);
+        Stars = DataReader.getInt(reader, ref pos);
+        Description = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toStr(stu_id));
-        lst.Add(QPiece.toStr(semester_id));
-        lst.Add(QPiece.toStr(timestamp));
-        lst.Add(QPiece.toStr(stars));
-        lst.Add(QPiece.toNStr(description));
+        lst.Add(QPiece.toStr(StuId));
+        lst.Add(QPiece.toStr(SemesterId));
+        lst.Add(QPiece.toStr(Timestamp));
+        lst.Add(QPiece.toStr(Stars));
+        lst.Add(QPiece.toNStr(Description));
         return lst;
     }
 

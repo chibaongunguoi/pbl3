@@ -11,24 +11,24 @@ public class AddCourseForm
         public bool success => errors.Count == 0;
     }
 
-    public required string course_name { get; set; }
-    public required string subject { get; set; }
-    public required string grade { get; set; }
-    public DateOnly? start_date { get; set; }
-    public DateOnly? finish_date { get; set; }
-    public int capacity { get; set; }
-    public int fee { get; set; }
-    public required string description { get; set; }
+    public required string CourseName { get; set; }
+    public required string Subject { get; set; }
+    public required string Grade { get; set; }
+    public DateOnly? StartDate { get; set; }
+    public DateOnly? FinishDate { get; set; }
+    public int Capacity { get; set; }
+    public int Fee { get; set; }
+    public required string Description { get; set; }
 
     public Log execute(SqlConnection conn, int tch_id)
     {
         Log log = new();
         int i_grade;
-        if (!int.TryParse(grade, out i_grade))
+        if (!int.TryParse(Grade, out i_grade))
         {
             log.errors[ErrorKey.grade_invalid] = "Khối lớp không hợp lệ";
         }
-        Checking.check_start_finish_dates(ref log.errors, start_date, finish_date);
+        Checking.check_start_finish_dates(ref log.errors, StartDate, FinishDate);
 
         if (!log.success)
             return log;
@@ -44,7 +44,7 @@ public class AddCourseForm
         }
 
         Query sbj_query = new(Tbl.subject);
-        sbj_query.Where(Field.subject__name, subject);
+        sbj_query.Where(Field.subject__name, Subject);
         sbj_query.Where(Field.subject__grade, i_grade);
         List<Subject> subjects = new();
         sbj_query.select(conn, reader => subjects.Add(DataReader.getDataObj<Subject>(reader)));
@@ -55,7 +55,7 @@ public class AddCourseForm
             return log;
         }
 
-        int sbj_id = subjects[0].id;
+        int sbj_id = subjects[0].Id;
         int course_id,
             semester_id;
 
@@ -72,23 +72,23 @@ public class AddCourseForm
         IdCounterQuery.increment(conn, Tbl.semester, out semester_id);
         Course course = new()
         {
-            id = course_id,
-            tch_id = tch_id,
-            sbj_id = sbj_id,
-            name = course_name,
-            status = CourseStatus.waiting,
+            Id = course_id,
+            TchId = tch_id,
+            SbjId = sbj_id,
+            Name = CourseName,
+            Status = CourseStatus.waiting,
         };
 
         Semester semester = new()
         {
-            id = semester_id,
-            course_id = course_id,
-            start_date = start_date ?? new(),
-            finish_date = finish_date ?? new(),
-            capacity = capacity,
-            fee = fee,
-            description = description,
-            status = SemesterStatus.waiting,
+            Id = semester_id,
+            CourseId = course_id,
+            StartDate = StartDate ?? new(),
+            FinishDate = FinishDate ?? new(),
+            Capacity = Capacity,
+            Fee = Fee,
+            Description = Description,
+            Status = SemesterStatus.waiting,
         };
 
         Query q1 = new(Tbl.course);
@@ -111,14 +111,14 @@ public class AddCourseForm
     public void print_log()
     {
         Console.WriteLine("[LOG]");
-        Console.WriteLine($"course_name: {course_name}");
-        Console.WriteLine($"subject: {subject}");
-        Console.WriteLine($"grade: {grade}");
-        Console.WriteLine($"start_date: {start_date}");
-        Console.WriteLine($"finish_date: {finish_date}");
-        Console.WriteLine($"capacity: {capacity}");
-        Console.WriteLine($"fee: {fee}");
-        Console.WriteLine($"description: {description}");
+        Console.WriteLine($"course_name: {CourseName}");
+        Console.WriteLine($"subject: {Subject}");
+        Console.WriteLine($"grade: {Grade}");
+        Console.WriteLine($"start_date: {StartDate}");
+        Console.WriteLine($"finish_date: {FinishDate}");
+        Console.WriteLine($"capacity: {Capacity}");
+        Console.WriteLine($"fee: {Fee}");
+        Console.WriteLine($"description: {Description}");
         Console.WriteLine("[/LOG]");
     }
 }

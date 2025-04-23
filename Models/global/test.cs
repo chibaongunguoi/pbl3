@@ -21,11 +21,11 @@ class Test
     {
         Student new_student = new()
         {
-            username = "demo",
-            password = "demo",
-            name = "Nguyễn Văn A",
-            gender = Gender.male,
-            bday = new DateOnly(2012, 12, 12),
+            Username = "demo",
+            Password = "demo",
+            Name = "Nguyễn Văn A",
+            Gender = Gender.male,
+            Bday = new DateOnly(2012, 12, 12),
         };
 
         // Database.exec(conn => CommonQuery.insert_record_with_id(conn, new_student, Table.student));

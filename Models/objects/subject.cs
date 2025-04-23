@@ -1,25 +1,28 @@
 using Microsoft.Data.SqlClient;
 
-class Subject : IdObj
+class Subject : DataObj
 {
     // ========================================================================
-    public string name = "";
-    public int grade;
+    public int Id { get; set; } 
+    public string Name = "";
+    public int Grade;
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        name = DataReader.getStr(reader, ref pos);
-        grade = DataReader.getInt(reader, ref pos);
+        Id = DataReader.getInt(reader, ref pos);
+        Name = DataReader.getStr(reader, ref pos);
+        Grade = DataReader.getInt(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toNStr(name));
-        lst.Add(QPiece.toStr(grade));
+        lst.Add(QPiece.toStr(Id));
+        lst.Add(QPiece.toNStr(Name));
+        lst.Add(QPiece.toStr(Grade));
         return lst;
     }
 

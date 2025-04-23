@@ -3,28 +3,28 @@ using Microsoft.Data.SqlClient;
 sealed class Request : DataObj
 {
     // ========================================================================
-    public int stu_id { get; set; }
-    public int semester_id { get; set; }
-    public DateTime timestamp { get; set; } = new();
-    public string status { get; set; } = "";
+    public int StuId { get; set; }
+    public int SemesterId { get; set; }
+    public DateTime Timestamp { get; set; } = new();
+    public string Status { get; set; } = "";
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
-        stu_id = DataReader.getInt(reader, ref pos);
-        semester_id = DataReader.getInt(reader, ref pos);
-        timestamp = DataReader.getDateTime(reader, ref pos);
-        status = DataReader.getStr(reader, ref pos);
+        StuId = DataReader.getInt(reader, ref pos);
+        SemesterId = DataReader.getInt(reader, ref pos);
+        Timestamp = DataReader.getDateTime(reader, ref pos);
+        Status = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toStr(stu_id));
-        lst.Add(QPiece.toStr(semester_id));
-        lst.Add(QPiece.toStr(timestamp));
-        lst.Add(QPiece.toStr(status));
+        lst.Add(QPiece.toStr(StuId));
+        lst.Add(QPiece.toStr(SemesterId));
+        lst.Add(QPiece.toStr(Timestamp));
+        lst.Add(QPiece.toStr(Status));
         return lst;
     }
 

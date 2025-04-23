@@ -1,7 +1,7 @@
 @{
     var p = (DetailedTeacherPage)ViewBag.page;
     var teacher = p.teacherCard[0];
-    var contextUrl = "/courseAPI/TeacherProfile";
+    var contextUrl = $"/courseAPI/TeacherProfile?{UrlKey.tchId}={p.tchId}";
     var contextComponent = ".pagination-list";
 }
 

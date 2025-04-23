@@ -3,26 +3,26 @@ using Microsoft.Data.SqlClient;
 class User : Account
 {
     // ========================================================================
-    public string name = "";
-    public string gender = "";
-    public DateOnly bday = new();
+    public string Name { get; set; } = "";
+    public string Gender { get; set; } = "";
+    public DateOnly Bday { get; set; } = new();
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        name = DataReader.getStr(reader, ref pos);
-        gender = DataReader.getStr(reader, ref pos);
-        bday = DataReader.getDate(reader, ref pos);
+        Name = DataReader.getStr(reader, ref pos);
+        Gender = DataReader.getStr(reader, ref pos);
+        Bday = DataReader.getDate(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toNStr(name));
-        lst.Add(QPiece.toStr(gender));
-        lst.Add(QPiece.toStr(bday));
+        lst.Add(QPiece.toNStr(Name));
+        lst.Add(QPiece.toStr(Gender));
+        lst.Add(QPiece.toStr(Bday));
         return lst;
     }
 

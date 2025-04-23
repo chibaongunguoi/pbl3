@@ -2,12 +2,12 @@ using Microsoft.Data.SqlClient;
 
 public class StudentSignUpForm
 {
-    public required string name { get; set; }
-    public required string gender { get; set; }
-    public DateOnly? bday { get; set; }
-    public required string username { get; set; }
-    public required string password { get; set; }
-    public required string password_confirm { get; set; }
+    public required string Name { get; set; }
+    public required string Gender { get; set; }
+    public DateOnly? Bday { get; set; }
+    public required string Username { get; set; }
+    public required string Password { get; set; }
+    public required string PasswordConfirm { get; set; }
 
     public class Log
     {
@@ -20,26 +20,26 @@ public class StudentSignUpForm
     {
         Log log = new Log();
 
-        if (bday == null)
+        if (Bday == null)
         {
             log.errors[ErrorKey.bday_empty] = "Ngày sinh không được để trống";
         }
 
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(Name))
         {
             log.errors[ErrorKey.name_empty] = "Họ và tên không được để trống";
         }
 
-        if (string.IsNullOrEmpty(username))
+        if (string.IsNullOrEmpty(Username))
         {
             log.errors[ErrorKey.username_empty] = "Tên đăng nhập không được để trống";
         }
 
-        if (string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(Password))
         {
             log.errors[ErrorKey.password_empty] = "Mật khẩu không được để trống";
         }
-        else if (password != password_confirm)
+        else if (Password != PasswordConfirm)
         {
             log.errors[ErrorKey.password_mismatch] = "Mật khẩu không khớp";
         }
@@ -50,7 +50,7 @@ public class StudentSignUpForm
         }
 
         Query q = new(Tbl.student);
-        q.Where(Fld.username, username);
+        q.Where(Fld.username, Username);
         int count = q.count(conn);
 
         if (count > 0)
@@ -68,12 +68,12 @@ public class StudentSignUpForm
 
         Student student = new()
         {
-            id = id,
-            username = username,
-            password = password,
-            name = name,
-            gender = gender,
-            bday = bday ?? new(),
+            Id = id,
+            Username = Username,
+            Password = Password,
+            Name = Name,
+            Gender = Gender,
+            Bday = Bday ?? new(),
         };
         Query q1 = new(Tbl.student);
         q1.insert(conn, string.Join(", ", student.ToList()));

@@ -70,9 +70,9 @@ public class SemesterController : BaseController
         if (tch_id is null)
             return RedirectToAction("Add");
         AddSemesterFormLog log = form.execute();
-        if (!log.success)
+        if (!log.Success)
             return RedirectToAction("Add");
 
-        return Redirect($"/Course/Detail?course_id={form.course_id}");
+        return Redirect($"/Course/Detail?course_id={form.CourseId}");
     }
 }

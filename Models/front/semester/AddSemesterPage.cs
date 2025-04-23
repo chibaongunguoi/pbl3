@@ -23,7 +23,7 @@ class CourseOption : DataObj
 
 class AddSemesterPage
 {
-    public List<CourseOption> courses = new();
+    public List<CourseOption> courses = [];
 
     public AddSemesterPage(int tch_id)
     {

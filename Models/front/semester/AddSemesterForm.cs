@@ -3,31 +3,31 @@ using Microsoft.Data.SqlClient;
 public class AddSemesterFormLog
 {
     public Dictionary<string, string> errors = new();
-    public bool success => errors.Count == 0;
+    public bool Success => errors.Count == 0;
     public int semester_id;
 }
 
 public class AddSemesterForm
 {
-    public required string course_id { get; set; }
-    public DateOnly? start_date { get; set; }
-    public DateOnly? finish_date { get; set; }
-    public int capacity { get; set; }
-    public int fee { get; set; }
-    public required string description { get; set; }
+    public required string CourseId { get; set; }
+    public DateOnly? StartDate { get; set; }
+    public DateOnly? FinishDate { get; set; }
+    public int Capacity { get; set; }
+    public int Fee { get; set; }
+    public required string Description { get; set; }
 
     public AddSemesterFormLog execute(SqlConnection conn)
     {
         AddSemesterFormLog log = new();
         int i_course_id;
-        if (!int.TryParse(course_id, out i_course_id))
+        if (!int.TryParse(CourseId, out i_course_id))
         {
             log.errors[ErrorKey.course_invalid] = "Khóa học không hợp lệ";
         }
 
-        Checking.check_start_finish_dates(ref log.errors, start_date, finish_date);
+        Checking.check_start_finish_dates(ref log.errors, StartDate, FinishDate);
 
-        if (!log.success)
+        if (!log.Success)
         {
             return log;
         }
@@ -64,14 +64,14 @@ public class AddSemesterForm
 
         Semester semester = new()
         {
-            id = semester_id,
-            course_id = i_course_id,
-            start_date = start_date ?? new(),
-            finish_date = finish_date ?? new(),
-            capacity = capacity,
-            fee = fee,
-            description = description,
-            status = SemesterStatus.waiting,
+            Id = semester_id,
+            CourseId = i_course_id,
+            StartDate = StartDate ?? new(),
+            FinishDate = FinishDate ?? new(),
+            Capacity = Capacity,
+            Fee = Fee,
+            Description = Description,
+            Status = SemesterStatus.waiting,
         };
 
         Query q_ins_semester = new(Tbl.semester);
@@ -81,7 +81,7 @@ public class AddSemesterForm
         q_update_course.Set(Fld.status, CourseStatus.waiting);
         q_update_course.Where(Fld.id, i_course_id);
         q_update_course.update(conn);
-        course.status = CourseStatus.waiting;
+        course.Status = CourseStatus.waiting;
 
         log.semester_id = semester_id;
         return log;
@@ -97,12 +97,12 @@ public class AddSemesterForm
     public void print_log()
     {
         Console.WriteLine("[LOG] AddSemesterForm");
-        Console.WriteLine($"course_id: {course_id}");
-        Console.WriteLine($"start_date: {start_date}");
-        Console.WriteLine($"finish_date: {finish_date}");
-        Console.WriteLine($"capacity: {capacity}");
-        Console.WriteLine($"fee: {fee}");
-        Console.WriteLine($"description: {description}");
+        Console.WriteLine($"course_id: {CourseId}");
+        Console.WriteLine($"start_date: {StartDate}");
+        Console.WriteLine($"finish_date: {FinishDate}");
+        Console.WriteLine($"capacity: {Capacity}");
+        Console.WriteLine($"fee: {Fee}");
+        Console.WriteLine($"description: {Description}");
         Console.WriteLine("[/LOG]");
     }
 }

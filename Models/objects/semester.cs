@@ -1,40 +1,43 @@
 using Microsoft.Data.SqlClient;
 
-sealed class Semester : IdObj
+sealed class Semester : DataObj
 {
     // ========================================================================
-    public int course_id { get; set; }
-    public DateOnly start_date { get; set; } = new();
-    public DateOnly finish_date { get; set; } = new();
-    public int capacity { get; set; }
-    public int fee { get; set; }
-    public string description { get; set; } = "";
-    public string status { get; set; } = "";
+    public int Id { get; set; }
+    public int CourseId { get; set; }
+    public DateOnly StartDate { get; set; } = new();
+    public DateOnly FinishDate { get; set; } = new();
+    public int Capacity { get; set; }
+    public int Fee { get; set; }
+    public string Description { get; set; } = "";
+    public string Status { get; set; } = "";
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        course_id = DataReader.getInt(reader, ref pos);
-        start_date = DataReader.getDate(reader, ref pos);
-        finish_date = DataReader.getDate(reader, ref pos);
-        capacity = DataReader.getInt(reader, ref pos);
-        fee = DataReader.getInt(reader, ref pos);
-        description = DataReader.getStr(reader, ref pos);
-        status = DataReader.getStr(reader, ref pos);
+        Id = DataReader.getInt(reader, ref pos);
+        CourseId = DataReader.getInt(reader, ref pos);
+        StartDate = DataReader.getDate(reader, ref pos);
+        FinishDate = DataReader.getDate(reader, ref pos);
+        Capacity = DataReader.getInt(reader, ref pos);
+        Fee = DataReader.getInt(reader, ref pos);
+        Description = DataReader.getStr(reader, ref pos);
+        Status = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toStr(course_id));
-        lst.Add(QPiece.toStr(start_date));
-        lst.Add(QPiece.toStr(finish_date));
-        lst.Add(QPiece.toStr(capacity));
-        lst.Add(QPiece.toStr(fee));
-        lst.Add(QPiece.toStr(description));
-        lst.Add(QPiece.toStr(status));
+        lst.Add(QPiece.toStr(Id));
+        lst.Add(QPiece.toStr(CourseId));
+        lst.Add(QPiece.toStr(StartDate));
+        lst.Add(QPiece.toStr(FinishDate));
+        lst.Add(QPiece.toStr(Capacity));
+        lst.Add(QPiece.toStr(Fee));
+        lst.Add(QPiece.toStr(Description));
+        lst.Add(QPiece.toStr(Status));
         return lst;
     }
 

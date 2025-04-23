@@ -3,23 +3,23 @@ using Microsoft.Data.SqlClient;
 sealed class Teacher : User
 {
     // ========================================================================
-    public string thumbnail = "";
-    public string description = "";
+    public string Thumbnail = "";
+    public string Description = "";
 
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        thumbnail = DataReader.getStr(reader, ref pos);
-        description = DataReader.getStr(reader, ref pos);
+        Thumbnail = DataReader.getStr(reader, ref pos);
+        Description = DataReader.getStr(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
     public override List<string> ToList()
     {
         var lst = base.ToList();
-        lst.Add(QPiece.toStr(thumbnail));
-        lst.Add(QPiece.toStr(description));
+        lst.Add(QPiece.toStr(Thumbnail));
+        lst.Add(QPiece.toStr(Description));
         return lst;
     }
 

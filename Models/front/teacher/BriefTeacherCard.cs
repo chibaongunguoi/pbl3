@@ -11,11 +11,11 @@ class BriefTeacherCard : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         Teacher teacher = DataReader.getDataObj<Teacher>(reader, ref pos);
-        this.id = teacher.id;
-        this.name = teacher.name;
-        this.gender = IoUtils.convGender(teacher.gender);
-        this.bday = IoUtils.conv(teacher.bday);
-        this.description = teacher.description;
+        this.id = teacher.Id;
+        this.name = teacher.Name;
+        this.gender = IoUtils.convGender(teacher.Gender);
+        this.bday = IoUtils.conv(teacher.Bday);
+        this.description = teacher.Description;
     }
     // ------------------------------------------------------------------------
 }

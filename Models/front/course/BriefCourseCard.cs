@@ -2,15 +2,15 @@ using Microsoft.Data.SqlClient;
 
 class BriefCourseCard : DataObj
 {
-    public int course_id;
-    public string course_name = "";
-    public string tch_name = "";
+    public int courseId;
+    public string courseName = "";
+    public string tchName = "";
     public string subject = "";
     public int grade;
     public string dates = "";
     public string participants = "";
-    public string avg_rating = "";
-    public int num_ratings;
+    public string avgRating = "";
+    public int numRatings;
     public string fee = "";
 
     public static Query getQueryCreator()
@@ -74,15 +74,15 @@ class BriefCourseCard : DataObj
         int num_ratings = DataReader.getInt(reader, ref pos);
         int num_participants = DataReader.getInt(reader, ref pos);
 
-        this.course_id = course_id;
-        this.course_name = course_name;
-        this.tch_name = tch_name;
+        this.courseId = course_id;
+        this.courseName = course_name;
+        this.tchName = tch_name;
         this.subject = subject;
         this.grade = grade;
         this.dates = $"{IoUtils.conv(start_date)} - {IoUtils.conv(finish_date)}";
         this.participants = $"{num_participants}/{capacity}";
-        this.avg_rating = $"{Math.Round(avg_rating, 1)}";
-        this.num_ratings = num_ratings;
+        this.avgRating = $"{Math.Round(avg_rating, 1)}";
+        this.numRatings = num_ratings;
         this.fee = IoUtils.conv_fee(fee);
     }
 }

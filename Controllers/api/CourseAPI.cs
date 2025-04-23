@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace REPO.Controllers;
 
@@ -23,13 +23,12 @@ public class CourseAPI : BaseController
     [HttpGet("TeacherProfile")]
     public IActionResult teacherProfile(int currentPage)
     {
-        int? teacherId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
-        int numObjs = 20;
+        int? tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
         List<BriefCourseCard> cards = new();
         Query q = BriefCourseCard.getQueryCreator();
-        q.Where(Field.teacher__id, teacherId);
+        q.Where(Field.teacher__id, tchId);
         q.orderBy(Field.semester__id, desc: true);
-        q.offset(currentPage, numObjs);
+        q.offset(currentPage, 20);
         QDatabase.exec(conn => cards = q.select<BriefCourseCard>(conn));
         return PartialView(PartialList.BriefCourseCard, cards);
     }

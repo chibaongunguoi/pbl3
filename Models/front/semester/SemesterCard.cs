@@ -2,15 +2,15 @@ using Microsoft.Data.SqlClient;
 
 class SemesterCard
 {
-    public int tableIdx { get; set; }
-    public int semester_id { get; set; }
-    public string course_name { get; set; } = "";
-    public string start_date { get; set; } = "";
-    public string finish_date { get; set; } = "";
-    public string status { get; set; } = "";
-    public string fee { get; set; } = "";
-    public int capacity { get; set; }
-    public int num_participants { get; set; }
+    public int tableIdx;
+    public int semesterId;
+    public string courseName = "";
+    public string startDate = "";
+    public string finishDate = "";
+    public string status = "";
+    public string fee = "";
+    public int capacity;
+    public int numParticipants;
 
     public static Query get_query_creator()
     {
@@ -59,16 +59,15 @@ class SemesterCard
         SemesterCard card = new()
         {
             tableIdx = tableIdx++,
-            semester_id = semester_id,
-            course_name = course_name,
-            start_date = IoUtils.conv(start_date),
-            finish_date = IoUtils.conv(finish_date),
+            semesterId = semester_id,
+            courseName = course_name,
+            startDate = IoUtils.conv(start_date),
+            finishDate = IoUtils.conv(finish_date),
             status = status,
             fee = IoUtils.conv_fee(fee),
             capacity = capacity,
-            num_participants = num_participants,
+            numParticipants = num_participants,
         };
         return card;
     }
 }
-

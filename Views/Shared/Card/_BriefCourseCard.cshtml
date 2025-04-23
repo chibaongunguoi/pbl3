@@ -3,7 +3,7 @@
     <div class="card-product-li sem-li">
         <div class="card-sem-li-content">
             <div class="card-product-img-wrapper">
-                <div class="card-sem-title">@Model.course_name</div>
+                <div class="card-sem-title">@Model.courseName</div>
             </div>
             <div class="card-sem-desc">
                 <div class="card-content">
@@ -12,7 +12,7 @@
                             Gia sư:
                         </div>
                         <div class="card-sem-item-content">
-                            @Model.tch_name
+                            @Model.tchName
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -52,7 +52,7 @@
                             Đánh giá:
                         </div>
                         <div class="card-sem-item-content">
-            @($"{Model.avg_rating}/5 ({Model.num_ratings} lượt đánh giá)")
+            @($"{Model.avgRating}/5 ({Model.numRatings} lượt đánh giá)")
                         </div>
                     </div>
                     <div class="card-sem-item">
@@ -65,8 +65,8 @@
                 </div>
             </div>
             <div class="button-group-wrapper sem-btn-group">
-                <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@(Model.course_id)'">Xem chi tiết</button>
-                <button class="card-btn choose"  onclick="window.location.href='/Course/Payment?course_id=@(Model.course_id)'">Đăng kí khóa học</button>
+                <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@(Model.courseId)'">Xem chi tiết</button>
+                <button class="card-btn choose"  onclick="window.location.href='/Course/Payment?course_id=@(Model.courseId)'">Đăng kí khóa học</button>
             </div>
         </div>
     </div>

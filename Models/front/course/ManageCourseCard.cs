@@ -2,13 +2,13 @@ using Microsoft.Data.SqlClient;
 
 class ManageCourseCard
 {
-    public int table_index;
-    public int course_id;
-    public string course_name = "";
-    public string course_state = "";
-    public string avg_rating = "";
-    public string subject = "";
-    public int grade;
+    public int table_index { get; set; }
+    public int course_id { get; set; }
+    public string course_name { get; set; } = "";
+    public string course_state { get; set; } = "";
+    public string avg_rating { get; set; } = "";
+    public string subject { get; set; } = "";
+    public int grade { get; set; }
 
     public static Query get_query_creator()
     {

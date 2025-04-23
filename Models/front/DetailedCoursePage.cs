@@ -25,7 +25,7 @@ class DetailedCoursePage
             if (course_lst.Count == 0)
                 return;
 
-            int tch_id = course_lst[0].tch_id;
+            int tch_id = course_lst[0].TchId;
 
             this.courseLst = get_course_by_id(conn, course_id);
             this.teacherLst = get_teacher_by_id(conn, tch_id);
