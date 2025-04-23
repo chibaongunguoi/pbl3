@@ -7,40 +7,8 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
 List<ManageCourseCard> cards = ((ManageCoursePage)ViewBag.Page).cards;
   }
 
-  <div id="content" class="container-fluid">
-    <div class="card">
-      <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách khóa học của tôi</div>
-        <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
-        </div>
-        <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
-        </div>
-      </form> -->
-      </div>
-
-      <div class="card-body">
-        <table class="table table-striped table-checkall">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Tên khóa học</th>
-              <th scope="col">Đánh giá</th>
-              <th scope="col">Tình trạng</th>
-              <th scope="col">Môn học</th>
-              <th scope="col">Lớp</th>
-              <th scope="col">Tác vụ</th>
-            </tr>
-          </thead>
-          <tbody>
-              @await Html.PartialAsync("List/_ManageCourseCardList", (object)cards)
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+              @await Html.PartialAsync("List/_ManageCourseCardList", (object)cards)  
+  
 <style>
   /* Làm mờ nền khi modal mở */
   .modal.show {
