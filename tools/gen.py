@@ -11,14 +11,18 @@ COURSE_RATE = 0.1
 REQUEST_RATE = 0.3
 RATING_RATE = 0.7
 
-SEM_RANGE_START = 2
-SEM_RANGE_END = 3
+SEM_RANGE_START = 3
+SEM_RANGE_END = 5
 
-SEMESTER_CAPACITIES = [10, 15, 20, 25, 30]
+SEMESTER_CAPACITIES = [i*5 for i in range(3, 13)]
 
 DURATION_RANGE_START = 150
 DURATION_RANGE_END = 240
 LATEST_START_DATE = 400
+
+num_of_students = 1500
+num_of_teachers = 300
+
 
 class nstr(str):
     pass
@@ -162,9 +166,6 @@ grades = list(range(6, 13))
 student_first_id = 1001
 teacher_first_id = 2001
 demo_user_id_prefix = 3001
-
-num_of_students = 300
-num_of_teachers = 300
 
 max_num_of_students = 1000
 max_num_of_teachers = 1000
