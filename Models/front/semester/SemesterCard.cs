@@ -34,11 +34,11 @@ class SemesterCard
     public static SemesterCard get_card(SqlDataReader reader, ref int tableIdx)
     {
         int pos = 0;
-        int semester_id = DataReader.getInt(reader, ref pos);
-        string course_name = DataReader.getStr(reader, ref pos);
-        DateOnly start_date = DataReader.getDate(reader, ref pos);
-        DateOnly finish_date = DataReader.getDate(reader, ref pos);
-        string status = DataReader.getStr(reader, ref pos);
+        int semester_id = QDataReader.GetInt(reader, ref pos);
+        string course_name = QDataReader.GetString(reader, ref pos);
+        DateOnly start_date = QDataReader.GetDateOnly(reader, ref pos);
+        DateOnly finish_date = QDataReader.GetDateOnly(reader, ref pos);
+        string status = QDataReader.GetString(reader, ref pos);
         switch (status)
         {
             case SemesterStatus.waiting:
@@ -51,9 +51,9 @@ class SemesterCard
                 status = "Đã kết thúc";
                 break;
         }
-        int fee = DataReader.getInt(reader, ref pos);
-        int capacity = DataReader.getInt(reader, ref pos);
-        int num_participants = DataReader.getInt(reader, ref pos);
+        int fee = QDataReader.GetInt(reader, ref pos);
+        int capacity = QDataReader.GetInt(reader, ref pos);
+        int num_participants = QDataReader.GetInt(reader, ref pos);
 
         SemesterCard card = new()
         {

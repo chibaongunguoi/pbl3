@@ -11,9 +11,9 @@ class Subject : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        Id = DataReader.getInt(reader, ref pos);
-        Name = DataReader.getStr(reader, ref pos);
-        Grade = DataReader.getInt(reader, ref pos);
+        Id = QDataReader.GetInt(reader, ref pos);
+        Name = QDataReader.GetString(reader, ref pos);
+        Grade = QDataReader.GetInt(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

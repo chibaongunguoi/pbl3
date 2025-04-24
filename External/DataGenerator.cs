@@ -18,7 +18,7 @@ sealed class DataGenerator
             $"SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb') AND name = '{database_name}'";
 
         string? result = null;
-        QDatabase.ExecQuery(conn, query, reader => result = DataReader.getStr(reader));
+        QDatabase.ExecQuery(conn, query, reader => result = QDataReader.GetString(reader));
         if (result != null)
             QDatabase.ExecQuery(
                 conn,

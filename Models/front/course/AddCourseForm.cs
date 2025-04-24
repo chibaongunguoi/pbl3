@@ -47,7 +47,7 @@ public class AddCourseForm
         sbj_query.Where(Field.subject__name, Subject);
         sbj_query.Where(Field.subject__grade, i_grade);
         List<Subject> subjects = new();
-        sbj_query.Select(conn, reader => subjects.Add(DataReader.getDataObj<Subject>(reader)));
+        sbj_query.Select(conn, reader => subjects.Add(QDataReader.GetDataObj<Subject>(reader)));
 
         if (subjects.Count == 0)
         {

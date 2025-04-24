@@ -16,14 +16,14 @@ sealed class Semester : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        Id = DataReader.getInt(reader, ref pos);
-        CourseId = DataReader.getInt(reader, ref pos);
-        StartDate = DataReader.getDate(reader, ref pos);
-        FinishDate = DataReader.getDate(reader, ref pos);
-        Capacity = DataReader.getInt(reader, ref pos);
-        Fee = DataReader.getInt(reader, ref pos);
-        Description = DataReader.getStr(reader, ref pos);
-        Status = DataReader.getStr(reader, ref pos);
+        Id = QDataReader.GetInt(reader, ref pos);
+        CourseId = QDataReader.GetInt(reader, ref pos);
+        StartDate = QDataReader.GetDateOnly(reader, ref pos);
+        FinishDate = QDataReader.GetDateOnly(reader, ref pos);
+        Capacity = QDataReader.GetInt(reader, ref pos);
+        Fee = QDataReader.GetInt(reader, ref pos);
+        Description = QDataReader.GetString(reader, ref pos);
+        Status = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

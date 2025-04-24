@@ -25,7 +25,7 @@ class BriefTeacherPage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.Offset(page, num_objs);
-        q.Select(conn, reader => cards.Add(DataReader.getDataObj<BriefTeacherCard>(reader)));
+        q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefTeacherCard>(reader)));
         return cards;
     }
 }

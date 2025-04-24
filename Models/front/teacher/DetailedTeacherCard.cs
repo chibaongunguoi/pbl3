@@ -22,11 +22,11 @@ class DetailedTeacherCard
     public static DetailedTeacherCard getCard(SqlDataReader reader)
     {
         int pos = 0;
-        var id = DataReader.getInt(reader, ref pos);
-        var name = DataReader.getStr(reader, ref pos);
-        var gender = DataReader.getStr(reader, ref pos);
-        var bday = DataReader.getDate(reader, ref pos);
-        var description = DataReader.getStr(reader, ref pos);
+        var id = QDataReader.GetInt(reader, ref pos);
+        var name = QDataReader.GetString(reader, ref pos);
+        var gender = QDataReader.GetString(reader, ref pos);
+        var bday = QDataReader.GetDateOnly(reader, ref pos);
+        var description = QDataReader.GetString(reader, ref pos);
         DetailedTeacherCard card = new()
         {
             id = id,

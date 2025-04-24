@@ -10,7 +10,7 @@ public class AccountUtils
             // q.Where(Field.is_admin, true);
             q.Select(conn, reader =>
             {
-                teacherId = DataReader.getInt(reader, 0);
+                teacherId = QDataReader.GetInt(reader, 0);
             });
         });
         return teacherId;

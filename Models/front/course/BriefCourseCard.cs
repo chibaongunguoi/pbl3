@@ -59,19 +59,19 @@ class BriefCourseCard : DataObj
 
     public override void fetch(SqlDataReader reader, ref int pos)
     {
-        int course_id = DataReader.getInt(reader, ref pos);
-        int semester_id = DataReader.getInt(reader, ref pos);
-        var course_name = DataReader.getStr(reader, ref pos);
-        var tch_name = DataReader.getStr(reader, ref pos);
-        var subject = DataReader.getStr(reader, ref pos);
-        var grade = DataReader.getInt(reader, ref pos);
-        var start_date = DataReader.getDate(reader, ref pos);
-        var finish_date = DataReader.getDate(reader, ref pos);
-        var capacity = DataReader.getInt(reader, ref pos);
-        var fee = DataReader.getInt(reader, ref pos);
-        var avg_rating = DataReader.getDouble(reader, ref pos);
-        int num_ratings = DataReader.getInt(reader, ref pos);
-        int num_participants = DataReader.getInt(reader, ref pos);
+        int course_id = QDataReader.GetInt(reader, ref pos);
+        int semester_id = QDataReader.GetInt(reader, ref pos);
+        var course_name = QDataReader.GetString(reader, ref pos);
+        var tch_name = QDataReader.GetString(reader, ref pos);
+        var subject = QDataReader.GetString(reader, ref pos);
+        var grade = QDataReader.GetInt(reader, ref pos);
+        var start_date = QDataReader.GetDateOnly(reader, ref pos);
+        var finish_date = QDataReader.GetDateOnly(reader, ref pos);
+        var capacity = QDataReader.GetInt(reader, ref pos);
+        var fee = QDataReader.GetInt(reader, ref pos);
+        var avg_rating = QDataReader.GetDouble(reader, ref pos);
+        int num_ratings = QDataReader.GetInt(reader, ref pos);
+        int num_participants = QDataReader.GetInt(reader, ref pos);
 
         this.courseId = course_id;
         this.courseName = course_name;

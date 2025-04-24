@@ -48,14 +48,14 @@ class ManageCourseCard
     public static ManageCourseCard GetCard(SqlDataReader reader, ref int pos, ref int current_table_index)
     {
         pos = 0;
-        int course_id = DataReader.getInt(reader, ref pos);
-        string course_name = DataReader.getStr(reader, ref pos);
-        string course_state = DataReader.getStr(reader, ref pos);
-        var subject = DataReader.getStr(reader, ref pos);
-        var grade = DataReader.getInt(reader, ref pos);
-        int semesterId = DataReader.getInt(reader, ref pos);
-        var avg_rating = DataReader.getDouble(reader, ref pos);
-        int num_ratings = DataReader.getInt(reader, ref pos);
+        int course_id = QDataReader.GetInt(reader, ref pos);
+        string course_name = QDataReader.GetString(reader, ref pos);
+        string course_state = QDataReader.GetString(reader, ref pos);
+        var subject = QDataReader.GetString(reader, ref pos);
+        var grade = QDataReader.GetInt(reader, ref pos);
+        int semesterId = QDataReader.GetInt(reader, ref pos);
+        var avg_rating = QDataReader.GetDouble(reader, ref pos);
+        int num_ratings = QDataReader.GetInt(reader, ref pos);
 
         string s_avg_rating = $"{Math.Round(avg_rating, 1)}/5 ({num_ratings})";
 
@@ -113,8 +113,8 @@ class ManageCourseCard
     public static ManageCourseCard getStudentCourseCard(SqlDataReader reader, ref int pos, ref int current_table_index)
     {
         ManageCourseCard card = GetCard(reader, ref pos, ref current_table_index);
-        card.stars = reader.IsDBNull(pos) ? 0 : DataReader.getInt(reader, ref pos);
-        card.comment = reader.IsDBNull(pos) ? "" : DataReader.getStr(reader, ref pos);
+        card.stars = reader.IsDBNull(pos) ? 0 : QDataReader.GetInt(reader, ref pos);
+        card.comment = reader.IsDBNull(pos) ? "" : QDataReader.GetString(reader, ref pos);
         return card;
     }
 }

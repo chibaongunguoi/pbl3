@@ -17,7 +17,7 @@ static class GeneralQuery
             Query course_ids_query = q;
             course_ids_query.Output(Field.semester__course_id);
             List<int> course_ids = new();
-            course_ids_query.Select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
+            course_ids_query.Select(conn, reader => course_ids.Add(QDataReader.GetInt(reader)));
 
             Query update_semester_query = q;
             update_semester_query.Set(Field.semester__status, SemesterStatus.started);
@@ -40,7 +40,7 @@ static class GeneralQuery
             Query course_ids_query = q;
             course_ids_query.Output(Field.semester__course_id);
             List<int> course_ids = new();
-            course_ids_query.Select(conn, reader => course_ids.Add(DataReader.getInt(reader)));
+            course_ids_query.Select(conn, reader => course_ids.Add(QDataReader.GetInt(reader)));
 
             Query update_semester_query = q;
             update_semester_query.Set(Field.semester__status, SemesterStatus.finished);

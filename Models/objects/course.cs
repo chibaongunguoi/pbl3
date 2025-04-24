@@ -13,11 +13,11 @@ sealed class Course : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        Id = DataReader.getInt(reader, ref pos);
-        TchId = DataReader.getInt(reader, ref pos);
-        SbjId = DataReader.getInt(reader, ref pos);
-        Name = DataReader.getStr(reader, ref pos);
-        Status = DataReader.getStr(reader, ref pos);
+        Id = QDataReader.GetInt(reader, ref pos);
+        TchId = QDataReader.GetInt(reader, ref pos);
+        SbjId = QDataReader.GetInt(reader, ref pos);
+        Name = QDataReader.GetString(reader, ref pos);
+        Status = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

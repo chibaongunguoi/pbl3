@@ -12,11 +12,11 @@ sealed class Rating : DataObj
     // ========================================================================
     public override void fetch(SqlDataReader reader, ref int pos)
     {
-        StuId = DataReader.getInt(reader, ref pos);
-        SemesterId = DataReader.getInt(reader, ref pos);
-        Timestamp = DataReader.getDateTime(reader, ref pos);
-        Stars = DataReader.getInt(reader, ref pos);
-        Description = DataReader.getStr(reader, ref pos);
+        StuId = QDataReader.GetInt(reader, ref pos);
+        SemesterId = QDataReader.GetInt(reader, ref pos);
+        Timestamp = QDataReader.GetDateTime(reader, ref pos);
+        Stars = QDataReader.GetInt(reader, ref pos);
+        Description = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

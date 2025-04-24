@@ -2,48 +2,48 @@ using Microsoft.Data.SqlClient;
 
 // INFO: Tập hợp các hàm dùng để tạo đối tượng từ một SqlDataReader.
 // Cần xác định pos là chỉ số cột bắt đầu để đọc dữ liệu.
-sealed class DataReader
+sealed class QDataReader
 {
     // ========================================================================
-    public static int getInt(SqlDataReader reader, ref int pos)
+    public static int GetInt(SqlDataReader reader, ref int pos)
     {
         return reader.GetInt32(pos++);
     }
 
-    public static int getInt(SqlDataReader reader, int pos = 0)
+    public static int GetInt(SqlDataReader reader, int pos = 0)
     {
-        return getInt(reader, ref pos);
+        return GetInt(reader, ref pos);
     }
 
-    public static double getDouble(SqlDataReader reader, ref int pos)
+    public static double GetDouble(SqlDataReader reader, ref int pos)
     {
         return reader.GetDouble(pos++);
     }
 
-    public static double getDouble(SqlDataReader reader, int pos = 0)
+    public static double GetDouble(SqlDataReader reader, int pos = 0)
     {
-        return getDouble(reader, ref pos);
+        return GetDouble(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------
-    public static string getStr(SqlDataReader reader, int pos = 0)
+    public static string GetString(SqlDataReader reader, int pos = 0)
     {
         return reader.GetString(pos++);
     }
 
-    public static string getStr(SqlDataReader reader, ref int pos)
+    public static string GetString(SqlDataReader reader, ref int pos)
     {
         return reader.GetString(pos++);
     }
 
     // ------------------------------------------------------------------------
-    public static DateOnly getDate(SqlDataReader reader, ref int pos)
+    public static DateOnly GetDateOnly(SqlDataReader reader, ref int pos)
     {
         DateTime d = reader.GetDateTime(pos++);
         return new(d.Year, d.Month, d.Day);
     }
 
-    public static DateTime getDateTime(SqlDataReader reader, ref int pos)
+    public static DateTime GetDateTime(SqlDataReader reader, ref int pos)
     {
         DateTime d = reader.GetDateTime(pos++);
         return d;
@@ -57,7 +57,7 @@ sealed class DataReader
     // }
 
     // ========================================================================
-    public static T getDataObj<T>(SqlDataReader reader, ref int pos)
+    public static T GetDataObj<T>(SqlDataReader reader, ref int pos)
         where T : DataObj, new()
     {
         T info = new T();
@@ -65,10 +65,10 @@ sealed class DataReader
         return info;
     }
 
-    public static T getDataObj<T>(SqlDataReader reader, int pos = 0)
+    public static T GetDataObj<T>(SqlDataReader reader, int pos = 0)
         where T : DataObj, new()
     {
-        return getDataObj<T>(reader, ref pos);
+        return GetDataObj<T>(reader, ref pos);
     }
 
     // ========================================================================

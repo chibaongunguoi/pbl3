@@ -10,7 +10,7 @@ class BriefTeacherCard : DataObj
 
     public override void fetch(SqlDataReader reader, ref int pos)
     {
-        Teacher teacher = DataReader.getDataObj<Teacher>(reader, ref pos);
+        Teacher teacher = QDataReader.GetDataObj<Teacher>(reader, ref pos);
         this.id = teacher.Id;
         this.name = teacher.Name;
         this.gender = IoUtils.convGender(teacher.Gender);

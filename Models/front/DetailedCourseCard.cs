@@ -14,7 +14,7 @@ class DetailedCourseCard : BriefCourseCard
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        this.description = DataReader.getStr(reader, ref pos);
+        this.description = QDataReader.GetString(reader, ref pos);
     }
 }
 

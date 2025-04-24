@@ -65,7 +65,7 @@ sealed class AccountQuery<T>
             Query q = new(table);
             q.Where(Fld.username, username);
             q.Where(Fld.password, password);
-            q.Select(conn, reader => result.Add(DataReader.getDataObj<T>(reader)));
+            q.Select(conn, reader => result.Add(QDataReader.GetDataObj<T>(reader)));
             return result;
         }
         if (string.IsNullOrEmpty(table))

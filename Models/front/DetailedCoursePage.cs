@@ -53,7 +53,7 @@ class DetailedCoursePage
                     int pos = 0;
                     for (int i = 1; i <= 5; i++)
                     {
-                        int count = DataReader.getInt(reader, pos++);
+                        int count = QDataReader.GetInt(reader, pos++);
                         rating_counts.Add(i, count);
                     }
                 }
@@ -84,7 +84,7 @@ class DetailedCoursePage
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.Where(Field.teacher__id, tch_id);
-        q.Select(conn, reader => cards.Add(DataReader.getDataObj<BriefTeacherCard>(reader)));
+        q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefTeacherCard>(reader)));
         return cards;
     }
 
@@ -93,7 +93,7 @@ class DetailedCoursePage
         List<DetailedCourseCard> cards = new();
         Query q = DetailedCourseCard.getQueryCreator();
         q.Where(Field.course__id, id);
-        q.Select(conn, reader => cards.Add(DataReader.getDataObj<DetailedCourseCard>(reader)));
+        q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<DetailedCourseCard>(reader)));
         return cards;
     }
 }

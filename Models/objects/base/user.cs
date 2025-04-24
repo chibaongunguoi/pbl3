@@ -13,10 +13,10 @@ class User : Account
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        Name = DataReader.getStr(reader, ref pos);
-        Gender = DataReader.getStr(reader, ref pos);
-        Bday = DataReader.getDate(reader, ref pos);
-        Tel = DataReader.getStr(reader, ref pos);
+        Name = QDataReader.GetString(reader, ref pos);
+        Gender = QDataReader.GetString(reader, ref pos);
+        Bday = QDataReader.GetDateOnly(reader, ref pos);
+        Tel = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

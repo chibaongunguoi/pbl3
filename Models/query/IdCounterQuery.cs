@@ -22,8 +22,8 @@ sealed class IdCounterQuery
         void func(SqlDataReader reader)
         {
             int pos = 0;
-            count = DataReader.getInt(reader, ref pos);
-            max_count = DataReader.getInt(reader, ref pos);
+            count = QDataReader.GetInt(reader, ref pos);
+            max_count = QDataReader.GetInt(reader, ref pos);
         }
 
         Query q = new(Tbl.id_counter);

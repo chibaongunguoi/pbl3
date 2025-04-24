@@ -32,8 +32,8 @@ static class CourseQuery
             delegate(SqlDataReader reader)
             {
                 int pos = 0;
-                temp_avg_rating = DataReader.getDouble(reader, pos++);
-                temp_num_ratings = DataReader.getInt(reader, pos++);
+                temp_avg_rating = QDataReader.GetDouble(reader, pos++);
+                temp_num_ratings = QDataReader.GetInt(reader, pos++);
             }
         );
         avg_rating = temp_avg_rating;

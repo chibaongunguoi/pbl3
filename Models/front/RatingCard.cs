@@ -25,12 +25,12 @@ struct RatingCard
     public static RatingCard get_card(SqlConnection conn, SqlDataReader reader)
     {
         int pos = 0;
-        string name = DataReader.getStr(reader, ref pos);
-        int score = DataReader.getInt(reader, ref pos);
-        DateTime date = DataReader.getDateTime(reader, ref pos);
-        DateOnly start_date = DataReader.getDate(reader, ref pos);
-        DateOnly finish_date = DataReader.getDate(reader, ref pos);
-        string descrip = DataReader.getStr(reader, ref pos);
+        string name = QDataReader.GetString(reader, ref pos);
+        int score = QDataReader.GetInt(reader, ref pos);
+        DateTime date = QDataReader.GetDateTime(reader, ref pos);
+        DateOnly start_date = QDataReader.GetDateOnly(reader, ref pos);
+        DateOnly finish_date = QDataReader.GetDateOnly(reader, ref pos);
+        string descrip = QDataReader.GetString(reader, ref pos);
 
         RatingCard ra = new()
         {

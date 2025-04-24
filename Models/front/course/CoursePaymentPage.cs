@@ -35,16 +35,16 @@ class CoursePaymentPage
             q.Select(conn, delegate (SqlDataReader reader)
             {
                 int pos = 0;
-                teacherName = DataReader.getStr(reader, ref pos);
-                var fee = DataReader.getInt(reader, ref pos);
+                teacherName = QDataReader.GetString(reader, ref pos);
+                var fee = QDataReader.GetInt(reader, ref pos);
                 this.fee = IoUtils.conv_fee(fee);
-                courseName = DataReader.getStr(reader, ref pos);
-                this.semesterId = DataReader.getInt(reader, ref pos);
+                courseName = QDataReader.GetString(reader, ref pos);
+                this.semesterId = QDataReader.GetInt(reader, ref pos);
             });
 
             q2.Select(conn, delegate (SqlDataReader reader)
             {
-                studentName = DataReader.getStr(reader);
+                studentName = QDataReader.GetString(reader);
             });
         }
 

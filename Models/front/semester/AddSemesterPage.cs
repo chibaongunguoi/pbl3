@@ -15,8 +15,8 @@ class CourseOption : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        id = DataReader.getInt(reader, ref pos);
-        string course_name = DataReader.getStr(reader, ref pos);
+        id = QDataReader.GetInt(reader, ref pos);
+        string course_name = QDataReader.GetString(reader, ref pos);
         name = $"{id} - {course_name}";
     }
 }
@@ -35,7 +35,7 @@ class AddSemesterPage
                 q.Where(Field.course__tch_id, tch_id);
                 q.Select(
                     conn,
-                    reader => this.courses.Add(DataReader.getDataObj<CourseOption>(reader))
+                    reader => this.courses.Add(QDataReader.GetDataObj<CourseOption>(reader))
                 );
             }
         );

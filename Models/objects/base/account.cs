@@ -11,9 +11,9 @@ class Account : DataObj
     public override void fetch(SqlDataReader reader, ref int pos)
     {
         base.fetch(reader, ref pos);
-        Id = DataReader.getInt(reader, ref pos);
-        Password = DataReader.getStr(reader, ref pos);
-        Username = DataReader.getStr(reader, ref pos);
+        Id = QDataReader.GetInt(reader, ref pos);
+        Password = QDataReader.GetString(reader, ref pos);
+        Username = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

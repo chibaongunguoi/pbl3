@@ -18,7 +18,7 @@ class DetailedTeacherPage
                 Query q = new(Tbl.course);
                 q.Where(Field.course__tch_id, tchId);
                 q.Output(QPiece.countAll);
-                q.Select(conn, reader => maxPageNum = DataReader.getInt(reader));
+                q.Select(conn, reader => maxPageNum = QDataReader.GetInt(reader));
                 Query q1 = DetailedTeacherCard.getQueryCreator();
                 q1.Where(Field.teacher__id, tchId);
                 q1.Select(conn, reader => teacherCard.Add(DetailedTeacherCard.getCard(reader)));
@@ -38,7 +38,7 @@ class DetailedTeacherPage
         Query q = BriefCourseCard.getQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.Offset(currentPage, numObjs);
-        q.Select(conn, reader => cards.Add(DataReader.getDataObj<BriefCourseCard>(reader)));
+        q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefCourseCard>(reader)));
         return cards;
     }
 }

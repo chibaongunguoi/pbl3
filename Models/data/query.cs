@@ -373,7 +373,7 @@ class Query
         QDatabase.ExecQuery(
             conn,
             SelectQuery(),
-            reader => results.Add(DataReader.getDataObj<T>(reader))
+            reader => results.Add(QDataReader.GetDataObj<T>(reader))
         );
         return results;
     }
