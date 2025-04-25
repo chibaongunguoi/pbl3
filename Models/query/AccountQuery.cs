@@ -23,16 +23,18 @@ sealed class AccountQuery<T>
     // ------------------------------------------------------------------------
     // INFO: Tìm kiếm trên tất cả các bảng tài khoản.
     // Khi có kết quả thì dừng việc tìm kiếm.
-    public static void any(QueryFunction f, out List<T> result, ref string outTable)
+    public static void any(QueryFunction f, ref List<T> result, ref string outTable)
     {
-        result = new();
+        outTable = "";
+        result.Clear();
         foreach (var table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
         {
             result = f(table);
             if (result.Count > 0)
             {
                 outTable = table;
-                break;
+                Console.WriteLine($"Found {result.Count} records in table {table}");
+                return;
             }
         }
     }
@@ -44,9 +46,9 @@ sealed class AccountQuery<T>
     }
 
     // ========================================================================
-    public static void get_account_by_id(SqlConnection conn, int id, out List<T> result, ref string outTable)
+    public static void get_account_by_id(SqlConnection conn, int id, ref List<T> result, ref string outTable)
     {
-        any(table => CommonQuery<T>.get_record_by_id(conn, table, id), out result, ref outTable);
+        any(table => CommonQuery<T>.get_record_by_id(conn, table, id), ref result, ref outTable);
     }
 
     // ------------------------------------------------------------------------
@@ -54,27 +56,17 @@ sealed class AccountQuery<T>
         SqlConnection conn,
         string username,
         string password,
-        out List<T> result,
-        ref string outTable,
-        string? table = null
+        ref List<T> result,
+        ref string outTable
     )
     {
-        List<T> func(string table)
-        {
-            List<T> result = new();
+        any(table => {
+            List<T> result = [];
             Query q = new(table);
             q.Where(Fld.username, username);
             q.Where(Fld.password, password);
-            q.Select(conn, reader => result.Add(QDataReader.GetDataObj<T>(reader)));
-            return result;
-        }
-        if (string.IsNullOrEmpty(table))
-        {
-            any(func, out result, ref outTable);
-            return;
-        }
-
-        result = func(table);
+            return q.Select<T>(conn);
+        }, ref result, ref outTable);
     }
 
     // ========================================================================

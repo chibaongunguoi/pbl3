@@ -91,6 +91,7 @@ public class AuthController : BaseController
     [HttpPost]
     public async Task<IActionResult> store(LoginForm form)
     {
+        Console.WriteLine("Yeah");
         List<Account> query_result = new();
         string table = "";
         QDatabase.Exec(conn =>
@@ -98,7 +99,7 @@ public class AuthController : BaseController
                 conn,
                 form.Username,
                 form.Password,
-                out query_result,
+                ref query_result,
                 ref table
             )
         );

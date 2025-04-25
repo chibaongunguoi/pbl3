@@ -20,7 +20,7 @@ DURATION_RANGE_START = 150
 DURATION_RANGE_END = 240
 LATEST_START_DATE = 400
 
-num_of_students = 1500
+num_of_students = 900
 num_of_teachers = 300
 
 
