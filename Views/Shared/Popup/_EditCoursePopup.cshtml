@@ -1,0 +1,73 @@
+<div class="modal modal fade" id="EditCourseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Chỉnh Sửa Thông Tin Khóa Học</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="pt-add-form">
+        <form action="add_semester" id="pt-add" enctype="multipart/form-data" method="POST">
+          <div class="pt-add-form-item">
+            <div class="pt-add-label">
+              <label for="cat">
+                <div class="required-icon">*</div>Ngày bắt đầu
+              </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+              <input class="input cb" type="date" name="StartDate"value="2025-05-06">
+            </div>
+            <div class="pt-add-label">
+              <label for="cat">
+                <div class="required-icon">*</div>Ngày kết thúc
+              </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-class-wrapper">
+              <input class="input cb" type="date" name="FinishDate"value="2026-05-06">
+            </div>
+          </div>
+          <div class="pt-add-form-item">
+            <div class="pt-add-label">
+              <label for="">
+                <div class="required-icon">*</div>Số học viên đối đa
+              </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+              <input class="pt-add-form-input pt-name-input" type="number" name="Capacity" placeholder="Nhập vào"
+                maxlength="150" value="50">
+            </div>
+          </div>
+          <div class="pt-add-form-item">
+            <div class="pt-add-label">
+              <label for="">
+                <div class="required-icon">*</div>Học phí
+              </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+              <input class="pt-add-form-input pt-add-price-input" type="number" name="Fee" placeholder="Nhập vào"
+                maxlength="150" value="10000000">
+              <div class="money-detail">₫</div>
+            </div>
+          </div>
+          <div class="pt-add-form-item">
+            <div class="pt-add-label">
+              <label for="description">
+                <div class="required-icon">*</div>Mô tả khóa học
+              </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+              <textarea class="pt-add-form-input detail-input" name="Description" id="description" >bla bla</textarea>
+            </div>
+          </div>
+          <div class="pt-add-btn-group">
+            <button class="hl-btn"><span>Xác nhận</span></button>
+          </div>
+        </form>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</div>

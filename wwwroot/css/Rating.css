@@ -182,3 +182,10 @@
   align-items: center;
   justify-content: flex-end;
 }
+
+.modal.show {
+  backdrop-filter: blur(5px);
+  /* Hiệu ứng blur */
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Làm tối nền nhẹ */
+}
