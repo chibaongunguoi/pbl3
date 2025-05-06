@@ -4,11 +4,15 @@ class ManageCoursePage
 {
     public List<ManageCourseCard> cards = new();
 
-    public static ManageCoursePage get_by_tch_id(int tch_id, int page_idx = 1, int num_objs = 20)
+    public static ManageCoursePage GetByTeacherUsername(string username, int page_idx = 1, int num_objs = 20)
     {
+        Query tchIdQ = new(Tbl.teacher);
+        tchIdQ.Where(Field.teacher__username, username);
+        tchIdQ.Output(Field.teacher__id);
+
         ManageCoursePage page = new();
         Query q = ManageCourseCard.GetQueryCreator();
-        q.Where(Field.course__tch_id, tch_id);
+        q.WhereQuery(Field.course__tch_id, tchIdQ.SelectQuery());
         q.Offset(page_idx, num_objs);
 
         QDatabase.Exec(

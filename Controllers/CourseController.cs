@@ -60,22 +60,12 @@ public class CourseController : BaseController
     public IActionResult Manage()
     {
         var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int? tch_id = null;
+        var username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 
         switch (userRole)
         {
-            case UserRole.Teacher:
-                tch_id = int.Parse(userId ?? "0");
-                break;
-            case UserRole.Admin:
-                tch_id = 2001;
-                break;
-        }
-        switch (userRole)
-        {
             case UserRole.Teacher or UserRole.Admin:
-                ManageCoursePage page = ManageCoursePage.get_by_tch_id(tch_id ?? 0);
+                ManageCoursePage page = ManageCoursePage.GetByTeacherUsername(username);
                 ViewBag.page = page;
                 return View();
 

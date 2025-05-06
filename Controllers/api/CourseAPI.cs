@@ -33,12 +33,12 @@ public class CourseAPI : BaseController
     }
 
     [HttpGet("StudentCourse")]
-    public IActionResult StudentCourse(int stuId)
+    public IActionResult StudentCourse(string username)
     {
-        List<ManageCourseCard> cards = new();
+        List<ManageCourseCard> cards = [];
         int tableIdx = 1;
         int pos = 0;
-        Query q = ManageCourseCard.GetStudentCourseQueryCreator(stuId);
+        Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
         QDatabase.Exec(conn =>
             q.Select(
                 conn,

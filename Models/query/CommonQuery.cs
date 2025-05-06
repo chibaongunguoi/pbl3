@@ -14,7 +14,7 @@ class CommonQuery<T>
         Query q = new(table);
         q.Where($"[{table}].[{Fld.id}]", id);
         var temp = q.Select<T>(conn);
-        if (temp.Any())
+        if (temp.Count > 0)
         {
             return temp[0];
         }

@@ -16,6 +16,11 @@ class JoinQuery
         joins.Add(QPiece.eqField(QPiece.dot(field_1, alias_), QPiece.dot(field_2, alias_2)));
     }
 
+    public void AddQuery(string field_1, string query, string? alias_1 = null)
+    {
+        joins.Add($"{QPiece.dot(field_1, alias_1)} = ({query})");
+    }
+
     public void Add<T>(string field_1, T value)
     {
         joins.Add(QPiece.eq(QPiece.dot(field_1, alias_), value));

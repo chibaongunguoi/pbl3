@@ -88,23 +88,32 @@ class ManageCourseCard
         return card;
     }
 
-    public static Query GetStudentCourseQueryCreator(int stuId)
+    public static Query GetStudentCourseQueryCreator(string username)
     {
         Query q = GetQueryCreator(stuMode: true);
 
         Query q2 = new(Tbl.request, "R");
-        q2.Where(Field.request__stu_id, stuId, "R");
+
         q2.OrderBy(Field.request__semester_id, desc: true, "R");
         q2.OutputTop(Field.request__semester_id, 1, "R");
 
+        q2.Join(Field.student__id, Field.request__stu_id, "STU", "R");
+        q2.WhereField(Field.student__username, username, "STU");
+
         q2.Join(Field.semester__id, Field.request__semester_id, "S", "R");
         q2.WhereField(Field.semester__course_id, Field.course__id, "S");
+
         q.WhereQuery(Field.semester__id, q2.SelectQuery());
+
+        Query stuIdQ = new(Tbl.student, "STU");
+        stuIdQ.Output(Field.student__id, "STU");
+        stuIdQ.WhereField(Field.student__username, username, "STU");
 
         JoinQuery j = new(Tbl.rating);
         j.AddField(Field.rating__semester_id, Field.semester__id);
-        j.Add(Field.rating__stu_id, stuId);
+        j.AddQuery(Field.rating__stu_id, stuIdQ.SelectQuery());
         q.JoinClause(j.LeftJoin());
+
         q.Output(Field.rating__stars);
         q.Output(Field.rating__description);
         return q;

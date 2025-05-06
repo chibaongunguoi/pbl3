@@ -5,16 +5,16 @@
 @{
     Layout = "Manage/_StudentCourseManageLayout";
     var user = HttpContextAccessor.HttpContext?.User;
-    int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
+    string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 }
 
 
 @section StudentCourseManageScripts {
     <script>
         $('.api-content').html("");
-        $.get("/courseAPI/StudentCourse", {stuId: @stuId})
-        .done(function(data){
-            $('.api-content').html(data);
-        })
+        $.get("/courseAPI/StudentCourse", { username: @username})
+            .done(function (data) {
+                $('.api-content').html(data);
+            })
     </script>
 }
