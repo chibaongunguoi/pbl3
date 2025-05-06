@@ -1,7 +1,4 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace REPO.Controllers;
 
@@ -24,12 +21,13 @@ public class CourseAPI : BaseController
     [HttpGet("TeacherProfile")]
     public IActionResult TeacherProfile(int currentPage)
     {
+        int numObjs = 20;
         int? tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
         List<BriefCourseCard> cards = new();
         Query q = BriefCourseCard.getQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.OrderBy(Field.semester__id, desc: true);
-        q.Offset(currentPage, 20);
+        q.Offset(currentPage, numObjs);
         QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
         return PartialView(PartialList.BriefCourseCard, cards);
     }
@@ -41,7 +39,14 @@ public class CourseAPI : BaseController
         int tableIdx = 1;
         int pos = 0;
         Query q = ManageCourseCard.GetStudentCourseQueryCreator(stuId);
-        QDatabase.Exec(conn => q.Select(conn, reader => cards.Add(ManageCourseCard.getStudentCourseCard(reader, ref pos, ref tableIdx))));
+        QDatabase.Exec(conn =>
+            q.Select(
+                conn,
+                reader =>
+                    cards.Add(ManageCourseCard.getStudentCourseCard(reader, ref pos, ref tableIdx))
+            )
+        );
         return PartialView(PartialList.ManageCourseCard, cards);
     }
 }
+

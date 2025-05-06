@@ -1,3 +1,5 @@
+@model StudentSignUpForm
+
 <div class="auth-content-wrapper">
     <div class="auth-wrapper container">
         <div class="auth-content">
@@ -5,58 +7,42 @@
                 Đăng ký
             </div>
             <div class="auth-form-wrapper">
-                <form action="submit_sign_up" class="login-form" method="POST">
+                <form asp-action="SignUp" class="login-form" method="POST">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="auth-input-wrapper">
-                        <input name="Name" type="text" placeholder='Họ và tên' class="auth-input" />
+                        <input asp-for="Name" placeholder='Họ và tên' class="auth-input" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-              @{
-              if (SessionForm.errors.ContainsKey(ErrorKey.name_empty))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.name_empty]</div>
-              }
-              }
                     <div class="auth-input-wrapper">
                         <div class="auth-label">Giới tính</div>
                         <div class="auth-radio-wapper"> 
                             <label class="auth-label-radio">
                                 Nam
-
-                                <input value="male" name="Gender" type="radio" class="auth-radio" checked/>
-
+                                <input value="male" asp-for="Gender" type="radio" class="auth-radio" checked/>
                             </label>
                             <label class="auth-label-radio">
                                 Nữ
-                                <input value="female" name="Gender" type="radio" class="auth-radio" />
+                                <input value="female" asp-for="Gender" type="radio" class="auth-radio" />
                             </label>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
                         </div>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                     <div class="auth-input-wrapper">
                         <div class="auth-label">Ngày sinh</div>
-                        <input name="Bday" type="date" placeholder='Ngày sinh' class="auth-input" />
-                    </div>
-              @{
-              if (SessionForm.errors.ContainsKey(ErrorKey.bday_empty))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.bday_empty]</div>
-              }
-              } 
-                    <div class="auth-input-wrapper">
-                        <input name="Tel" type="number" placeholder='Số điện thoại' class="auth-input" onwheel="this.blur()" />
+                        <input asp-for="Bday" placeholder='Ngày sinh' class="auth-input" />
+                        <span asp-validation-for="Bday" class="text-danger"></span>
                     </div>
                     <div class="auth-input-wrapper">
-                        <input name="Username" type="text" placeholder='Tên đăng nhập' class="auth-input" />
+                        <input asp-for="Tel" type="number" placeholder='Số điện thoại' class="auth-input" onwheel="this.blur()" />
+                        <span asp-validation-for="Tel" class="text-danger"></span>
                     </div>
-              @{
-              if (SessionForm.errors.ContainsKey(ErrorKey.username_empty))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.username_empty]</div>
-              } else if (SessionForm.errors.ContainsKey(ErrorKey.username_taken))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.username_taken]</div>
-              }
-              }               
                     <div class="auth-input-wrapper">
-                        <input name="Password" type="password" placeholder='Mật khẩu' class="auth-input" />
+                        <input asp-for="Username" placeholder='Tên đăng nhập' class="auth-input" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <input asp-for="Password" placeholder='Mật khẩu' class="auth-input" />
                         <div class="hide-show-icon-wrapper">
                             <div class="eye-icon-wrapper" >
                                 <svg class="eye-icon eye-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%" >
@@ -74,22 +60,12 @@
                                 </svg>        
                             </div>
                         </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-              @{
-              if (SessionForm.errors.ContainsKey(ErrorKey.password_empty))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.password_empty]</div>
-              }
-              }
                     <div class="auth-input-wrapper">
-                        <input name="PasswordConfirm" type="password" placeholder='Xác nhận mật khẩu' class="auth-input" />
+                        <input asp-for="PasswordConfirm" placeholder='Xác nhận mật khẩu' class="auth-input" />
+                        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
                     </div>
-              @{
-              if (SessionForm.errors.ContainsKey(ErrorKey.password_mismatch))
-              {
-                  <div style="color: red;">@SessionForm.errors[ErrorKey.password_mismatch]</div>
-              }
-              }
                     @* <div class="auth-forget-password-wrapper">
                         <a href='' class="auth-forget-password">
                             Quên mật khẩu?
@@ -104,12 +80,6 @@
                 Bạn đã có tài khoản?
                 <a href="/Auth/Login" class="auth-other-link">Đăng nhập</a>
             </div>
-          @{
-            if (SessionForm.errors.ContainsKey(ErrorKey.run_out_of_id))
-            {
-            <div style="color: red;">@SessionForm.errors[ErrorKey.run_out_of_id]</div>
-            }
-         }       
         </div>
     </div>
 </div>

@@ -5,26 +5,22 @@
 
 @inject IHttpContextAccessor HttpContextAccessor
 
+@functions {
+    string? GetDisplayRole(string? userRole)
+    {
+        return userRole switch
+        {
+            UserRole.Teacher => "Gia sư",
+            UserRole.Student => "Học viên",
+            UserRole.Admin => "Quản trị viên",
+            _ => null
+        };
+    }
+}
+
 @{
     var user = HttpContextAccessor.HttpContext?.User;
     string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
-    string? display_role = null;
-    string? display_name = user?.FindFirst(ClaimTypes.Name)?.Value;
-
-    switch (user_role)
-    {
-        case UserRole.Teacher:
-            display_role = "Gia sư";
-            break;
-
-        case UserRole.Student:
-            display_role = "Học viên";
-            break;
-
-        case UserRole.Admin:
-            display_role = "Quản trị viên";
-            break;
-    }
 }
 
 <head>
@@ -70,10 +66,10 @@
                         <div class="nav-item ">
                             <a id="user-info" class="text-dark user-link">
                                 <div class="user-role">
-                                    @display_role
+                                    @GetDisplayRole(user_role)
                                 </div>
                                 <div class="user-name">
-                                    @display_name
+                                    @await Component.InvokeAsync("UserName")
                                 </div>
                                 <div class="user-icon down-arrow">
                                     <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
@@ -106,7 +102,7 @@
                         <div class="nav-item ">
                             <a id="user-info" class="text-dark user-link">
                                 <div class="user-role">
-                                    @display_role
+                                    @GetDisplayRole(user_role)
                                 </div>
                                 <div class="user-icon down-arrow">
                                     <svg width="10" height="10" viewBox="0 0 13 12" fill="none"

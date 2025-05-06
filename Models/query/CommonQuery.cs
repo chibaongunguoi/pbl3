@@ -8,26 +8,18 @@ class CommonQuery
 class CommonQuery<T>
     where T : DataObj, new()
 {
-    // ========================================================================
-    public static List<T> get_all_records(SqlConnection conn, string table)
-    {
-        Query q = new(table);
-        return q.Select<T>(conn);
-    }
-
     // ------------------------------------------------------------------------
-    public static List<T> get_record_by_id(SqlConnection conn, string table, int id)
+    public static T? GetRecordById(SqlConnection conn, string table, int id)
     {
         Query q = new(table);
         q.Where($"[{table}].[{Fld.id}]", id);
-        return q.Select<T>(conn);
-    }
+        var temp = q.Select<T>(conn);
+        if (temp.Any())
+        {
+            return temp[0];
+        }
 
-    // ------------------------------------------------------------------------
-    public static void insert_record(SqlConnection conn, T obj, string table)
-    {
-        Query q = new(table);
-        q.Insert<T>(conn, obj);
+        return null;
     }
 
     // ========================================================================

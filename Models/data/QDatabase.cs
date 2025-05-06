@@ -32,6 +32,7 @@ sealed class QDatabase
     // ========================================================================
     // INFO: Delegate cho các hàm nhận conn làm tham số.
     public delegate void ConnFunction(SqlConnection conn);
+    public delegate T ConnFunction<T>(SqlConnection conn);
 
     // ========================================================================
     // INFO: Tạo mới conn và truyền conn vào ConnFunction, sau đó ngắt kết nối.
@@ -40,16 +41,30 @@ sealed class QDatabase
         string conn_string = server_only ? server_only_conn_string : default_conn_string;
         try
         {
-            using (SqlConnection conn = new SqlConnection(conn_string))
-            {
-                conn.Open();
-                conn_function(conn); // khả năng thì nó nhận một biểu thức lambda và thực thi một phương thức truy vấn nào đó...
-            }
+            using SqlConnection conn = new SqlConnection(conn_string);
+            conn.Open();
+            conn_function(conn);
         }
         catch (SqlException e)
         {
             Console.WriteLine(e.ToString());
         }
+    }
+
+    public static T Exec<T>(ConnFunction<T> conn_function, bool server_only = false)
+    {
+        string conn_string = server_only ? server_only_conn_string : default_conn_string;
+        try
+        {
+            using SqlConnection conn = new (conn_string);
+            conn.Open();
+            return conn_function(conn);
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        return default!;
     }
 
     // ========================================================================

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace REPO.Controllers;
 
@@ -8,7 +6,6 @@ namespace REPO.Controllers;
 public class RatingAPI : BaseController
 {
     [HttpGet("DetailedCoursePage")]
-    [Authorize]
     public IActionResult detailedCoursePage(int currentPage)
     {
         int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
@@ -16,7 +13,7 @@ public class RatingAPI : BaseController
         {
             return PartialView(PartialList.RatingCard, new List<RatingCard>());
         }
-        
+
         // Verify course exists
         bool courseExists = false;
         QDatabase.Exec(conn =>
@@ -25,7 +22,7 @@ public class RatingAPI : BaseController
             q.Where(Field.course__id, courseId);
             courseExists = q.Count(conn) > 0;
         });
-        
+
         if (!courseExists)
         {
             return PartialView(PartialList.RatingCard, new List<RatingCard>());

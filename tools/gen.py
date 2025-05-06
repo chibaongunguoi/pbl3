@@ -191,8 +191,15 @@ TEACHER_BIRTHDAY_END = "2003-12-31"
 
 def generate_gender_name():
     while True:
+        result = []
         gender = random.choice(genders)
         surname = random.choice(surnames)
+        result.append(surname)
+
+        if random.random() > 0.5:
+            surname_2 = random.choice(surnames)
+            result.append(surname_2)
+
         if gender == "male":
             name_1 = random.choice(male_first_names)
             name_2 = random.choice(male_first_names)
@@ -200,7 +207,9 @@ def generate_gender_name():
             name_1 = random.choice(female_first_names + ["Thị"])
             name_2 = random.choice(female_first_names)
 
-        name = " ".join([surname, name_1, name_2])
+        result.append(name_1)
+        result.append(name_2)
+        name = " ".join(result)
         yield gender, name
 
 
