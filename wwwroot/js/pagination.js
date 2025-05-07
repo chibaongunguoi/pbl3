@@ -1,5 +1,15 @@
-function getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar) {
-    const sentData = { ...paginationInfo, ...filterForm, contextUrl: contextUrl, contextComponent: contextComponent }
+function getPagination(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null) {
+    if (paginationBar == null)
+        return
+
+    let sentData = { contextUrl: contextUrl, contextComponent: contextComponent }
+    if (paginationInfo !=null)
+    {
+        sentData = {...sentData, ...paginationInfo}
+    }
+    if (filterForm != null) {
+        sentData = { ...sentData, ...filterForm }
+    }
     $.get(`${contextUrl}/Pagination`, sentData)
         .done(function (data) {
             $(paginationBar).html(data);
@@ -10,11 +20,20 @@ function getPagination(paginationInfo, contextUrl, contextComponent, filterForm,
         });
 }
 
-function getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm) {
+function getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm=null) {
     $(contextComponent).html(
         '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
     )
-    const sentData = { ...paginationInfo, ...filterForm }
+    let sentData = {}
+    if (paginationInfo !=null)
+    {
+        sentData = {...sentData, ...paginationInfo}
+    }
+
+    if (filterForm != null) {
+        sentData = { ...sentData, ...filterForm }
+    }
+
     $.get(contextUrl, sentData)
         .done(function (data) {
             $(contextComponent).html(data);
@@ -24,7 +43,7 @@ function getPaginationData(paginationInfo, contextUrl, contextComponent, filterF
         });
 }
 
-function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar) {
+function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null) {
     const PaginationLinks = document.querySelectorAll('.page-link');
     PaginationLinks.forEach((link) => {
         const new_link = link.cloneNode(true);
@@ -38,17 +57,17 @@ function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, fi
 }
 
 
-function initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, paginationForm = null) {
+function initPagination(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null, paginationForm = null) {
     getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
     getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
-
     if (paginationForm != null) {
         const formContainer = document.querySelector(paginationForm);
         const form = formContainer.querySelector('form');
         form.addEventListener('submit', function (event) {
             event.preventDefault()
             const filterForm = Object.fromEntries(new FormData(form).entries())
-            paginationInfo["CurrentPage"] = 1;
+            if (paginationInfo != null)
+                paginationInfo["CurrentPage"] = 1;
             initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, null)
         });
     }

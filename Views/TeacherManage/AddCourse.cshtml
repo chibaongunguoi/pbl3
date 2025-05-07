@@ -1,0 +1,121 @@
+@model AddCourseForm
+
+@{
+    Layout = "_ManageLayout"; // Sử dụng layout admin
+
+}
+
+<div class="pt-add-content-wrapper">
+    <div class="pt-add-content">
+        <div class="pt-add-title">Thông tin khóa học</div>
+        <div class="pt-add-form">
+            <!-- <form id="pt-add" action="AddCourse" enctype="multipart/form-data" method="POST"> -->
+            <form id="pt-add" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="CourseName">
+                            <div class="required-icon">*</div>Tên khóa học
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-name-input" type="text" asp-for="CourseName" placeholder="Nhập vào" maxlength="150">
+                    </div>
+                    <span asp-validation-for="CourseName" class="text-danger"></span>
+                </div>
+
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Subject">
+                            <div class="required-icon">*</div>Môn học
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                        <select class=" input cb" asp-for="Subject">
+                            <option value="">Chọn khóa học</option>
+                            <option value="Toán">Toán</option>
+                            <option value="Ngữ Văn">Ngữ Văn</option>
+                            <option value="Tiếng Anh">Tiếng Anh</option>
+                            <option value="Vật lí">Vật lí</option>
+                        </select>
+                    </div>
+                     <div class="pt-add-label">
+                        <label for="cat">
+                            <div class="required-icon">*</div>Lớp
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-class-wrapper">
+                        <select class=" input cb" asp-for="Grade">
+                             <option value="">Chọn lớp</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+                </div>
+
+                <span asp-validation-for="Subject" class="text-danger"></span>
+                <span asp-validation-for="Grade" class="text-danger"></span>
+
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="StartDate">
+                            <div class="required-icon">*</div>Ngày bắt đầu
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                       <input class="input cb" asp-for="StartDate">
+                    </div>
+                     <div class="pt-add-label">
+                        <label asp-for="FinishDate">
+                            <div class="required-icon">*</div>Ngày kết thúc
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-class-wrapper">
+                        <input class="input cb" asp-for="FinishDate">
+                    </div>
+                </div>
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Capacity">
+                            <div class="required-icon">*</div>Số học viên tối đa
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào" maxlength="150" >
+                    </div>
+                </div>
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Fee">
+                            <div class="required-icon">*</div>Học phí
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào" maxlength="150" value="">
+                        <div class="money-detail">₫</div>
+                    </div>
+                </div>
+                <span asp-validation-for="Fee" class="text-danger"></span>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Description">
+                            <div class="required-icon">*</div>Mô tả khóa học
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <textarea class="pt-add-form-input detail-input" asp-for="Description" id="description"></textarea>
+                    </div>
+                </div>  
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="pt-add-btn-group">
+                    <button class="hl-btn"><span>Xác nhận</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

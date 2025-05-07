@@ -28,27 +28,13 @@ public class CourseController : BaseController
     [Authorize]
     public IActionResult Manage()
     {
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-
-        switch (userRole)
+        string role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+        return role switch
         {
-            case UserRole.Teacher or UserRole.Admin:
-                ManageCoursePage page = ManageCoursePage.GetByTeacherUsername(username);
-                ViewBag.page = page;
-                return View();
-
-            case UserRole.Student:
-                return Redirect("/Student/Course");
-        }
-
-        return Redirect("/");
-    }
-
-    [Authorize(Roles = "Teacher,Admin")]
-    public IActionResult Add()
-    {
-        return View();
+            UserRole.Student => Redirect("/Student/Course"),
+            UserRole.Teacher => Redirect("/TeacherManage/ManageCourse"),
+            _ => Redirect("/"),
+        };
     }
 
     [Authorize(Roles = UserRole.Student)]
@@ -85,30 +71,5 @@ public class CourseController : BaseController
             q.Insert(conn, request);
         });
         return RedirectToAction(nameof(Detail), new { courseId = courseId });
-    }
-
-    [Authorize(Roles = "Teacher,Admin")]
-    [HttpPost]
-    public IActionResult add_course(AddCourseForm form)
-    {
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int? tch_id = null;
-
-        switch (userRole)
-        {
-            case UserRole.Teacher:
-                tch_id = int.Parse(userId ?? "0");
-                break;
-            case UserRole.Admin:
-                tch_id = AccountUtils.getAdminTeacherId();
-                break;
-        }
-
-        AddCourseForm.Log log = form.execute(tch_id ?? 0);
-        if (!log.success)
-            return RedirectToAction("Add");
-
-        return Redirect($"Detail/?course_id={log.course_id}");
     }
 }

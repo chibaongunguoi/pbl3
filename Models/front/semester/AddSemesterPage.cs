@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-class CourseOption : DataObj
+public class CourseOption : DataObj
 {
     public int id;
     public string name = "";
@@ -27,18 +27,5 @@ class AddSemesterPage
 
     public AddSemesterPage(string username)
     {
-        QDatabase.Exec(
-            delegate(SqlConnection conn)
-            {
-                Query q = CourseOption.get_query_creator();
-                q.Join(Field.teacher__id, Field.course__tch_id);
-                q.Where(Field.course__status, CourseStatus.finished);
-                q.Where(Field.teacher__username, username);
-                q.Select(
-                    conn,
-                    reader => this.courses.Add(QDataReader.GetDataObj<CourseOption>(reader))
-                );
-            }
-        );
     }
 }

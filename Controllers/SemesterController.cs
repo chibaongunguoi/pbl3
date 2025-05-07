@@ -30,31 +30,31 @@ public class SemesterController : BaseController
         return View();
     }
 
-    [Authorize(Roles = "Teacher,Admin")]
-    [HttpPost]
-    public IActionResult add_semester(AddSemesterForm form)
-    {
-        form.print_log();
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int? tch_id = null;
+    // [Authorize(Roles = "Teacher,Admin")]
+    // [HttpPost]
+    // public IActionResult add_semester(AddSemesterForm form)
+    // {
+        // form.print_log();
+        // var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // int? tch_id = null;
         
-        switch (userRole)
-        {
-            case UserRole.Teacher:
-                tch_id = int.Parse(userId ?? "0");
-                break;
-            case UserRole.Admin:
-                tch_id = AccountUtils.getAdminTeacherId();
-                break;
-        }
+        // switch (userRole)
+        // {
+        //     case UserRole.Teacher:
+        //         tch_id = int.Parse(userId ?? "0");
+        //         break;
+        //     case UserRole.Admin:
+        //         tch_id = AccountUtils.getAdminTeacherId();
+        //         break;
+        // }
         
-        if (tch_id is null)
-            return RedirectToAction("Add");
-        AddSemesterFormLog log = form.execute();
-        if (!log.Success)
-            return RedirectToAction("Add");
+        // if (tch_id is null)
+        //     return RedirectToAction("Add");
+        // AddSemesterFormLog log = form.execute();
+        // if (!log.Success)
+        //     return RedirectToAction("Add");
 
-        return Redirect($"/Course/Detail?course_id={form.CourseId}");
-    }
+        // return Redirect($"/Course/Detail?course_id={form.CourseId}");
+    // }
 }

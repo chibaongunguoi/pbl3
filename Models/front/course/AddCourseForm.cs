@@ -1,112 +1,100 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using System.ComponentModel.DataAnnotations;
 
 public class AddCourseForm
 {
-    public class Log
-    {
-        public Dictionary<string, string> errors = new();
-        public int? course_id = null;
-        public int? semester_id = null;
+    [Required(ErrorMessage = "Tên khóa học không được để trống")]
+    public string? CourseName { get; set; } = null;
 
-        public bool success => errors.Count == 0;
-    }
+    [Required(ErrorMessage = "Tên môn học không được để trống")]
+    public string? Subject { get; set; } = null;
 
-    public required string CourseName { get; set; }
-    public required string Subject { get; set; }
-    public required string Grade { get; set; }
+    [Required(ErrorMessage = "Khối lớp không được để trống")]
+    public int? Grade { get; set; } = null;
+
+    [Required(ErrorMessage = "Ngày bắt đầu không được để trống")]
+    [DataType(DataType.Date)]
     public DateOnly? StartDate { get; set; }
+
+    [Required(ErrorMessage = "Ngày kết thúc không được để trống")]
+    [DataType(DataType.Date)]
     public DateOnly? FinishDate { get; set; }
-    public int Capacity { get; set; }
-    public int Fee { get; set; }
-    public required string Description { get; set; }
 
-    public Log execute(SqlConnection conn, int tch_id)
+    [Required(ErrorMessage = "Số lượng học viên không được để trống")]
+    public int? Capacity { get; set; }
+
+    [Required(ErrorMessage = "Học phí không được để trống")]
+    public int? Fee { get; set; }
+    public string? Description { get; set; }
+
+    public void Execute(SqlConnection conn, ModelStateDictionary dict, string username, out Course? course, out Semester? semester)
     {
-        Log log = new();
-        int i_grade;
-        if (!int.TryParse(Grade, out i_grade))
-        {
-            log.errors[ErrorKey.grade_invalid] = "Khối lớp không hợp lệ";
-        }
-        Checking.check_start_finish_dates(ref log.errors, StartDate, FinishDate);
-
-        if (!log.success)
-            return log;
-
-        // Start querying
-
-        Query q = new(Tbl.teacher);
-        int c = q.Count(conn);
-        if (c == 0)
-        {
-            log.errors[ErrorKey.tch_id_not_exist] = "Gia sư không tồn tại";
-            return log;
-        }
+        course = null;
+        semester = null;
+        DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
         Query sbj_query = new(Tbl.subject);
-        sbj_query.Where(Field.subject__name, Subject);
-        sbj_query.Where(Field.subject__grade, i_grade);
-        List<Subject> subjects = new();
-        sbj_query.Select(conn, reader => subjects.Add(QDataReader.GetDataObj<Subject>(reader)));
+        sbj_query.Where(Field.subject__name, Subject ?? "");
+        sbj_query.Where(Field.subject__grade, Grade);
 
+        List<Subject> subjects = [];
+        sbj_query.Select(conn, reader => subjects.Add(QDataReader.GetDataObj<Subject>(reader)));
         if (subjects.Count == 0)
         {
-            log.errors[ErrorKey.subject_invalid] = "Không tồn tại môn học";
-            return log;
+            dict.AddModelError(nameof(Subject), "Môn học không tồn tại");
+            return;
         }
 
+        List<Teacher> teachers = [];
+        Query tch_query = new(Tbl.teacher);
+        tch_query.Where(Field.teacher__username, username);
+        tch_query.Select(conn, reader => teachers.Add(QDataReader.GetDataObj<Teacher>(reader)));
+        if (teachers.Count == 0)
+            return;
+
+        int tch_id = teachers[0].Id;
         int sbj_id = subjects[0].Id;
-        int course_id,
-            semester_id;
 
         if (
-            !IdCounterQuery.get_count(conn, Tbl.course, out course_id)
-            || !IdCounterQuery.get_count(conn, Tbl.semester, out semester_id)
+            !IdCounterQuery.get_count(conn, Tbl.course, out int course_id)
+            || !IdCounterQuery.get_count(conn, Tbl.semester, out int semester_id)
         )
         {
-            log.errors[ErrorKey.run_out_of_id] =
-                "Đã đạt đến giới hạn số lượng khóa học hoặc kì học";
-            return log;
+            dict.AddModelError(nameof(CourseName), "Không thể tạo khóa học mới");
+            return;
         }
+
         IdCounterQuery.increment(conn, Tbl.course, out course_id);
         IdCounterQuery.increment(conn, Tbl.semester, out semester_id);
-        Course course = new()
+        course = new()
         {
             Id = course_id,
             TchId = tch_id,
             SbjId = sbj_id,
-            Name = CourseName,
+            Name = CourseName ?? "",
             Status = CourseStatus.waiting,
         };
 
-        Semester semester = new()
+        semester = new()
         {
             Id = semester_id,
             CourseId = course_id,
             StartDate = StartDate ?? new(),
             FinishDate = FinishDate ?? new(),
-            Capacity = Capacity,
-            Fee = Fee,
-            Description = Description,
+            Capacity = Capacity ?? 0,
+            Fee = Fee ?? 0,
+            Description = Description ?? "",
             Status = SemesterStatus.waiting,
         };
 
         Query q1 = new(Tbl.course);
-        q1.Insert(conn, string.Join(", ", course.ToList()));
+        q1.Insert(conn, course);
         q1 = new(Tbl.semester);
-        q1.Insert(conn, string.Join(", ", semester.ToList()));
-
-        log.course_id = course_id;
-        log.semester_id = semester_id;
-        return log;
+        q1.Insert(conn, semester);
     }
 
-    public Log execute(int tch_id)
-    {
-        Log log = new();
-        QDatabase.Exec(conn => log = execute(conn, tch_id));
-        return log;
-    }
 
     public void print_log()
     {

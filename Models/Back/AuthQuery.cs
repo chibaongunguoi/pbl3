@@ -5,11 +5,6 @@ static class AuthQuery
 {
     public static void Login(SqlConnection conn, LoginForm form, ref Account? account, ref string table, ref string role)
     {
-
-        Account? accountResult = null;
-        string tableResult = "";
-        string roleResult = "";
-
         foreach (string tableName in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
         {
             Query q = new(tableName);
@@ -18,31 +13,27 @@ static class AuthQuery
             var queryResult = q.Select<Account>(conn);
             if (queryResult.Count > 0)
             {
-                accountResult = queryResult[0];
-                tableResult = tableName;
+                account = queryResult[0];
+                table = tableName;
                 break;
             }
         }
 
-        switch (tableResult)
+        switch (table)
         {
             case Tbl.student:
-                roleResult = UserRole.Student;
+                role = UserRole.Student;
                 break;
             case Tbl.teacher:
-                roleResult = UserRole.Teacher;
+                role = UserRole.Teacher;
                 break;
             case Tbl.admin:
-                roleResult = UserRole.Admin;
+                role = UserRole.Admin;
                 break;
         }
-
-        account = accountResult;
-        table = tableResult;
-        role = roleResult;
     }
 
-    public static void SignUp(SqlConnection conn, ref ModelStateDictionary modelState, StudentSignUpForm form, ref Account? account)
+    public static void SignUp(SqlConnection conn, ModelStateDictionary modelState, StudentSignUpForm form, ref Account? account)
     {
         if (string.IsNullOrEmpty(form.Name))
         {
@@ -64,5 +55,26 @@ static class AuthQuery
             modelState.AddModelError(nameof(form.Username), "Tên đăng nhập đã tồn tại");
             return;
         }
+
+        if (!IdCounterQuery.increment(conn, Tbl.student, out int id))
+        {
+            modelState.AddModelError(string.Empty, "Đã đạt giới hạn số lượng học viên");
+            return;
+        }
+
+        Student student = new()
+        {
+            Id = id,
+            Username = form.Username,
+            Password = form.Password,
+            Name = form.Name,
+            Gender = form.Gender,
+            Bday = form.Bday ?? new(),
+            Tel = form.Tel,
+        };
+        Query q1 = new(Tbl.student);
+        q1.Insert(conn, string.Join(", ", student.ToList()));
+
+        account = student;
     }
 }

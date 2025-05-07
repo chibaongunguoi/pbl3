@@ -42,7 +42,7 @@ class JoinQuery
     }
 }
 
-class Query
+public class Query
 {
     // ========================================================================
     protected string? table = null;

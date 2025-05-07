@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-sealed class Semester : DataObj
+public sealed class Semester : DataObj
 {
     // ========================================================================
     public int Id { get; set; }

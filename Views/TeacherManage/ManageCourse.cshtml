@@ -1,0 +1,15 @@
+@using System.Text.Json
+
+@{
+  Layout = "_ManageLayout"; // Sử dụng layout admin
+}
+
+<div class="pagination-list"></div>
+
+
+@section ManageLayoutScripts {
+  <script src="~/js/pagination.js" asp-append-version="true"></script>
+  <script>
+    initPagination(null, "/TeacherManageAPI/ManageCourse", ".pagination-list")
+  </script>
+}

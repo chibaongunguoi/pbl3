@@ -84,27 +84,18 @@ public class AuthController : BaseController
         if (!ModelState.IsValid)
             return View(form);
 
-        StudentSignUpForm.Log log = form.execute();
-        if (!log.success)
+        Account? account = null;
+        QDatabase.Exec(conn => AuthQuery.SignUp(conn, ModelState, form, ref account));
+
+        if (account is null)
         {
-            SessionForm.displaying_error = true;
-            SessionForm.errors = log.errors;
-            return Redirect("SignUp");
+            return View(form);
         }
-
-        int studentId = log.stu_id ?? 0;
-        string username = "";
-
-        QDatabase.Exec(conn =>
-        {
-            User? user = CommonQuery<User>.GetRecordById(conn, Tbl.student, studentId);
-            username = user?.Username ?? "";
-        });
 
         var claims = new List<Claim>
         {
             new (ClaimTypes.Role, UserRole.Student),
-            new (ClaimTypes.Name, username),
+            new (ClaimTypes.Name, account?.Username ?? string.Empty),
         };
 
         var claimsIdentity = new ClaimsIdentity(

@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 
-sealed class QDatabase
+public sealed class QDatabase
 {
     // ========================================================================
     private static int query_counter = 0;

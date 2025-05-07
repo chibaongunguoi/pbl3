@@ -1,0 +1,93 @@
+@model AddSemesterForm
+
+@{
+  Layout = "_ManageLayout"; // Sử dụng layout admin
+}
+
+<div class="pt-add-content-wrapper">
+  <div class="pt-add-content">
+    <div class="pt-add-title">Thông tin kỳ học</div>
+    <div class="pt-add-form">
+      <form id="pt-add" enctype="multipart/form-data" method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="pt-add-form-item">
+          <div class="pt-add-label">
+            <label asp-for="CourseId">
+              <div class="required-icon">*</div>Khóa học
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper">
+            <select class="pt-add-form-input pt-course-input" id="comboBox" asp-for="CourseId">
+              <option value="">Chọn khóa học đã có sẵn</option>
+              @foreach (var course in Model.Courses)
+              {
+                <option value="@course.id">@course.name</option>
+              }
+            </select>
+          </div>
+        </div>
+        <span asp-validation-for="CourseId" class="text-danger"></span>
+
+        <div class="pt-add-form-item">
+          <div class="pt-add-label">
+            <label asp-for="StartDate">
+              <div class="required-icon">*</div>Ngày bắt đầu
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+            <input class="input cb" asp-for="StartDate">
+          </div>
+          <div class="pt-add-label">
+            <label asp-for="FinishDate">
+              <div class="required-icon">*</div>Ngày kết thúc
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper pt-add-class-wrapper">
+            <input class="input cb" asp-for="FinishDate">
+          </div>
+        </div>
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+        <span asp-validation-for="FinishDate" class="text-danger"></span>
+        <div class="pt-add-form-item">
+          <div class="pt-add-label">
+            <label asp-for="Capacity">
+              <div class="required-icon">*</div>Số học viên đối đa
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper">
+            <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào"
+              maxlength="150">
+          </div>
+        </div>
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+        <div class="pt-add-form-item">
+          <div class="pt-add-label">
+            <label asp-for="Fee">
+              <div class="required-icon">*</div>Học phí
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper">
+            <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào"
+              maxlength="150" value="">
+            <div class="money-detail">₫</div>
+          </div>
+        </div>
+        <span asp-validation-for="Fee" class="text-danger"></span>
+        <div class="pt-add-form-item">
+          <div class="pt-add-label">
+            <label asp-for="Description">
+              <div class="required-icon">*</div>Mô tả khóa học
+            </label>
+          </div>
+          <div class="pt-add-input-wrapper">
+            <textarea class="pt-add-form-input detail-input" asp-for="Description" id="description"></textarea>
+          </div>
+        </div>
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <div class="pt-add-btn-group">
+          <button class="hl-btn"><span>Xác nhận</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
