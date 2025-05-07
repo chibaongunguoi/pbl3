@@ -6,7 +6,7 @@ class DetailedCourseCard : BriefCourseCard
 
     public static new Query getQueryCreator()
     {
-        Query q = BriefCourseCard.getQueryCreator();
+        Query q = BriefCourseCard.GetQueryCreator();
         q.Output(Field.semester__description);
         return q;
     }

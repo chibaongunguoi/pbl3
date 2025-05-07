@@ -18,7 +18,6 @@ public class HomeController : BaseController
         {
             return Redirect("/Admin/Dashboard");
         }
-        ViewBag.page = new BriefTeacherPage();
-        return View();
+        return View(new BriefTeacherPage());
     }
 }

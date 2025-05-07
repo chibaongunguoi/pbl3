@@ -77,6 +77,11 @@ static class QPiece
         return $"{field} {op} {QPiece.toStr(value)}";
     }
 
+    public static string Contains(string field, string value)
+    {
+        return $"{field} LIKE N'%{value}%'";
+    }
+
     // ------------------------------------------------------------------------
     public static string inList<T>(string field, List<T> values)
     {

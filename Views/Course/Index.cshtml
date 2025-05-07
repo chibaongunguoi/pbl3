@@ -1,8 +1,9 @@
-﻿@{
+﻿@model BriefCoursePage
+@using System.Text.Json
+
+@{
   var contextUrl = "/courseAPI/BriefCoursePage";
   var contextComponent = ".brief-course-cards";
-  var p = (BriefCoursePage)ViewBag.page;
-  int maxPageNum = p.maxPageNum;
 }
 
 <div class="course-content-wrapper">
@@ -12,18 +13,20 @@
         Danh sách khóa học
       </div>
     </div>
-  <div class="card-search-wrapper">
-        @await Html.PartialAsync("_SearchSemSection")
-      </div>
-      <div class="brief-course-cards card-product-ul"> </div>
-      <div class="pagination-bar"></div>
+    <div class="card-search-wrapper">
+      @await Html.PartialAsync("_SearchSemSection", (object)Model.MBriefCourseFilter)
     </div>
+    <div class="brief-course-cards card-product-ul"> </div>
+    <div class="pagination-bar"></div>
   </div>
+</div>
 </div>
 
 @section Scripts {
-<script src="~/js/pagination.js" asp-append-version="true"></script>
-<script>
-  initPagination(1, @maxPageNum, "@contextUrl", "@contextComponent")
-</script>
+  <script src="~/js/pagination.js" asp-append-version="true"></script>
+  <script>
+    const filterForm = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefCourseFilter))
+    console.log(filterForm);
+    initPagination(@Model.MPaginationInfo.CurrentPage, @Model.MPaginationInfo.TotalPages, "@contextUrl", "@contextComponent", filterForm)
+  </script>
 }

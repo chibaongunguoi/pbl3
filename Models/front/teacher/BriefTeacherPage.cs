@@ -2,27 +2,30 @@ using Microsoft.Data.SqlClient;
 
 class BriefTeacherPage
 {
-    public int maxPageNum;
-    public BriefTeacherPage(int num_displayed_objs = 20)
+    const int NUM_DISPLAYED_OBJS = 20;
+    public PaginationInfo MPaginationInfo { get; set; } = new();
+    public BriefTeacherPage()
     {
         QDatabase.Exec(
-            delegate(SqlConnection conn)
+            conn =>
             {
                 Query q = new(Tbl.teacher);
                 int total_num = q.Count(conn);
-                this.maxPageNum = (int)Math.Ceiling((double)total_num / num_displayed_objs);
+                MPaginationInfo.TotalItems = total_num;
+                MPaginationInfo.ItemsPerPage = NUM_DISPLAYED_OBJS;
+                MPaginationInfo.CurrentPage = 1;
             }
         );
     }
 
     // ------------------------------------------------------------------------
-    public static List<BriefTeacherCard> get_page(
+    public static List<BriefTeacherCard> GetPage(
         SqlConnection conn,
         int page = 1,
         int num_objs = 20
     )
     {
-        List<BriefTeacherCard> cards = new();
+        List<BriefTeacherCard> cards = [];
         Query q = new(Tbl.teacher);
         q.Offset(page, num_objs);
         q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefTeacherCard>(reader)));

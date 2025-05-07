@@ -35,7 +35,7 @@ class DetailedTeacherPage
     )
     {
         List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.getQueryCreator();
+        Query q = BriefCourseCard.GetQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.Offset(currentPage, numObjs);
         q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefCourseCard>(reader)));

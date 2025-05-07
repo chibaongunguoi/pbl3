@@ -9,7 +9,7 @@ public class TeacherAPI : BaseController
     public IActionResult getBriefTeacherCards(int currentPage)
     {
         List<BriefTeacherCard> cards = new();
-        QDatabase.Exec(conn => cards = BriefTeacherPage.get_page(conn, currentPage));
+        QDatabase.Exec(conn => cards = BriefTeacherPage.GetPage(conn, currentPage));
         return PartialView(PartialList.BriefTeacherCard, cards);
     }
 }
