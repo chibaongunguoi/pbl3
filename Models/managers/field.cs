@@ -1,4 +1,4 @@
-public static class Tbl
+static class Tbl
 {
     public const string id_counter = "IdCounter";
     public const string admin = "Admin";
@@ -10,36 +10,35 @@ public static class Tbl
     public const string rating = "Rating";
     public const string request = "Request";
 }
-
-public static class Fld
+static class Fld
 {
-    public const string name = "name";
+    public const string stars = "stars";
+    public const string description = "description";
+    public const string capacity = "capacity";
     public const string username = "username";
     public const string bday = "bday";
-    public const string gender = "gender";
-    public const string semester_id = "semester_id";
     public const string start_date = "start_date";
-    public const string tch_id = "tch_id";
-    public const string thumbnail = "thumbnail";
-    public const string capacity = "capacity";
-    public const string fee = "fee";
     public const string id = "id";
+    public const string name = "name";
     public const string min_count = "min_count";
-    public const string status = "status";
-    public const string max_count = "max_count";
-    public const string timestamp = "timestamp";
-    public const string count = "count";
-    public const string password = "password";
-    public const string description = "description";
-    public const string grade = "grade";
-    public const string course_id = "course_id";
-    public const string sbj_id = "sbj_id";
-    public const string stu_id = "stu_id";
-    public const string stars = "stars";
+    public const string gender = "gender";
+    public const string tel = "tel";
     public const string finish_date = "finish_date";
+    public const string password = "password";
+    public const string timestamp = "timestamp";
+    public const string thumbnail = "thumbnail";
+    public const string count = "count";
+    public const string tch_id = "tch_id";
+    public const string sbj_id = "sbj_id";
+    public const string max_count = "max_count";
+    public const string stu_id = "stu_id";
+    public const string fee = "fee";
+    public const string semester_id = "semester_id";
+    public const string status = "status";
+    public const string course_id = "course_id";
+    public const string grade = "grade";
 }
-
-public static class Field
+static class Field
 {
     public const string id_counter__name = "[IdCounter].[name]";
     public const string id_counter__count = "[IdCounter].[count]";
@@ -54,12 +53,14 @@ public static class Field
     public const string student__name = "[Student].[name]";
     public const string student__gender = "[Student].[gender]";
     public const string student__bday = "[Student].[bday]";
+    public const string student__tel = "[Student].[tel]";
     public const string teacher__id = "[Teacher].[id]";
     public const string teacher__username = "[Teacher].[username]";
     public const string teacher__password = "[Teacher].[password]";
     public const string teacher__name = "[Teacher].[name]";
     public const string teacher__gender = "[Teacher].[gender]";
     public const string teacher__bday = "[Teacher].[bday]";
+    public const string teacher__tel = "[Teacher].[tel]";
     public const string teacher__thumbnail = "[Teacher].[thumbnail]";
     public const string teacher__description = "[Teacher].[description]";
     public const string subject__id = "[Subject].[id]";
@@ -88,4 +89,3 @@ public static class Field
     public const string request__timestamp = "[Request].[timestamp]";
     public const string request__status = "[Request].[status]";
 }
-
