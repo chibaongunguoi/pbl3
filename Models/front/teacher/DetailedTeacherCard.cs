@@ -6,6 +6,8 @@ class DetailedTeacherCard
     public string name = "";
     public string gender = "";
     public string bday = "";
+
+    public string Tel = "";
     public string description = "";
 
     public static Query getQueryCreator()
@@ -15,6 +17,7 @@ class DetailedTeacherCard
         q.Output(Field.teacher__name);
         q.Output(Field.teacher__gender);
         q.Output(Field.teacher__bday);
+        q.Output(Field.teacher__tel);
         q.Output(Field.teacher__description);
         return q;
     }
@@ -26,6 +29,7 @@ class DetailedTeacherCard
         var name = QDataReader.GetString(reader, ref pos);
         var gender = QDataReader.GetString(reader, ref pos);
         var bday = QDataReader.GetDateOnly(reader, ref pos);
+        var tel = QDataReader.GetString(reader, ref pos);
         var description = QDataReader.GetString(reader, ref pos);
         DetailedTeacherCard card = new()
         {
@@ -33,6 +37,7 @@ class DetailedTeacherCard
             name = name,
             gender = IoUtils.convGender(gender),
             bday = IoUtils.conv(bday),
+            Tel = tel,
             description = description,
         };
         return card;

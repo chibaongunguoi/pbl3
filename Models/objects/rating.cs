@@ -10,7 +10,7 @@ sealed class Rating : DataObj
     public string Description { get; set; } = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
         StuId = QDataReader.GetInt(reader, ref pos);
         SemesterId = QDataReader.GetInt(reader, ref pos);

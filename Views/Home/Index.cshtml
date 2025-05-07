@@ -1,5 +1,5 @@
 ﻿@model BriefTeacherPage
-
+@using System.Text.Json
 @{
     var contextComponent = ".pagination-list";
     var contextUrl = "/teacherAPI/getBriefTeacherCards";
@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="shop-section-content">
-            <div class="card-search-wrapper">
-                @await Html.PartialAsync("_SearchTeacherSection")
+            <div class="pagination-form card-search-wrapper">
+                @await Html.PartialAsync("_SearchTeacherSection", (object)@Model.MBriefTeacherFilter)
             </div>
             <div class="card-product-ul pagination-list"> </div>
             <div class="pagination-bar"></div>
@@ -24,7 +24,8 @@
 @section Scripts {
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
-        const filterForm = {}
-        initPagination(@Model.MPaginationInfo.CurrentPage, @Model.MPaginationInfo.TotalPages, "@contextUrl", "@contextComponent", filterForm)
+        const filterForm = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefTeacherFilter));
+        const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
+        initPagination(paginationInfo, "@contextUrl", "@contextComponent", filterForm, ".pagination-bar", ".pagination-form")
     </script>
 }

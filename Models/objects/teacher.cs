@@ -7,9 +7,9 @@ sealed class Teacher : User
     public string Description = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Thumbnail = QDataReader.GetString(reader, ref pos);
         Description = QDataReader.GetString(reader, ref pos);
     }

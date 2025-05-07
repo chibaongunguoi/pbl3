@@ -15,43 +15,14 @@ public class CourseController : BaseController
         _logger = logger;
     }
 
-    public IActionResult Index(BriefCourseFilterForm filter)
+    public IActionResult Index(BriefCourseFilter filter)
     {
         return View(new BriefCoursePage(filter));
     }
 
     public IActionResult Detail(int courseId)
     {
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        bool isOwner = false;
-        if (userRole is UserRole.Teacher or UserRole.Admin)
-        {
-            int? teacherId = null;
-
-            if (userRole == UserRole.Teacher)
-            {
-                teacherId = int.Parse(userId ?? "0");
-            }
-            else if (userRole == UserRole.Admin)
-            {
-                teacherId = AccountUtils.getAdminTeacherId();
-            }
-
-            QDatabase.Exec(conn =>
-            {
-                Query q = new(Tbl.course);
-                q.Where(Field.course__id, courseId);
-                q.Where(Field.teacher__id, teacherId);
-                isOwner = q.Count(conn) > 0;
-            });
-        }
-
-        DetailedCoursePage page = new(courseId);
-        ViewBag.page = page;
-        ViewBag.isOwner = isOwner;
-        return View();
+        return View(new DetailedCoursePage(courseId));
     }
 
     [Authorize]

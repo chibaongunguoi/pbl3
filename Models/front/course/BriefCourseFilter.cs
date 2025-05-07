@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 
-public class BriefCourseFilterForm
+public class BriefCourseFilter
 {
     public string? SubjectName { get; set; } = null;
     public int Grade { get; set; } = 0;

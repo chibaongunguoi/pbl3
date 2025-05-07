@@ -6,7 +6,7 @@ import json
 from datetime import datetime,date
 from typing import Any
 
-START_DATE = "2024-1-1"
+START_DATE = "2023-7-1"
 COURSE_RATE = 0.1
 REQUEST_RATE = 0.3
 RATING_RATE = 0.7

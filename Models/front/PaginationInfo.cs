@@ -1,7 +1,7 @@
-class PaginationInfo
+public class PaginationInfo
 {
-    public int TotalItems { get; set; }
-    public int ItemsPerPage { get; set; }
-    public int CurrentPage { get; set; }
-    public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
+    public int TotalItems { get; set; } = 0;
+    public int ItemsPerPage { get; set; } = 1;
+    public int CurrentPage { get; set; } = 1;
+    public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 }

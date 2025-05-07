@@ -13,7 +13,7 @@ class JoinQuery
 
     public void AddField(string field_1, string field_2, string? alias_2 = null)
     {
-        joins.Add(QPiece.eqField(QPiece.dot(field_1, alias_), QPiece.dot(field_2, alias_2)));
+        joins.Add(QPiece.EqField(QPiece.dot(field_1, alias_), QPiece.dot(field_2, alias_2)));
     }
 
     public void AddQuery(string field_1, string query, string? alias_1 = null)
@@ -23,7 +23,7 @@ class JoinQuery
 
     public void Add<T>(string field_1, T value)
     {
-        joins.Add(QPiece.eq(QPiece.dot(field_1, alias_), value));
+        joins.Add(QPiece.Eq(QPiece.dot(field_1, alias_), value));
     }
 
     private string GetOnClause()
@@ -142,12 +142,12 @@ class Query
     // ------------------------------------------------------------------------
     public void Where<T>(string field, T value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
+        WhereClause(QPiece.Eq(QPiece.dot(field, alias_), value));
     }
 
     public void Where(string field, string value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
+        WhereClause(QPiece.Eq(QPiece.dot(field, alias_), value));
     }
 
     public void WhereContains(string field, string value, string? alias_ = null)
@@ -157,7 +157,7 @@ class Query
 
     public void Where(string field, DateOnly value, string? alias_ = null)
     {
-        WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
+        WhereClause(QPiece.Eq(QPiece.dot(field, alias_), value));
     }
 
     // ------------------------------------------------------------------------
@@ -361,8 +361,7 @@ class Query
     // ------------------------------------------------------------------------
     public T Scalar<T>(SqlConnection conn)
     {
-        SqlCommand command = new SqlCommand(SelectQuery(), conn);
-        return (T)command.ExecuteScalar();
+        return QDatabase.Scalar<T>(conn, SelectQuery());
     }
 
     private int Scalar(SqlConnection conn)
@@ -401,6 +400,8 @@ class Query
 
     public int Count(SqlConnection conn)
     {
+        output_fields.Clear();
+        order_bys.Clear();
         Output(QPiece.countAll);
         return Scalar(conn);
     }

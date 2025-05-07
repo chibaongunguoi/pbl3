@@ -8,9 +8,9 @@ class Account : DataObj
     public string Password { get; set; } = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Id = QDataReader.GetInt(reader, ref pos);
         Password = QDataReader.GetString(reader, ref pos);
         Username = QDataReader.GetString(reader, ref pos);

@@ -1,3 +1,5 @@
+@model BriefTeacherFilter
+
 <form action="">
     <select class=" input cb" id="comboBox" name="subject">
         <option value="0">Chọn môn</option>
@@ -9,11 +11,11 @@
         <option value="1">6</option>
         <option value="2">7</option>
     </select>
-    <select class=" input cb" id="comboBox" name="Gender">
-        <option value="0">Giới tính</option>
-        <option value="1">Nam</option>
-        <option value="2">Nữ</option>
+    <select class=" input cb" asp-for="Gender">
+        <option value="">Gia sư</option>
+        <option value="@Gender.male">Gia sư Nam</option>
+        <option value="@Gender.female">Gia sư Nữ</option>
     </select>
-    <input class="input" type="text" id="inputText" name="inputText" placeholder="Nhập tên hoặc mã gia sư" required>
+    <input class="input" type="text" asp-for="Name" placeholder="Nhập tên hoặc mã gia sư">
     <button type="submit" class="submit-form-btn">Tìm kiếm</button>
 </form>

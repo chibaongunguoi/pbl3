@@ -10,9 +10,9 @@ class User : Account
     public string Tel {get;set; } = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Name = QDataReader.GetString(reader, ref pos);
         Gender = QDataReader.GetString(reader, ref pos);
         Bday = QDataReader.GetDateOnly(reader, ref pos);

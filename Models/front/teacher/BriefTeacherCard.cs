@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-class BriefTeacherCard : DataObj
+public class BriefTeacherCard : DataObj
 {
     public int id;
     public string name = "";
@@ -8,7 +8,7 @@ class BriefTeacherCard : DataObj
     public string bday = "";
     public string description = "";
 
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
         Teacher teacher = QDataReader.GetDataObj<Teacher>(reader, ref pos);
         this.id = teacher.Id;

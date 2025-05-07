@@ -61,7 +61,7 @@ sealed class QDataReader
         where T : DataObj, new()
     {
         T info = new T();
-        info.fetch(reader, ref pos);
+        info.Fetch(reader, ref pos);
         return info;
     }
 
