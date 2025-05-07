@@ -31,6 +31,8 @@
             }
             <button class="card-btn course-detail"
                 onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
+            <button class="card-btn course-detaile"  data-bs-toggle="modal" data-bs-target="#EditCourseModal">Chỉnh sửa</button>
+                   @await Html.PartialAsync("Popup/_EditCoursePopup")
             @if (user_role == UserRole.Student)
             {
                 int stuId = int.Parse(user?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
