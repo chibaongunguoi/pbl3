@@ -37,8 +37,22 @@
     <script>
         const sentData = {
             courseId: @Model.courseId
-        }
+                        }
         const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
-        initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", ".pagination-form")
+            initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", null)
+
+        const stars = document.querySelectorAll('.rating-choose-star');
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                stars.forEach(s => s.classList.remove('rating-choose-star-active'));
+                this.classList.add('rating-choose-star-active');
+                const sentData = {
+                    courseId: @Model.courseId,
+                    stars: this.getAttribute('data-star')
+                }
+                const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
+                    initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", null)
+            });
+        });
     </script>
 }

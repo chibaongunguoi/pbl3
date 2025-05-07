@@ -31,24 +31,25 @@ function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, fi
         link.replaceWith(new_link)
         new_link.addEventListener('click', function () {
             paginationInfo["CurrentPage"] = this.dataset.index
-            getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
-            getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
+            initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, null)
         })
     }
     )
 }
 
 
-function initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, paginationForm) {
+function initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, paginationForm = null) {
     getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
     getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
-    const formContainer = document.querySelector(paginationForm);
-    const form = formContainer.querySelector('form');
-    form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const filterForm = Object.fromEntries(new FormData(form).entries())
-        paginationInfo["CurrentPage"] = 1;
-        getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
-        getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
-    });
+
+    if (paginationForm != null) {
+        const formContainer = document.querySelector(paginationForm);
+        const form = formContainer.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault()
+            const filterForm = Object.fromEntries(new FormData(form).entries())
+            paginationInfo["CurrentPage"] = 1;
+            initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, null)
+        });
+    }
 }
