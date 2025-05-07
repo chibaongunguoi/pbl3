@@ -1,19 +1,28 @@
-<form action="">
-<select class=" input cb" id="comboBox" name="subject">
-        <option value="0">Môn học</option>
-        <option value="1">Toán học</option>
-        <option value="2">Văn học</option>
+
+@model BriefCourseFilterForm
+
+<form accept-charset="utf-8">
+    <select class=" input cb" asp-for="SubjectName">
+        <option value="">Môn học</option>
+        @foreach (var subject in Model.SubjectNames)
+        {
+            <option value="@subject">@subject</option>
+        }
     </select>
-    <select class=" input cb" id="comboBox" name="class">
+    <select class=" input cb" asp-for="Grade">
+
         <option value="0">Lớp</option>
-        <option value="1">6</option>
-        <option value="2">7</option>
+        @foreach (var grade in Model.Grades)
+        {
+            <option value="@grade">@grade</option>
+        }
     </select>
-    <select class=" input cb" id="comboBox" name="gender">
-        <option value="0">Gia sư</option>
-        <option value="1">Gia sư Nam</option>
-        <option value="2">Gia sư Nữ</option>
+
+    <select class=" input cb" asp-for="Gender">
+        <option value="">Gia sư</option>
+        <option value="@Gender.male">Gia sư Nam</option>
+        <option value="@Gender.female">Gia sư Nữ</option>
     </select>
-    <input class="input" type="text" id="inputText" name="inputText" placeholder="Nhập tên khóa học" required>
+    <input class="input" type="text" asp-for="CourseName" placeholder="Nhập tên khóa học">
     <button type="submit" class="submit-form-btn">Tìm kiếm</button>
 </form>

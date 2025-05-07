@@ -13,7 +13,7 @@ class BriefCourseCard : DataObj
     public int numRatings;
     public string fee = "";
 
-    public static Query getQueryCreator()
+    public static Query GetQueryCreator()
     {
         Query q = new(Tbl.course);
         q.Join(Field.subject__id, Field.course__sbj_id);

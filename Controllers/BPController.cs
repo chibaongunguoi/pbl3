@@ -14,14 +14,14 @@ public class BPController : Controller
     [HttpGet("GetPagination")]
     public IActionResult GetPagination(
         int currentPage,
-        int max_index_page,
-        string context_url,
-        string context_component
+        int totalPages,
+        string contextUrl,
+        string contextComponent
     )
     {
         return PartialView(
             "_PaginationAjax",
-            ValueTuple.Create(currentPage, max_index_page, context_url, context_component)
+            ValueTuple.Create(currentPage, totalPages, contextUrl, contextComponent)
         );
     }
 

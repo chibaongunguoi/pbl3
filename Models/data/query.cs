@@ -85,6 +85,11 @@ class Query
         OutputClause(QPiece.dot(field, alias));
     }
 
+    public void OutputDistinct(string field, string? alias = null)
+    {
+        OutputClause($"DISTINCT {QPiece.dot(field, alias)}");
+    }
+
     public void OutputTop(string field_, int top = 1, string? alias_ = null)
     {
         OutputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
@@ -145,6 +150,11 @@ class Query
         WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
     }
 
+    public void WhereContains(string field, string value, string? alias_ = null)
+    {
+        WhereClause(QPiece.Contains(QPiece.dot(field, alias_), value));
+    }
+
     public void Where(string field, DateOnly value, string? alias_ = null)
     {
         WhereClause(QPiece.eq(QPiece.dot(field, alias_), value));
@@ -167,7 +177,7 @@ class Query
     }
 
     // ------------------------------------------------------------------------
-    public void WhereNStr(string field, string value, string? alias_ = null)
+    public void WhereNString(string field, string value, string? alias_ = null)
     {
         WhereClause($"{QPiece.dot(field, alias_)} = N'{value}'");
     }

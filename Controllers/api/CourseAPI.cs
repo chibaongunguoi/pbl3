@@ -6,14 +6,31 @@ namespace REPO.Controllers;
 public class CourseAPI : BaseController
 {
     [HttpGet("BriefCoursePage")]
-    public IActionResult BriefCoursePage(int currentPage)
+    public IActionResult BriefCoursePage(int currentPage, BriefCourseFilterForm filterForm)
     {
         int numObjs = 20;
-        List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.getQueryCreator();
+        List<BriefCourseCard> cards = [];
+        Query q = BriefCourseCard.GetQueryCreator();
         q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         q.OrderBy(Field.semester__id, desc: true);
         q.Offset(currentPage, numObjs);
+        if (filterForm.SubjectName is not null)
+        {
+            q.WhereNString(Field.subject__name, filterForm.SubjectName);
+        }
+        if (filterForm.Grade != 0)
+        {
+            q.Where(Field.subject__grade, filterForm.Grade);
+        }
+        if (filterForm.CourseName is not null)
+        {
+            q.WhereContains(Field.course__name, filterForm.CourseName);
+        }
+
+        if (filterForm.Gender is not null)
+        {
+            q.Where(Field.teacher__gender, filterForm.Gender);
+        }
         QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
         return PartialView(PartialList.BriefCourseCard, cards);
     }
@@ -24,7 +41,7 @@ public class CourseAPI : BaseController
         int numObjs = 20;
         int? tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
         List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.getQueryCreator();
+        Query q = BriefCourseCard.GetQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.OrderBy(Field.semester__id, desc: true);
         q.Offset(currentPage, numObjs);

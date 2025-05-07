@@ -15,10 +15,9 @@ public class CourseController : BaseController
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(BriefCourseFilterForm filter)
     {
-        ViewBag.page = new BriefCoursePage();
-        return View();
+        return View(new BriefCoursePage(filter));
     }
 
     public IActionResult Detail(int courseId)
@@ -40,7 +39,6 @@ public class CourseController : BaseController
                 teacherId = AccountUtils.getAdminTeacherId();
             }
 
-            // Verify if course belongs to this teacher
             QDatabase.Exec(conn =>
             {
                 Query q = new(Tbl.course);

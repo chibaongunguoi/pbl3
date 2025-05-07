@@ -1,7 +1,8 @@
-﻿@{
+﻿@model BriefTeacherPage
+
+@{
     var contextComponent = ".pagination-list";
     var contextUrl = "/teacherAPI/getBriefTeacherCards";
-    var p = (BriefTeacherPage)ViewBag.page;
 }
 
 <div class="text-center">
@@ -23,6 +24,7 @@
 @section Scripts {
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
-        initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
+        const filterForm = {}
+        initPagination(@Model.MPaginationInfo.CurrentPage, @Model.MPaginationInfo.TotalPages, "@contextUrl", "@contextComponent", filterForm)
     </script>
 }
