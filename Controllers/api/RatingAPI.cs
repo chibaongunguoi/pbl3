@@ -5,33 +5,32 @@ namespace REPO.Controllers;
 [Route("ratingAPI")]
 public class RatingAPI : BaseController
 {
-    [HttpGet("DetailedCoursePage")]
-    public IActionResult detailedCoursePage(int currentPage)
+    private static Query DetailedCoursePageQuery(int courseId)
     {
-        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
-        if (courseId is null)
-        {
-            return PartialView(PartialList.RatingCard, new List<RatingCard>());
-        }
+        Query q = RatingCard.get_query_creator();
+        q.Where(Field.semester__course_id, courseId);
+        q.OrderBy(Field.rating__timestamp, desc: true);
+        return q;
+    }
 
-        // Verify course exists
-        bool courseExists = false;
-        QDatabase.Exec(conn =>
-        {
-            Query q = new(Tbl.course);
-            q.Where(Field.course__id, courseId);
-            courseExists = q.Count(conn) > 0;
-        });
+    [HttpGet("DetailedCoursePage")]
+    public IActionResult detailedCoursePage(PaginationInfo paginationInfo, int courseId)
+    {
+        Query q = DetailedCoursePageQuery(courseId);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
+        List<RatingCard> cards = [];
+        QDatabase.Exec(conn =>  q.Select(conn, reader => cards.Add(RatingCard.get_card(conn, reader))));
+        return PartialView(PartialList.RatingCard, cards);
+    }
 
-        if (!courseExists)
-        {
-            return PartialView(PartialList.RatingCard, new List<RatingCard>());
-        }
-
-        List<RatingCard> ratingCards = new();
-        QDatabase.Exec(conn =>
-            ratingCards = DetailedCoursePage.get_page(conn, courseId.Value, currentPage)
+    [HttpGet("DetailedCoursePage/Pagination")]
+    public IActionResult detailedCoursePagePagintation(PaginationInfo paginationInfo, int courseId, string contextUrl, string contextComponent)
+    {
+        Query q = DetailedCoursePageQuery(courseId);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
         );
-        return PartialView(PartialList.RatingCard, ratingCards);
     }
 }

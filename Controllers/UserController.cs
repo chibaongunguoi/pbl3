@@ -15,26 +15,16 @@ public class UserController : BaseController
         _logger = logger;
     }
 
+    [Authorize(Roles = UserRole.Teacher)]
     public IActionResult Profile()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var userName = User.FindFirst(ClaimTypes.Name)?.Value;
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        if (userId == null)
-            return Redirect("/Auth/Login");
-
-        ViewBag.userId = userId;
-        ViewBag.userName = userName;
-        ViewBag.userRole = userRole;
-        return View();
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        return View(new TeacherProfileEditForm(username));
     }
 
+    [Authorize]
     public IActionResult ChangePassword()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userId == null)
-            return Redirect("/Auth/Login");
-            
         return View();
     }
 }

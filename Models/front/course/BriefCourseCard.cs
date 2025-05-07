@@ -57,7 +57,7 @@ class BriefCourseCard : DataObj
         return q;
     }
 
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
         int course_id = QDataReader.GetInt(reader, ref pos);
         int semester_id = QDataReader.GetInt(reader, ref pos);

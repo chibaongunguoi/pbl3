@@ -12,12 +12,12 @@ public class HomeController : BaseController
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(BriefTeacherFilter filter)
     {
         if (User.IsInRole(UserRole.Admin))
         {
             return Redirect("/Admin/Dashboard");
         }
-        return View(new BriefTeacherPage());
+        return View(new BriefTeacherPage(filter));
     }
 }

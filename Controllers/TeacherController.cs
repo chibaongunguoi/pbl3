@@ -19,31 +19,9 @@ public class TeacherController : BaseController
         return Redirect("/");
     }
 
-    public IActionResult Profile()
+    public IActionResult Profile(int tchId, BriefCourseFilter filter)
     {
-        int? tchId = null;
-        
-        // If user is logged in, check if they are viewing their own profile
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        
-        if (userRole == UserRole.Teacher && userId != null)
-        {
-            tchId = int.Parse(userId);
-        }
-        else
-        {
-            // Otherwise use the ID from query params for public profile viewing
-            tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
-        }
-
-        if (tchId is null)
-            return RedirectToAction("Index");
-
-        DetailedTeacherPage page = new(tchId.Value);
-        ViewBag.page = page;
-        ViewBag.isOwnProfile = userRole == UserRole.Teacher && userId != null && tchId == int.Parse(userId);
-        return View();
+        return View(new DetailedTeacherPage(tchId, filter));
     }
 
     [Authorize(Roles = "Teacher")]
@@ -54,8 +32,8 @@ public class TeacherController : BaseController
             return Redirect("/Auth/Login");
             
         int teacherId = int.Parse(userId);
-        DetailedTeacherPage page = new(teacherId);
-        ViewBag.page = page;
+        // DetailedTeacherPage page = new(teacherId);
+        // ViewBag.page = page;
         return View();
     }
 }

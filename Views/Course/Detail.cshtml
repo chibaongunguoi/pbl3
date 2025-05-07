@@ -1,10 +1,5 @@
-﻿@{
-  var p = (DetailedCoursePage)ViewBag.page;
-  var teacher = p.teacherLst[0];
-  var course = p.courseLst[0];
-  var contextUrl = $"/ratingAPI/DetailedCoursePage?courseId={p.courseId}";
-  var contextComponent = ".pagination-list";
-}
+﻿@model DetailedCoursePage
+@using System.Text.Json
 
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
@@ -15,9 +10,9 @@
         </div>
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-              @await Html.PartialAsync("Card/_BriefTeacherCard", (object)teacher)
-              @await Html.PartialAsync("Card/_DetailedCourseCard", (object)course)
-            </div>         
+                @await Html.PartialAsync("Card/_BriefTeacherCard", (object?)@Model.teacher)
+                @await Html.PartialAsync("Card/_DetailedCourseCard", (object?)@Model.course)
+            </div>
         </div>
     </div>
 
@@ -27,19 +22,23 @@
                 Đánh giá khóa học
             </div>
         </div>
-        <div class="shop-section-content">
-        @await Html.PartialAsync("_RatingTable", (p.averageRating, p.numRatings, p.rating_counts))
-        <div class="rating-comment-wapper">
-        <div class="pagination-list"></div>
-        </div>
-        <div class="pagination-bar"></div>    
+        <div class="pagination-form shop-section-content">
+            @await Html.PartialAsync("_RatingTable", (@Model.averageRating, @Model.numRatings, @Model.rating_counts))
+            <div class="rating-comment-wapper">
+                <div class="pagination-list"></div>
+            </div>
+            <div class="pagination-bar"></div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-<script src="~/js/pagination.js" asp-append-version="true"></script>
-<script>
-  initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
-</script>
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
+    <script>
+        const sentData = {
+            courseId: @Model.courseId
+        }
+        const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
+        initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", ".pagination-form")
+    </script>
 }

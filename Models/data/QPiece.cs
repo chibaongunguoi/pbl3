@@ -52,27 +52,27 @@ static class QPiece
     public static string allFieldsOf(string table) => $"[{table}].*";
 
     // ------------------------------------------------------------------------
-    public static string eq<T>(string field, T value, string op = "=")
+    public static string Eq<T>(string field, T value, string op = "=")
     {
         return $"{field} {op} {value}";
     }
 
-    public static string eq(string field, string value, string op = "=")
+    public static string Eq(string field, string value, string op = "=")
     {
         return $"{field} {op} '{value}'";
     }
 
-    public static string eqField(string field, string value, string op = "=")
+    public static string EqField(string field, string value, string op = "=")
     {
         return $"{field} {op} {value}";
     }
 
-    public static string eq(string field, DateOnly value, string op = "=")
+    public static string Eq(string field, DateOnly value, string op = "=")
     {
         return $"{field} {op} {QPiece.toStr(value)}";
     }
 
-    public static string eq(string field, DateTime value, string op = "=")
+    public static string Eq(string field, DateTime value, string op = "=")
     {
         return $"{field} {op} {QPiece.toStr(value)}";
     }

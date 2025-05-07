@@ -10,9 +10,9 @@ sealed class Course : DataObj
     public string Status { get; set; } = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Id = QDataReader.GetInt(reader, ref pos);
         TchId = QDataReader.GetInt(reader, ref pos);
         SbjId = QDataReader.GetInt(reader, ref pos);

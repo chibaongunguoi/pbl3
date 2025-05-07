@@ -2,39 +2,39 @@ using Microsoft.Data.SqlClient;
 
 class DetailedTeacherPage
 {
-    public int tchId;
-    public int maxPageNum = 0;
-    public List<DetailedTeacherCard> teacherCard = new();
-    public List<BriefCourseCard> courses = new();
+    public PaginationInfo MPaginationInfo = new() { ItemsPerPage = 20 };
+    public DetailedTeacherCard? teacherCard = null;
+    public BriefCourseFilter MBriefCourseFilter = new();
 
-    public bool success => teacherCard.Count > 0;
-
-    public DetailedTeacherPage(int tchId, int numObjs = 20)
+    public DetailedTeacherPage(int tchId, BriefCourseFilter filter)
     {
-        this.tchId = tchId;
         QDatabase.Exec(
-            delegate(SqlConnection conn)
+            conn =>
             {
                 Query q = new(Tbl.course);
                 q.Where(Field.course__tch_id, tchId);
                 q.Output(QPiece.countAll);
-                q.Select(conn, reader => maxPageNum = QDataReader.GetInt(reader));
+                q.Select(conn, reader => MPaginationInfo.TotalItems = QDataReader.GetInt(reader));
+
                 Query q1 = DetailedTeacherCard.getQueryCreator();
                 q1.Where(Field.teacher__id, tchId);
-                q1.Select(conn, reader => teacherCard.Add(DetailedTeacherCard.getCard(reader)));
-                this.courses = getCourses(conn, tchId, 1, numObjs);
+                q1.Select(conn, reader => teacherCard = DetailedTeacherCard.getCard(reader));
+
+                filter.Reset(conn);
             }
         );
+
+        MBriefCourseFilter = filter;
     }
 
-    public static List<BriefCourseCard> getCourses(
+    public static List<BriefCourseCard> GetCourses(
         SqlConnection conn,
         int tchId,
         int currentPage,
         int numObjs = 20
     )
     {
-        List<BriefCourseCard> cards = new();
+        List<BriefCourseCard> cards = [];
         Query q = BriefCourseCard.GetQueryCreator();
         q.Where(Field.teacher__id, tchId);
         q.Offset(currentPage, numObjs);

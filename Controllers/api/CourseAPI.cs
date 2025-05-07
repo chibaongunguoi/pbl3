@@ -5,48 +5,72 @@ namespace REPO.Controllers;
 [Route("courseAPI")]
 public class CourseAPI : BaseController
 {
-    [HttpGet("BriefCoursePage")]
-    public IActionResult BriefCoursePage(int currentPage, BriefCourseFilterForm filterForm)
+    private static Query BriefCoursePageQuery(BriefCourseFilter filter)
     {
-        int numObjs = 20;
-        List<BriefCourseCard> cards = [];
         Query q = BriefCourseCard.GetQueryCreator();
         q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         q.OrderBy(Field.semester__id, desc: true);
-        q.Offset(currentPage, numObjs);
-        if (filterForm.SubjectName is not null)
+        if (filter.SubjectName is not null)
         {
-            q.WhereNString(Field.subject__name, filterForm.SubjectName);
+            q.WhereNString(Field.subject__name, filter.SubjectName);
         }
-        if (filterForm.Grade != 0)
+        if (filter.Grade != 0)
         {
-            q.Where(Field.subject__grade, filterForm.Grade);
+            q.Where(Field.subject__grade, filter.Grade);
         }
-        if (filterForm.CourseName is not null)
+        if (filter.CourseName is not null)
         {
-            q.WhereContains(Field.course__name, filterForm.CourseName);
+            q.WhereContains(Field.course__name, filter.CourseName);
         }
 
-        if (filterForm.Gender is not null)
+        if (filter.Gender is not null)
         {
-            q.Where(Field.teacher__gender, filterForm.Gender);
+            q.Where(Field.teacher__gender, filter.Gender);
         }
+        return q;
+    }
+
+    [HttpGet("BriefCoursePage")]
+    public IActionResult BriefCoursePage(PaginationInfo paginationInfo, BriefCourseFilter filter)
+    {
+        List<BriefCourseCard> cards = [];
+        Query q = BriefCoursePageQuery(filter);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
         return PartialView(PartialList.BriefCourseCard, cards);
     }
 
-    [HttpGet("TeacherProfile")]
-    public IActionResult TeacherProfile(int currentPage)
+    [HttpGet("BriefCoursePage/Pagination")]
+    public IActionResult BriefCoursePagePagination(PaginationInfo paginationInfo, BriefCourseFilter filter, string contextUrl, string contextComponent)
     {
-        int numObjs = 20;
-        int? tchId = UrlQuery.getInt(Request.Query, UrlKey.tchId);
-        List<BriefCourseCard> cards = new();
-        Query q = BriefCourseCard.GetQueryCreator();
+        QDatabase.Exec(conn => paginationInfo.TotalItems = BriefCoursePageQuery(filter).Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
+    }
+
+    [HttpGet("TeacherProfile")]
+    public IActionResult TeacherProfile(PaginationInfo paginationInfo, BriefCourseFilter filter, int tchId)
+    {
+        Query q = BriefCoursePageQuery(filter);
         q.Where(Field.teacher__id, tchId);
-        q.OrderBy(Field.semester__id, desc: true);
-        q.Offset(currentPage, numObjs);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
+        List<BriefCourseCard> cards = [];
         QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
         return PartialView(PartialList.BriefCourseCard, cards);
+    }
+
+    [HttpGet("TeacherProfile/Pagination")]
+    public IActionResult TeacherProfilePagination(PaginationInfo paginationInfo, BriefCourseFilter filter, int tchId, string contextUrl, string contextComponent)
+    {
+        Query q = BriefCoursePageQuery(filter);
+        q.Where(Field.teacher__id, tchId);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
     }
 
     [HttpGet("StudentCourse")]

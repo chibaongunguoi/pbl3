@@ -3,17 +3,13 @@ using Microsoft.Data.SqlClient;
 class DetailedCoursePage
 {
     public int courseId;
-    public List<BriefTeacherCard> teacherLst = new();
-    public List<DetailedCourseCard> courseLst = new();
-
-    public int maxPageNum;
+    public BriefTeacherCard? teacher = null;
+    public DetailedCourseCard? course = null;
     public double averageRating;
     public int numRatings;
     public Dictionary<int, int> rating_counts = new();
-
-    public bool invalid => teacherLst.Count == 0 || courseLst.Count == 0;
-
-    public DetailedCoursePage(int course_id, int num_objs = 10)
+    public PaginationInfo MPaginationInfo = new() { ItemsPerPage = 10 };
+    public DetailedCoursePage(int course_id)
     {
         this.courseId = course_id;
         void func(SqlConnection conn)
@@ -27,14 +23,13 @@ class DetailedCoursePage
 
             int tch_id = course_lst[0].TchId;
 
-            this.courseLst = get_course_by_id(conn, course_id);
-            this.teacherLst = get_teacher_by_id(conn, tch_id);
+            course = get_course_by_id(conn, course_id);
+            teacher = get_teacher_by_id(conn, tch_id);
 
             q = new(Tbl.rating);
             q.Join(Field.semester__id, Field.rating__semester_id);
             q.Where(Field.semester__course_id, course_id);
             int count = q.Count(conn);
-            this.maxPageNum = (int)Math.Ceiling((double)count / num_objs);
 
             Query rating_counts_q = new();
             for (int i = 1; i <= 5; i++)
@@ -59,41 +54,24 @@ class DetailedCoursePage
                 }
             );
         }
-        // thay thees delegate(SqlConnection conn);
         QDatabase.Exec(func);
     }
 
-    public static List<RatingCard> get_page(
-        SqlConnection conn,
-        int courseId,
-        int page = 1,
-        int num_objs = 10
-    )
-    {
-        List<RatingCard> cards = new();
-        Query q = RatingCard.get_query_creator();
-        q.Where(Field.semester__course_id, courseId);
-        q.OrderBy(Field.rating__timestamp, desc: true);
-        q.Offset(page, num_objs);
-        q.Select(conn, reader => cards.Add(RatingCard.get_card(conn, reader)));
-        return cards;
-    }
-
-    public static List<BriefTeacherCard> get_teacher_by_id(SqlConnection conn, int tch_id)
+    public static BriefTeacherCard? get_teacher_by_id(SqlConnection conn, int tch_id)
     {
         List<BriefTeacherCard> cards = new();
         Query q = new(Tbl.teacher);
         q.Where(Field.teacher__id, tch_id);
         q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<BriefTeacherCard>(reader)));
-        return cards;
+        return cards.Count > 0 ? cards[0] : null;
     }
 
-    public static List<DetailedCourseCard> get_course_by_id(SqlConnection conn, int id)
+    public static DetailedCourseCard? get_course_by_id(SqlConnection conn, int id)
     {
-        List<DetailedCourseCard> cards = new();
+        List<DetailedCourseCard> cards = [];
         Query q = DetailedCourseCard.getQueryCreator();
         q.Where(Field.course__id, id);
         q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<DetailedCourseCard>(reader)));
-        return cards;
+        return cards.Count > 0 ? cards[0] : null;
     }
 }

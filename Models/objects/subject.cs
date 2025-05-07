@@ -8,9 +8,9 @@ class Subject : DataObj
     public int Grade;
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Id = QDataReader.GetInt(reader, ref pos);
         Name = QDataReader.GetString(reader, ref pos);
         Grade = QDataReader.GetInt(reader, ref pos);

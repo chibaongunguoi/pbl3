@@ -7,29 +7,11 @@ namespace REPO.Controllers;
 
 public class SemesterController : BaseController
 {
-    [Authorize(Roles = "Teacher,Admin")]
+    [Authorize(Roles="Teacher,Admin")]
     public IActionResult Add()
     {
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int? tch_id = null;
-        
-        switch (userRole)
-        {
-            case UserRole.Teacher:
-                tch_id = int.Parse(userId ?? "0");
-                break;
-            case UserRole.Admin:
-                tch_id = AccountUtils.getAdminTeacherId();
-                break;
-        }
-        
-        if (tch_id is null)
-        {
-            return Redirect("/Home");
-        }
-        
-        AddSemesterPage page = new(tch_id ?? 0);
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty  ;
+        AddSemesterPage page = new(username);
         ViewBag.page = page;
         return View();
     }

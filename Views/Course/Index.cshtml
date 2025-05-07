@@ -1,11 +1,6 @@
 ﻿@model BriefCoursePage
 @using System.Text.Json
 
-@{
-  var contextUrl = "/courseAPI/BriefCoursePage";
-  var contextComponent = ".brief-course-cards";
-}
-
 <div class="course-content-wrapper">
   <div class="shop-section-wrapper container">
     <div class="shop-section-header section-header">
@@ -13,7 +8,7 @@
         Danh sách khóa học
       </div>
     </div>
-    <div class="card-search-wrapper">
+    <div class="pagination-form card-search-wrapper">
       @await Html.PartialAsync("_SearchSemSection", (object)Model.MBriefCourseFilter)
     </div>
     <div class="brief-course-cards card-product-ul"> </div>
@@ -26,7 +21,8 @@
   <script src="~/js/pagination.js" asp-append-version="true"></script>
   <script>
     const filterForm = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefCourseFilter))
-    console.log(filterForm);
-    initPagination(@Model.MPaginationInfo.CurrentPage, @Model.MPaginationInfo.TotalPages, "@contextUrl", "@contextComponent", filterForm)
+      const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
+      console.log(filterForm);
+    initPagination(paginationInfo, "/courseAPI/BriefCoursePage", ".brief-course-cards", filterForm, ".pagination-bar", ".pagination-form")
   </script>
 }

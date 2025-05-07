@@ -1,42 +1,54 @@
-function getPagination(pageNum, maxPageNum, contextUrl, contextComponent, filterForm) {
-    $.get("/BPController/GetPagination", { currentPage: pageNum, totalPages: maxPageNum, contextUrl: contextUrl, contextComponent: contextComponent })
-        .done(function(data) {
-            $('.pagination-bar').html(data);
-            attachPaginationEvents(maxPageNum, contextUrl, contextComponent, filterForm)
+function getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar) {
+    const sentData = { ...paginationInfo, ...filterForm, contextUrl: contextUrl, contextComponent: contextComponent }
+    $.get(`${contextUrl}/Pagination`, sentData)
+        .done(function (data) {
+            $(paginationBar).html(data);
+            attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
         })
-        .fail(function() {
+        .fail(function () {
             console.error('Error fetching pagination data');
         });
 }
 
-function getPaginationData(pageNum, contextUrl, contextComponent, filterForm) {
+function getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm) {
     $(contextComponent).html(
         '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
     )
-    filterForm['currentPage'] = pageNum
-    $.get(contextUrl, filterForm)
-        .done(function(data) {
+    const sentData = { ...paginationInfo, ...filterForm }
+    $.get(contextUrl, sentData)
+        .done(function (data) {
             $(contextComponent).html(data);
         })
-        .fail(function() {
+        .fail(function () {
             console.error('Error fetching data');
         });
 }
 
-function attachPaginationEvents(maxPageNum, contextUrl, contextComponent, filterForm) {
+function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar) {
     const PaginationLinks = document.querySelectorAll('.page-link');
     PaginationLinks.forEach((link) => {
         const new_link = link.cloneNode(true);
         link.replaceWith(new_link)
-        new_link.addEventListener('click', function() {
-            const pageNum = this.dataset.index
-            initPagination(pageNum, maxPageNum, contextUrl, contextComponent, filterForm)
+        new_link.addEventListener('click', function () {
+            paginationInfo["CurrentPage"] = this.dataset.index
+            getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
+            getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
         })
     }
-)}
+    )
+}
 
 
-function initPagination(pageNum, maxPageNum, contextUrl, contextComponent, filterForm) {
-    getPagination(pageNum, maxPageNum, contextUrl, contextComponent, filterForm)
-    getPaginationData(pageNum, contextUrl, contextComponent, filterForm)
+function initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, paginationForm) {
+    getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
+    getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
+    const formContainer = document.querySelector(paginationForm);
+    const form = formContainer.querySelector('form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const filterForm = Object.fromEntries(new FormData(form).entries())
+        paginationInfo["CurrentPage"] = 1;
+        getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
+        getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
+    });
 }

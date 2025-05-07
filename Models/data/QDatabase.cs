@@ -120,6 +120,20 @@ sealed class QDatabase
         );
     }
 
+    public static T Scalar<T>(SqlConnection conn, string query)
+    {
+        int counter = ++query_counter;
+        Console.WriteLine($"[START] query #{counter}: {query}");
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        SqlCommand command = new(query, conn);
+        stopwatch.Stop();
+        TimeSpan elapsed = stopwatch.Elapsed;
+        Console.WriteLine(
+            $"[FINISH] query #{counter} - Time taken: {elapsed.TotalMilliseconds} ms"
+        );
+        return (T)command.ExecuteScalar();
+    }
+
     // ========================================================================
 }
 

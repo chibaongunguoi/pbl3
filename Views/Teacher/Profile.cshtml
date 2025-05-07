@@ -1,60 +1,61 @@
-@{
-    var p = (DetailedTeacherPage)ViewBag.page;
-    var teacher = p.teacherCard[0];
-    var contextUrl = $"/courseAPI/TeacherProfile?{UrlKey.tchId}={p.tchId}";
-    var contextComponent = ".pagination-list";
-}
+@model DetailedTeacherPage
+@using System.Text.Json;
 
 <div class="shop-section-wrapper container">
-<div class="teacher-profile-wrapper clearfix" style="clear: both;">
-    <div class="shop-section-header">
+    <div class="teacher-profile-wrapper clearfix" style="clear: both;">
+        <div class="shop-section-header">
             <div class="shop-section-title">
                 Thông tin gia sư
             </div>
         </div>
-<div class="block_image_news" style="clear: both;">
-    <div class="teacher-card-main-content">
-            <div class="thumb" style="width:110px; height:100px !important; max-height:110px !important;">
-                <img src="/images/thumbnail/thumbnail.jpg" style="width:100%; height:110px;">
-            </div>
-            <div style="line-height:150% !important; font-size:14px;">
-                <div class="teacher-card-field"><strong>Mã số:</strong> @teacher.id</div>
-                <div class="teacher-card-field">
-                    <strong>Tên gia sư:</strong> 
-                    <strong style="color:#008eff;">
-                        <a href="/gia-su-2918.html">@teacher.name</a>
-                    </strong>
+        <div class="block_image_news" style="clear: both;">
+            <div class="teacher-card-main-content">
+                <div class="thumb" style="width:110px; height:100px !important; max-height:110px !important;">
+                    <img src="/images/thumbnail/thumbnail.jpg" style="width:100%; height:110px;">
                 </div>
-                <div class="teacher-card-field"><strong>Giới tính:</strong> @teacher.gender</div>
-                <div class="teacher-card-field teacher-down"><strong>Ngày sinh:</strong> @teacher.bday</div>
+                <div style="line-height:150% !important; font-size:14px;">
+                    <div class="teacher-card-field"><strong>Mã số:</strong> @Model.teacherCard?.id</div>
+                    <div class="teacher-card-field">
+                        <strong>Tên gia sư:</strong>
+                        <strong style="color:#008eff;">
+                            <a href="/gia-su-2918.html">@Model.teacherCard?.name</a>
+                        </strong>
+                    </div>
+                    <div class="teacher-card-field"><strong>Giới tính:</strong> @Model.teacherCard?.gender</div>
+                    <div class="teacher-card-field teacher-down"><strong>Ngày sinh:</strong> @Model.teacherCard?.bday
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-card-desc">
+                <div class="teacher-card-field"><strong>Mô tả:</strong></div>
+                <div class="card-sem-des-content">@Model.teacherCard?.description</div>
             </div>
         </div>
-
-        <div class="teacher-card-desc">
-            <div class="teacher-card-field"><strong>Mô tả:</strong></div>
-            <div class="card-sem-des-content" >@teacher.description</div>
-        </div>
-</div>
-</div>
-<div class="shop-section-wrapper container">
+    </div>
+    <div class="shop-section-wrapper container">
         <div class="shop-section-header">
             <div class="shop-section-title">
                 Danh sách khóa học
             </div>
         </div>
         <div class="shop-section-content">
-            <div class="card-search-wrapper">
-                @await Html.PartialAsync("_SearchSemSection")
+            <div class="pagination-form card-search-wrapper">
+                @await Html.PartialAsync("_SearchSemSection", (object)@Model.MBriefCourseFilter)
             </div>
             <div class="pagination-list card-product-ul"></div>
             <div class="pagination-bar"></div>
         </div>
     </div>
-     </div>
+</div>
 
 @section Scripts {
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
-        initPagination(1, @p.maxPageNum, "@contextUrl", "@contextComponent")
+        const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo));
+        const sentData = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefCourseFilter));
+        sentData["tchId"] = @Model.teacherCard?.id;
+        console.log(sentData);
+        initPagination(paginationInfo, "/courseAPI/TeacherProfile", ".pagination-list", sentData, ".pagination-bar", ".pagination-form")
     </script>
 }

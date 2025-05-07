@@ -1,32 +1,32 @@
-@model (int page, int max_index_page, string context_url, string context_component)
+@model (PaginationInfo paginationInfo, string context_url, string context_component)
 
 <nav aria-label="pagination-wrapper">
                 <ul class="pagination">
                     <li class="page-item ">
-                        <a class='page-link 'data-index="@(Model.page-1)" >
+                        <a class='page-link 'data-index="@(Model.paginationInfo.CurrentPage-1)" >
                             <<
                         </a>
                     </li>
                     @{
-                        var left=Model.page-2;
-                        var right=Model.page+2;
+                        var left=Model.paginationInfo.CurrentPage-2;
+                        var right=Model.paginationInfo.CurrentPage+2;
                         if (left<1){
                             left=1;
                         }
-                        if (right>@Model.max_index_page){
-                            right=@Model.max_index_page;
+                        if (right>@Model.paginationInfo.TotalPages){
+                            right=@Model.paginationInfo.TotalPages;
                         }
                     }
                     @for (int i = left; i <= right; i++)
                     {
                         <li class="page-item ">
-                            <a class="page-link @(i == Model.page ? "pa-active" : "")" data-index="@i" >
+                            <a class="page-link @(i == Model.paginationInfo.CurrentPage ? "pa-active" : "")" data-index="@i" >
                                 @i
                             </a>
                         </li>
                     }
                      <li class="page-item ">
-                        <a class='page-link 'data-index="@(Model.page+1)">
+                        <a class='page-link 'data-index="@(Model.paginationInfo.CurrentPage+1)">
                             >>
                         </a>
                     </li>

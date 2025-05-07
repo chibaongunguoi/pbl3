@@ -13,9 +13,9 @@ sealed class Semester : DataObj
     public string Status { get; set; } = "";
 
     // ========================================================================
-    public override void fetch(SqlDataReader reader, ref int pos)
+    public override void Fetch(SqlDataReader reader, ref int pos)
     {
-        base.fetch(reader, ref pos);
+        base.Fetch(reader, ref pos);
         Id = QDataReader.GetInt(reader, ref pos);
         CourseId = QDataReader.GetInt(reader, ref pos);
         StartDate = QDataReader.GetDateOnly(reader, ref pos);

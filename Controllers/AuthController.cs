@@ -9,6 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 public class AuthController : BaseController
 {
+
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }   
+
     public IActionResult Login()
     {
         if (User.Identity?.IsAuthenticated ?? false)
