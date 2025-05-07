@@ -4,7 +4,8 @@
   int initStars = Model.initStars == 0 ? 5 : Model.initStars;
 }
 
-<div class="modal fade" id=@($"myModal{Model.semesterId}") tabindex="-1" aria-hidden="true" semesterId="@Model.semesterId">
+<div class="modal fade" id=@($"myModal{Model.semesterId}") tabindex="-1" aria-hidden="true"
+  semesterId="@Model.semesterId">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -51,5 +52,5 @@
   </div>
 </div>
 <script>
-initRatingPopupStars(@Model.semesterId, @initStars)
+  initRatingPopupStars(@Model.semesterId, @initStars)
 </script>

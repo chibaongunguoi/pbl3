@@ -1,0 +1,57 @@
+@using System.Text.Json
+
+@{
+  Layout = "_ManageLayout";
+}
+
+<div id="content" class="container-fluid">
+  <div class="card">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+      <div class="m-0 table-title">Yêu cầu đăng kí học</div>
+      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+        </div>
+        <div class="col-12">
+          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+        </div>
+      </form> -->
+    </div>
+    <div class="pagination-list"></div>
+  </div>
+</div>
+
+
+@section ManageLayoutScripts {
+  <script src="~/js/pagination.js" asp-append-version="true"></script>
+  <script>
+    initPagination(null, "/TeacherManageAPI/ManageRequest", ".pagination-list")
+    function demo() {
+      const btnAcceptRequest = document.querySelectorAll('.btn-accept-request');
+      const btnRejectRequest = document.querySelectorAll('.btn-reject-request');
+
+      btnAcceptRequest.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const stuId = this.getAttribute('data-stu-id');
+          const semesterId = this.getAttribute('data-semester-id');
+          const sentData = {
+            stuId: stuId,
+            semesterId: semesterId
+          }
+          initPagination(null, "/TeacherManageAPI/AcceptRequest", ".pagination-list", sentData)
+        })
+      });
+      btnRejectRequest.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const stuId = this.getAttribute('data-stu-id');
+          const semesterId = this.getAttribute('data-semester-id');
+          const sentData = {
+            stuId: stuId,
+            semesterId: semesterId
+          }
+          initPagination(null, "/TeacherManageAPI/RejectRequest", ".pagination-list", sentData)
+        })
+      });
+    }
+  </script>
+}

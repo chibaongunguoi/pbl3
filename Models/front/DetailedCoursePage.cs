@@ -69,7 +69,7 @@ class DetailedCoursePage
     public static DetailedCourseCard? get_course_by_id(SqlConnection conn, int id)
     {
         List<DetailedCourseCard> cards = [];
-        Query q = DetailedCourseCard.getQueryCreator();
+        Query q = DetailedCourseCard.GetQueryCreator();
         q.Where(Field.course__id, id);
         q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<DetailedCourseCard>(reader)));
         return cards.Count > 0 ? cards[0] : null;

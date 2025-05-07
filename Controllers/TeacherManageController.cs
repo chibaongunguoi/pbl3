@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -61,5 +60,15 @@ public class TeacherManageController : BaseController
             return View(form);
         }
         return Redirect($"~/Course/Detail?courseId={semester.CourseId}");
+    }
+
+    public IActionResult ManageSemester(int courseId)
+    {
+        return View(new ManageSemesterPage(courseId));
+    }
+
+    public IActionResult ManageRequest()
+    {
+        return View();
     }
 }

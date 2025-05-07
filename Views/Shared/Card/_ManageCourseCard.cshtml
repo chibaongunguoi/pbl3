@@ -25,7 +25,7 @@
             @if (user_role == UserRole.Teacher)
             {
                 <button class="card-btn course-detail"
-                    onclick="window.location.href='/Semester/Manage?courseId=@Model.course_id'">Xem
+                    onclick="window.location.href='/TeacherManage/ManageSemester?courseId=@Model.course_id'">Xem
                     các kì học </button>
                 @await Html.PartialAsync("Popup/_StudentTablePopup")
             }

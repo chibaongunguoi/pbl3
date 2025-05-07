@@ -1,0 +1,22 @@
+@model ManageSemesterCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.tableIdx</td>
+    <td>
+        <a class="course-table-name" href='/Course/Detail?courseId=@Model.CourseId' target="_blank">
+            @Model.courseName
+        </a>
+    </td>
+    <td>@($"{Model.startDate} - {Model.finishDate}")</td>
+    <td>@Model.status</td>
+    <td>@($"{Model.numParticipants}/{Model.capacity}")</td>
+    <td>@($"{Model.fee}đ")</td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail">Xem chi tiết</button>
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#studentTableModal">Xem danh
+                sách học viên</button>
+            @await Html.PartialAsync("Popup/_StudentTablePopup")
+        </div>
+    </td>
+</tr>

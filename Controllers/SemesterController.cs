@@ -16,19 +16,19 @@ public class SemesterController : BaseController
         return View();
     }
 
-    [Authorize]
-    public IActionResult Manage()
-    {
-        int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
-        if (courseId is null)
-        {
-            return RedirectToAction("Index", "Course");
-        }
+    // [Authorize]
+    // public IActionResult Manage()
+    // {
+    //     int? courseId = UrlQuery.getInt(Request.Query, UrlKey.courseId);
+    //     if (courseId is null)
+    //     {
+    //         return RedirectToAction("Index", "Course");
+    //     }
 
-        SemesterPage page = new(courseId.Value);
-        ViewBag.page = page;
-        return View();
-    }
+    //     SemesterPage page = new(courseId.Value);
+    //     ViewBag.page = page;
+    //     return View();
+    // }
 
     // [Authorize(Roles = "Teacher,Admin")]
     // [HttpPost]

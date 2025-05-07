@@ -35,9 +35,7 @@
 @section Scripts {
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
-        const sentData = {
-            courseId: @Model.courseId
-                        }
+        const sentData = { courseId: @Model.courseId }
         const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
             initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", null)
 
@@ -50,8 +48,8 @@
                     courseId: @Model.courseId,
                     stars: this.getAttribute('data-star')
                 }
-                const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
-                    initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", null)
+                const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo));
+                initPagination(paginationInfo, "/ratingAPI/DetailedCoursePage", ".pagination-list", sentData, ".pagination-bar", null)
             });
         });
     </script>
