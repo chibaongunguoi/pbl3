@@ -27,6 +27,7 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
               <th scope="col">Họ và tên</th>
               <th scope="col">Giới tính</th>
               <th scope="col">Ngày sinh</th>
+              <th scope="col">Só điện thoại</th>
               <th scope="col">Số kỳ học</th>
               <th scope="col">Đánh giá</th>
               <th scope="col">Tác vụ</th>
@@ -39,12 +40,13 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
               <td>Nguyễn Chí Bảo</td>
               <td>Nam</td>
               <td>05/09/2005</td>
+              <td>0967430257</td>
               <td>20</td>
               <td>4.7</td>
               <td>
                 <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail" onclick="window.location.href='/Admin/SemesterManage?course_id=card.course_id'">Sửa thông tin </button>
-                    @await Html.PartialAsync("Popup/_StudentTablePopup")
+                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditTeacherModal">Sửa thông tin </button>
+                    @await Html.PartialAsync("Popup/_EditTeacherPopup")
                   <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=card.course_id'">Xem chi tiết</button>
                 </div>
               </td>

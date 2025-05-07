@@ -9,12 +9,14 @@
         }
     </select>
     <select class=" input cb" asp-for="Grade">
+
         <option value="0">Lớp</option>
         @foreach (var grade in Model.Grades)
         {
             <option value="@grade">@grade</option>
         }
     </select>
+
     <select class=" input cb" asp-for="Gender">
         <option value="">Gia sư</option>
         <option value="@Gender.male">Gia sư Nam</option>

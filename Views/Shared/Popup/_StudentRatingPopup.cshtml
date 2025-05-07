@@ -1,0 +1,52 @@
+<div class="modal modal fade" id="StudentRatingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Danh sách đánh giá của học viên Nguyễn Chí Bảo</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-striped table-checkall">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên khóa học</th>
+              <th scope="col">Đánh giá</th>
+              <th scope="col">Thời gian</th>
+              <th scope="col">Nội dung</th>
+              <th scope="col">Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td scope="row" class="table-index">1</td>
+              <td>
+                <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
+                  VDC toán 12
+                </a>
+              </td>
+              <td>4/5</td>
+              <td>4/11/2025 5:43:10</td>
+              <td>Khóa học cũng khá là wow đấy </td>
+              <td>
+                <div class="button-group-wrapper course-manager">
+                  <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
+                    các kì học </button>
+                  <button class="card-btn course-detail">Xem đánh giá</button> -->
+                  <button class="card-btn choose" >Xóa đánh giá</button>
+                   @await Html.PartialAsync("Popup/_RatingFormPopup")
+                </div>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+

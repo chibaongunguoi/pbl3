@@ -38,6 +38,10 @@ public class AdminController : BaseController
     {
         return View();
     }
+    public IActionResult TeacherAdd()
+    {
+        return View();
+    }
 
     public IActionResult Dashboard()
     {
