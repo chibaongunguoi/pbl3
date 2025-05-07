@@ -51,7 +51,8 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
                     các kì học </button>
                     @await Html.PartialAsync("Popup/_StudentTablePopup")
                   <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=card.course_id'">Xem chi tiết</button>
-
+                    <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditCourseModal">Chỉnh sửa</button>
+                   @await Html.PartialAsync("Popup/_EditCoursePopup")
                 </div>
               </td>
             </tr>

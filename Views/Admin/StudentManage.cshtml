@@ -43,8 +43,8 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
                 <div class="button-group-wrapper course-manager">
                   <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditStudentModal">Sửa thông tin </button>
                     @await Html.PartialAsync("Popup/_EditStudentPopup")
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#StudentCourseModal">Xem khóa học </button>
-                    @await Html.PartialAsync("Popup/_StudentCoursePopup")
+                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#CourseModal">Xem khóa học </button>
+                    @await Html.PartialAsync("Popup/_CoursePopup")
                   <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#StudentRatingModal">Xem đánh giá </button>
                     @await Html.PartialAsync("Popup/_StudentRatingPopup")
                 </div>
