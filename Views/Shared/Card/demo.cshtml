@@ -1,0 +1,62 @@
+@model BriefCourseCard
+
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+@{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+<div class="card-product-li sem-li">
+    <div class="card-sem-li-content">
+        <div class="card-product-img-wrapper">
+            <div class="card-sem-title">@Model.courseName</div>
+        </div>
+        <div class="card-sem-desc">
+            <div class="card-content">
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Gia sư:</div>
+                    <div class="card-sem-item-content">@Model.tchName</div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Môn học:</div>
+                    <div class="card-sem-item-content">@Model.subject</div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Lớp:</div>
+                    <div class="card-sem-item-content">@Model.grade</div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Thời gian:</div>
+                    <div class="card-sem-item-content">@Model.dates</div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Sĩ số:</div>
+                    <div class="card-sem-item-content">@Model.participants</div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Đánh giá:</div>
+                    <div class="card-sem-item-content">@($"{Model.avgRating}/5 ({Model.numRatings} lượt đánh giá)")
+                    </div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label">Học phí:</div>
+                    <div class="card-sem-item-content">
+                        <div class="sem-price">@Model.fee</div><span class="currency">đ</span </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-wrapper sem-btn-group">
+                <button class="card-btn course-detail"
+                    onclick="window.location.href='/Course/Detail?courseId=@(Model.courseId)'">Xem chi tiết</button>
+                @if (Model.CanJoin)
+                {
+                    <button class="card-btn choose"
+                        onclick="window.location.href='/Student/CoursePayment?courseId=@(Model.courseId)'">Đăng kí khóa
+                        học</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

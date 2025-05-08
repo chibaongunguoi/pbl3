@@ -1,66 +1,85 @@
-@model CoursePaymentPage
+@model CoursePaymentModel
 
-    <div class="card-product-li sem-li sem-detail payment-card-content-wrapper">
-        <div class="card-sem-li-content payment-card-content">
-            <div class="card-sem-detail-wrapper">
-                <div class="card-sem-title">Thông tin chuyển khoản</div>
-            </div>
-                <div class="alert alert-warning">Vui lòng chuyển đúng số tiền và nội dung để gia sư dễ dàng xác nhận</div>
-            
-            <div class="card-sem-desc payment-desc">
-                <div class="card-content paymet-content">
-                    <div class="card-sem-item">
-                        <div class="card-sem-item-label payment-label">
-                            Tên tài khoản:
-                        </div>
-                        <div class="card-sem-item-content">
-                            @Model.teacherName
-                        </div>
+@using System.Text.Json
+
+<div class="card-product-li sem-li sem-detail payment-card-content-wrapper">
+    <div class="card-sem-li-content payment-card-content">
+        <div class="card-sem-detail-wrapper">
+            <div class="card-sem-title">Thông tin chuyển khoản</div>
+        </div>
+        <div class="alert alert-warning">Vui lòng chuyển đúng số tiền và nội dung để gia sư dễ dàng xác nhận</div>
+
+        <div class="card-sem-desc payment-desc">
+            <div class="card-content paymet-content">
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label payment-label">
+                        Tên tài khoản:
                     </div>
-                    <div class="card-sem-item">
-                        <div class="card-sem-item-label payment-label">
-                            Số tài khoản: 
-                        </div>
-                        <div class="card-sem-item-content">
-                            105880329171
-                        </div>
-                    </div>
-                    <div class="card-sem-item">
-                        <div class="card-sem-item-label payment-label">
-                           Ngân hàng:
-                        </div>
-                        <div class="card-sem-item-content">
-                            VietinBank
-                        </div>
-                    </div>
-                    <div class="card-sem-item">
-                        <div class="card-sem-item-label payment-label">
-                            Số tiền:
-                        </div>
-                         <div class="card-sem-item-content">
-                           <div class="sem-price">@Model.fee</div> 
-                            <span class="currency">đ</span>
-                        </div>
-                    </div>
-                    <div class="card-sem-item">
-                        <div class="card-sem-item-label payment-label">
-                            Nội dung:
-                        </div>
-                        <div class="card-sem-item-content payment-pass-content">
-                            @Model.description
-                        </div>
+                    <div class="card-sem-item-content">
+                        @Model.teacherName
                     </div>
                 </div>
-                
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label payment-label">
+                        Số tài khoản:
+                    </div>
+                    <div class="card-sem-item-content">
+                        105880329171
+                    </div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label payment-label">
+                        Ngân hàng:
+                    </div>
+                    <div class="card-sem-item-content">
+                        VietinBank
+                    </div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label payment-label">
+                        Số tiền:
+                    </div>
+                    <div class="card-sem-item-content">
+                        <div class="sem-price">@Model.fee</div>
+                        <span class="currency">đ</span>
+                    </div>
+                </div>
+                <div class="card-sem-item">
+                    <div class="card-sem-item-label payment-label">
+                        Nội dung:
+                    </div>
+                    <div class="card-sem-item-content payment-pass-content">
+                        @Model.description
+                    </div>
+                </div>
             </div>
-            <div class="button-group-wrapper sem-btn-group sem-detail-btn-group">
-                <form method="post" action="/Course/SubmitPayment" id="payment-form">
-                    <input type="hidden" name="courseId" value="@Model.courseId" />
-                    <input type="hidden" name="semesterId" value="@Model.semesterId" />
-                    <input type="hidden" name="stuId" value="@Model.stuId" />
-                    <button class="card-btn choose">Tôi đã thanh toán</button>
-                </form>
-                @* <button class="card-btn choose" onClick="window.location.href='/Course/Manage'">Tôi đã thanh toán</button> *@
-            </div>
+
+        </div>
+        <div class="button-group-wrapper sem-btn-group sem-detail-btn-group">
+            @if (Model.IsValid)
+            {
+                <button class="card-btn choose" id="submit-payment">Tôi đã thanh toán</button>
+            }
         </div>
     </div>
+</div>
+<script>
+    const data = @Html.Raw(JsonSerializer.Serialize(Model));
+    document.querySelector("#submit-payment").addEventListener("click", function (e) {
+        const url = "/Student/CoursePaymentPost";
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                if (result.redirectUrl) {
+                    window.location.href = result.redirectUrl;
+                }
+            });
+    });
+</script>

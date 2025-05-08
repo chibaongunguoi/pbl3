@@ -53,4 +53,39 @@ public class StudentController : BaseController
         QDatabase.Exec(conn => form.Execute(conn, username, role, TempData, out account));
         return View(form);
     }
+
+
+    public IActionResult CoursePayment(int courseId)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        CoursePaymentModel payment = new();
+        payment.Init(courseId, username);
+        TempData["ErrorMessage"] = payment.ErrorMessage;
+        return View(payment);
+    }
+
+    [HttpPost]
+    public IActionResult CoursePaymentPost([FromBody] CoursePaymentModel payment)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        payment.Init(payment.courseId, username);
+        if (!payment.IsValid)
+        {
+            return Json(new { redirectUrl = Url.Action(nameof(CoursePayment), new { courseId = payment.courseId }) });
+        }
+        Request request = new()
+        {
+            StuId = payment.stuId,
+            SemesterId = payment.semesterId,
+            Timestamp = DateTime.Now,
+            Status = RequestStatus.waiting
+        };
+
+        Query q = new(Tbl.request);
+        QDatabase.Exec(conn =>
+        {
+            q.Insert(conn, request);
+        });
+        return Json(new { redirectUrl = Url.Action(nameof(Course)) });
+    }
 }

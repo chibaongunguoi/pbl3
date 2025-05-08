@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-class BriefCourseCard : DataObj
+class BriefCourseCard
 {
     public int courseId;
     public string courseName = "";
@@ -12,8 +12,10 @@ class BriefCourseCard : DataObj
     public string avgRating = "";
     public int numRatings;
     public string fee = "";
+    public string MCourseStatus = "";
+    public bool CanJoin { get; set; } = true;
 
-    public static Query GetQueryCreator()
+    public static Query GetQueryCreator(string? role = null, string? username = null)
     {
         Query q = new(Tbl.course);
         q.Join(Field.subject__id, Field.course__sbj_id);
@@ -30,6 +32,8 @@ class BriefCourseCard : DataObj
         q.Output(Field.semester__finish_date);
         q.Output(Field.semester__capacity);
         q.Output(Field.semester__fee);
+        q.Output(Field.course__status);
+
 
         string local_semester = "LocalSemester";
         string local_rating = "LocalRating";
@@ -54,34 +58,60 @@ class BriefCourseCard : DataObj
         // q2.Where(Field.request__status, RequestStatus.joined, local_request);
         q2.Output(QPiece.countAll);
         q.OutputQuery(q2.SelectQuery());
+
+        if (role == UserRole.Student && username is not null)
+        {
+            q2 = new(Tbl.request, local_request);
+            q2.Join(Field.student__id, Field.request__stu_id, null, local_request);
+            q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
+            q2.WhereField(Field.student__username, username);
+            q2.Output(QPiece.countAll);
+            q.OutputQuery(q2.SelectQuery());
+        }
+
         return q;
     }
 
-    public override void Fetch(SqlDataReader reader, ref int pos)
+    public static BriefCourseCard GetCard(SqlDataReader reader, ref int pos, string? role=null)
     {
-        int course_id = QDataReader.GetInt(reader, ref pos);
+        BriefCourseCard card = new();
+        pos = 0;
+        card.courseId = QDataReader.GetInt(reader, ref pos);
         int semester_id = QDataReader.GetInt(reader, ref pos);
-        var course_name = QDataReader.GetString(reader, ref pos);
-        var tch_name = QDataReader.GetString(reader, ref pos);
-        var subject = QDataReader.GetString(reader, ref pos);
-        var grade = QDataReader.GetInt(reader, ref pos);
+        card.courseName = QDataReader.GetString(reader, ref pos);
+        card.tchName = QDataReader.GetString(reader, ref pos);
+        card.subject = QDataReader.GetString(reader, ref pos);
+        card.grade = QDataReader.GetInt(reader, ref pos);
         var start_date = QDataReader.GetDateOnly(reader, ref pos);
         var finish_date = QDataReader.GetDateOnly(reader, ref pos);
         var capacity = QDataReader.GetInt(reader, ref pos);
         var fee = QDataReader.GetInt(reader, ref pos);
+        card.MCourseStatus = QDataReader.GetString(reader, ref pos);
         var avg_rating = QDataReader.GetDouble(reader, ref pos);
         int num_ratings = QDataReader.GetInt(reader, ref pos);
         int num_participants = QDataReader.GetInt(reader, ref pos);
 
-        this.courseId = course_id;
-        this.courseName = course_name;
-        this.tchName = tch_name;
-        this.subject = subject;
-        this.grade = grade;
-        this.dates = $"{IoUtils.conv(start_date)} - {IoUtils.conv(finish_date)}";
-        this.participants = $"{num_participants}/{capacity}";
-        this.avgRating = $"{Math.Round(avg_rating, 1)}";
-        this.numRatings = num_ratings;
-        this.fee = IoUtils.conv_fee(fee);
+        card.dates = $"{IoUtils.conv(start_date)} - {IoUtils.conv(finish_date)}";
+        card.participants = $"{num_participants}/{capacity}";
+        card.avgRating = $"{Math.Round(avg_rating, 1)}";
+        card.numRatings = num_ratings;
+        card.fee = IoUtils.conv_fee(fee);
+
+
+        if (role == UserRole.Student)
+        {
+            var requestCount = QDataReader.GetInt(reader, ref pos);
+            card.CanJoin = (num_participants < capacity) && requestCount == 0 && new List<string> { CourseStatus.waiting, CourseStatus.started }.Contains(card.MCourseStatus);
+        }
+        else if (role == UserRole.Teacher)
+        {
+            card.CanJoin = false;
+        }
+        else
+        {
+            card.CanJoin = true;
+        }
+
+        return card;
     }
 }

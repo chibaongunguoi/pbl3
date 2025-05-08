@@ -1,0 +1,46 @@
+@model ManageRatingPopup
+
+<div class="modal fade" id="modal-@Model.TableIndex" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Chi Tiết Đánh Giá</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="pt-add-form">
+            <!-- Tên khóa học -->
+            <div class="pt-add-form-item">
+              <div class="pt-add-label star-label ">
+                <label>
+                  <div class="required-icon">*</div> Đánh giá
+                </label>
+              </div>
+              <div class="pt-add-input-wrapper star-input">
+                @await Html.PartialAsync("RatingPopup/_Rating5StarList", (float)Model.Score)
+                <input type="hidden" name="stars" id="rating" value="initStars" />
+              </div>
+            </div>
+            <!-- Mô tả -->
+            <div class="pt-add-form-item">
+              <div class="pt-add-label">
+                <label for="description">
+                  <div class="required-icon">*</div> Nhận xét
+                </label>
+              </div>
+              <div class="pt-add-input-wrapper">
+                <div class=" pt-add-form-input borderless" name="comment"
+                  id="comment">@Model.Comment</div>
+              </div>
+            </div>
+            <input type="hidden" name="semesterId" value="Model.semesterId" />
+            <div class="pt-add-btn-group">
+              <button class="hl-btn" data-bs-dismiss="modal"><span>Đóng</span></button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

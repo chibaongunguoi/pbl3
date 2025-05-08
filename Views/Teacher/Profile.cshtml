@@ -1,4 +1,5 @@
 @model DetailedTeacherPage
+
 @using System.Text.Json;
 
 <div class="shop-section-wrapper container">
@@ -57,7 +58,6 @@
         const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo));
         const sentData = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefCourseFilter));
         sentData["tchId"] = @Model.teacherCard?.id;
-        console.log(sentData);
         initPagination(paginationInfo, "/courseAPI/TeacherProfile", ".pagination-list", sentData, ".pagination-bar", ".pagination-form")
     </script>
 }

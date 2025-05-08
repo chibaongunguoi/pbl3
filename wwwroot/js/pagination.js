@@ -1,11 +1,10 @@
-function getPagination(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null) {
+function getPagination(paginationInfo, contextUrl, contextComponent, filterForm = null, paginationBar = null) {
     if (paginationBar == null)
         return
 
     let sentData = { contextUrl: contextUrl, contextComponent: contextComponent }
-    if (paginationInfo !=null)
-    {
-        sentData = {...sentData, ...paginationInfo}
+    if (paginationInfo != null) {
+        sentData = { ...sentData, ...paginationInfo }
     }
     if (filterForm != null) {
         sentData = { ...sentData, ...filterForm }
@@ -20,14 +19,13 @@ function getPagination(paginationInfo, contextUrl, contextComponent, filterForm=
         });
 }
 
-function getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm=null) {
+function getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm = null) {
     $(contextComponent).html(
         '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
     )
     let sentData = {}
-    if (paginationInfo !=null)
-    {
-        sentData = {...sentData, ...paginationInfo}
+    if (paginationInfo != null) {
+        sentData = { ...sentData, ...paginationInfo }
     }
 
     if (filterForm != null) {
@@ -43,7 +41,7 @@ function getPaginationData(paginationInfo, contextUrl, contextComponent, filterF
         });
 }
 
-function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null) {
+function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm = null, paginationBar = null) {
     const PaginationLinks = document.querySelectorAll('.page-link');
     PaginationLinks.forEach((link) => {
         const new_link = link.cloneNode(true);
@@ -57,7 +55,7 @@ function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, fi
 }
 
 
-function initPagination(paginationInfo, contextUrl, contextComponent, filterForm=null, paginationBar=null, paginationForm = null) {
+function initPagination(paginationInfo, contextUrl, contextComponent, filterForm = null, paginationBar = null, paginationForm = null) {
     getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
     getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
     if (paginationForm != null) {
@@ -65,7 +63,8 @@ function initPagination(paginationInfo, contextUrl, contextComponent, filterForm
         const form = formContainer.querySelector('form');
         form.addEventListener('submit', function (event) {
             event.preventDefault()
-            const filterForm = Object.fromEntries(new FormData(form).entries())
+            const formData = Object.fromEntries(new FormData(form).entries());
+            filterForm = { ...filterForm, ...formData }
             if (paginationInfo != null)
                 paginationInfo["CurrentPage"] = 1;
             initPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar, null)

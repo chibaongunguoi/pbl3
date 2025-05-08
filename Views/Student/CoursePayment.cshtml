@@ -1,19 +1,18 @@
-@* @{
-    var p = (CoursePaymentPage)ViewBag.page;
-}
+@model CoursePaymentModel
 
 <div class="course-content-wrapper">
     <div class="shop-section-wrapper container">
         <div class="shop-section-header">
             <div class="shop-section-title">
-                Thanh toán 
+                Thanh toán
             </div>
         </div>
+        @await Html.PartialAsync("_SuccessErrorMessage")
         <div class="shop-section-content">
             <div class="card-product-ul text-center">
-              @await Html.PartialAsync("_QRCard")
-              @await Html.PartialAsync("_PaymentDetail", (object)p)
-            </div>         
+                @await Html.PartialAsync("_QRCard")
+                @await Html.PartialAsync("_PaymentDetail", Model)
+            </div>
         </div>
     </div>
-</div> *@
+</div>

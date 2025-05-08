@@ -1,0 +1,32 @@
+@{
+  Layout = "Layout/_TeacherManageLayout";
+}
+
+<div id="content" class="container-fluid">
+  <div class="card">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+      <div class="m-0 table-title">Danh sách đánh giá</div>
+      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+        </div>
+        <div class="col-12">
+          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+        </div>
+      </form> -->
+    </div>
+    <div class="pagination-list"></div>
+  </div>
+</div>
+<div class="pagination-bar"></div>
+
+@section TeacherManageLayoutScripts {
+  <script src="~/js/pagination.js" asp-append-version="true"></script>
+  <script>
+    const paginationInfo = {
+      CurrentPage: 1,
+      ItemsPerPage: 20,
+    }
+    initPagination(paginationInfo, "/TeacherManageAPI/ManageRating", ".pagination-list", {}, ".pagination-bar")
+  </script>
+}

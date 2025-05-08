@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 public class BriefCourseFilter
 {
     public string? SubjectName { get; set; } = null;
-    public int Grade { get; set; } = 0;
+    public int? Grade { get; set; } = null;
     public string? Gender { get; set; } = null;
     public string? CourseName { get; set; } = null;
 

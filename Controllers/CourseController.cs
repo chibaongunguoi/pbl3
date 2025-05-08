@@ -22,7 +22,9 @@ public class CourseController : BaseController
 
     public IActionResult Detail(int courseId)
     {
-        return View(new DetailedCoursePage(courseId));
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;  
+        string? username = User.FindFirst(ClaimTypes.Name)?.Value;
+        return View(new DetailedCoursePage(courseId, role, username));
     }
 
     [Authorize]
@@ -37,21 +39,6 @@ public class CourseController : BaseController
         };
     }
 
-    [Authorize(Roles = UserRole.Student)]
-    public IActionResult Payment(int courseId)
-    {
-        int stuId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id ? int.Parse(id) : 0;
-        bool enrolled = false;
-        QDatabase.Exec(conn => enrolled = CourseQuery.checkStudentEnrolled(conn, courseId, stuId));
-
-        if (enrolled)
-        {
-            return RedirectToAction(nameof(Detail), new { courseId = courseId });
-        }
-
-        ViewBag.page = new CoursePaymentPage(courseId, stuId);
-        return View();
-    }
 
     [Authorize(Roles = UserRole.Student)]
     [HttpPost]

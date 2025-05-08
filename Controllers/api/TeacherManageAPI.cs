@@ -106,4 +106,45 @@ public class TeacherManageAPI : BaseController
         );
         return PartialView("List/_ManageStuSemCardList", cards);
     }
+
+    private static Query GetManageRatingQueryCreator()
+    {
+        Query q = ManageRatingCard.GetQueryCreator();
+        q.Join(Field.teacher__id, Field.course__tch_id);
+        q.OrderBy(Field.rating__timestamp, desc: true);
+        return q;
+    }
+
+    [HttpGet("ManageRating")]
+    public IActionResult ManageRating(PaginationInfo paginationInfo)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        List<ManageRatingCard> cards = [];
+        int tableIdx = 1;
+
+        Query q = GetManageRatingQueryCreator();
+        q.Where(Field.teacher__username, username);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
+        QDatabase.Exec(
+            conn =>
+            q.Select(
+                conn,
+                reader => cards.Add(ManageRatingCard.GetCard(reader, ref tableIdx))
+           )
+        );
+        return PartialView("List/_ManageRatingCardList", cards);
+    }
+
+    [HttpGet("ManageRating/Pagination")]
+    public IActionResult ManageRatingPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        Query q = GetManageRatingQueryCreator();
+        q.Where(Field.teacher__username, username);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
+    }
 }

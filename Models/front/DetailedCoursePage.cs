@@ -9,9 +9,9 @@ class DetailedCoursePage
     public int numRatings;
     public Dictionary<int, int> rating_counts = new();
     public PaginationInfo MPaginationInfo = new() { ItemsPerPage = 10 };
-    public DetailedCoursePage(int course_id)
+    public DetailedCoursePage(int course_id, string? role=null, string? username=null)
     {
-        this.courseId = course_id;
+        courseId = course_id;
         void func(SqlConnection conn)
         {
             CourseQuery.get_avg_rating(conn, course_id, out averageRating, out numRatings);
@@ -23,7 +23,7 @@ class DetailedCoursePage
 
             int tch_id = course_lst[0].TchId;
 
-            course = get_course_by_id(conn, course_id);
+            course = get_course_by_id(conn, course_id, role, username);
             teacher = get_teacher_by_id(conn, tch_id);
 
             q = new(Tbl.rating);
@@ -66,12 +66,13 @@ class DetailedCoursePage
         return cards.Count > 0 ? cards[0] : null;
     }
 
-    public static DetailedCourseCard? get_course_by_id(SqlConnection conn, int id)
+    public static DetailedCourseCard? get_course_by_id(SqlConnection conn, int id, string? role=null, string? username=null)
     {
         List<DetailedCourseCard> cards = [];
-        Query q = DetailedCourseCard.GetQueryCreator();
+        Query q = DetailedCourseCard.GetQueryCreator(role, username);
         q.Where(Field.course__id, id);
-        q.Select(conn, reader => cards.Add(QDataReader.GetDataObj<DetailedCourseCard>(reader)));
+        int pos = 0;
+        q.Select(conn, reader => cards.Add(DetailedCourseCard.GetCard(reader, ref pos, role)));
         return cards.Count > 0 ? cards[0] : null;
     }
 }

@@ -10,7 +10,7 @@
     </select>
     <select class=" input cb" asp-for="Grade">
 
-        <option value="0">Lớp</option>
+        <option value="">Lớp</option>
         @foreach (var grade in Model.Grades)
         {
             <option value="@grade">@grade</option>

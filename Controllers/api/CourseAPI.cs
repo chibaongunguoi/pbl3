@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace REPO.Controllers;
 
 [Route("courseAPI")]
 public class CourseAPI : BaseController
 {
-    private static Query BriefCoursePageQuery(BriefCourseFilter filter)
+    private static Query BriefCoursePageQuery(BriefCourseFilter filter, string? role = null, string? username = null)
     {
-        Query q = BriefCourseCard.GetQueryCreator();
+        Query q = BriefCourseCard.GetQueryCreator(role, username);
         q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
         q.OrderBy(Field.semester__id, desc: true);
         if (filter.SubjectName is not null)
         {
             q.WhereNString(Field.subject__name, filter.SubjectName);
         }
-        if (filter.Grade != 0)
+        if (filter.Grade is not null)
         {
             q.Where(Field.subject__grade, filter.Grade);
         }
@@ -33,11 +34,15 @@ public class CourseAPI : BaseController
     [HttpGet("BriefCoursePage")]
     public IActionResult BriefCoursePage(PaginationInfo paginationInfo, BriefCourseFilter filter)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        string? username = User.FindFirst(ClaimTypes.Name)?.Value;
         List<BriefCourseCard> cards = [];
-        Query q = BriefCoursePageQuery(filter);
+        Query q = BriefCoursePageQuery(filter, role, username);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
-        QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
+        int pos = 0;
+        QDatabase.Exec(conn => q.Select(conn, reader => cards.Add(BriefCourseCard.GetCard(reader, ref pos, role))));
         return PartialView(PartialList.BriefCourseCard, cards);
+
     }
 
     [HttpGet("BriefCoursePage/Pagination")]
@@ -53,11 +58,15 @@ public class CourseAPI : BaseController
     [HttpGet("TeacherProfile")]
     public IActionResult TeacherProfile(PaginationInfo paginationInfo, BriefCourseFilter filter, int tchId)
     {
-        Query q = BriefCoursePageQuery(filter);
+        Console.WriteLine($"TeacherProfile: {tchId}");
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        string? username = User.FindFirst(ClaimTypes.Name)?.Value;
+        Query q = BriefCoursePageQuery(filter, role, username);
         q.Where(Field.teacher__id, tchId);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         List<BriefCourseCard> cards = [];
-        QDatabase.Exec(conn => cards = q.Select<BriefCourseCard>(conn));
+        int pos = 0;
+        QDatabase.Exec(conn => q.Select(conn, reader => cards.Add(BriefCourseCard.GetCard(reader, ref pos, role))));
         return PartialView(PartialList.BriefCourseCard, cards);
     }
 

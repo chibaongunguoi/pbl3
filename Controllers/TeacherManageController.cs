@@ -71,6 +71,11 @@ public class TeacherManageController : BaseController
         return View();
     }
 
+    public IActionResult ManageRating()
+    {
+        return View();
+    }
+
     public IActionResult ManageProfile()
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;

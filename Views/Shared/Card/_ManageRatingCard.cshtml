@@ -1,0 +1,26 @@
+@model ManageRatingCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>
+        <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
+            @Model.CourseName
+        </a>
+    </td>
+    <td>@Model.StudentName</td>
+    <td>@Model.Score / 5</td>
+    <td>@Model.TimeStamp</td>
+    <td>
+        <div class="content-clamp teacher-rating-column">@Model.Comment</div>
+    </td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
+                các kì học </button>
+                <button class="card-btn course-detail">Xem đánh giá</button> -->
+            <button class="card-btn course-detail"
+                data-bs-toggle="modal" data-bs-target="#modal-@Model.TableIndex">Xem chi tiết</button>
+            @await Html.PartialAsync("Popup/_ManageRatingPopup", new ManageRatingPopup() { TableIndex = Model.TableIndex, Score = Model.Score, Comment = Model.Comment })
+        </div>
+    </td>
+</tr>
