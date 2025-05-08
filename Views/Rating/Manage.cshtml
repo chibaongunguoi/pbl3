@@ -23,6 +23,7 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
             <tr>
               <th scope="col">#</th>
               <th scope="col">Tên khóa học</th>
+              <th scope="col">Tên học viên</th>
               <th scope="col">Đánh giá</th>
               <th scope="col">Thời gian</th>
               <th scope="col">Nội dung</th>
@@ -38,16 +39,21 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
                   VDC toán 12
                 </a>
               </td>
-              <td>4/5</td>
+              <td>Nguyễn Chí Bảo</td>
+              <td>4 / 5</td>
               <td>4/11/2025 5:43:10</td>
-              <td>Khóa học cũng khá là wow đấy </td>
+              <td >
+              <div class="content-clamp">
+              Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy
+              </div>
+              </td>
               <td>
                 <div class="button-group-wrapper course-manager">
                   <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
                     các kì học </button>
                   <button class="card-btn course-detail">Xem đánh giá</button> -->
-                  <button class="card-btn choose"  data-bs-toggle="modal" data-bs-target="#myModal">Sửa đánh giá</button>
-                   @await Html.PartialAsync("Popup/_RatingFormPopup")
+                  <button class="card-btn"  data-bs-toggle="modal" data-bs-target="#RatingInfoPopup">Xem chi tiết</button>
+                   @await Html.PartialAsync("Popup/_RatingInfoPopup")
                 </div>
               </td>
             </tr>
