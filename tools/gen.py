@@ -243,6 +243,11 @@ def generate_day(start_date, end_date):
         )
         yield result
 
+def generate_birthday(grade):
+    start_date = f"{2007 + 12 - grade}-1-1"
+    end_date = f"{2007 + 12 - grade}-12-31"
+    result =  next(generate_day(start_date, end_date))
+    return "-".join([str(result.year), str(result.month), str(result.day)])
 
 def generate_addr():
     generated_addr = set()
@@ -340,11 +345,11 @@ for stu_id in student_ids:
     password = stu_id
     gender, name = next(gender_name_gen)
     tel = next(tel_gen)
-    bday = next(student_birthday_gen)
+    grade = random.choice([6, 7, 8, 9, 10, 11, 12])
+    bday = generate_birthday(grade)
     # addr = next(addr_gen)
     student = Student(stu_id, str(username), str(password), nstr(name), gender, bday, tel)
     students.append(student)
-    grade = random.choice([6, 7, 8, 9, 10, 11, 12])
     student_grades[grade].append(stu_id)
     studentSemesterLimit[stu_id] = random.randint(4, 10)
 

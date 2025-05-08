@@ -69,7 +69,7 @@ public class TeacherManageAPI : BaseController
     [HttpGet("AcceptRequest")]
     public IActionResult AcceptRequest(int stuId, int semesterId)
     {
-        Query q= new (Tbl.request);
+        Query q = new(Tbl.request);
         q.Set(Field.request__status, RequestStatus.joined);
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
@@ -80,10 +80,30 @@ public class TeacherManageAPI : BaseController
     [HttpGet("RejectRequest")]
     public IActionResult RejectRequest(int stuId, int semesterId)
     {
-        Query q= new (Tbl.request);
+        Query q = new(Tbl.request);
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Delete);
         return RedirectToAction(nameof(ManageRequest), nameof(TeacherManageAPI));
+    }
+
+    [HttpGet("ManageStuSemCard")]
+    public IActionResult ManageStuSemCard_(int semesterId)
+    {
+        Query q = ManageStuSemCard.GetQueryCreator();
+        List<ManageStuSemCard> cards = [];
+        int tableIdx = 1;
+        QDatabase.Exec(
+            conn =>
+            {
+                q.Where(Field.request__semester_id, semesterId);
+                q.OrderBy(Field.request__timestamp, desc: true);
+                q.Select(
+                    conn,
+                    reader => cards.Add(ManageStuSemCard.GetCard(reader, ref tableIdx))
+                );
+            }
+        );
+        return PartialView("List/_ManageStuSemCardList", cards);
     }
 }

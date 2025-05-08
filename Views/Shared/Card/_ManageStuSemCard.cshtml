@@ -1,0 +1,19 @@
+@model ManageStuSemCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>@Model.Id</td>
+    <td>@Model.Name</td>
+    <td>@(Model.Gender switch {
+        Gender.male => "Nam",
+        Gender.female => "Nữ",
+        _  => ""
+        })</td>
+    <td>@Model.Bday</td>
+    <td>@Model.Tel</td>
+    <td>@(Model.Status switch {
+        RequestStatus.waiting => "Chờ xác nhận",
+        RequestStatus.joined => "Đã tham gia",
+        _ => ""
+        })</td>
+</tr>
