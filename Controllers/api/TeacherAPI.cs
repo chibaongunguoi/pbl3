@@ -20,7 +20,7 @@ public class TeacherAPI : BaseController
             string s = QPiece.Contains(Field.teacher__name, filter.Name);
             if (isNameNumerical)
             {
-                s += $" OR " + QPiece.Eq(Field.teacher__id, id);
+                s = $"({s} OR {QPiece.Eq(Field.teacher__id, id)})";
             }
             q.WhereClause(s);
         }

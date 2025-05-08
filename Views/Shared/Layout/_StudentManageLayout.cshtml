@@ -1,0 +1,13 @@
+@{
+    Layout = "Layout/_ManageLayout";
+}
+
+@RenderBody()
+
+@section Sidebar {
+    @await Html.PartialAsync("Components/_StudentManageSidebar")
+}
+
+@section ManageLayoutScripts {
+    @await RenderSectionAsync("StudentManageLayoutScripts", required: false)
+}

@@ -1,0 +1,35 @@
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+@{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+<header class="header">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+        <div class="container-fluid container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TRUNG TÂM TIÊN TIẾN</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex">
+                </ul>
+                <div class="navbar-nav flex user-link-wrapper">
+                    @await Html.PartialAsync(
+                    user_role switch
+                    {
+                        UserRole.Teacher => "Components/_TchTopRightMenu",
+                        UserRole.Student => "Components/_StuTopRightMenu",
+                        UserRole.Admin => "Components/_AdminTopRightMenu",
+                        _ => "Components/_LoginLogout"
+                    }
+                                        )
+                </div>
+            </div>
+        </div>
+    </nav>
+    @await Html.PartialAsync("Components/_HeaderMenu")
+</header>

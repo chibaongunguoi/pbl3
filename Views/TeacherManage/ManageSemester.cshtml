@@ -1,7 +1,7 @@
 @model ManageSemesterPage
 
 @{
-  Layout = "_ManageLayout"; // Sử dụng layout admin
+  Layout = "Layout/_TeacherManageLayout";
 }
 
 <div id="content" class="container-fluid">
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-@section ManageLayoutScripts {
+@section TeacherManageLayoutScripts {
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
       const sentData = {

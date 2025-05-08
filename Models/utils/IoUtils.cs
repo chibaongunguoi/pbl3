@@ -42,7 +42,7 @@ public class IoUtils
     // ------------------------------------------------------------------------
     public static string conv_db(DateOnly date)
     {
-        return $"";
+        return $"'{date.Year:D4}-{date.Month:D2}-{date.Day:D2}'";
     }
 
     // ------------------------------------------------------------------------

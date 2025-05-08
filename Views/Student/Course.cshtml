@@ -3,18 +3,32 @@
 @using Microsoft.AspNetCore.Http
 
 @{
-    Layout = "Manage/_StudentCourseManageLayout";
+    Layout = "Layout/_StudentManageLayout";
     var user = HttpContextAccessor.HttpContext?.User;
     string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 }
 
+<div id="content" class="container-fluid">
+  <div class="card">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+      <div class="m-0 table-title">Khóa học của tôi</div>
+      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+        </div>
+        <div class="col-12">
+          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+        </div>
+      </form> -->
+    </div>
+    <div class="pagination-list"></div>
+  </div>
+</div>
 
-@section StudentCourseManageScripts {
+@section StudentManageLayoutScripts {
+    <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
-        $('.api-content').html("");
-        $.get("/courseAPI/StudentCourse", { username: @username})
-            .done(function (data) {
-                $('.api-content').html(data);
-            })
+        const sentData = {username: @username}
+        initPagination(sentData, "/courseAPI/StudentCourse", ".pagination-list")
     </script>
 }

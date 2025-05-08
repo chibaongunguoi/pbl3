@@ -40,13 +40,10 @@ public class AuthController : BaseController
             return View(form);
         }
 
-        int id = account.Id;
-        string username = account.Username;
-
         var claims = new List<Claim>
         {
+            new (ClaimTypes.Name, account.Username),
             new (ClaimTypes.Role, role),
-            new (ClaimTypes.Name, username),
         };
 
         var claimsIdentity = new ClaimsIdentity(
@@ -94,8 +91,8 @@ public class AuthController : BaseController
 
         var claims = new List<Claim>
         {
-            new (ClaimTypes.Role, UserRole.Student),
             new (ClaimTypes.Name, account?.Username ?? string.Empty),
+            new (ClaimTypes.Role, UserRole.Student),
         };
 
         var claimsIdentity = new ClaimsIdentity(

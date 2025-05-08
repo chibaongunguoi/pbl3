@@ -1,27 +1,5 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-@using Microsoft.AspNetCore.Http
-@using System.Security.Claims
-
-@inject IHttpContextAccessor HttpContextAccessor
-
-@functions {
-    string? GetDisplayRole(string? userRole)
-    {
-        return userRole switch
-        {
-            UserRole.Teacher => "Gia sư",
-            UserRole.Student => "Học viên",
-            UserRole.Admin => "Quản trị viên",
-            _ => null
-        };
-    }
-}
-
-@{
-    var user = HttpContextAccessor.HttpContext?.User;
-    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
-}
 
 <head>
     <meta charset="utf-8" />
@@ -42,227 +20,47 @@
 
 <body>
     <script src="~/js/init.js" asp-append-version="true"></script>
-    <header class="header">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-            <div class="container-fluid container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TRUNG TÂM TIÊN TIẾN</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex">
-                    </ul>
-                    <div class="navbar-nav flex user-link-wrapper">
-                    @if (user_role is null){
-                          <div class="nav-item">
-                            <a href="/Auth/Login" class="nav-link text-dark">Đăng nhập</a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="/Auth/SignUp" class="nav-link text-dark">Đăng ký</a>
-                        </div>   
-                    }
-                    else if (user_role == UserRole.Student || user_role == UserRole.Teacher) {
-                        <div class="nav-item ">
-                            <a id="user-info" class="text-dark user-link">
-                                <div class="user-role">
-                                    @GetDisplayRole(user_role)
-                                </div>
-                                <div class="user-name">
-                                    @await Component.InvokeAsync("UserName")
-                                </div>
-                                <div class="user-icon down-arrow">
-                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
-                                    </svg>
-                                </div>
-                                <div class="noti-dropdown" id="user-dropdown" style="display:none">
-                                    <div class="user-content-wrapper">
-                                        <div class="user-item-list">
-                                            <div class="user-item">
-                                                <a class="user-item-title" href="/User/Profile">
-                                                    Thông tin tài khoản
-                                                </a>
-                                            </div>
-                                            <div class="logout-item ">
-                                                <form action="/Auth/Logout" method="POST">
-                                                    <button type='submit' class="user-item-title logout-button">
-                                                        đăng xuất
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    }        
-                    else {
-                        <div class="nav-item ">
-                            <a id="user-info" class="text-dark user-link">
-                                <div class="user-role">
-                                    @GetDisplayRole(user_role)
-                                </div>
-                                <div class="user-icon down-arrow">
-                                    <svg width="10" height="10" viewBox="0 0 13 12" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
-                                    </svg>
-                                </div>
-                               
-                                    <div class="user-content-wrapper">
-                                        <div class="user-item-list">
-                                            <div class="user-item">
-                                                <a class="user-item-title" href="">
-                                                    Thông tin tài khoản
-                                                </a>
-                                            </div>
-                                            <div class="logout-item ">
-                                                <form action="/Auth/Logout" method="POST">
-                                                    <button type='submit' class="user-item-title logout-button">
-                                                        đăng xuất
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                              
-                            </a>
-                        </div>
-                    }        
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <div id="header_menu" class="d-none d-lg-block" data-v-4133fbdc="">
-  <div class="container" data-v-4133fbdc="">
-    <div class="row1" data-v-4133fbdc="">
-      <div class="header-megamenu" data-v-4133fbdc="">
-        <nav id="fieldmegamenu-main" data-v-4133fbdc="">
-          <ul data-v-4133fbdc="">
-            <li class="root active" data-v-4133fbdc="">
-              <a href="/" aria-current="page" class="nuxt-link-exact-active nuxt-link-active" data-v-4133fbdc="">
-                <span data-v-4133fbdc="" class="navbar-option">
-                  <!-- <i class="fa fa-home" data-v-4133fbdc=""></i> -->
-                  Trang chủ
-                </span>
-              </a>
-            </li>
-            <li class="root" data-v-4133fbdc="">
-              <a href="/Course" data-v-4133fbdc="" class="">
-                <span data-v-4133fbdc="" class="navbar-option">
-                  <!-- <i class="fa fa-video-camera" data-v-4133fbdc=""></i> -->
-                  Khóa học
-                </span>
-              </a>
-            </li>
-            <li class="root" data-v-4133fbdc="">
-              <a href="/Teacher" data-v-4133fbdc="" class="">
-                <span data-v-4133fbdc="" class="navbar-option">
-                  <!-- <i class="fa fa-book" data-v-4133fbdc=""></i> -->
-                  Gia sư
-                </span>
-              </a>
-            </li>
-            <li class="root" data-v-4133fbdc="">
-              <a href="/Course/Manage" data-v-4133fbdc="" class="">
-                <span data-v-4133fbdc="" class="navbar-option">
-                  <!-- <i class="fa fa-paperclip" data-v-4133fbdc=""></i> -->
-                  Quản lý khóa học
-                  <span class="position-absolute translate-middle badge rounded-pill bg-danger course-manage-badget-home">
-                        5
-                        <span class="visually-hidden">unread messages</span>
-                     </span>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
-</div>
-    </header>
+    @await Html.PartialAsync("Components/_Header")
     <div class="content-wrapper">
         <div class="container">
             <main role="main" class="pb-3 ">
-            <div class="clearfix">
-                @RenderBody()
-            <div>    
+                <div class="clearfix">
+                    @RenderBody()
+                    <div>
             </main>
         </div>
     </div>
-    <div class="footer">
-        <div class="footer-content-wrapper container">
-            <div class="footer-content-card about-us-wrapper">
-                <div class="footer-content-card-title">
-                    VỀ TRUNG TÂM TIÊN TIẾN
-                </div>
-                <div class="footer-content-card-content">
-                    Trung tâm TIÊN TIẾN được thành lập vào năm 2025
-                    với mục đích hỗ trợ học viên
-                    có thể tìm kiếm gia sư mình muốn một cách
-                    nhanh chóng, dễ dàng và hiệu quả. Chúng tôi luôn lắng nghe mọi nguyện vọng của gia sư và học viên,
-                    dựa vào đó để tiến hành nâng cấp và cải thiện hệ thống nhằm tối ưu trải nghiệm của người dùng
-                </div>
-
-            </div>
-            <div class="footer-content-card contact">
-                <div class="footer-content-card-title">
-                    LIÊN HỆ
-                </div>
-                <ul class="footer-content-card-contact">
-                    <li class="footer-contact-wrapper">
-                        <a target="_blank" href="https://web.facebook.com/chibaongunguoi" class="footer-contact-li">
-                            <img class="footer-contact-icon"
-                                src="https://down-vn.img.susercontent.com/file/2277b37437aa470fd1c71127c6ff8eb5" />
-                            <span class="footer-contact-desc">Facebook</span>
-                        </a>
-                    </li>
-                    <li class="footer-contact-wrapper">
-                        <a href="" class="footer-contact-li">
-                            <img style="width: 20px; height: 20px;position:relative;top:-1px;margin-right: 0.5rem;"
-                                class="footer-contact-icon" src="~/images/icon/phone_icon.png" />
-                            <span class="footer-contact-desc phone-number">0967430257</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
+    @await Html.PartialAsync("Components/_Footer")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         let userInfo = document.getElementById("user-info");
-        if (userInfo) 
-        {
-                userInfo.addEventListener("click", function () {
+        if (userInfo) {
+            userInfo.addEventListener("click", function () {
                 let dropdown = document.getElementById("user-dropdown");
-                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";      
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
             });
         }
         document.addEventListener("DOMContentLoaded", function () {
-        const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
-        const eyeClose = document.querySelector(".eye-close");
-        const eyeOpen = document.querySelector(".eye-open");
-        const passwordInput = document.querySelector("input[name='password']");
-        eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
+            const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
+            const eyeClose = document.querySelector(".eye-close");
+            const eyeOpen = document.querySelector(".eye-open");
+            const passwordInput = document.querySelector("input[name='password']");
+            eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
 
-    eyeIconWrapper.addEventListener("click", function () {
-        if (eyeClose.style.display === "none") {
-            eyeClose.style.display = "block";
-            eyeOpen.style.display = "none";
-            passwordInput.type = "password";
-        } else {
-            eyeClose.style.display = "none";
-            eyeOpen.style.display = "block";
-            passwordInput.type = "text";
-        }
-    });
-});
+            eyeIconWrapper.addEventListener("click", function () {
+                if (eyeClose.style.display === "none") {
+                    eyeClose.style.display = "block";
+                    eyeOpen.style.display = "none";
+                    passwordInput.type = "password";
+                } else {
+                    eyeClose.style.display = "none";
+                    eyeOpen.style.display = "block";
+                    passwordInput.type = "text";
+                }
+            });
+        });
 
     </script>
     @await RenderSectionAsync("Scripts", required: false)

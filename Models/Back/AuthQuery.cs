@@ -15,21 +15,15 @@ static class AuthQuery
             {
                 account = queryResult[0];
                 table = tableName;
+                role = tableName switch
+                {
+                    Tbl.student => UserRole.Student,
+                    Tbl.teacher => UserRole.Teacher,
+                    Tbl.admin => UserRole.Admin,
+                    _ => string.Empty,
+                };
                 break;
             }
-        }
-
-        switch (table)
-        {
-            case Tbl.student:
-                role = UserRole.Student;
-                break;
-            case Tbl.teacher:
-                role = UserRole.Teacher;
-                break;
-            case Tbl.admin:
-                role = UserRole.Admin;
-                break;
         }
     }
 

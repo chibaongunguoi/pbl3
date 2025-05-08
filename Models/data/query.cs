@@ -218,9 +218,9 @@ public class Query
         }
     }
 
-    public void Set(string field, int value, string? alias_ = null)
+    public void Set<T>(string field, T value, string? alias_ = null)
     {
-        SetClause($"{QPiece.dot(field, alias_)} = {value}");
+        SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
     }
 
     public void Set(string field, string value, string? alias_ = null)
@@ -228,7 +228,12 @@ public class Query
         SetClause($"{QPiece.dot(field, alias_)} = '{value}'");
     }
 
-    public void Set(string field, DateOnly value, string? alias_ = null)
+    public void SetNString(string field, string value, string? alias_ = null)
+    {
+        SetClause($"{QPiece.dot(field, alias_)} = N'{value}'");
+    }
+
+    public void Set(string field, DateOnly? value, string? alias_ = null)
     {
         SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
     }

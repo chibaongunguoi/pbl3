@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-public class TeacherProfileEditForm
+public class StudentProfileForm
 {
     public int Id { get; set; } = 0;
 
@@ -21,74 +21,72 @@ public class TeacherProfileEditForm
     [Required(ErrorMessage = "Số điện thoại không được để trống")]
     public string? Tel { get; set; } = null;
 
-    public string? Description { get; set; } = null;
 
-    public TeacherProfileEditForm()
+    public StudentProfileForm()
     {
     }
 
-    public TeacherProfileEditForm(string username)
+    public StudentProfileForm(string username)
     {
-        Teacher? teacher = null;
+        Student? account = null;
         QDatabase.Exec(conn =>
         {
-            Query q = new(Tbl.teacher);
-            q.Where(Field.teacher__username, username);
+            Query q = new(Tbl.student);
+            q.Where(Fld.username, username);
 
-            List<Teacher> teachers = q.Select<Teacher>(conn);
-            teacher = teachers.Count > 0 ? teachers[0] : null;
+            List<Student> teachers = q.Select<Student>(conn);
+            account = teachers.Count > 0 ? teachers[0] : null;
         });
 
-        if (teacher != null)
+        if (account != null)
         {
-            Id = teacher.Id;
-            Name = teacher.Name;
-            Gender = teacher.Gender;
-            Bday = teacher.Bday;
-            Tel = teacher.Tel;
-            Description = teacher.Description;
-            Role = UserRole.Teacher;
+            Id = account.Id;
+            Name = account.Name;
+            Gender = account.Gender;
+            Bday = account.Bday;
+            Tel = account.Tel;
+            Role = UserRole.Student;
         }
     }
 
     public void Reset(SqlConnection conn, string username)
     {
-        Query q = new(Tbl.teacher);
-        q.Output(Field.teacher__id);    
-        q.Where(Field.teacher__username, username);
+        Query q = new(Tbl.student);
+        q.Output(Fld.id);    
+        q.Where(Fld.username, username);
         q.Select(conn, reader => Id = QDataReader.GetInt(reader));
-        Role = UserRole.Teacher;
+        Role = UserRole.Student;
     }
 
     public void Execute(SqlConnection conn, string username, ITempDataDictionary tempData, out Account? account)
     {
+        string table = Tbl.student;
         Reset(conn, username);
-        Query q = new(Tbl.teacher);
-        q.Where(Field.teacher__username, username);
+        Query q = new(table);
+        q.Where(Fld.username, username);
         if (Bday is not null)
         {
-            q.Set(Field.teacher__bday, Bday);
+            q.Set(Fld.bday, Bday);
         }
         if (Name is not null)
         {
-            q.SetNString(Field.teacher__name, Name);
+            q.SetNString(Fld.name, Name);
         }
 
         if (Gender is not null)
         {
-            q.Set(Field.teacher__gender, Gender);
+            q.Set(Fld.gender, Gender);
         }
         if (Tel is not null)
         {
-            q.Set(Field.teacher__tel, Tel);
+            q.Set(Fld.tel, Tel);
         }
-        q.SetNString(Field.teacher__description, Description ?? "");
         q.Update(conn);
 
-        q = new(Tbl.teacher);
-        q.Where(Field.teacher__username, username);
-        List<Teacher> teachers = q.Select<Teacher>(conn);
-        account = teachers.Count > 0 ? teachers[0] : null;
+        q = new(table);
+        q.Where(Fld.username, username);
+        List<Account> accounts = q.Select<Account>(conn);
+        account = accounts.Count > 0 ? accounts[0] : null;
 
         if (account is not null)
         {

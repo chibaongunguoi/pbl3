@@ -1,0 +1,30 @@
+<div class="nav-item ">
+    <a id="user-info" class="text-dark user-link">
+        <div class="user-role">
+            Quản trị viên
+        </div>
+        <div class="user-icon down-arrow">
+            <svg width="10" height="10" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+            </svg>
+        </div>
+        <div class="noti-dropdown" id="user-dropdown" style="display:none">
+            <div class="user-content-wrapper">
+                <div class="user-item-list">
+                    <div class="user-item">
+                        <a class="user-item-title" href="">
+                            Thông tin tài khoản
+                        </a>
+                    </div>
+                    <div class="logout-item ">
+                        <form action="/Auth/Logout" method="POST">
+                            <button type='submit' class="user-item-title logout-button">
+                                đăng xuất
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

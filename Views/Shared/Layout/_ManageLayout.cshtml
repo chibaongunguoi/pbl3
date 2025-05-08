@@ -1,5 +1,5 @@
 @{
-    Layout = "_NoFooterLayout"; // Kế thừa từ layout chính
+    Layout = "_NoFooterLayout";
 }
 
 <div id="page-body" class="d-flex">
@@ -8,11 +8,11 @@
 </div>
 <div id="wp-content">
     <div class="container-fluid padding-container-fluid">
-    <div class="api-content">Content goes here</div>
+        @RenderBody()
     </div>
 </div>
 </div>
 
 @section Scripts {
-    @await RenderSectionAsync("CourseManageScripts", required: false)
+    @await RenderSectionAsync("ManageLayoutScripts", required: false)
 }

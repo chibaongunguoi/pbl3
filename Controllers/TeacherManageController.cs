@@ -26,8 +26,7 @@ public class TeacherManageController : BaseController
         }
 
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
-
-        Course? course = null;  
+        Course? course = null;
         Semester? semester = null;
         QDatabase.Exec(conn => form.Execute(conn, ModelState, username, out course, out semester));
 
@@ -70,5 +69,46 @@ public class TeacherManageController : BaseController
     public IActionResult ManageRequest()
     {
         return View();
+    }
+
+    public IActionResult ManageProfile()
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        return View(new TeacherProfileEditForm(username));
+    }
+
+    [HttpPost]
+    public IActionResult ManageProfile(TeacherProfileEditForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(form);
+        }
+
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        Account? account = null;
+        QDatabase.Exec(conn => form.Execute(conn, username, TempData, out account));
+        return View(form);
+    }
+
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult ChangePassword(PasswordChangeForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(form);
+        }
+
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        string role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+
+        Account? account = null;
+        QDatabase.Exec(conn => form.Execute(conn, username, role, TempData, out account));
+        return View(form);
     }
 }

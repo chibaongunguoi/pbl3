@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-class Account : DataObj
+public class Account : DataObj
 {
     // ========================================================================
     public int Id { get; set; }
@@ -12,8 +12,8 @@ class Account : DataObj
     {
         base.Fetch(reader, ref pos);
         Id = QDataReader.GetInt(reader, ref pos);
-        Password = QDataReader.GetString(reader, ref pos);
         Username = QDataReader.GetString(reader, ref pos);
+        Password = QDataReader.GetString(reader, ref pos);
     }
 
     // ------------------------------------------------------------------------

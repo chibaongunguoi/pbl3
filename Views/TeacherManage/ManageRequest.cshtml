@@ -1,7 +1,7 @@
 @using System.Text.Json
 
 @{
-  Layout = "_ManageLayout";
+  Layout = "Layout/_TeacherManageLayout";
 }
 
 <div id="content" class="container-fluid">
@@ -22,7 +22,7 @@
 </div>
 
 
-@section ManageLayoutScripts {
+@section TeacherManageLayoutScripts {
   <script src="~/js/pagination.js" asp-append-version="true"></script>
   <script>
     initPagination(null, "/TeacherManageAPI/ManageRequest", ".pagination-list")

@@ -1,0 +1,120 @@
+@model TeacherProfileEditForm
+
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+@{
+  Layout = "Layout/_TeacherManageLayout";
+}
+
+@await Html.PartialAsync("_SuccessErrorMessage")
+<div class="pt-add-content-wrapper">
+    <div class="pt-add-content ">
+        <div class="pt-add-title">Thông tin tài khoản</div>
+        <div class="pt-add-form">
+            <form id="pt-add" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="pt-add-form-item pt-add-form-text">
+                    <div class="pt-add-label">
+                        <label asp-for="Id">
+                            Mã số
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper user-id-wrapper">
+                        <div class="user-profile-text">
+                            @Model.Id
+                        </div>
+                    </div>
+                </div>
+                 <div class="pt-add-form-item pt-add-form-text">
+                    <div class="pt-add-label">
+                        <label asp-for="Role">
+                            Vai trò
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper user-id-wrapper">
+                        <div class="user-profile-text">
+                        @(Model.Role switch
+                        {
+                            UserRole.Admin => "Quản trị viên",
+                            UserRole.Teacher => "Gia sư",
+                            UserRole.Student => "Học viên",
+                            _ => "Khách hàng"
+                        }
+)                        </div>
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Name">
+                            Họ và tên
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        @* <input class="pt-add-form-input pt-name-input" type="text" name="Capacity" placeholder="Nhập vào" maxlength="150" value="@ViewBag.userName"> *@
+                        <input class="pt-add-form-input pt-name-input" type="text" asp-for="Name" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="cat">
+                            Giới tính
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                         <label class="auth-label-radio">
+                                Nam
+                                <input value="@Gender.male" asp-for="Gender" type="radio" class="auth-radio" checked/>
+
+                            </label>
+                            <label class="auth-label-radio">
+                                Nữ
+                                <input value="@Gender.female" asp-for="Gender" type="radio" class="auth-radio" />
+                            </label>
+                    </div>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Bday">
+                            Ngày sinh
+                        </label>
+                    </div>
+                     <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                       <input class="input cb" asp-for="Bday">
+                    </div>
+                    <span asp-validation-for="Bday" class="text-danger"></span>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="">
+                            Số điện thoại
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input " type="number" asp-for="Tel" placeholder="Nhập vào" maxlength="150">
+                    </div>
+                </div>
+                <span asp-validation-for="Tel" class="text-danger"></span>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label for="description">
+                            Mô tả
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <textarea class="pt-add-form-input detail-input" asp-for="Description"></textarea>
+                    </div>
+                </div>  
+                <div class="pt-add-btn-group">
+                    <button class="hl-btn"><span>Lưu</span></button>
+                </div>
+                <!-- <div class="user-action-buttons">
+                    <a href="/User/ChangePassword" class="auth-button card-btn">Đổi mật khẩu</a>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div>

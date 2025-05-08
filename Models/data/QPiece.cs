@@ -6,8 +6,9 @@ static class QPiece
 
     public static string castFloat(string field) => $"CAST({field} AS FLOAT)";
 
-    public static string toStr(int value) => $"{value}";
+    public static string toStr<T>(T value) => $"{value}";
 
+    public static string toStr(DateOnly? value) => $"'{value?.Year}-{value?.Month:D2}-{value?.Day:D2}'";
     public static string toStr(DateOnly value) => $"'{value.Year}-{value.Month:D2}-{value.Day:D2}'";
 
     public static string toStr(DateTime value) =>

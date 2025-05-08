@@ -1,7 +1,7 @@
 @model BriefTeacherFilter
 
 <form action="">
-    <select class=" input cb" id="comboBox" name="subject">
+    @* <select class=" input cb" id="comboBox" name="subject">
         <option value="0">Chọn môn</option>
         <option value="1">Toán </option>
         <option value="2">Văn</option>
@@ -10,7 +10,7 @@
         <option value="0">Chọn lớp</option>
         <option value="1">6</option>
         <option value="2">7</option>
-    </select>
+    </select> *@
     <select class=" input cb" asp-for="Gender">
         <option value="">Gia sư</option>
         <option value="@Gender.male">Gia sư Nam</option>
