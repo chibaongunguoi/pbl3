@@ -198,7 +198,15 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 320px; /* điều chỉnh theo độ rộng cột mong muốn */
+}
+.teacher-rating-column {
+  max-width: 320px;
+}
+.admin-rating-column {
+  max-width: 750px;
+}
+.admin-rating-content {
+  width: 800px;
 }
 body.modal-open {
   padding-right: 0 !important;

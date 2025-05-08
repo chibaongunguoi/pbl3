@@ -1,12 +1,13 @@
 @{
-Layout = "_ManageLayout"; // Sử dụng layout admin
-
+Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
+
+
 
   <div id="content" class="container-fluid">
     <div class="card">
       <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách đánh giá</div>
+        <div class="m-0 table-title">Danh sách đánh giá trong hệ thống</div>
         <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
           <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
@@ -26,7 +27,7 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
               <th scope="col">Tên học viên</th>
               <th scope="col">Đánh giá</th>
               <th scope="col">Thời gian</th>
-              <th scope="col">Nội dung</th>
+              <th scope="col" class="admin-rating-content">Nội dung</th>
               <th scope="col">Tác vụ</th>
             </tr>
           </thead>
@@ -43,7 +44,7 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
               <td>4 / 5</td>
               <td>4/11/2025 5:43:10</td>
               <td >
-              <div class="content-clamp teacher-rating-column">
+              <div class="content-clamp  admin-rating-column">
               Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy
               </div>
               </td>
@@ -52,8 +53,9 @@ Layout = "_ManageLayout"; // Sử dụng layout admin
                   <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
                     các kì học </button>
                   <button class="card-btn course-detail">Xem đánh giá</button> -->
-                  <button class="card-btn"  data-bs-toggle="modal" data-bs-target="#RatingInfoPopup">Xem chi tiết</button>
+                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#RatingInfoPopup">Xem chi tiết</button>
                    @await Html.PartialAsync("Popup/_RatingInfoPopup")
+                   <button class="card-btn choose">Xóa đánh giá</button>
                 </div>
               </td>
             </tr>
