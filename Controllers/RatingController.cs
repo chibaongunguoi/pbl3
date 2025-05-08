@@ -7,17 +7,17 @@ namespace REPO.Controllers;
 public class RatingController : BaseController
 {
     // [Authorize]
-    // public IActionResult Manage()
-    // {
-    //     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //     if (userId == null)
-    //         return Redirect("/Auth/Login");
+    public IActionResult Manage()
+    {
+        // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // if (userId == null)
+        //     return Redirect("/Auth/Login");
 
-    //     // Get ratings for the user
-    //     RatingPage page = new(int.Parse(userId));
-    //     ViewBag.page = page;
-    //     return View();
-    // }
+        // // Get ratings for the user
+        // RatingPage page = new(int.Parse(userId));
+        // ViewBag.page = page;
+        return View();
+    }
 
     // [Authorize]
     // [HttpPost]

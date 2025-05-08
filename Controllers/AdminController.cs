@@ -23,6 +23,10 @@ public class AdminController : BaseController
     {
         return View();
     }
+    public IActionResult RatingManage()
+    {
+        return View();
+    }
 
     public IActionResult SemesterManage()
     {

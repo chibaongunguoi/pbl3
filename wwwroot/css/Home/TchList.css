@@ -264,7 +264,7 @@
   border-radius: 3px;
   padding: 0px 10px;
   text-align: center;
-  /* font-size: 12px; */
+  font-size: 16px !important;
 }
 
 .card-sem-li-content {
