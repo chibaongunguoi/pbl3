@@ -14,6 +14,9 @@ class BriefCourseCard
     public string fee = "";
     public string MCourseStatus = "";
     public bool CanJoin { get; set; } = true;
+    public bool CourseIsFull = false;
+    public bool CourseIsFinished = false;
+    public bool Joined = false;
 
     public static Query GetQueryCreator(string? role = null, string? username = null)
     {
@@ -97,11 +100,13 @@ class BriefCourseCard
         card.numRatings = num_ratings;
         card.fee = IoUtils.conv_fee(fee);
 
-
         if (role == UserRole.Student)
         {
             var requestCount = QDataReader.GetInt(reader, ref pos);
-            card.CanJoin = (num_participants < capacity) && requestCount == 0 && new List<string> { CourseStatus.waiting, CourseStatus.started }.Contains(card.MCourseStatus);
+            card.CourseIsFull = num_participants >= capacity;
+            card.CourseIsFinished = card.MCourseStatus == CourseStatus.finished;
+            card.Joined = requestCount > 0;
+            card.CanJoin = !card.CourseIsFull && !card.CourseIsFinished && !card.Joined;
         }
         else if (role == UserRole.Teacher)
         {
