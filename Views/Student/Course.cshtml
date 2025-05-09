@@ -8,6 +8,7 @@
     string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 }
 
+@await Html.PartialAsync("_SuccessErrorMessage")
 <div id="content" class="container-fluid">
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">

@@ -1,12 +1,12 @@
 console.log("init.js loaded");
 
 function initRatingPopupStars(semesterId, stars) {
+  console.log("initRatingPopupStars loaded", semesterId, stars);
   const modal = document.querySelector(`.modal[semesterId='${semesterId}']`);
   const starWrappers = modal.querySelectorAll(".rating-star-wrapper");
-  console.log(starWrappers);
   const closeButton = modal.querySelector('.close-popup');
-  const ratingInput = document.getElementById('rating');
-  let selectedRating = stars
+  const ratingInput = document.querySelector(`#rating-${semesterId}`);
+  var selectedRating = stars
   starWrappers.forEach((wrapper, index) => {
     // Sự kiện mouseover
     wrapper.addEventListener('mouseover', () => {
@@ -16,7 +16,8 @@ function initRatingPopupStars(semesterId, stars) {
     // Sự kiện click
     wrapper.addEventListener('click', () => {
       selectedRating = index + 1;
-      ratingInput.value = selectedRating; // Cập nhật giá trị input ẩn
+      ratingInput.value = selectedRating;
+      console.log(ratingInput);
     });
   });
   closeButton.addEventListener('click', () => {

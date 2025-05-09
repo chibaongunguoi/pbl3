@@ -26,7 +26,7 @@
               </div>
               <div class="pt-add-input-wrapper star-input">
                 @await Html.PartialAsync("RatingPopup/_Rating5StarList", (float)0.0)
-                <input type="hidden" name="stars" id="rating" value="@initStars" />
+                <input type="hidden" name="stars" id="rating-@Model.semesterId" value="@initStars" />
               </div>
             </div>
             <!-- Mô tả -->

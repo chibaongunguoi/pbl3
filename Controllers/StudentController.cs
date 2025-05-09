@@ -86,6 +86,7 @@ public class StudentController : BaseController
         {
             q.Insert(conn, request);
         });
+        TempData["SuccessMessage"] = "Đăng kí học thành công!";
         return Json(new { redirectUrl = Url.Action(nameof(Course)) });
     }
 }
