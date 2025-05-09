@@ -200,7 +200,7 @@
 
 .page-link {
   margin: 0 16px;
-  width: 40px;
+  width: 45px;
   text-align: center;
   display: inline-block;
   border-radius: 50% !important;
@@ -213,6 +213,9 @@
   padding: 1px 15px !important;
   font-size: inherit; */
   /* font-weight: bold; */
+}
+.pagination-list .card-body {
+  padding-bottom: 0px;
 }
 
 /* .page-link:hover {
@@ -342,6 +345,7 @@
 
 .course-detail {
   margin-right: 12px;
+  width: 105px;
 }
 .card-sem-description-wrapper {
   flex-grow: 1;
