@@ -56,8 +56,8 @@ function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, fi
 
 
 function initPagination(paginationInfo, contextUrl, contextComponent, filterForm = null, paginationBar = null, paginationForm = null) {
-    getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
     getPaginationData(paginationInfo, contextUrl, contextComponent, filterForm)
+    getPagination(paginationInfo, contextUrl, contextComponent, filterForm, paginationBar)
     if (paginationForm != null) {
         const formContainer = document.querySelector(paginationForm);
         const form = formContainer.querySelector('form');

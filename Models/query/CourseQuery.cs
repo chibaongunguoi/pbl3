@@ -49,7 +49,7 @@ static class CourseQuery
         Query q = new(Tbl.request);
         q.Join(Field.semester__id, Field.request__semester_id);
         q.Join(Field.course__id, Field.semester__course_id);
-        q.WhereQuery(Field.request__semester_id, SemesterQuery.getLatestSemesterIdQuery("s"));
+        q.WhereQuery(Field.request__semester_id, SemesterQuery.GetLatestSemesterIdQuery("s"));
         q.Where(Field.semester__course_id, courseId);
         q.Where(Field.request__stu_id, stuId);
         return q.Count(conn) > 0;

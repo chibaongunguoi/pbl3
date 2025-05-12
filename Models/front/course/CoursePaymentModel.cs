@@ -20,7 +20,7 @@ public class CoursePaymentModel
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.Join(Field.semester__course_id, Field.course__id);
         q.Where(Field.course__id, courseId);
-        q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+        q.WhereQuery(Field.semester__id, SemesterQuery.GetLatestSemesterIdQuery("s"));
         q.Output(Field.teacher__name);
         q.Output(Field.semester__fee);
         q.Output(Field.course__name);
@@ -49,7 +49,7 @@ public class CoursePaymentModel
         q3.Join(Field.student__id, Field.request__stu_id);
         q3.Join(Field.semester__id, Field.request__semester_id);
         q3.Join(Field.course__id, Field.semester__course_id);
-        q3.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+        q3.WhereQuery(Field.semester__id, SemesterQuery.GetLatestSemesterIdQuery("s"));
         q3.Where(Field.student__username, username);
         q3.Where(Field.course__id, courseId);
 

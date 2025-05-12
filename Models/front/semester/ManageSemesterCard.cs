@@ -25,11 +25,7 @@ public class ManageSemesterCard
         q.Output(Field.semester__status);
         q.Output(Field.semester__fee);
         q.Output(Field.semester__capacity);
-
-        Query q2 = new Query(Tbl.request);
-        q2.WhereField(Field.request__semester_id, Field.semester__id);
-        q2.Output(QPiece.countAll);
-        q.OutputQuery(q2.SelectQuery());
+        SemesterQuery.GetParticipantsCount(ref q);
         return q;
     }
 

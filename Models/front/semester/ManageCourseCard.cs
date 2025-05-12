@@ -22,7 +22,7 @@ class ManageCourseCard
         q.Join(Field.subject__id, Field.course__sbj_id);
         q.Join(Field.semester__course_id, Field.course__id);
         if (!stuMode)
-            q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+            q.WhereQuery(Field.semester__id, SemesterQuery.GetLatestSemesterIdQuery("s"));
         q.Output(Field.course__id);
         q.Output(Field.course__name);
         q.Output(Field.semester__status);
@@ -30,21 +30,8 @@ class ManageCourseCard
         q.Output(Field.subject__grade);
         q.Output(Field.semester__id);
 
-        string local_semester = "LocalSemester"; // Alias
-        string local_rating = "LocalRating";
-        // rating avg
-        Query q2 = new(Tbl.rating, local_rating);
-        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
-        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.OutputAvgCastFloat(Field.rating__stars, local_rating);
-        q.OutputQuery(q2.SelectQuery());
-
-        // rating count
-        q2 = new(Tbl.rating, local_rating);
-        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
-        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.Output(QPiece.countAll);
-        q.OutputQuery(q2.SelectQuery());
+        SemesterQuery.GetRatingAvg(ref q);
+        SemesterQuery.GetRatingCount(ref q);
         return q;
     }
 

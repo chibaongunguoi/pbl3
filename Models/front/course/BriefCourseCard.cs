@@ -24,7 +24,7 @@ class BriefCourseCard
         q.Join(Field.subject__id, Field.course__sbj_id);
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.Join(Field.semester__course_id, Field.course__id);
-        q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+        q.WhereQuery(Field.semester__id, SemesterQuery.GetLatestSemesterIdQuery("s"));
         q.Output(Field.course__id);
         q.Output(Field.semester__id);
         q.Output(Field.course__name);
@@ -37,39 +37,13 @@ class BriefCourseCard
         q.Output(Field.semester__fee);
         q.Output(Field.semester__status);
 
-
-        string local_semester = "LocalSemester";
-        string local_rating = "LocalRating";
-        string local_request = "LocalRequest";
-        // rating avg
-        Query q2 = new(Tbl.rating, local_rating);
-        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
-        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.OutputAvgCastFloat(Field.rating__stars, local_rating);
-        q.OutputQuery(q2.SelectQuery());
-
-        // rating count
-        q2 = new(Tbl.rating, local_rating);
-        q2.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
-        q2.WhereField(Field.semester__course_id, Field.course__id, local_semester);
-        q2.Output(QPiece.countAll);
-        q.OutputQuery(q2.SelectQuery());
-
-        // participants count
-        q2 = new(Tbl.request, local_request);
-        q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
-        // q2.Where(Field.request__status, RequestStatus.joined, local_request);
-        q2.Output(QPiece.countAll);
-        q.OutputQuery(q2.SelectQuery());
+        SemesterQuery.GetRatingAvg(ref q);
+        SemesterQuery.GetRatingCount(ref q);
+        SemesterQuery.GetParticipantsCount(ref q);
 
         if (role == UserRole.Student && username is not null)
         {
-            q2 = new(Tbl.request, local_request);
-            q2.Join(Field.student__id, Field.request__stu_id, null, local_request);
-            q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
-            q2.WhereField(Field.student__username, username);
-            q2.Output(QPiece.countAll);
-            q.OutputQuery(q2.SelectQuery());
+            SemesterQuery.GetStuRequestCount(ref q, username);
         }
 
         return q;
