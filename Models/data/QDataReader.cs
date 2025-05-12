@@ -36,6 +36,13 @@ sealed class QDataReader
         return reader.GetString(pos++);
     }
 
+    public static string? GetNullableString(SqlDataReader reader, ref int pos)
+    {
+        string? result = reader.IsDBNull(pos) ? null : reader.GetString(pos);
+        pos++;
+        return result;
+    }
+
     // ------------------------------------------------------------------------
     public static DateOnly GetDateOnly(SqlDataReader reader, ref int pos)
     {

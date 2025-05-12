@@ -1,0 +1,28 @@
+@model AdminMngStuCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>@Model.StuId</td>
+    <td>@Model.Name</td>
+    <td>@(Model.Gender switch {
+        Gender.male => "Nam",
+        Gender.female => "Nữ",
+        _ => string.Empty
+        })</td>
+    <td>@Model.BDay</td>
+    <td>@Model.Tel</td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#EditStudentModal">Sửa
+                thông tin </button>
+            @await Html.PartialAsync("Popup/_EditStudentPopup")
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#CourseModal">Xem
+                khóa học
+            </button>
+            @* @await Html.PartialAsync("Popup/_CoursePopup") *@
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#StudentRatingModal">Xem
+                đánh giá </button>
+            @* @await Html.PartialAsync("Popup/_StudentRatingPopup") *@
+        </div>
+    </td>
+</tr>

@@ -7,7 +7,10 @@
         <div class="card-sem-detail-wrapper">
             <div class="card-sem-title">Thông tin chuyển khoản</div>
         </div>
-        <div class="alert alert-warning">Vui lòng chuyển đúng số tiền và nội dung để gia sư dễ dàng xác nhận</div>
+        <div class="alert alert-warning">
+            Hãy chắc chắn rằng bạn đã kiểm tra kĩ thông tin khóa học trước khi thanh toán.<br/>
+            Vui lòng chuyển đúng số tiền và nội dung để gia sư dễ dàng xác nhận.
+        </div>
 
         <div class="card-sem-desc payment-desc">
             <div class="card-content paymet-content">
@@ -53,7 +56,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="button-group-wrapper sem-btn-group sem-detail-btn-group">
             @if (Model.IsValid)
@@ -61,6 +63,7 @@
                 <button class="card-btn choose" id="submit-payment">Tôi đã thanh toán</button>
             }
         </div>
+
     </div>
 </div>
 <script>

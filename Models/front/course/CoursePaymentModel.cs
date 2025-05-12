@@ -26,7 +26,7 @@ public class CoursePaymentModel
         q.Output(Field.course__name);
         q.Output(Field.semester__id);
         q.Output(Field.semester__capacity);
-        q.Output(Field.course__status);
+        q.Output(Field.semester__status);
 
         Query q4 = new(Tbl.request);
         q4.WhereField(Field.request__semester_id, Field.semester__id);

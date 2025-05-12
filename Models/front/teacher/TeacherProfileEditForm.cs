@@ -62,7 +62,6 @@ public class TeacherProfileEditForm
 
     public void Execute(SqlConnection conn, string username, ITempDataDictionary tempData, out Account? account)
     {
-        Reset(conn, username);
         Query q = new(Tbl.teacher);
         q.Where(Field.teacher__username, username);
         if (Bday is not null)

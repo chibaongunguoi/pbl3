@@ -109,6 +109,32 @@ static class QPiece
         return s;
     }
 
+    public static string OrderBy(string field, List<string> values)
+    {
+        if (values.Count == 0)
+            return orderBy(field);
+        string s = $"CASE {field}";
+        for (int i = 0; i < values.Count; i++)
+        {
+            s += $" WHEN '{values[i]}' THEN {i}";
+        }
+        s += $" ELSE {values.Count} END";
+        return s;
+    }
+
+    public static string OrderByNString(string field, List<string> values)
+    {
+        if (values.Count == 0)
+            return orderBy(field);
+        string s = $"CASE {field}";
+        for (int i = 0; i < values.Count; i++)
+        {
+            s += $" WHEN N'{values[i]}' THEN {i}";
+        }
+        s += $" ELSE {values.Count} END";
+        return s;
+    }
+
     public static string join(string table_1, string field_1, string field_2)
     {
         return $"INNER JOIN {table_1} ON {field_1} = {field_2}";

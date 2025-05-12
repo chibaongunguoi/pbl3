@@ -61,7 +61,6 @@ public class StudentProfileForm
     public void Execute(SqlConnection conn, string username, ITempDataDictionary tempData, out Account? account)
     {
         string table = Tbl.student;
-        Reset(conn, username);
         Query q = new(table);
         q.Where(Fld.username, username);
         if (Bday is not null)

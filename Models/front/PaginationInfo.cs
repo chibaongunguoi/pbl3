@@ -4,4 +4,6 @@ public class PaginationInfo
     public int ItemsPerPage { get; set; } = 1;
     public int CurrentPage { get; set; } = 1;
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+    public int FirstIndex => (CurrentPage - 1) * ItemsPerPage + 1;
 }

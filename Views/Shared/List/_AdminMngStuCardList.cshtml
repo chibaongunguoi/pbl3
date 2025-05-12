@@ -1,0 +1,23 @@
+@model List<AdminMngStuCard>
+
+<div class="card-body">
+    <table class="table table-striped table-checkall">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Mã số</th>
+                <th scope="col">Họ và tên</th>
+                <th scope="col">Giới tính</th>
+                <th scope="col">Ngày sinh</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Tác vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var card in Model)
+            {
+                @await Html.PartialAsync("Card/_AdminMngStuCard", (object)card)
+            }
+        </tbody>
+    </table>
+</div>

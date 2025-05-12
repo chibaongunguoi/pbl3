@@ -89,6 +89,7 @@ public class CourseAPI : BaseController
         int tableIdx = 1;
         int pos = 0;
         Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
+        q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
         QDatabase.Exec(conn =>
             q.Select(
                 conn,

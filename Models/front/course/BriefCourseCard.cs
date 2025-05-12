@@ -12,7 +12,7 @@ class BriefCourseCard
     public string avgRating = "";
     public int numRatings;
     public string fee = "";
-    public string MCourseStatus = "";
+    public string MSemesterStatus = "";
     public bool CanJoin { get; set; } = true;
     public bool CourseIsFull = false;
     public bool CourseIsFinished = false;
@@ -35,7 +35,7 @@ class BriefCourseCard
         q.Output(Field.semester__finish_date);
         q.Output(Field.semester__capacity);
         q.Output(Field.semester__fee);
-        q.Output(Field.course__status);
+        q.Output(Field.semester__status);
 
 
         string local_semester = "LocalSemester";
@@ -75,7 +75,7 @@ class BriefCourseCard
         return q;
     }
 
-    public static BriefCourseCard GetCard(SqlDataReader reader, ref int pos, string? role=null)
+    public static BriefCourseCard GetCard(SqlDataReader reader, ref int pos, string? role = null)
     {
         BriefCourseCard card = new();
         pos = 0;
@@ -89,7 +89,7 @@ class BriefCourseCard
         var finish_date = QDataReader.GetDateOnly(reader, ref pos);
         var capacity = QDataReader.GetInt(reader, ref pos);
         var fee = QDataReader.GetInt(reader, ref pos);
-        card.MCourseStatus = QDataReader.GetString(reader, ref pos);
+        card.MSemesterStatus = QDataReader.GetString(reader, ref pos);
         var avg_rating = QDataReader.GetDouble(reader, ref pos);
         int num_ratings = QDataReader.GetInt(reader, ref pos);
         int num_participants = QDataReader.GetInt(reader, ref pos);
@@ -104,7 +104,7 @@ class BriefCourseCard
         {
             var requestCount = QDataReader.GetInt(reader, ref pos);
             card.CourseIsFull = num_participants >= capacity;
-            card.CourseIsFinished = card.MCourseStatus == CourseStatus.finished;
+            card.CourseIsFinished = card.MSemesterStatus == SemesterStatus.finished;
             card.Joined = requestCount > 0;
             card.CanJoin = !card.CourseIsFull && !card.CourseIsFinished && !card.Joined;
         }

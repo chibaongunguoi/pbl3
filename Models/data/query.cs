@@ -166,6 +166,11 @@ public class Query
         WhereClause($"{QPiece.dot(field, alias_)} = ({query})");
     }
 
+    public void WhereInQuery(string field, string query, string? alias_ = null)
+    {
+        WhereClause($"{QPiece.dot(field, alias_)} IN ({query})");
+    }
+
     public void WhereField(
         string field_1,
         string field_2,
@@ -206,6 +211,16 @@ public class Query
     public void OrderBy(string field_, bool desc = false, string? alias_ = null)
     {
         OrderByClause(QPiece.orderBy(QPiece.dot(field_, alias_), desc: desc));
+    }
+
+    public void OrderBy(string field_, List<string>values, string?alias_ = null)
+    {
+        OrderByClause(QPiece.OrderBy(QPiece.dot(field_, alias_), values));
+    }
+
+    public void OrderByNString(string field_, List<string>values, string?alias_ = null)
+    {
+        OrderByClause(QPiece.OrderByNString(QPiece.dot(field_, alias_), values));
     }
 
     // ========================================================================

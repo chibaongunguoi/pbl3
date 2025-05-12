@@ -17,7 +17,18 @@
         </a>
     </td>
     <td>@Model.avg_rating</td>
-    <td>@Model.course_state</td>
+    <td>
+        @(Model.MSemesterStatus switch {
+        SemesterStatus.waiting => "Sắp diễn ra",
+        SemesterStatus.finished => "Đã kết thúc",
+        SemesterStatus.started => "Đang diễn ra",
+        _ => null
+        })<br>
+        @if(Model.MSemesterStatus != SemesterStatus.finished && Model.MRequestStatus == RequestStatus.waiting)
+        {
+            @("(Chờ duyệt)")
+        }
+    </td>
     <td>@Model.subject</td>
     <td>@Model.grade</td>
     <td>
@@ -28,24 +39,29 @@
                     onclick="window.location.href='/TeacherManage/ManageSemester?courseId=@Model.course_id'">Xem
                     các kì học </button>
                 @await Html.PartialAsync("Popup/_StudentTablePopup")
-                <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditCourseModal-@Model.course_id">Chỉnh sửa</button>
+                <button class="card-btn course-detail" data-bs-toggle="modal"
+                    data-bs-target="#EditCourseModal-@Model.course_id">Chỉnh sửa</button>
                 @await Html.PartialAsync("Popup/_EditCoursePopup")
             }
             <button class="card-btn course-detail"
                 onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
             @if (user_role == UserRole.Student)
             {
-                int stuId = int.Parse(user?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-                <button class="card-btn choose" data-bs-toggle="modal" data-bs-target=@($"#myModal{Model.semesterId}")>
-                    @if(Model.stars == 0)
-                    {
+                @if (@Model.Commentable)
+                {
+                 if (Model.stars == 0)
+                {
+                    <button class="card-btn" style="background: honeydew" data-bs-toggle="modal" data-bs-target=@($"#myModal{Model.semesterId}")>
                         <span>Viết đánh giá</span>
-                    }
-                    else
-                    {
+                    </button>
+                }
+                else if (Model.stars > 0)
+                {
+                    <button class="card-btn" style="background: aliceblue" data-bs-toggle="modal" data-bs-target=@($"#myModal{Model.semesterId}")>
                         <span>Sửa đánh giá</span>
-                    }
-                </button>
+                    </button>
+                }
+                }
                 @await Html.PartialAsync("Popup/_RatingFormPopup", (@Model.semesterId, @Model.stars, @Model.comment))
             }
         </div>

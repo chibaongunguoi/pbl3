@@ -1,14 +1,12 @@
 @{
-Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+  Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 
-
-
-  <div id="content" class="container-fluid">
-    <div class="card">
-      <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách học viên trong hệ thống</div>
-        <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+<div id="content" class="container-fluid">
+  <div class="card">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+      <div class="m-0 table-title">Danh sách học viên trong hệ thống</div>
+      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
           <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
         </div>
@@ -16,49 +14,24 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
           <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
         </div>
       </form> -->
-      </div>
-
-      <div class="card-body">
-        <table class="table table-striped table-checkall">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Mã số</th>
-              <th scope="col">Họ và tên</th>
-              <th scope="col">Giới tính</th>
-              <th scope="col">Ngày sinh</th>
-              <th scope="col">Số điện thoại</th>
-              <th scope="col">Tác vụ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row" class="table-index">1</td>
-              <td>1001</td>
-              <td>Nguyễn Chí Bảo</td>
-              <td>Nam</td>
-              <td>05/09/2005</td>
-              <td>0967430257</td>
-              <td>
-                <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditStudentModal">Sửa thông tin </button>
-                    @await Html.PartialAsync("Popup/_EditStudentPopup")
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#CourseModal">Xem khóa học </button>
-                    @await Html.PartialAsync("Popup/_CoursePopup")
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#StudentRatingModal">Xem đánh giá </button>
-                    @await Html.PartialAsync("Popup/_StudentRatingPopup")
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
+    <div class="pagination-list"></div>
   </div>
+  <div class="pagination-bar"></div>
+</div>
+<script>
+  const paginationInfo = {
+    CurrentPage: 1,
+    ItemsPerPage: 20
+  }
+  initPagination(paginationInfo, "/AdminAPI/GetStudents", ".pagination-list", {}, ".pagination-bar")
+</script>
 <style>
   /* Làm mờ nền khi modal mở */
   .modal.show {
-    backdrop-filter: blur(5px); /* Hiệu ứng blur */
-    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+    backdrop-filter: blur(5px);
+    /* Hiệu ứng blur */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Làm tối nền nhẹ */
   }
 </style>

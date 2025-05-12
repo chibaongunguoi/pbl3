@@ -8,11 +8,14 @@
             </div>
         </div>
         @await Html.PartialAsync("_SuccessErrorMessage")
-        <div class="shop-section-content">
-            <div class="card-product-ul text-center">
-                @await Html.PartialAsync("_QRCard")
-                @await Html.PartialAsync("_PaymentDetail", Model)
+        @if (Model.IsValid)
+        {
+            <div class="shop-section-content">
+                <div class="card-product-ul text-center">
+                    @await Html.PartialAsync("_QRCard")
+                    @await Html.PartialAsync("_PaymentDetail", Model)
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

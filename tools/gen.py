@@ -7,12 +7,15 @@ from datetime import datetime,date
 from typing import Any
 
 START_DATE = "2023-7-1"
-COURSE_RATE = 0.1
+COURSE_RATE = 0.5
 REQUEST_RATE = 0.3
 RATING_RATE = 0.7
 
 SEM_RANGE_START = 3
 SEM_RANGE_END = 5
+
+JOIN_LIMIT_START = 20
+JOIN_LIMIT_END = 100
 
 SEMESTER_CAPACITIES = [i*5 for i in range(3, 13)]
 
@@ -280,12 +283,12 @@ student_grades :dict[int, list] = {grade: [] for grade in grades}
 
 # -----------------------------------------------------------------------------
 
-def create_request(stu_id, semester_id, semester_start_date, semester_finish_date, request_status):
-    semester_finish_date = min(semester_finish_date, today)
+def create_request(stu_id, semester_id, semStartDate, semFinishDate, request_status):
+    semFinishDate = min(semFinishDate, today)
     request_time = random.randint(0, 24 * 60 * 60 - 1)
-    semester_start_date =semester_start_date - timedelta(days=random.randint(0, 30))
-    middle_date = semester_start_date + (semester_finish_date - semester_start_date) / 2
-    joined_day = random_date(semester_start_date, middle_date)
+    semStartDate_ = semStartDate - timedelta(days=random.randint(0, 30))
+    middle_date = semStartDate_ + (semFinishDate - semStartDate_) / 2
+    joined_day = random_date(semStartDate, middle_date)
     joined_date = joined_day + timedelta(seconds=request_time)
     request = Request(stu_id, semester_id, joined_date, request_status)
     requests.append(request)
@@ -310,7 +313,7 @@ def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
     )
     ratings.append(rating)
 
-def create_semester(semester_id, semester_start_date, semester_finish_date, grade, capacity, semester_status):
+def create_semester(semester_id, semStartDate, semFinishDate, grade, capacity, semester_status):
     global semester_next_id,student_grades
 
     # format: yyyy-mm-dd
@@ -319,8 +322,8 @@ def create_semester(semester_id, semester_start_date, semester_finish_date, grad
     semester = Semester(
         semester_id,
         course_id,
-        semester_start_date,
-        semester_finish_date,
+        semStartDate,
+        semFinishDate,
         capacity,
         fee,
         nstr(semester_description),
@@ -351,7 +354,7 @@ for stu_id in student_ids:
     student = Student(stu_id, str(username), str(password), nstr(name), gender, bday, tel)
     students.append(student)
     student_grades[grade].append(stu_id)
-    studentSemesterLimit[stu_id] = random.randint(4, 10)
+    studentSemesterLimit[stu_id] = random.randint(JOIN_LIMIT_START, JOIN_LIMIT_END)
 
 json_output("student", students)
 
@@ -437,35 +440,41 @@ for tch_id in teacher_ids:
         # create semesters
 
         course_start_date= datetime.strptime(START_DATE, "%Y-%m-%d") + timedelta(random.randint(0, LATEST_START_DATE))
-        semester_start_date = None
-        semester_finish_date = None
+        semStartDate = None
+        semFinishDate = None
             
         numSemesters = random.randint(SEM_RANGE_START, SEM_RANGE_END)
         indices = list(range(1, numSemesters + 1))
         last_index = len(indices) - 1
-        semester_start_date = course_start_date
+        semStartDate = course_start_date
         course_semesters = []
         semester_status = None
         for i in indices:
             semester_id = semester_next_id
             semester_next_id += 1
             semester_capacity = random.choice(SEMESTER_CAPACITIES)
-            semester_finish_date = semester_start_date + timedelta(random.randint(DURATION_RANGE_START, DURATION_RANGE_END))
-            semester_status = "waiting"
-            if semester_start_date <= today:
+            semFinishDate = semStartDate + timedelta(random.randint(DURATION_RANGE_START, DURATION_RANGE_END))
+
+            semIsFinished = semFinishDate < today
+            semIsWaiting = today < semStartDate
+            semIsStarted = semStartDate <= today <= semFinishDate
+
+            if semIsWaiting:
+                semester_status = "waiting"
+            if semIsStarted:
                 semester_status = "started"
-            if semester_finish_date < today:
+            if semIsFinished:
                 semester_status = "finished"
 
-            semester = create_semester(semester_id, semester_start_date, semester_finish_date, grade, semester_capacity, semester_status)
+            semester = create_semester(semester_id, semStartDate, semFinishDate, grade, semester_capacity, semester_status)
             semesters.append(semester)
             course_semesters.append(semester)
-            semester_start_date = semester_finish_date + timedelta(random.randint(30, 60))
+            semStartDate = semFinishDate + timedelta(random.randint(30, 60))
 
-            if semester_status == "waiting":
+            if semIsWaiting or semIsStarted:
                 break
 
-        course_finish_date = semester_finish_date
+        course_finish_date = semFinishDate
         course_status = semester_status
 
         for i, sem in enumerate(course_semesters):
@@ -475,6 +484,11 @@ for tch_id in teacher_ids:
             sem_finish_date = sem.finish_date
             sem_status = sem.status
             joined_students = []
+
+            semIsFinished = sem_finish_date < today
+            semIsWaiting = today < sem_start_date
+            semIsStarted = sem_start_date <= today <= sem_finish_date
+
             for stu_id in student_grades[grade]:
                 if len(joined_students) >= sem_capacity:
                     break
@@ -488,9 +502,10 @@ for tch_id in teacher_ids:
                 studentSemesterLimit[stu_id] -= 1
 
                 joined_students.append(stu_id)
-                request_status = "joined"
-                if i == len(course_semesters) - 1 and course_status == "waiting":
+                if (semIsStarted or semIsWaiting):
                     request_status = random.choice(["joined", "waiting"])
+                elif semIsFinished:
+                    request_status = "joined"
 
                 request_date_ = None
                 the_request = create_request(stu_id, sem_id, sem_start_date, sem_finish_date, request_status)
@@ -502,9 +517,6 @@ for tch_id in teacher_ids:
                     continue
                 create_rating(stu_id, sem_id, the_request_time, sem_finish_date)
 
-
-        if course_status == "waiting" and len(semesters) > 0:
-            semesters[-1].status = "waiting"
 
         course = Course(course_id, tch_id, sbj_id, nstr(f"Khóa học VDC {sbj}"), str(course_status))
         courses.append(course)

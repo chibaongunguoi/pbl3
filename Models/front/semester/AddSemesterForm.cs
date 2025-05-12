@@ -34,7 +34,9 @@ public class AddSemesterForm
             {
                 Query q = CourseOption.get_query_creator();
                 q.Join(Field.teacher__id, Field.course__tch_id);
-                q.Where(Field.course__status, CourseStatus.finished);
+                q.Join(Field.semester__course_id, Field.course__id);
+                q.WhereQuery(Field.semester__id, SemesterQuery.getLatestSemesterIdQuery("s"));
+                q.Where(Field.semester__status, SemesterStatus.finished);
                 q.Where(Field.teacher__username, username);
                 q.Select(
                     conn,

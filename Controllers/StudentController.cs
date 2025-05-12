@@ -22,12 +22,13 @@ public class StudentController : BaseController
     [HttpPost]
     public IActionResult ManageProfile(StudentProfileForm form)
     {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        QDatabase.Exec(conn=> form.Reset(conn, username));
         if (!ModelState.IsValid)
         {
             return View(form);
         }
 
-        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         Account? account = null;
         QDatabase.Exec(conn => form.Execute(conn, username, TempData, out account));
         return View(form);
