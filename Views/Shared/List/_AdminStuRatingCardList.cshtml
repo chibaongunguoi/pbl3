@@ -1,0 +1,34 @@
+@model List<AdminStuRatingCard>
+
+@{
+    var studentName = ViewBag.StudentName ?? "học viên";
+    var stuId = ViewBag.StuId ?? 0;
+}
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Học viên @studentName chưa đánh giá khóa học nào.
+    </div>
+}
+else
+{    <div class="table-responsive">
+        <table class="table table-striped table-checkall table-sm table-compact">
+            <thead>                <tr>
+                    <th scope="col" style="width: 5%">#</th>
+                    <th scope="col" style="width: 20%">Tên khóa học</th>
+                    <th scope="col" style="width: 10%">Đánh giá</th>
+                    <th scope="col" style="width: 40%">Nhận xét</th>
+                    <th scope="col" style="width: 15%">Ngày đánh giá</th>
+                    <th scope="col" style="width: 10%">Tác vụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rating in Model)
+                {
+                    @await Html.PartialAsync("Card/_AdminStuRatingCard", rating)
+                }
+            </tbody>
+        </table>
+    </div>
+}

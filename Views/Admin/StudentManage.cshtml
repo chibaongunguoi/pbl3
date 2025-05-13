@@ -2,9 +2,9 @@
   Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 
-<div id="content" class="container-fluid">
+<div id="content" class="container-fluid px-1">
   <div class="card">
-    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center py-2">
       <div class="m-0 table-title">Danh sách học viên trong hệ thống</div>
       <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
@@ -37,5 +37,117 @@
     /* Hiệu ứng blur */
     background-color: rgba(0, 0, 0, 0.3);
     /* Làm tối nền nhẹ */
+  }
+
+  /* Star rating display */
+  .star-rating {
+    display: inline-flex;
+  }
+
+  .star {
+    color: #ddd;
+    margin-right: 2px;
+  }
+
+  .star.filled {
+    color: #ffa41c;
+  }
+
+  /* Improve comment display */
+  .comment-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    max-height: 70px;
+    overflow-y: auto;
+  }
+
+  /* Add tooltip-style display for longer comments */
+  .comment-text:hover {
+    position: relative;
+    z-index: 1000;
+    max-height: 200px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Fix buttons to display in a single line */
+  .button-group-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 3px;
+    justify-content: space-between;
+    width: 100%;
+    /* Use full available width */
+    max-width: 330px;
+    /* Limit maximum width */
+  }
+
+  .card-btn {
+    white-space: nowrap;
+    padding: 2px 4px;
+    flex: 1;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    min-width: 80px;
+    max-width: 105px;
+    margin: 0 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table-compact td,
+  .table-compact th {
+    padding: 0.3rem 0.4rem;
+    vertical-align: middle;
+  }
+
+  .table td,
+  .table th {
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Allow specific columns to wrap */
+  .table td .comment-text,
+  .table td .course-table-name {
+    white-space: normal;
+  }
+
+  /* Keep table within container */
+  #content .card {
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Course link styling */
+  .course-table-name {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .course-table-name:hover {
+    text-decoration: underline;
+    color: #0a58ca;
+  }
+
+  /* Pagination styling */
+  #pagination-bar .pagination,
+  .student-courses-pagination .pagination,
+  .student-ratings-pagination .pagination {
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pa-active {
+    background-color: #0d6efd;
+    color: white;
   }
 </style>

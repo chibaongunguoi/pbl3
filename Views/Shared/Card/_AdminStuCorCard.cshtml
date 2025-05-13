@@ -7,7 +7,21 @@
             @Model.CourseName
         </a>
     </td>
-    <td>@(Model.Stars > 0 ? $"{Model.Stars}/5" : "Chưa đánh giá")</td>
+    <td>
+        @if (Model.Stars > 0)
+        {
+            <div class="star-rating">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star @(i <= Model.Stars ? "filled" : "")">★</span>
+                }
+            </div>
+        }
+        else
+        {
+            <span>Chưa đánh giá</span>
+        }
+    </td>
     <td>
         @(Model.Status switch {
         SemesterStatus.waiting => "Sắp diễn ra",
@@ -22,8 +36,5 @@
             <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@Model.CourseId'">
                 Xem chi tiết
             </button>
-        </div>
-    </td>
-</tr>
-    </td>
+        </div>    </td>
 </tr>

@@ -65,15 +65,21 @@ public class AdminAPI : BaseController
         q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
         return q;
     }    [HttpGet("GetStudentCourses")]
-    public IActionResult GetStudentCourses(int stuId)
+    public IActionResult GetStudentCourses(int stuId, PaginationInfo paginationInfo)
     {
+        if (paginationInfo == null)
+        {
+            paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 5 };
+        }
+
         Query q = GetStudentCoursesQuery(stuId);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         
         List<AdminStuCorCard> cards = [];
         QDatabase.Exec(
             conn =>
             {
-                int tableIdx = 1;
+                int tableIdx = paginationInfo.FirstIndex;
                 q.Select(
                     conn,
                     reader => cards.Add(AdminStuCorCard.GetCard(reader, ref tableIdx))
@@ -105,11 +111,75 @@ public class AdminAPI : BaseController
         );
         return PartialView("List/_AdminStuCorCardList", cards);
     }
-    
-    [HttpGet("GetStudentCourses/Pagination")]
+      [HttpGet("GetStudentCourses/Pagination")]
     public IActionResult GetStudentCoursesPagination(int stuId, PaginationInfo paginationInfo, string contextUrl, string contextComponent)
     {
         QDatabase.Exec(conn => paginationInfo.TotalItems = GetStudentCoursesQuery(stuId).Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
+    }
+    
+    private Query GetStudentRatingsQuery(int stuId)
+    {
+        Query q = AdminStuRatingCard.GetQuery(stuId);
+        q.OrderBy(Field.rating__timestamp, desc: true); // Most recent ratings first
+        return q;
+    }
+    
+    [HttpGet("GetStudentRatings")]
+    public IActionResult GetStudentRatings(int stuId, PaginationInfo paginationInfo)
+    {
+        if (paginationInfo == null)
+        {
+            paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 5 };
+        }
+
+        Query q = GetStudentRatingsQuery(stuId);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
+        
+        List<AdminStuRatingCard> cards = [];
+        QDatabase.Exec(
+            conn =>
+            {
+                int tableIdx = paginationInfo.FirstIndex;
+                q.Select(
+                    conn,
+                    reader => cards.Add(AdminStuRatingCard.GetCard(reader, ref tableIdx))
+                );
+
+                // Get student name for popup title
+                if (cards.Count > 0)
+                {
+                    ViewBag.StudentName = cards[0].StudentName;
+                    ViewBag.StuId = cards[0].StuId;
+                }
+                else
+                {
+                    Query stuQuery = new(Tbl.student);
+                    stuQuery.Where(Field.student__id, stuId);
+                    stuQuery.Output(Field.student__name);
+                    stuQuery.Output(Field.student__id);
+                    stuQuery.Select(
+                        conn,
+                        reader => 
+                        {
+                            int pos = 0;
+                            ViewBag.StudentName = QDataReader.GetString(reader, ref pos);
+                            ViewBag.StuId = QDataReader.GetInt(reader, ref pos);
+                        }
+                    );
+                }
+            }
+        );
+        return PartialView("List/_AdminStuRatingCardList", cards);
+    }
+    
+    [HttpGet("GetStudentRatings/Pagination")]
+    public IActionResult GetStudentRatingsPagination(int stuId, PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    {
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetStudentRatingsQuery(stuId).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)

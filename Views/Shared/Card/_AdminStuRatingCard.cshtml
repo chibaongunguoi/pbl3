@@ -1,0 +1,33 @@
+@model AdminStuRatingCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>    <td>
+        <a class="course-table-name" href='/Course/Detail?courseId=@Model.SemesterId' target="_blank">
+            @Model.CourseName
+        </a>
+    </td>
+    <td>
+        <div class="star-rating">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="star @(i <= Model.Stars ? "filled" : "")">★</span>
+            }
+        </div>
+    </td>    <td>
+        @if (!string.IsNullOrWhiteSpace(Model.Comment))
+        {
+            <div class="comment-text" style="max-height: 75px; overflow-y: auto;">@Model.Comment</div>
+        }
+        else
+        {
+            <span class="text-muted">Không có nhận xét</span>
+        }
+    </td>
+    <td>@Model.RatingDate.ToString("dd/MM/yyyy HH:mm")</td>    <td>
+        <div class="button-group-wrapper">
+            <button class="card-btn course-detail" onclick="window.open('/Course/Detail?courseId=@Model.SemesterId', '_blank')">
+                Xem khóa học
+            </button>
+        </div>
+    </td>
+</tr>
