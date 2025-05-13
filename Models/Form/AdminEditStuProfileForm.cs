@@ -63,15 +63,16 @@ public class AdminEditStuProfileForm
         });
 
         if (oldUsername != Username)
-        {
-            q = new(Tbl.student);
-            q.Where(Field.student__username, Username);
-            if (q.Count(conn) > 0)
+            foreach (string table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
             {
-                Message.Add("Error", "Tên đăng nhập đã tồn tại");
-                return;
+                q = new(table);
+                q.Where(Fld.username, Username);
+                if (q.Count(conn) > 0)
+                {
+                    Message.Add("Error", "Tên đăng nhập đã tồn tại");
+                    return;
+                }
             }
-        }
 
 
         q = new(Tbl.student);

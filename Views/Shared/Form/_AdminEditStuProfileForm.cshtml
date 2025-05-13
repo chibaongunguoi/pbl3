@@ -2,7 +2,7 @@
 
 @await Html.PartialAsync("_Message", Model.Message)
 <div class="pt-add-form">
-    <form class="AdminEditStuProfileForm" idx="@Model.StuId">
+    <form class="admin-edit-stu-profile-form" idx="@Model.StuId">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="pt-add-form-item">
             <div class="pt-add-label">
@@ -119,17 +119,31 @@
                 </div> -->
     </form>
 </div>
-<script>
+<script>   
     function load(stuId) {
         const placeholderSelector = `.AdminEditStuProfileFormPlaceholder[idx="${stuId}"]`;
         const submitUrl = "/AdminAPI/SubmitAdminEditStuProfileForm";
-        const formSelector = `.AdminEditStuProfileForm[idx="${stuId}"]`;
+        const formSelector = `.admin-edit-stu-profile-form[idx="${stuId}"]`;
         var form = document.querySelector(formSelector);
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            const formData = Object.fromEntries(new FormData(form).entries());
-            initPagination(null, submitUrl, placeholderSelector, { ...formData, stuId: stuId });
+            const formData = new FormData(form);
+            formData.append("stuId", stuId);
+            $.ajax({
+                url: submitUrl,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $(placeholderSelector).html(response);
+                    load(stuId);
+                },
+                error: function(error) {
+                    console.error("Error submitting form:", error);
+                }
+            });
         });
     }
-    load(@Model.StuId)
+    load(@Model.StuId);
 </script>

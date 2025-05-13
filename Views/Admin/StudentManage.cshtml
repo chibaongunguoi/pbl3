@@ -17,14 +17,18 @@
     </div>
     <div class="pagination-list"></div>
   </div>
-  <div class="pagination-bar"></div>
+  <div id="pagination-bar"></div>
 </div>
-<script>
-  const paginationInfo = {
+
+<!-- Student course popups are now loaded per student card -->
+
+<script>  const paginationInfo = {
     CurrentPage: 1,
     ItemsPerPage: 20
   }
-  initPagination(paginationInfo, "/AdminAPI/GetStudents", ".pagination-list", {}, ".pagination-bar")
+  initPagination(paginationInfo, "/AdminAPI/GetStudents", ".pagination-list", {}, "#pagination-bar")
+  // Add event listener for view student courses buttons
+  // No global event listener needed - we'll handle clicks at the card level
 </script>
 <style>
   /* Làm mờ nền khi modal mở */

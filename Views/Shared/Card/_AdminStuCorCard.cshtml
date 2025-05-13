@@ -1,0 +1,29 @@
+@model AdminStuCorCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>
+        <a class="course-table-name" href='/Course/Detail?courseId=@Model.CourseId' target="_blank">
+            @Model.CourseName
+        </a>
+    </td>
+    <td>@(Model.Stars > 0 ? $"{Model.Stars}/5" : "Chưa đánh giá")</td>
+    <td>
+        @(Model.Status switch {
+        SemesterStatus.waiting => "Sắp diễn ra",
+        SemesterStatus.finished => "Đã kết thúc",
+        SemesterStatus.started => "Đang diễn ra",
+        _ => "Không xác định"
+        })
+    </td>
+    <td>@Model.Subject</td>
+    <td>@Model.Grade</td>    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@Model.CourseId'">
+                Xem chi tiết
+            </button>
+        </div>
+    </td>
+</tr>
+    </td>
+</tr>

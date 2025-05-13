@@ -13,3 +13,13 @@
         </div>
     </div>
 </div>
+<script>   
+    function load() {
+        const modal = document.querySelector(`.EditStudentModal[idx="${@Model}"]`);
+        modal.addEventListener('hidden.bs.modal', function() {
+            const activePaginationLink = document.querySelector('#pagination-bar .page-link.pa-active');
+            activePaginationLink.click();
+        });
+    }
+    load();
+</script> 
