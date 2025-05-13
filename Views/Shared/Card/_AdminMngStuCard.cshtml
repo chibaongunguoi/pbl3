@@ -13,16 +13,20 @@
     <td>@Model.Tel</td>
     <td>
         <div class="button-group-wrapper course-manager">
-            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#EditStudentModal">Sửa
-                thông tin </button>
-            @await Html.PartialAsync("Popup/_EditStudentPopup")
-            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#CourseModal">Xem
-                khóa học
+            <button class="card-btn course-detail EditStuProfileBtn" idx="@Model.StuId" data-bs-toggle="modal" data-bs-target='.EditStudentModal[idx="@Model.StuId"]'>Sửa thông tin</button>
+            @await Html.PartialAsync("Popup/_EditStudentPopup", Model.StuId)
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#CourseModal">Xem khóa học
             </button>
             @* @await Html.PartialAsync("Popup/_CoursePopup") *@
-            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#StudentRatingModal">Xem
-                đánh giá </button>
+            <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#StudentRatingModal">Xem đánh giá </button>
             @* @await Html.PartialAsync("Popup/_StudentRatingPopup") *@
         </div>
     </td>
 </tr>
+<script>
+    document.querySelector(`.EditStuProfileBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
+        const getUrl = "/AdminAPI/GetAdminEditStuProfileForm";
+        const placeholderSelector = `.AdminEditStuProfileFormPlaceholder[idx="${@Model.StuId}"]`;
+        initPagination(null, getUrl, placeholderSelector, {stuId: @Model.StuId});
+    });
+</script>

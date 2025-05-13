@@ -44,4 +44,22 @@ public class AdminAPI : BaseController
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
         );
     }
+
+    [HttpGet("GetAdminEditStuProfileForm")]
+    public IActionResult GetAdminEditStuProfileForm(int stuId)
+    {
+        AdminEditStuProfileForm form = new(stuId);
+        Console.WriteLine($"GetAdminEditStuProfileForm: {form.Name}");
+        return PartialView("Form/_AdminEditStuProfileForm", form);
+    }
+
+    [HttpGet("SubmitAdminEditStuProfileForm")]
+    public IActionResult SubmitAdminEditStuProfileForm(AdminEditStuProfileForm form, int stuId)
+    {
+        if (!ModelState.IsValid)
+            return PartialView("Form/_AdminEditStuProfileForm", form);
+
+        QDatabase.Exec(conn => form.Execute(conn, stuId));
+        return PartialView("Form/_AdminEditStuProfileForm", form);
+    }
 }
