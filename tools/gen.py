@@ -272,9 +272,12 @@ teacher_birthday_gen = generate_day(TEACHER_BIRTHDAY_START, TEACHER_BIRTHDAY_END
 addr_gen = generate_addr()
 
 def random_date(start_date, end_date):
-    delta = end_date - start_date
-    random_seconds = random.random() * delta.total_seconds()
-    return (start_date + timedelta(seconds=random_seconds)).date()
+    # Convert to dates if they aren't already
+    start = start_date if isinstance(start_date, date) else start_date.date()
+    end = end_date if isinstance(end_date, date) else end_date.date()
+    delta = (end - start).days
+    random_days = random.uniform(0, delta)
+    return start + timedelta(days=random_days)
 
 # -----------------------------------------------------------------------------
 students = []
@@ -284,13 +287,42 @@ student_grades :dict[int, list] = {grade: [] for grade in grades}
 # -----------------------------------------------------------------------------
 
 def create_request(stu_id, semester_id, semStartDate, semFinishDate, request_status):
-    semFinishDate = min(semFinishDate, today)
-    request_time = random.randint(0, 24 * 60 * 60 - 1)
+    request_time = random.randint(0, 24 * 60 * 60 - 1)    # Everything is handled as date objects for calculations
+    today_date = today.date()
+    # Convert input dates to date objects if they aren't already
+    semStartDate = semStartDate if isinstance(semStartDate, date) else semStartDate.date()
+    semFinishDate = semFinishDate if isinstance(semFinishDate, date) else semFinishDate.date()
+    
+    # Calculate earlier start date
     semStartDate_ = semStartDate - timedelta(days=random.randint(0, 30))
-    middle_date = semStartDate_ + (semFinishDate - semStartDate_) / 2
-    joined_day = random_date(semStartDate, middle_date)
-    joined_date = joined_day + timedelta(seconds=request_time)
-    request = Request(stu_id, semester_id, joined_date, request_status)
+    
+    # Calculate middle date as days since start
+    days_between = (semFinishDate - semStartDate_).days
+    middle_days = days_between // 2
+    middle_date = semStartDate_ + timedelta(days=middle_days)
+    
+    # Ensure middle_date is at most yesterday
+    yesterday = today_date - timedelta(days=1)
+    if isinstance(middle_date, datetime):
+        middle_date = middle_date.date()
+    if middle_date > yesterday:
+        middle_date = yesterday
+    
+    # Generate a random date between semStartDate_ and middle_date
+    semStartDate_ = semStartDate_.date() if isinstance(semStartDate_, datetime) else semStartDate_
+    middle_date = middle_date.date() if isinstance(middle_date, datetime) else middle_date
+    joined_day = random_date(semStartDate_, middle_date)
+    
+    # Convert to datetime and add seconds
+    request_datetime = datetime.combine(joined_day, datetime.min.time()) + timedelta(seconds=request_time)
+    
+    # Ensure it's before today
+    if request_datetime.date() >= today_date:
+        # Generate a time on the day before today
+        yesterday = today_date - timedelta(days=1)
+        request_datetime = datetime.combine(yesterday, datetime.min.time()) + timedelta(seconds=random.randint(0, 86399))
+    
+    request = Request(stu_id, semester_id, request_datetime, request_status)
     requests.append(request)
     return request
 
@@ -299,9 +331,10 @@ def create_request(stu_id, semester_id, semStartDate, semFinishDate, request_sta
 def create_rating(stu_id, sem_id, the_request_time, course_finish_date):
     random_days = random.randint(0, 5)
     end_date = course_finish_date + timedelta(days=random_days)
-    rating_date = min(today, end_date)
+    rating_date = min(today - timedelta(days=1), end_date) 
     rating_datetime = rating_date + timedelta(seconds=random.randint(0, 24 * 60 * 60 - 1))
-    rating_score = random.choices([1,2,3,4,5], weights=[0.05, 0.05, 0.05, 0.05, 0.80], k=1)[0]
+    rating_weights = [1/15, 2/15, 3/15, 4/15, 5/15]
+    rating_score = random.choices([1,2,3,4,5], weights=rating_weights, k=1)[0]
     rating_description = random.choice(comments[f"{rating_score}"])
     # score = random.choice([1, 2, 3, 4, 5])
     rating = Rating(

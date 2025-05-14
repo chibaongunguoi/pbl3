@@ -1,0 +1,275 @@
+@{
+Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+}
+<div class="row py-3">
+  <!-- HỌC VIÊN -->
+  <div class="col">
+    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+      <div class="card-header">HỌC VIÊN</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalStudents">--</h5>
+        <p class="card-text">Số lượng học viên sử dụng hệ thống</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOANH THU -->
+  <div class="col">
+    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+      <div class="card-header">DOANH THU</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalRevenue">--</h5>
+        <p class="card-text">Tổng số tiền kiếm được của gia sư</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KỲ HỌC -->
+  <div class="col">
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+      <div class="card-header">KỲ HỌC</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalSemesters">--</h5>
+        <p class="card-text">Số lượng kỳ học đã mở</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ĐÁNH GIÁ -->
+  <div class="col">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+      <div class="card-header">ĐÁNH GIÁ</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalRatings">--</h5>
+        <p class="card-text">Số lượt đánh giá trong hệ thống</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chart-wrapper mb-4">
+  <canvas id="registrationChart" style="height:300px;"></canvas>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-6">
+    <div class="chart-wrapper mb-4">
+      <canvas id="semesterChart" style="height:300px;"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="chart-wrapper mb-4">
+      <canvas id="ratingChart" style="height:300px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // Load the statistics data from API
+  fetch('/AdminAPI/GetStatistics')
+    .then(response => response.json())
+    .then(data => {
+      // Update the statistics cards
+      document.getElementById('totalStudents').innerText = data.totalStudents.toLocaleString();
+      document.getElementById('totalRevenue').innerText = formatCurrency(data.totalRevenue);
+      document.getElementById('totalSemesters').innerText = data.totalSemesters.toLocaleString();
+      document.getElementById('totalRatings').innerText = data.totalRatings.toLocaleString();
+    })
+    .catch(error => {
+      console.error('Error fetching statistics:', error);
+    });
+
+  // Format currency function
+  function formatCurrency(amount) {
+    if (amount >= 1000000000) {
+      return (amount / 1000000000).toFixed(1) + ' tỷ';
+    } else if (amount >= 1000000) {
+      return (amount / 1000000).toFixed(1) + ' triệu';
+    } else {
+      return amount.toLocaleString() + ' VNĐ';
+    }
+  }
+
+  // Registration Chart
+  fetch('/AdminAPI/GetMonthlyRegistrations')
+    .then(response => response.json())
+    .then(data => {
+      const labels = data.map(item => item.label);
+      const values = data.map(item => item.count);
+
+      const registrationChart = document.getElementById('registrationChart');
+      new Chart(registrationChart, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Số lượng học viên đăng ký',
+            data: values,
+            borderWidth: 1,
+            barThickness: 40,
+            backgroundColor: '#4e73df'
+          }]
+        },
+        options: { 
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom' 
+            },
+            title: {
+              display: true,
+              align: 'start',
+              text: 'SỐ LƯỢNG HỌC VIÊN ĐĂNG KÝ KHÓA HỌC THEO THÁNG',
+              font: {
+                size: 16,
+              },
+              padding: {
+                top: 10,
+                bottom: 14 
+              }
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          layout: {
+            padding: {
+              bottom: 10,
+              left: 20,
+              right: 20,
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching monthly registrations:', error);
+    });
+
+  // Semester Status Chart
+  fetch('/AdminAPI/GetSemestersByStatus')
+    .then(response => response.json())
+    .then(data => {
+      const labels = data.map(item => item.status);
+      const values = data.map(item => item.count);
+      const backgroundColors = [
+        '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'
+      ];
+
+      const semesterChart = document.getElementById('semesterChart');
+      new Chart(semesterChart, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: backgroundColors.slice(0, labels.length),
+            hoverBackgroundColor: backgroundColors.slice(0, labels.length),
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            title: {
+              display: true,
+              align: 'start',
+              text: 'PHÂN BỐ TRẠNG THÁI KỲ HỌC',
+              font: {
+                size: 16,
+              },
+              padding: {
+                top: 10,
+                bottom: 14
+              }
+            },
+          },
+          layout: {
+            padding: {
+              bottom: 10,
+              left: 10,
+              right: 10,
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching semester status:', error);
+    });
+
+  // Rating Distribution Chart
+  fetch('/AdminAPI/GetRatingDistribution')
+    .then(response => response.json())
+    .then(data => {
+      const labels = data.map(item => item.stars + ' sao');
+      const values = data.map(item => item.count);
+      const backgroundColors = [
+        '#e74a3b', // 1 star - red
+        '#f6c23e', // 2 stars - yellow
+        '#36b9cc', // 3 stars - blue
+        '#1cc88a', // 4 stars - green
+        '#4e73df'  // 5 stars - purple
+      ];
+
+      const ratingChart = document.getElementById('ratingChart');
+      new Chart(ratingChart, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Số lượng đánh giá',
+            data: values,
+            backgroundColor: backgroundColors,
+            borderWidth: 1,
+            barThickness: 60
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              align: 'start',
+              text: 'PHÂN BỐ ĐÁNH GIÁ THEO SỐ SAO',
+              font: {
+                size: 16,
+              },
+              padding: {
+                top: 10,
+                bottom: 14
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          layout: {
+            padding: {
+              bottom: 10,
+              left: 10,
+              right: 10,
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching rating distribution:', error);
+    });
+</script>

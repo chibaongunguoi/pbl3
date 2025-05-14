@@ -54,6 +54,8 @@ public class Query
     private List<string> group_bys = new();
     private string? offset_string = null;
 
+    private int? top = null;
+
     // ========================================================================
     public Query(string? table = null, string? alias = null)
     {
@@ -80,6 +82,16 @@ public class Query
         OutputClause(QPiece.avg(QPiece.dot(field, alias)));
     }
 
+    public void OutputSum(string field, string? alias = null)
+    {
+        OutputClause(QPiece.Sum(QPiece.dot(field, alias)));
+    }
+
+    public void OutputSumCastBigInt(string field, string? alias = null)
+    {
+        OutputClause(QPiece.Sum(QPiece.castBigInt(QPiece.dot(field, alias))));
+    }
+
     public void Output(string field, string? alias = null)
     {
         OutputClause(QPiece.dot(field, alias));
@@ -93,6 +105,11 @@ public class Query
     public void OutputTop(string field_, int top = 1, string? alias_ = null)
     {
         OutputClause($"TOP {top} {QPiece.dot(field_, alias_)}");
+    }
+
+    public void OutputTop(int top = 1)
+    {
+        this.top = top;
     }
 
     public void OutputQuery(string query, string? alias_ = null)
@@ -335,6 +352,8 @@ public class Query
     {
         var output_fields_str = output_fields.Count > 0 ? string.Join(", ", output_fields) : "*";
         string query = $"SELECT {output_fields_str}";
+        if (top is not null)
+            query = $"SELECT TOP {top} {output_fields_str}";
         if (table is not null)
         {
             query += $" FROM {table}";

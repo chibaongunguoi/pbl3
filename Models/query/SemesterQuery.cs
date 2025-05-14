@@ -10,17 +10,16 @@ static class SemesterQuery
         q.OrderBy(Field.semester__start_date, desc: true, semester_alias);
         q.OutputTop(Field.semester__id, 1, semester_alias);
         return q.SelectQuery();
-    }
-
-    public static void GetRatingAvg(ref Query p, string? courseTableAlias = null)
+    }    public static void GetRatingAvg(ref Query p, string? courseTableAlias = null)
     {
         string local_semester = "LocalSemester";
         string local_rating = "LocalRating";
         Query q = new(Tbl.rating, local_rating);
         q.Join(Field.semester__id, Field.rating__semester_id, local_semester, local_rating);
         q.WhereField(Field.semester__course_id, Field.course__id, local_semester, courseTableAlias);
-        q.OutputAvgCastFloat(Field.rating__stars, local_rating);
-        p.OutputQuery(q.SelectQuery());
+        // Force the result to be a float by casting the ISNULL result as FLOAT
+        q.OutputClause($"CAST(ISNULL(AVG(CAST([{local_rating}].[stars] AS FLOAT)), 0) AS FLOAT)");
+        p.OutputQuery(q.SelectQuery(), "AVGRATING");
     }
 
     public static void GetRatingCount(ref Query p, string? courseTableAlias = null)

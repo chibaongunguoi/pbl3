@@ -1,4 +1,4 @@
-sealed class Backend
+public sealed class Backend
 {
     // ========================================================================
     public static void start()

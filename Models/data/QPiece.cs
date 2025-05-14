@@ -5,6 +5,7 @@ static class QPiece
     public static string containsStr(string field, string value) => $"{field} LIKE '%{value}%'";
 
     public static string castFloat(string field) => $"CAST({field} AS FLOAT)";
+    public static string castBigInt(string field) => $"CAST({field} AS BIGINT)";
 
     public static string toStr<T>(T value) => $"{value}";
 
@@ -21,6 +22,11 @@ static class QPiece
     public static string avg(string field)
     {
         return $"ISNULL(AVG({field}), 0)";
+    }
+
+    public static string Sum(string field)
+    {
+        return $"ISNULL(SUM({field}), 0)";
     }
 
     public static string fieldAlias(string field, string? alias)

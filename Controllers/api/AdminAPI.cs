@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.Data.SqlClient;
+using REPO.Models;
 
 namespace REPO.Controllers;
 
@@ -537,6 +538,25 @@ public class AdminAPI : BaseController
             success = true;
         });
 
-        return Json(new { success });
+        return Json(new { success });    }    [HttpGet("GetAllDashboardStatistics")]
+    public IActionResult GetAllDashboardStatistics()
+    {
+        // Use the cached instance to get all statistics in a single database fetch
+        var statistics = AdminStatistics.GetInstance();        
+        return Json(new {            basicStats = new {
+                totalStudents = statistics.TotalStudents,
+                totalTeachers = statistics.TotalTeachers,
+                totalCourses = statistics.TotalCourses,
+                totalRevenue = statistics.TotalRevenue,
+                totalSemesters = statistics.TotalSemesters,
+                totalRatings = statistics.TotalRatings
+            },
+            monthlyRegistrations = statistics.MonthlyRegistrations,
+            semestersByStatus = statistics.SemestersByStatus,
+            ratingDistribution = statistics.RatingDistribution,
+            coursesByStatus = statistics.CoursesByStatus,
+            topUpcomingCourses = statistics.TopUpcomingCourses,
+            topRatedCourses = statistics.TopRatedCourses
+        });
     }
 }

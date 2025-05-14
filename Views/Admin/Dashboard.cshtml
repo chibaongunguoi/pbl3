@@ -2,171 +2,503 @@
 Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 <div class="row py-3">
-  <!-- ĐƠN HÀNG THÀNH CÔNG -->
+  <!-- HỌC VIÊN -->
   <div class="col">
     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
       <div class="card-header">HỌC VIÊN</div>
       <div class="card-body">
-        <h5 class="card-title">2.680</h5>
+        <h5 class="card-title" id="totalStudents">--</h5>
         <p class="card-text">Số lượng học viên sử dụng hệ thống</p>
       </div>
     </div>
   </div>
 
-  <!-- ĐANG XỬ LÝ -->
+  <!-- DOANH THU -->
   <div class="col">
     <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-      <div class="card-header">Doanh thu</div>
+      <div class="card-header">DOANH THU</div>
       <div class="card-body">
-        <h5 class="card-title">2 tỷ</h5>
+        <h5 class="card-title" id="totalRevenue">--</h5>
         <p class="card-text">Tổng số tiền kiếm được của gia sư</p>
       </div>
     </div>
   </div>
 
-  <!-- DOANH SỐ -->
+  <!-- KỲ HỌC -->
   <div class="col">
     <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
       <div class="card-header">KỲ HỌC</div>
       <div class="card-body">
-        <h5 class="card-title">28 nghìn </h5>
+        <h5 class="card-title" id="totalSemesters">--</h5>
         <p class="card-text">Số lượng kỳ học đã mở</p>
       </div>
     </div>
   </div>
-
-  <!-- ĐƠN HÀNG HỦY -->
+  <!-- ĐÁNH GIÁ -->
   <div class="col">
     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
       <div class="card-header">ĐÁNH GIÁ</div>
       <div class="card-body">
-        <h5 class="card-title">125</h5>
+        <h5 class="card-title" id="totalRatings">--</h5>
         <p class="card-text">Số lượt đánh giá trong hệ thống</p>
       </div>
     </div>
   </div>
 </div>
-<div class=" chart-wrapper">
-  <canvas id="myChart"></canvas>
-  <canvas id="semChart"></canvas>
-  <!-- <canvas id="ratingChart"></canvas> -->
-</div>
-<div class="">
+
+<div class="row py-3">
+  <!-- GIÁO VIÊN -->
+  <div class="col">
+    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+      <div class="card-header">GIÁO VIÊN</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalTeachers">--</h5>
+        <p class="card-text">Số lượng giáo viên đang giảng dạy</p>
+      </div>
+    </div>
+  </div>
   
+  <!-- KHÓA HỌC -->
+  <div class="col">
+    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+      <div class="card-header">KHÓA HỌC</div>
+      <div class="card-body">
+        <h5 class="card-title" id="totalCourses">--</h5>
+        <p class="card-text">Tổng số khóa học trong hệ thống</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div class="chart-wrapper mb-4">
+  <canvas id="registrationChart" style="height:300px;"></canvas>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="chart-wrapper mb-4">
+      <canvas id="semesterChart" style="height:300px;"></canvas>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="chart-wrapper mb-4">
+      <canvas id="courseChart" style="height:300px;"></canvas>
+    </div>
+  </div>  <div class="col-md-4">
+    <div class="chart-wrapper mb-4">
+      <canvas id="ratingChart" style="height:300px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Courses Tables Section -->
+<div class="row mt-4">
+  <!-- Top Upcoming Courses -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">KHÓA HỌC SẮP DIỄN RA NỔI BẬT</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>              <tr>
+                <th>Tên khóa học</th>
+                <th>Giáo viên</th>
+                <th>Môn học</th>
+                <th>Lớp</th>
+                <th>Ngày bắt đầu</th>
+                <th>Số chỗ</th>
+                <th>Đã đăng ký</th>
+              </tr>
+            </thead>
+            <tbody id="upcomingCoursesTableBody">
+              <!-- Will be filled dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+  <!-- Top Rated Courses -->
+</div>
+<div class="row mt-4">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">KHÓA HỌC ĐƯỢC ĐÁNH GIÁ CAO NHẤT</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>              <tr>
+                <th>Tên khóa học</th>
+                <th>Gia sư</th>
+                <th>Môn học</th>
+                <th>Lớp</th>
+                <th>Đánh giá</th>
+                <th>Học viên</th>
+              </tr>
+            </thead>
+            <tbody id="topRatedCoursesTableBody">
+              <!-- Will be filled dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <script>
-  const ctx = document.getElementById('myChart');
+  // Format currency: 48000000000 --> 48.000.000.000
+  function formatCurrency(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " VND";
+  }
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['9/2024', '10/2024', '11/2024', '12/2024', '1/2025', '2/2025',"3/2025","4/2025"],
-      datasets: [{
-        label: 'Số lượng học viên',
-        data: [12, 19, 3, 5, 2, 3,4,5],
-        borderWidth: 1,
-         barThickness: 40
-      }]
-    },
-    options: { 
-  //     responsive: false,
-  // maintainAspectRatio: false,
-      plugins: {
-         legend: {
-      position: 'bottom' 
-    },
+  // Load all dashboard statistics with a single API call
+  fetch('/AdminAPI/GetAllDashboardStatistics')
+    .then(response => response.json())
+    .then(data => {      // Update the statistics cards
+      const basicStats = data.basicStats;
+      document.getElementById('totalStudents').innerText = basicStats.totalStudents.toLocaleString();
+      document.getElementById('totalTeachers').innerText = basicStats.totalTeachers.toLocaleString();
+      document.getElementById('totalCourses').innerText = basicStats.totalCourses.toLocaleString();
+      document.getElementById('totalRevenue').innerText = formatCurrency(basicStats.totalRevenue);
+      document.getElementById('totalSemesters').innerText = basicStats.totalSemesters.toLocaleString();
+      document.getElementById('totalRatings').innerText = basicStats.totalRatings.toLocaleString();
+      
+      // Process Monthly Registration Chart
+      const monthlyData = data.monthlyRegistrations;
+      const regLabels = monthlyData.map(item => item.label);
+      const regValues = monthlyData.map(item => item.count);
+      
+      const registrationChart = document.getElementById('registrationChart');
+      new Chart(registrationChart, {
+        type: 'bar',
+        data: {
+          labels: regLabels,
+          datasets: [{
+            label: 'Số lượt học viên đăng ký',
+            data: regValues,
+            borderWidth: 1,
+            barThickness: 40,
+            backgroundColor: '#4e73df'
+          }]
+        },
+        options: { 
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom' 
+            },
             title: {
-                display: true,
-                align: 'start',
-                text: 'SỐ LƯỢNG HỌC VIÊN ĐĂNG KÝ KHÓA HỌC THEO THÁNG',
-                 font: 
-                 {
-                        size: 16,
-
-                  },
-                    padding: {
-                      top:10,
-                    bottom: 14 
-                  }
+              display: true,
+              align: 'start',
+              text: 'SỐ LƯỢT HỌC VIÊN ĐĂNG KÝ KHÓA HỌC THEO THÁNG',
+              font: {
+                size: 16,
               },
-             
-        },
-      scales: {
-        y: {
-          beginAtZero: true
+              padding: {
+                top: 10,
+                bottom: 14 
+              }
+            },
+          },
+          scales: { y: { beginAtZero: true } },
+          layout: { padding: { bottom: 10, left: 20, right: 20, } }
         }
-      },
-        layout: {
-    padding: {
-      // top: 30,
-      bottom: 10,
-      left: 20,
-      right: 20,
-    }
-  },
-    }
-  });
-
-  const ctx2 = document.getElementById('semChart');
-
-  new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      labels: ['2021', '2023', '2024', '2025'],
-      datasets: [
-        {
-          label: 'Kỳ học bắt đầu',
-          data: [12, 19, 3, 5],
-          backgroundColor: 'rgba(54, 162, 235, 0.7)',
-          barThickness: 20
+      });
+      
+      // Process Semester Status Chart
+      const semesterData = data.semestersByStatus;
+      const semLabels = semesterData.map(item => item.status);
+      const semValues = semesterData.map(item => item.count);
+      const semBackgroundColors = [
+        '#4e73df', '#1cc88a', '#f6c23e',
+      ];
+      
+      const semesterChart = document.getElementById('semesterChart');
+      new Chart(semesterChart, {
+        type: 'doughnut',
+        data: { labels: semLabels, datasets: [{
+            data: semValues,
+            backgroundColor: semBackgroundColors.slice(0, semLabels.length),
+            hoverBackgroundColor: semBackgroundColors.slice(0, semLabels.length),
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+          }]
         },
-        {
-          label: 'Kỳ học kết thúc',
-          data: [8, 15, 6, 7],
-          backgroundColor: 'rgba(255, 99, 132, 0.7)',
-          barThickness: 20
-        }
-      ]
-    },
-    options: { 
-  //     responsive: false,
-  // maintainAspectRatio: false,
-      plugins: {
-         legend: {
-      position: 'bottom' 
-    },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
             title: {
-                display: true,
-                align: 'start',
-                text: 'SỐ LƯỢNG KỲ HỌC THEO NĂM',
-                 font: 
-                 {
-                        size: 16,
-
-                  },
-                    padding: {
-                      top:10,
-                    bottom: 14 
-                  }
+              display: true,
+              align: 'start',
+              text: 'PHÂN BỐ TRẠNG THÁI KỲ HỌC',
+              font: {
+                size: 16,
               },
-             
-        },
-      scales: {
-        y: {
-          beginAtZero: true
+              padding: {
+                top: 10,
+                bottom: 14
+              }
+            },
+          },
+          layout: {
+            padding: {
+              bottom: 10,
+              left: 10,
+              right: 10,
+            }
+          }
         }
-      },
-        layout: {
-    padding: {
-      // top: 30,
-      bottom: 10,
-      left: 20,
-      right: 20,
+      });
+        // Process Course Status Chart
+      const courseData = data.coursesByStatus;
+      const courseLabels = courseData.map(item => item.status);
+      const courseValues = courseData.map(item => item.count);
+      const courseBackgroundColors = [
+        '#4e73df', '#1cc88a', '#f6c23e',
+      ];
+      
+      const courseChart = document.getElementById('courseChart');
+      new Chart(courseChart, {
+        type: 'doughnut',
+        data: {
+          labels: courseLabels,
+          datasets: [{
+            data: courseValues,
+            backgroundColor: courseBackgroundColors.slice(0, courseLabels.length),
+            hoverBackgroundColor: courseBackgroundColors.slice(0, courseLabels.length),
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              align: 'start',
+              text: 'PHÂN BỐ KHÓA HỌC THEO TRẠNG THÁI KỲ HỌC MỚI NHẤT',
+              font: { size: 16, },
+              padding: { top: 10, bottom: 14 }
+            },
+          },
+          layout: { padding: { bottom: 10, left: 10, right: 10, } }
+        }
+      });
+      
+      // Process Rating Distribution Chart
+      const ratingData = data.ratingDistribution;
+      const ratingLabels = ratingData.map(item => item.stars + ' sao');
+      const ratingValues = ratingData.map(item => item.count);
+      const ratingBackgroundColors = [
+        '#e74a3b', // 1 star - red
+        '#f6c23e', // 2 stars - yellow
+        '#36b9cc', // 3 stars - blue
+        '#1cc88a', // 4 stars - green
+        '#4e73df'  // 5 stars - purple
+      ];
+      
+      const ratingChart = document.getElementById('ratingChart');
+      new Chart(ratingChart, {
+        type: 'bar',
+        data: {
+          labels: ratingLabels,
+          datasets: [{
+            label: 'Số lượng đánh giá',
+            data: ratingValues,
+            backgroundColor: ratingBackgroundColors,
+            borderWidth: 1,
+            barThickness: 60
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              align: 'start',
+              text: 'PHÂN BỐ ĐÁNH GIÁ THEO SỐ SAO',
+              font: {
+                size: 16,
+              },
+              padding: {
+                top: 10,
+                bottom: 14
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          layout: {
+            padding: {
+              bottom: 10,
+              left: 10,
+              right: 10,
+            }
+          }
+        }      });
+      
+      // Populate Top Upcoming Courses Table
+      const upcomingCourses = data.topUpcomingCourses || [];
+      const upcomingCoursesTableBody = document.getElementById('upcomingCoursesTableBody');
+      upcomingCoursesTableBody.innerHTML = '';
+        if (upcomingCourses.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.setAttribute('colspan', '6');
+        td.textContent = 'Không có khóa học nào sắp diễn ra';
+        td.className = 'text-center';
+        tr.appendChild(td);
+        upcomingCoursesTableBody.appendChild(tr);
+      } else {
+        upcomingCourses.forEach(course => {
+          const tr = document.createElement('tr');
+          
+          // Course name cell with link
+          const nameCell = document.createElement('td');
+          const courseLink = document.createElement('a');
+          courseLink.href = `/Course/Detail?courseId=${course.courseId}`;
+          courseLink.textContent = course.courseName;
+          courseLink.className = 'text-primary font-weight-bold';
+          nameCell.appendChild(courseLink);
+            // Other cells
+          const teacherCell = document.createElement('td');
+          teacherCell.textContent = course.teacherName;
+            const subjectCell = document.createElement('td');
+          subjectCell.textContent = course.subjectName;
+          
+          const gradeCell = document.createElement('td');
+          gradeCell.textContent = course.grade;
+          
+          // Format the date
+          const startDateCell = document.createElement('td');
+          if (course.startDate) {
+            const date = new Date(course.startDate);
+            startDateCell.textContent = date.toLocaleDateString('vi-VN');
+          } else {
+            startDateCell.textContent = 'N/A';
+          }
+          
+          const slotsCell = document.createElement('td');
+          slotsCell.textContent = course.slots;
+          
+          const enrolledCell = document.createElement('td');
+          enrolledCell.textContent = course.enrolledStudents;
+            // Add all cells to the row
+          tr.appendChild(nameCell);
+          tr.appendChild(teacherCell);
+          tr.appendChild(subjectCell);
+          tr.appendChild(gradeCell);
+          tr.appendChild(startDateCell);
+          tr.appendChild(slotsCell);
+          tr.appendChild(enrolledCell);
+          
+          // Add the row to the table
+          upcomingCoursesTableBody.appendChild(tr);
+        });
+      }
+      
+      // Populate Top Rated Courses Table
+      const topRatedCourses = data.topRatedCourses || [];
+      const topRatedCoursesTableBody = document.getElementById('topRatedCoursesTableBody');
+      topRatedCoursesTableBody.innerHTML = '';
+      
+      if (topRatedCourses.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');        td.setAttribute('colspan', '6');
+        td.textContent = 'Không có khóa học nào được đánh giá';
+        td.className = 'text-center';
+        tr.appendChild(td);
+        topRatedCoursesTableBody.appendChild(tr);
+      } else {
+        topRatedCourses.forEach(course => {
+          const tr = document.createElement('tr');
+          
+          // Course name cell with link
+          const nameCell = document.createElement('td');
+          const courseLink = document.createElement('a');
+          courseLink.href = `/Course/Detail?courseId=${course.courseId}`;
+          courseLink.textContent = course.courseName;
+          courseLink.className = 'text-primary font-weight-bold';
+          nameCell.appendChild(courseLink);
+          
+          // Other cells
+          const teacherCell = document.createElement('td');
+          teacherCell.textContent = course.teacherName;
+            const subjectCell = document.createElement('td');
+          subjectCell.textContent = course.subjectName;
+          
+          const gradeCell = document.createElement('td');
+          gradeCell.textContent = course.grade;
+          
+          // Rating cell with stars
+          const ratingCell = document.createElement('td');
+          if (course.rating) {
+            const ratingValue = parseFloat(course.rating).toFixed(1);
+            const starsHtml = generateStarRating(ratingValue);
+            ratingCell.innerHTML = `${ratingValue} ${starsHtml}`;
+          } else {
+            ratingCell.textContent = 'N/A';
+          }
+          
+          const enrolledCell = document.createElement('td');
+          enrolledCell.textContent = course.enrolledStudents;
+            // Add all cells to the row
+          tr.appendChild(nameCell);
+          tr.appendChild(teacherCell);
+          tr.appendChild(subjectCell);
+          tr.appendChild(gradeCell);
+          tr.appendChild(ratingCell);
+          tr.appendChild(enrolledCell);
+          
+          // Add the row to the table
+          topRatedCoursesTableBody.appendChild(tr);
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching dashboard statistics:', error);
+    });
+    
+  // Helper function to generate star icons based on rating
+  function generateStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    
+    let starsHtml = '';
+    
+    // Add full stars
+    for (let i = 0; i < fullStars; i++) {
+      starsHtml += '<i class="fas fa-star text-warning"></i>';
     }
-  },
+    
+    // Add half star if needed
+    if (halfStar) {
+      starsHtml += '<i class="fas fa-star-half-alt text-warning"></i>';
     }
-  });
-
+    
+    // Add empty stars
+    for (let i = 0; i < emptyStars; i++) {
+      starsHtml += '<i class="far fa-star text-warning"></i>';
+    }
+    
+    return starsHtml;
+  }
 </script>

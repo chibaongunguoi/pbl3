@@ -1,4 +1,4 @@
-sealed class RawQuery
+static class RawQuery
 {
     // ------------------------------------------------------------------------
     public static string InsertQuery(ref List<string> data, string table)
@@ -29,9 +29,7 @@ sealed class RawQuery
             string query = InsertQuery(ref batch, table);
             queries.Add(query);
         }
-    }
-
-    // ========================================================================
+    }    // ========================================================================
 }
 
 /* EOF */
