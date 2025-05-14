@@ -23,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Scripts riêng cho admin -->
     @RenderSection("AdminScripts", required: false)
+    @RenderSection("AdminManageLayoutScripts", required: false)
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const currentPath = window.location.pathname.toLowerCase();

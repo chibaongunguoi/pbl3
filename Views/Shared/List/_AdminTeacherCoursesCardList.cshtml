@@ -1,0 +1,58 @@
+@model List<AdminTeacherCourseCard>
+
+<div class="table-responsive">
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã khóa học</th>
+                    <th scope="col">Tên khóa học</th>
+                    <th scope="col">Môn học</th>
+                    <th scope="col">Số kỳ học</th>
+                    <th scope="col">Đánh giá</th>
+                    <th scope="col">Ngày bắt đầu</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Tác vụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td scope="row">@course.TableIndex</td>
+                        <td>@course.CourseId</td>
+                        <td>@course.CourseName</td>
+                        <td>@course.SubjectName</td>
+                        <td>@course.SemesterCount</td>
+                        <td>@(course.Rating > 0 ? string.Format("{0:0.0}", course.Rating) : "Chưa có")</td>
+                        <td>@(course.StartDate.HasValue ? course.StartDate.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                        <td>
+                            <span >@(
+                                course.Status switch
+                                {
+                                    SemesterStatus.waiting => "Sắp diễn ra",
+                                    SemesterStatus.started => "Đang diễn ra",
+                                    SemesterStatus.finished => "Đã kết thúc",
+                                    _ => string.Empty
+                                }
+                                )</span>
+                        </td>
+                        <td>
+                            <a href="/Course/Detail?id=@course.CourseId" class="btn btn-sm btn-primary">
+                                Xem chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="text-center p-4">
+            <p>Giảng viên này chưa có khóa học nào</p>
+        </div>
+    }
+</div>

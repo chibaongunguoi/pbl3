@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-sealed class Teacher : User
+public sealed class Teacher : User
 {
     // ========================================================================
     public string Thumbnail = "";

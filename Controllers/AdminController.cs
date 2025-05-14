@@ -36,16 +36,12 @@ public class AdminController : BaseController
     public IActionResult StudentManage()
     {
         return View();
-    }
-
-    public IActionResult TeacherManage()
+    }    public IActionResult TeacherManage()
     {
         return View();
     }
-    public IActionResult TeacherAdd()
-    {
-        return View();
-    }
+    
+    // Note: TeacherAdd functionality is now handled via AJAX in AdminAPI
 
     public IActionResult Dashboard()
     {

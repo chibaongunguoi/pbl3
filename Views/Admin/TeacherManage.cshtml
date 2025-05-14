@@ -1,67 +1,75 @@
+@model List<AdminMngTeacherCard>
+
 @{
-Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+    Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 
+@await Html.PartialAsync("_SuccessErrorMessage")
 
-
-  <div id="content" class="container-fluid">
+<div id="content" class="container-fluid">
     <div class="card">
-      <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách gia sư trong hệ thống</div>
-        <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
-        </div>
-        <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
-        </div>
-      </form> -->
-      </div>
-
-      <div class="card-body">
-        <table class="table table-striped table-checkall">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Mã số</th>
-              <th scope="col">Họ và tên</th>
-              <th scope="col">Giới tính</th>
-              <th scope="col">Ngày sinh</th>
-              <th scope="col">Só điện thoại</th>
-              <th scope="col">Số kỳ học đã mở</th>
-              <th scope="col">Đánh giá</th>
-              <th scope="col">Tác vụ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row" class="table-index">1</td>
-              <td>1001</td>
-              <td>Nguyễn Chí Bảo</td>
-              <td>Nam</td>
-              <td>05/09/2005</td>
-              <td>0967430257</td>
-              <td>20</td>
-              <td>4.7</td>
-              <td>
-                <div class="button-group-wrapper course-manager">
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#EditTeacherModal">Sửa thông tin </button>
-                    @await Html.PartialAsync("Popup/_EditTeacherPopup")
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#CourseModal">Xem khóa học </button>
-                    @await Html.PartialAsync("Popup/_CoursePopup")
-                  <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=card.course_id'">Xem chi tiết</button>
+        <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+            <div class="m-0 table-title">Danh sách gia sư trong hệ thống</div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="AddTchBtn" data-bs-toggle="modal" data-bs-target="#AddTeacherModal">Thêm gia sư mới</button>
+            </div>
+            <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+                <div class="col-12">
+                    <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <div class="col-12">
+                    <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+                </div>
+            </form> -->
+        </div>
+        
+        <div class="pagination-list"></div>
     </div>
-  </div>
+    <div id="pagination-bar"></div>
+</div>
+
+@await Html.PartialAsync("Popup/_TeacherAddPopup")
+@await Html.PartialAsync("Popup/_EditTeacherPopup")
+@await Html.PartialAsync("Popup/_CoursePopup")
+
 <style>
-  /* Làm mờ nền khi modal mở */
-  .modal.show {
-    backdrop-filter: blur(5px); /* Hiệu ứng blur */
-    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+    /* Làm mờ nền khi modal mở */
+    .modal.show {
+        backdrop-filter: blur(5px); /* Hiệu ứng blur */
+        background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+    }
+  .card-btn {
+    white-space: nowrap;
+    padding: 2px 4px;
+    flex: 1;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    min-width: 80px;
+    max-width: 105px;
+    margin: 0 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
+
+<script>
+    function reload() {
+        document.querySelector('#pagination-bar .page-link.pa-active').click();
+    }
+
+    document.querySelector(`#AddTeacherModal`).addEventListener('hidden.bs.modal', reload);
+    document.querySelector(`#TchCorModal`).addEventListener('hidden.bs.modal', reload);
+    document.querySelector(`#EditTeacherModal`).addEventListener('hidden.bs.modal', reload);
+
+    const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 }
+    initPagination(paginationInfo, "/AdminAPI/GetTeachers", ".pagination-list", {}, "#pagination-bar");
+
+    document.querySelector(`#AddTchBtn`).addEventListener('click', function () {
+        const getUrl = "/AdminAPI/GetTeacherAddForm";
+        const placeholderSelector = `#add-teacher-form-container`;
+        initPagination(null, getUrl, placeholderSelector);
+    });
+</script>

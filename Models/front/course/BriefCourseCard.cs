@@ -82,7 +82,7 @@ class BriefCourseCard
             card.Joined = requestCount > 0;
             card.CanJoin = !card.CourseIsFull && !card.CourseIsFinished && !card.Joined;
         }
-        else if (role == UserRole.Teacher)
+        else if (role == UserRole.Teacher || role == UserRole.Admin)
         {
             card.CanJoin = false;
         }

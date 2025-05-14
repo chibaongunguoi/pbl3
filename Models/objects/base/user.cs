@@ -1,6 +1,6 @@
 using Microsoft.Data.SqlClient;
 
-class User : Account
+public class User : Account
 {
     // ========================================================================
     public string Name { get; set; } = "";

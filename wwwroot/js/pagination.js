@@ -42,7 +42,9 @@ function getPaginationData(paginationInfo, contextUrl, contextComponent, filterF
 }
 
 function attachPaginationEvents(paginationInfo, contextUrl, contextComponent, filterForm = null, paginationBar = null) {
-    const PaginationLinks = document.querySelectorAll('.page-link');
+    if (paginationBar == null)
+        return;
+    const PaginationLinks = document.querySelectorAll(`${paginationBar} .page-link`);
     PaginationLinks.forEach((link) => {
         const new_link = link.cloneNode(true);
         link.replaceWith(new_link)

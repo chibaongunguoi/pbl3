@@ -1,30 +1,38 @@
+@model TeacherAddForm
+
 @{
     Layout = "Layout/_AdminManageLayout";
 }
+
+@await Html.PartialAsync("_SuccessErrorMessage")
+@await Html.PartialAsync("_Message", Model.Message)
 
 <div class="pt-add-content-wrapper">
     <div class="pt-add-content ">
         <div class="pt-add-title">Thông tin gia sư</div>
         <div class="pt-add-form">
-            <form action="add_course" id="pt-add" method="POST">
+            <form id="pt-add" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="">
+                        <label asp-for="Username">
                            <div class="required-icon">*</div> Tên đăng nhập
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input" type="text" name="Username" placeholder="Nhập vào" maxlength="150" value="">
+                        <input class="pt-add-form-input pt-name-input" type="text" asp-for="Username" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="">
+                        <label asp-for="Password">
                             <div class="required-icon">*</div>Mật khẩu 
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input name="password" type="password"  placeholder="Nhập vào" class="pt-add-form-input pt-name-input" />
+                        <input asp-for="Password" placeholder="Nhập vào" class="pt-add-form-input pt-name-input" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                         <div class="hide-show-icon-wrapper">
                             <div class="eye-icon-wrapper" >
                                 <svg class="eye-icon eye-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%" >
@@ -46,26 +54,27 @@
                 </div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="">
+                        <label asp-for="PasswordConfirm">
                             <div class="required-icon">*</div>Nhập lại mật khẩu 
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input" type="password" name="password_confirm" placeholder="Nhập vào" maxlength="150">
+                        <input class="pt-add-form-input pt-name-input" asp-for="PasswordConfirm" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="">
+                        <label asp-for="Name">
                            <div class="required-icon">*</div> Họ và tên
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input pt-name-input" type="text" name="Name" placeholder="Nhập vào" maxlength="150">
+                        <input class="pt-add-form-input pt-name-input" type="text" asp-for="Name" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                </div>
-                <div class="pt-add-form-item">
+                </div>                <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label for="cat">
                            <div class="required-icon">*</div> Giới tính
@@ -74,52 +83,80 @@
                      <div class="pt-add-input-wrapper pt-add-subject-wrapper">
                          <label class="auth-label-radio">
                              Nam
-                            <input value="male" name="gender" type="radio" class="auth-radio" checked/>
+                            <input value="@Gender.male" asp-for="MGender" type="radio" class="auth-radio" checked/>
                         </label>
                         <label class="auth-label-radio">
                              Nữ
-                            <input value="female" name="gender" type="radio" class="auth-radio" />
+                            <input value="@Gender.female" asp-for="MGender" type="radio" class="auth-radio" />
                         </label>
+                        <span asp-validation-for="MGender" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="cat">
+                        <label asp-for="Bday">
                           <div class="required-icon">*</div>  Ngày sinh
                         </label>
                     </div>
                      <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-                       <input class="input cb" type="date" name="StartDate"  >
+                       <input class="input cb" asp-for="Bday">
+                       <span asp-validation-for="Bday" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="">
+                        <label asp-for="Tel">
                          <div class="required-icon">*</div>   Số điện thoại
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <input class="pt-add-form-input " type="number" name="Fee" placeholder="Nhập vào" maxlength="150" >
+                        <input class="pt-add-form-input" type="text" asp-for="Tel" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="Tel" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
-                        <label for="description">
+                        <label asp-for="Description">
                             Mô tả
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        <textarea class="pt-add-form-input detail-input" name="Description" id="description"></textarea>
+                        <textarea class="pt-add-form-input detail-input" asp-for="Description" id="description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>  
                 <div class="pt-add-btn-group">
                     <button class="hl-btn"><span>Tạo tài khoản</span></button>
                 </div>
-                <!-- <div class="user-action-buttons">
-                    <a href="/User/ChangePassword" class="auth-button card-btn">Đổi mật khẩu</a>
-                </div> -->
             </form>
         </div>
     </div>
 </div>
+
+@section AdminManageLayoutScripts {
+    <script>
+        // Toggle password visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const eyeIconWrappers = document.querySelectorAll('.eye-icon-wrapper');
+            eyeIconWrappers.forEach(function(wrapper) {
+                wrapper.addEventListener('click', function() {
+                    const passwordInput = this.closest('.pt-add-input-wrapper').querySelector('input');
+                    const eyeOpen = this.querySelector('.eye-open');
+                    const eyeClose = this.querySelector('.eye-close');
+                    
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        eyeOpen.style.display = 'block';
+                        eyeClose.style.display = 'none';
+                    } else {
+                        passwordInput.type = 'password';
+                        eyeOpen.style.display = 'none';
+                        eyeClose.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

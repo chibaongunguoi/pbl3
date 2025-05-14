@@ -43,8 +43,22 @@ public class IoUtils
     public static string conv_db(DateOnly date)
     {
         return $"'{date.Year:D4}-{date.Month:D2}-{date.Day:D2}'";
+    }    // ------------------------------------------------------------------------
+    public static string convStatus(string status)
+    {
+        switch (status)
+        {
+            case SemesterStatus.waiting:
+                return "Chờ kích hoạt";
+            case SemesterStatus.started:
+                return "Đang diễn ra";
+            case SemesterStatus.finished:
+                return "Đã kết thúc";
+            default:
+                return status;
+        }
     }
-
+    
     // ------------------------------------------------------------------------
     // 300000000 -> 300.000.000
     public static string conv_fee(int fee)

@@ -1,0 +1,39 @@
+@model AdminMngTeacherCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>@Model.Id</td>
+    <td>@Model.Name</td>
+    <td>@Model.Gender</td>
+    <td>@Model.Bday</td>
+    <td>@Model.Tel</td>
+    <td>@Model.SemesterCount</td>
+    <td>@(Model.Rating > 0 ? string.Format("{0:0.0}", Model.Rating) : "Chưa có")</td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail EditTeacherBtn" idx="@Model.Id" data-bs-toggle="modal" data-bs-target='#EditTeacherModal'>Sửa thông tin</button>
+            <button class="card-btn course-detail ViewTchCorBtn" idx="@Model.Id" data-teacher-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#TchCorModal'>Xem khóa học</button>
+            <a href="/Teacher/Profile?tchId=@Model.Id" class="card-btn course-detail">Xem chi tiết</a>
+        </div>
+    </td>
+</tr>
+<script>
+    document.querySelector(`.EditTeacherBtn[idx="${@Model.Id}"]`)
+    .addEventListener('click', function () {
+        const getUrl = "/AdminAPI/GetTeacherEditForm";
+        const placeholderSelector = `#AdminEditTeacherFormPlaceholder`;
+        initPagination(null, getUrl, placeholderSelector, {tchId: @Model.Id});
+    });
+
+    document.querySelector(`.ViewTchCorBtn[idx="${@Model.Id}"]`)
+    .addEventListener('click', function () {
+        const teacherName = this.getAttribute('data-teacher-name');
+        const modalTitle = document.querySelector(`#TchCorModal .modal-title`);
+        modalTitle.textContent = `Danh sách khóa học của gia sư ${teacherName}`;
+        const teacherCoursesPaginationInfo = { CurrentPage: 1, ItemsPerPage: 5 };
+        const sentData = { tchId: @Model.Id };
+        const contentSelector = `#teacher-courses-container`;
+        const paginationSelector = `#teacher-courses-pagination`;
+        initPagination(teacherCoursesPaginationInfo, "/AdminAPI/GetTeacherCourses", contentSelector, sentData, paginationSelector);
+    });
+</script>

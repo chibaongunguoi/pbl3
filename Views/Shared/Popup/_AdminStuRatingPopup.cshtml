@@ -1,6 +1,5 @@
-@model int
-
-<div class="modal modal fade StudentRatingsModal" idx="@Model" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal modal fade" id="StudentRatingsModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+  data-bs-keyboard="false">
   <div class="modal-dialog modal-xl"> <!-- Changed from modal-lg to modal-xl for extra width -->
     <div class="modal-content">
       <div class="modal-header">
@@ -8,21 +7,9 @@
         <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
       </div>
       <div class="modal-body">
-        <div class="StudentRatingsPlaceholder" idx="@Model"></div>
-        <div class="student-ratings-pagination" idx="@Model"></div>
+        <div id="StudentRatingsPlaceholder"></div>
+        <div id="student-ratings-pagination"></div>
       </div>
     </div>
   </div>
 </div>
-<script>
-  function loadRatings() {
-    const modal = document.querySelector(`.StudentRatingsModal[idx="${@Model}"]`);
-    modal.addEventListener('hidden.bs.modal', function () {
-      const activePaginationLink = document.querySelector('#pagination-bar .page-link.pa-active');
-      if (activePaginationLink) {
-        activePaginationLink.click();
-      }
-    });
-  }
-  loadRatings();
-</script>

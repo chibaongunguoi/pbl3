@@ -1,0 +1,152 @@
+@model TeacherEditForm
+
+@await Html.PartialAsync("_Message", Model.Message)
+<div class="pt-add-form">
+    <form id="teacher-edit-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Username">
+                    <div class="required-icon">*</div> Tên đăng nhập
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input class="pt-add-form-input pt-name-input" type="text" asp-for="Username" placeholder="Nhập vào"
+                    maxlength="150"/>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Name">
+                    <div class="required-icon">*</div> Họ và tên
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input class="pt-add-form-input pt-name-input" type="text" asp-for="Name" placeholder="Nhập vào"
+                    maxlength="150"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="MGender">
+                    <div class="required-icon">*</div> Giới tính
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                <label class="auth-label-radio">
+                    Nam
+                    <input value="@Gender.male" asp-for="MGender" type="radio" class="auth-radio" checked />
+                </label>
+                <label class="auth-label-radio">
+                    Nữ
+                    <input value="@Gender.female" asp-for="MGender" type="radio" class="auth-radio" />
+                </label>
+            </div>
+            <span asp-validation-for="MGender" class="text-danger"></span>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Bday">
+                    <div class="required-icon">*</div> Ngày sinh
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                <input class="input cb" asp-for="Bday" type="date">
+                <span asp-validation-for="Bday" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Tel">
+                    <div class="required-icon">*</div> Số điện thoại
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input class="pt-add-form-input" type="text" asp-for="Tel" placeholder="Nhập vào" maxlength="15">
+                <span asp-validation-for="Tel" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Description">
+                    Mô tả
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <textarea class="pt-add-form-input detail-input" asp-for="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="NewPassword">
+                    Mật khẩu mới
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input asp-for="NewPassword" placeholder="Để trống nếu không thay đổi" class="pt-add-form-input pt-name-input" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+                <div class="hide-show-icon-wrapper">
+                    <div class="eye-icon-wrapper" >
+                        <svg class="eye-icon eye-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%" >
+                             <path d="M32.711 11c-3.166 4.841-8.573 8.03-14.71 8.03-6.139 0-11.546-3.189-14.712-8.03M9.79 17.5l-3 5m8.5-3-1 5.5m12.5-7.5 3 5m-8.5-3 1 5.5"></path>
+                        </svg>  
+                        <svg class="eye-icon eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%">
+                            <circle cx="18" cy="17.5" r="4"></circle>
+                            <path d="M3.284 18.47a1.77 1.77 0 0 1 0-1.94c3.167-4.84 8.573-8.03 14.711-8.03s11.545 3.19 14.711 8.03a1.77 1.77 0 0 1 0 1.94c-3.166 4.84-8.573 8.03-14.71 8.03-6.139 0-11.545-3.19-14.712-8.03"></path>
+                        </svg>        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-add-btn-group">
+            <button type="submit" class="hl-btn"><span>Lưu</span></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function load(teacherId) {
+        const placeholderSelector = `#AdminEditTeacherFormPlaceholder`;
+        const submitUrl = "/AdminAPI/EditTeacher";
+        const formSelector = `#teacher-edit-form`;
+        var form = document.querySelector(formSelector);
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            formData.append("TchId", teacherId);
+            $.ajax({
+                url: submitUrl,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $(placeholderSelector).html(response);
+                    load(teacherId);
+                },
+                error: function(error) {
+                    console.error("Error submitting form:", error);
+                }
+            });
+        });
+    }
+    load(@Model.TchId);
+    
+    document.querySelector('.eye-icon-wrapper').addEventListener('click', function() {
+        const passwordInput = document.querySelector('#NewPassword');
+        const eyeOpen = document.querySelector('.eye-open');
+        const eyeClose = document.querySelector('.eye-close');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeOpen.style.display = 'block';
+            eyeClose.style.display = 'none';
+        } else {
+            passwordInput.type = 'password';
+            eyeOpen.style.display = 'none';
+            eyeClose.style.display = 'block';
+        }
+    });
+</script>

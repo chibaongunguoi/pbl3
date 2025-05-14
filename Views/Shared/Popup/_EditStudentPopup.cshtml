@@ -1,6 +1,4 @@
-@model int
-
-<div class="modal modal fade EditStudentModal" idx="@Model" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="EditStudentModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,18 +6,8 @@
                 <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
             <div class="modal-body">
-                <div class="AdminEditStuProfileFormPlaceholder" idx="@Model"></div>
+                <div id="AdminEditStuProfileFormPlaceholder"></div>
             </div>
         </div>
     </div>
 </div>
-<script>   
-    function load() {
-        const modal = document.querySelector(`.EditStudentModal[idx="${@Model}"]`);
-        modal.addEventListener('hidden.bs.modal', function() {
-            const activePaginationLink = document.querySelector('#pagination-bar .page-link.pa-active');
-            activePaginationLink.click();
-        });
-    }
-    load();
-</script> 

@@ -12,74 +12,38 @@
     <td>@Model.BDay</td>
     <td>@Model.Tel</td>    <td>
         <div class="button-group-wrapper">
-            <button class="card-btn course-detail EditStuProfileBtn" idx="@Model.StuId" data-bs-toggle="modal" data-bs-target='.EditStudentModal[idx="@Model.StuId"]'>Sửa thông tin</button>
-            <button class="card-btn course-detail ViewStuCoursesBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='.StudentCoursesModal[idx="@Model.StuId"]'>Xem khóa học</button>
-            <button class="card-btn course-detail ViewStuRatingsBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='.StudentRatingsModal[idx="@Model.StuId"]'>Xem đánh giá</button>
+            <button class="card-btn course-detail EditStuProfileBtn" idx="@Model.StuId" data-bs-toggle="modal" data-bs-target='#EditStudentModal'>Sửa thông tin</button>
+            <button class="card-btn course-detail ViewStuCoursesBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#StudentCoursesModal'>Xem khóa học</button>
+            <button class="card-btn course-detail ViewStuRatingsBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#StudentRatingsModal'>Xem đánh giá</button>
             
-            @await Html.PartialAsync("Popup/_EditStudentPopup", Model.StuId)
-            @await Html.PartialAsync("Popup/_AdminStuCorPopup", Model.StuId)
-            @await Html.PartialAsync("Popup/_AdminStuRatingPopup", Model.StuId)
         </div>
     </td>
 </tr>
 <script>
     document.querySelector(`.EditStuProfileBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
         const getUrl = "/AdminAPI/GetAdminEditStuProfileForm";
-        const placeholderSelector = `.AdminEditStuProfileFormPlaceholder[idx="${@Model.StuId}"]`;
+        const placeholderSelector = `#AdminEditStuProfileFormPlaceholder`;
         initPagination(null, getUrl, placeholderSelector, {stuId: @Model.StuId});
-    });    document.querySelector(`.ViewStuCoursesBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
+    });    
+    document.querySelector(`.ViewStuCoursesBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
         const studentName = this.getAttribute('data-student-name');
-        const modalTitle = document.querySelector(`.StudentCoursesModal[idx="${@Model.StuId}"] .modal-title`);
+        const modalTitle = document.querySelector(`#StudentCoursesModal .modal-title`);
         modalTitle.textContent = `Danh sách khóa học của học viên ${studentName}`;
-        
-        // Set up pagination for student courses
-        const studentCoursesPaginationInfo = {
-            CurrentPage: 1,
-            ItemsPerPage: 5  // Show fewer items per page in the popup
-        };
-        
-        const sentData = {
-            stuId: @Model.StuId
-        };
-        
-        const contentSelector = `.StudentCoursesPlaceholder[idx="${@Model.StuId}"]`;
-        const paginationSelector = `.student-courses-pagination[idx="${@Model.StuId}"]`;
-        
-        // Initialize pagination for student courses
-        initPagination(
-            studentCoursesPaginationInfo, 
-            "/AdminAPI/GetStudentCourses", 
-            contentSelector, 
-            sentData, 
-            paginationSelector
-        );
+        const studentCoursesPaginationInfo = { CurrentPage: 1, ItemsPerPage: 5 };
+        const sentData = { stuId: @Model.StuId };
+        const contentSelector = `#StudentCoursesPlaceholder`;
+        const paginationSelector = `#student-courses-pagination`;
+        initPagination( studentCoursesPaginationInfo, "/AdminAPI/GetStudentCourses", contentSelector, sentData, paginationSelector);
     });
     
     document.querySelector(`.ViewStuRatingsBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
         const studentName = this.getAttribute('data-student-name');
-        const modalTitle = document.querySelector(`.StudentRatingsModal[idx="${@Model.StuId}"] .modal-title`);
+        const modalTitle = document.querySelector(`#StudentRatingsModal .modal-title`);
         modalTitle.textContent = `Danh sách đánh giá của học viên ${studentName}`;
-        
-        // Set up pagination for student ratings
-        const studentRatingsPaginationInfo = {
-            CurrentPage: 1,
-            ItemsPerPage: 5  // Show fewer items per page in the popup
-        };
-        
-        const sentData = {
-            stuId: @Model.StuId
-        };
-        
-        const contentSelector = `.StudentRatingsPlaceholder[idx="${@Model.StuId}"]`;
-        const paginationSelector = `.student-ratings-pagination[idx="${@Model.StuId}"]`;
-        
-        // Initialize pagination for student ratings
-        initPagination(
-            studentRatingsPaginationInfo, 
-            "/AdminAPI/GetStudentRatings", 
-            contentSelector, 
-            sentData, 
-            paginationSelector
-        );
+        const studentRatingsPaginationInfo = { CurrentPage: 1, ItemsPerPage: 5 };
+        const sentData = { stuId: @Model.StuId };
+        const contentSelector = `#StudentRatingsPlaceholder`;
+        const paginationSelector = `#student-ratings-pagination`;
+        initPagination( studentRatingsPaginationInfo, "/AdminAPI/GetStudentRatings", contentSelector, sentData, paginationSelector);
     });
 </script>

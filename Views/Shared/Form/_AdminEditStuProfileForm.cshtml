@@ -2,7 +2,7 @@
 
 @await Html.PartialAsync("_Message", Model.Message)
 <div class="pt-add-form">
-    <form class="admin-edit-stu-profile-form" idx="@Model.StuId">
+    <form id="admin-edit-stu-profile-form">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="pt-add-form-item">
             <div class="pt-add-label">
@@ -37,11 +37,11 @@
             <div class="pt-add-input-wrapper pt-add-subject-wrapper">
                 <label class="auth-label-radio">
                     Nam
-                    <input value="male" asp-for="Gender" type="radio" class="auth-radio" checked />
+                    <input value="@Gender.male" asp-for="Gender" type="radio" class="auth-radio" checked />
                 </label>
                 <label class="auth-label-radio">
                     Nữ
-                    <input value="female" asp-for="Gender" type="radio" class="auth-radio" />
+                    <input value="@Gender.female" asp-for="Gender" type="radio" class="auth-radio" />
                 </label>
             </div>
             <span asp-validation-for="Gender" class="text-danger"></span>
@@ -121,9 +121,9 @@
 </div>
 <script>   
     function load(stuId) {
-        const placeholderSelector = `.AdminEditStuProfileFormPlaceholder[idx="${stuId}"]`;
+        const placeholderSelector = `#AdminEditStuProfileFormPlaceholder`;
         const submitUrl = "/AdminAPI/SubmitAdminEditStuProfileForm";
-        const formSelector = `.admin-edit-stu-profile-form[idx="${stuId}"]`;
+        const formSelector = `#admin-edit-stu-profile-form`;
         var form = document.querySelector(formSelector);
         form.addEventListener('submit', function (e) {
             e.preventDefault();

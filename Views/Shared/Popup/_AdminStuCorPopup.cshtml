@@ -1,28 +1,14 @@
-@model int
-
-<div class="modal modal fade StudentCoursesModal" idx="@Model" tabindex="-1" aria-hidden="true"
-  data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-xl"> <!-- Changed from modal-lg to modal-xl for extra width -->
+<div class="modal fade" id="StudentCoursesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Danh sách khóa học của học viên</h5>
         <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
-      </div><div class="modal-body">
-        <div class="StudentCoursesPlaceholder" idx="@Model"></div>
-        <div class="student-courses-pagination" idx="@Model"></div>
+      </div>
+      <div class="modal-body">
+        <div id="StudentCoursesPlaceholder"></div>
+        <div id="student-courses-pagination"></div>
       </div>
     </div>
   </div>
 </div>
-<script>
-function loadCourses() {
-    const modal = document.querySelector(`.StudentCoursesModal[idx="${@Model}"]`);
-    modal.addEventListener('hidden.bs.modal', function () {
-      const activePaginationLink = document.querySelector('#pagination-bar .page-link.pa-active');
-      if (activePaginationLink) {
-        activePaginationLink.click();
-      }
-    });
-  }
-  loadCourses();
-</script>
