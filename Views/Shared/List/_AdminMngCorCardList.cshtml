@@ -1,0 +1,30 @@
+@model List<AdminMngCorCard>
+
+<div class="card-body">
+    <table class="table table-striped table-checkall">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên khóa học</th>
+                <th scope="col">Gia sư</th>
+                <th scope="col">Đánh giá</th>
+                <th scope="col">Tình trạng</th>
+                <th scope="col">Môn học</th>
+                <th scope="col">Lớp</th>
+                <th scope="col">Tác vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                @await Html.PartialAsync("Card/_AdminMngCorCard", course)
+            }
+        </tbody>
+    </table>
+    @if (Model.Count == 0)
+    {
+        <div class="text-center">
+            <p class="text-muted">Không có khóa học nào</p>
+        </div>
+    }
+</div>

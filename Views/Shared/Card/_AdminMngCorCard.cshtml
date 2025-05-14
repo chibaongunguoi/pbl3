@@ -1,0 +1,48 @@
+@model AdminMngCorCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>
+        <a class="course-table-name" href='/Course/Detail?courseId=@Model.CourseId' target="_blank">
+            @Model.CourseName
+        </a>
+    </td>
+    <td>
+        <a href="/Teacher/Profile?tchId=@Model.TeacherId" target="_blank">
+            @Model.TeacherName
+        </a>
+    </td>
+    <td>@(Model.Rating > 0 ? string.Format("{0:0.0}/5 ({1})", Model.Rating, Model.RatingCount) : "Chưa có")</td>
+    <td>@(Model.Status switch {
+        SemesterStatus.waiting => "Sắp diễn ra",
+        SemesterStatus.finished => "Đã kết thúc",
+        SemesterStatus.started => "Đang diễn ra",
+        _ => "Không xác định"
+        })</td>
+    <td>@Model.Subject</td>
+    <td>@Model.Grade</td>   
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail ViewCourseSemsBtn" 
+                data-course-id="@Model.CourseId" 
+                data-course-name="@Model.CourseName"
+                data-bs-toggle="modal" 
+                data-bs-target="#AdminCourseSemsModal">Xem các kì học</button>
+            <button class="card-btn course-detail"
+                onclick="window.location.href='/Course/Detail?courseId=@Model.CourseId'">Xem chi tiết</button>
+        </div>
+    </td>
+</tr>
+
+<script>    document.querySelector(`.ViewCourseSemsBtn[data-course-id="@Model.CourseId"]`)
+    .addEventListener('click', function () {
+        const courseId = this.getAttribute('data-course-id');
+        const courseName = this.getAttribute('data-course-name');
+        const modalTitle = document.querySelector('#AdminCourseSemsModal .modal-title');
+        modalTitle.textContent = `Danh sách kỳ học của ${courseName}`;
+        modalTitle.setAttribute('data-course-name', courseName);
+        
+        // Load semester list using the shared function
+        loadSemesterList(courseId);
+    });
+</script>

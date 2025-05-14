@@ -1,0 +1,27 @@
+@model AdminSemesterStudentCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>
+        <a href="/Admin/StudentDetail?stuId=@Model.StudentId">@Model.StudentName</a>
+    </td>
+    <td>@(Model.Gender switch {
+        "male" => "Nam",
+        "female" => "Nữ",
+        _ => Model.Gender
+        })</td>
+    <td>@Model.Tel</td>
+    <td>@Model.RegistrationDate.ToString("dd/MM/yyyy HH:mm")</td>
+    <td>@(Model.Status switch {
+        "approved" => "Đã chấp nhận",
+        "waiting" => "Đang chờ",
+        "rejected" => "Đã từ chối",
+        _ => Model.Status
+        })</td>
+    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail"
+                onclick="window.location.href='/Admin/StudentDetail?stuId=@Model.StudentId'">Xem chi tiết</button>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,97 @@
+<div class="modal fade" id="ViewRatingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chi tiết đánh giá</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="rating-detail mb-3">
+              <h6 class="rating-student fw-bold text-primary"></h6>
+              <p class="rating-course"></p>
+              <p class="rating-timestamp text-muted small"></p>
+            </div>
+            <div class="rating-stars-display mb-3">
+              <div id="rating-stars-container" class="d-flex">
+                <div id="rating-stars"></div>
+                <span class="ms-2 rating-score"></span>
+              </div>
+            </div>
+            <div class="rating-comment mb-2">
+              <h6>Nội dung đánh giá:</h6>
+              <p id="rating-comment-text" class="border rounded p-3 bg-light"></p>
+            </div>
+            <div class="admin-actions text-end">
+              <button class="btn btn-danger delete-rating-from-modal-btn">Xóa đánh giá này</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function reload() {
+      document.querySelector('#pagination-bar .page-link.pa-active').click();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.view-rating-btn')) {
+      const btn = e.target.closest('.view-rating-btn');
+      
+      // Get rating data
+      const student = btn.getAttribute('data-student');
+      const course = btn.getAttribute('data-course');
+      const timestamp = btn.getAttribute('data-timestamp');
+      const stars = parseInt(btn.getAttribute('data-stars'));
+      const comment = btn.getAttribute('data-comment');
+      const ratingId = btn.getAttribute('data-rating-id');
+      
+      // Populate modal
+      const modal = document.getElementById('ViewRatingModal');
+      modal.querySelector('.rating-student').textContent = student;
+      modal.querySelector('.rating-course').textContent = `Khóa học: ${course}`;
+      modal.querySelector('.rating-timestamp').textContent = `Ngày đánh giá: ${timestamp}`;
+      
+      // Display stars
+      const starsContainer = modal.querySelector('#rating-stars');
+      starsContainer.innerHTML = '';
+      
+      for (let i = 0; i < 5; i++) {
+        const starIcon = document.createElement('i');
+        starIcon.className = i < stars ? 'fas fa-star text-warning me-1' : 'far fa-star me-1';
+        starsContainer.appendChild(starIcon);
+      }
+      
+      modal.querySelector('.rating-score').textContent = `${stars}/5`;
+      modal.querySelector('#rating-comment-text').textContent = comment || 'Không có nội dung đánh giá';
+        // Set up delete button
+      const deleteBtn = modal.querySelector('.delete-rating-from-modal-btn');
+      deleteBtn.setAttribute('data-student-id', btn.getAttribute('data-student-id'));
+      deleteBtn.setAttribute('data-semester-id', btn.getAttribute('data-semester-id'));
+    }
+      if (e.target.closest('.delete-rating-from-modal-btn')) {
+      if (confirm('Bạn có chắc chắn muốn xóa đánh giá này không?')) {
+        const btn = e.target.closest('.delete-rating-from-modal-btn');
+        
+        // Call delete API endpoint
+        fetch(`/AdminAPI/DeleteRating?studentId=${btn.getAttribute('data-student-id')}&semesterId=${btn.getAttribute('data-semester-id')}`, {
+          method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Đánh giá đã được xóa thành công');
+            document.querySelector('.close-popup').click();
+            reload();
+          } else {
+            alert('Có lỗi xảy ra khi xóa đánh giá');
+          }
+        });
+      }
+    }
+  });
+</script>

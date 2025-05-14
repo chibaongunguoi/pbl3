@@ -1,0 +1,62 @@
+<div class="modal fade" id="AdminCourseSemsModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="semBackButton" class="btn btn-secondary me-2" style="display:none;">
+          <i class="fas fa-arrow-left"></i> Quay lại
+        </button>
+        <h5 class="modal-title">Danh sách kỳ học của khóa học</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <div id="AdminModalContent"></div>
+        <div id="AdminModalPagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentCourseId = null;
+  let currentView = 'semesters';
+  
+  document.getElementById('semBackButton').addEventListener('click', function() {
+    // Return to semester list view
+    loadSemesterList(currentCourseId);
+  });
+  
+  function loadSemesterList(courseId) {
+    currentCourseId = courseId;
+    currentView = 'semesters';
+    document.getElementById('semBackButton').style.display = 'none';
+    
+    const modalTitle = document.querySelector('#AdminCourseSemsModal .modal-title');
+    if (modalTitle.getAttribute('data-course-name')) {
+      modalTitle.textContent = `Danh sách kỳ học của ${modalTitle.getAttribute('data-course-name')}`;
+    }
+    
+    initPagination(
+      { CurrentPage: 1, ItemsPerPage: 10 },
+      "/AdminAPI/GetCourseSemesters", 
+      "#AdminModalContent", 
+      { courseId: courseId }, 
+      "#AdminModalPagination"
+    );
+  }
+  
+  function loadStudentList(semesterId, semesterName) {
+    currentView = 'students';
+    document.getElementById('semBackButton').style.display = 'block';
+    
+    const modalTitle = document.querySelector('#AdminCourseSemsModal .modal-title');
+    modalTitle.textContent = `Danh sách học viên của kỳ học ${semesterName || semesterId}`;
+    
+    initPagination(
+      { CurrentPage: 1, ItemsPerPage: 10 },
+      "/AdminAPI/GetSemesterStudents", 
+      "#AdminModalContent", 
+      { semesterId: semesterId }, 
+      "#AdminModalPagination"
+    );
+  }
+</script>

@@ -83,7 +83,7 @@
         },
         {
           "name": "tel",
-          "sql_type": "VARCHAR(10) NOT NULL",
+          "sql_type": "VARCHAR(11) NOT NULL",
           "dtype": "STRING"
         }
       ],
@@ -124,7 +124,7 @@
         },
         {
           "name": "tel",
-          "sql_type": "VARCHAR(10) NOT NULL",
+          "sql_type": "VARCHAR(11) NOT NULL",
           "dtype": "STRING"
         },
         {

@@ -1,0 +1,83 @@
+<div class="modal fade" id="DeleteRatingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận xóa đánh giá</h5>
+        <button type="button" class="btn-close close-popup" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn xóa đánh giá này của học viên <span id="delete-student-name" class="fw-bold"></span> cho khóa học <span id="delete-course-name" class="fw-bold"></span>?</p>
+        <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" id="confirm-delete-rating" class="btn btn-danger">Xóa đánh giá</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.delete-rating-btn')) {
+      e.preventDefault();
+      const btn = e.target.closest('.delete-rating-btn');
+      
+      // Get data attributes
+      const studentId = btn.getAttribute('data-rating-id');
+      const semesterId = btn.getAttribute('data-semester-id');
+      const studentName = btn.getAttribute('data-student-name');
+      const courseName = btn.getAttribute('data-course-name');
+      
+      // Update modal
+      const modal = document.getElementById('DeleteRatingModal');
+      document.getElementById('delete-student-name').textContent = studentName;
+      document.getElementById('delete-course-name').textContent = courseName;
+      
+      // Set up delete button
+      const deleteBtn = document.getElementById('confirm-delete-rating');
+      deleteBtn.setAttribute('data-student-id', studentId);
+      deleteBtn.setAttribute('data-semester-id', semesterId);
+      
+      // Show modal
+      const bsModal = new bootstrap.Modal(modal);
+      bsModal.show();
+    }
+  });
+  
+  document.getElementById('confirm-delete-rating').addEventListener('click', function() {
+    const studentId = this.getAttribute('data-student-id');
+    const semesterId = this.getAttribute('data-semester-id');
+    
+    // Call delete API endpoint
+    fetch(`/AdminAPI/DeleteRating?studentId=${studentId}&semesterId=${semesterId}`, {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Close modal
+        const modal = document.getElementById('DeleteRatingModal');
+        const bsModal = bootstrap.Modal.getInstance(modal);
+        bsModal.hide();
+          // Reload ratings list
+        initPagination(
+          { CurrentPage: 1, ItemsPerPage: 20 },
+          "/AdminAPI/GetRatings", 
+          ".pagination-list", 
+          {}, 
+          "#main-pagination-bar"
+        );
+        
+        // Show success message
+        alert('Đánh giá đã được xóa thành công');
+      } else {
+        alert('Có lỗi xảy ra khi xóa đánh giá');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Có lỗi xảy ra khi xóa đánh giá');
+    });
+  });
+</script>

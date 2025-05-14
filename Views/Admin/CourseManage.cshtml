@@ -2,6 +2,10 @@
   Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 
+@await Html.PartialAsync("_SuccessErrorMessage")
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 <div id="content" class="container-fluid">
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
@@ -15,53 +19,14 @@
         </div>
       </form> -->
     </div>
-
-    <div class="card-body">
-      <table class="table table-striped table-checkall">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Tên khóa học</th>
-            <th scope="col">Gia sư</th>
-            <th scope="col">Đánh giá</th>
-            <th scope="col">Tình trạng</th>
-            <th scope="col">Môn học</th>
-            <th scope="col">Lớp</th>
-            <th scope="col">Tác vụ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td scope="row" class="table-index">card.table_index</td>
-            <td>
-              <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
-                card.course_name
-              </a>
-            </td>
-            <td>Nguyễn Chí Bảo</td>
-            <td>card.avg_rating</td>
-            <td>card.course_state</td>
-            <td>card.subject</td>
-            <td>card.grade</td>
-            <td>
-              <div class="button-group-wrapper course-manager">
-                <button class="card-btn course-detail"
-                  onclick="window.location.href='/Admin/SemesterManage?course_id=card.course_id'">Xem
-                  các kì học </button>
-                @await Html.PartialAsync("Popup/_StudentTablePopup")
-                <button class="card-btn course-detail"
-                  onclick="window.location.href='/Course/Detail?course_id=card.course_id'">Xem chi tiết</button>
-                <button class="card-btn course-detail" data-bs-toggle="modal" data-bs-target="#EditCourseModal">Chỉnh
-                  sửa</button>
-                @await Html.PartialAsync("Popup/_EditCoursePopup")
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="pagination-list"></div>
+    <div id="main-pagination-bar" class="pagination-bar"></div>
   </div>
 </div>
+
+@await Html.PartialAsync("Popup/_AdminMngCorSemPopup")
+@await Html.PartialAsync("Popup/_AdminMngCorSemStudentPopup")
+
 <style>
   /* Làm mờ nền khi modal mở */
   .modal.show {
@@ -70,4 +35,60 @@
     background-color: rgba(0, 0, 0, 0.3);
     /* Làm tối nền nhẹ */
   }
+
+  /* Allow specific columns to wrap */
+  .table td .comment-text,
+  .table td .course-table-name {
+    white-space: normal;
+  }
+
+  /* Keep table within container */
+  #content .card {
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Course link styling */
+  .course-table-name {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .course-table-name:hover {
+    text-decoration: underline;
+    color: #0a58ca;
+  }
+
+  /* Pagination styling */
+  #main-pagination-bar .pagination {
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pa-active {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  .card-btn {
+    white-space: nowrap;
+    padding: 2px 4px;
+    flex: 1;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    min-width: 80px;
+    max-width: 105px;
+    margin: 0 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>
+<script>
+  const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 };
+  initPagination(paginationInfo, "/AdminAPI/GetCourses", ".pagination-list", {}, "#main-pagination-bar");
+</script>

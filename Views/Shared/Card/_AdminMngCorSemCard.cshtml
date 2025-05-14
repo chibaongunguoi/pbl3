@@ -1,0 +1,29 @@
+@model AdminMngCorSemCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>@Model.StartDate.ToString("dd/MM/yyyy")</td>
+    <td>@Model.FinishDate.ToString("dd/MM/yyyy")</td>
+    <td>
+        @(Model.Status switch {
+            SemesterStatus.waiting => "Sắp diễn ra",
+            SemesterStatus.started => "Đang diễn ra",
+            SemesterStatus.finished => "Đã kết thúc",
+            _ => "Không xác định"
+        })
+    </td>
+    <td>@($"{Model.NumParticipants}/{Model.Capacity}")</td>
+    <td>@($"{Model.Fee:N0}đ")</td>    <td>
+        <div class="button-group-wrapper course-manager">
+            <button class="card-btn course-detail" onclick="window.location.href='/Admin/SemesterDetail?semesterId=@Model.SemesterId'">Xem chi tiết</button>
+            <button class="card-btn course-detail view-semester-students" data-sem-id="@Model.SemesterId" data-sem-name="@Model.SemesterId - @Model.CourseName">DS học viên</button></div>
+    </td>
+</tr>
+
+<script>
+    document.querySelector(`tr:has([data-sem-id="@Model.SemesterId"]) .view-semester-students`).addEventListener('click', function() {
+        const semId = this.getAttribute('data-sem-id');
+        const semName = this.getAttribute('data-sem-name');
+        loadStudentList(semId, semName);
+    });
+</script>

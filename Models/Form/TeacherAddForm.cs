@@ -31,7 +31,7 @@ public class TeacherAddForm
     public string? Tel { get; set; } = null;
 
     public string? Description { get; set; } = "";    
-    public void Execute(SqlConnection conn, ModelStateDictionary modelState, ITempDataDictionary tempData, out Teacher? teacher)
+    public void Execute(SqlConnection conn, ModelStateDictionary modelState, out Teacher? teacher)
     {
         teacher = null;
 
@@ -46,7 +46,7 @@ public class TeacherAddForm
         foreach (string table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
         {
             Query q = new(table);
-            q.Where(Field.teacher__username, Username);
+            q.Where(Fld.username, Username);
             if (q.Count(conn) > 0)
             {
                 modelState.AddModelError(nameof(Username), "Tên đăng nhập đã tồn tại");
@@ -80,6 +80,5 @@ public class TeacherAddForm
         query.Insert(conn, newTeacher);
         teacher = newTeacher;
         Message.Add("Success", "Thêm giảng viên thành công");
-        tempData["SuccessMessage"] = "Thêm giảng viên thành công";
     }
 }

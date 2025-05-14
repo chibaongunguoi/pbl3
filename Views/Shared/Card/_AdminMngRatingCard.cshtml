@@ -1,0 +1,44 @@
+@model AdminMngRatingCard
+
+<tr>
+    <td scope="row" class="table-index">@Model.TableIndex</td>
+    <td>
+        <a href="/Admin/StudentDetail?stuId=@Model.StudentId">@Model.StudentName</a>
+    </td>
+    <td>
+        <a href="/Course/Detail?courseId=@Model.CourseId">@Model.CourseName</a>
+    </td>
+    <td class="rating-stars">
+        @for (int i = 0; i < 5; i++)
+        {
+            if (i < Model.Stars)
+            {
+                <i class="fas fa-star text-warning"></i>
+            }
+            else
+            {
+                <i class="far fa-star"></i>
+            }
+        }
+        <span class="ms-2">@Model.Stars/5</span>
+    </td>
+    <td>@Model.Timestamp.ToString("dd/MM/yyyy HH:mm")</td>
+    <td class="comment-text">
+        <span class="comment-text" style="max-height: 75px; overflow-y: auto;">@Model.Description</span>
+    </td>
+    <td>
+        <div class="button-group-wrapper course-manager">            
+            <button class="card-btn view-rating-btn" 
+                data-student-id="@Model.StudentId"
+                data-semester-id="@Model.SemesterId"
+                data-stars="@Model.Stars" 
+                data-comment="@Model.Description"
+                data-student="@Model.StudentName"
+                data-course="@Model.CourseName"
+                data-timestamp="@Model.Timestamp.ToString("dd/MM/yyyy HH:mm")"
+                data-bs-toggle="modal" 
+                data-bs-target="#ViewRatingModal">Xem chi tiết
+            </button>
+        </div>
+    </td>
+</tr>

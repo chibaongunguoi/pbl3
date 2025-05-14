@@ -1,0 +1,36 @@
+@model List<AdminMngCorSemCard>
+
+@{
+    string courseName = Model.Count > 0 ? Model[0].CourseName : "khóa học này";
+}
+
+@if (Model.Count == 0)
+{
+    <div class="text-center p-4">
+        <p>Không có kỳ học nào cho khóa học này.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-checkall">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 5%">#</th>
+                    <th scope="col" style="width: 15%">Ngày bắt đầu</th>
+                    <th scope="col" style="width: 15%">Ngày kết thúc</th>
+                    <th scope="col" style="width: 15%">Tình trạng</th>
+                    <th scope="col" style="width: 10%">Sĩ số</th>
+                    <th scope="col" style="width: 15%">Học phí</th>
+                    <th scope="col" style="width: 25%">Tác vụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var semester in Model)
+                {
+                    @await Html.PartialAsync("Card/_AdminMngCorSemCard", semester)
+                }
+            </tbody>
+        </table>
+    </div>
+}

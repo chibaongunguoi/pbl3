@@ -1,76 +1,82 @@
 @{
-Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
+  Layout = "Layout/_AdminManageLayout";
+  ViewData["Title"] = "Quản lý đánh giá";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-
-  <div id="content" class="container-fluid">
-    <div class="card">
-      <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-        <div class="m-0 table-title">Danh sách đánh giá trong hệ thống</div>
-        @await Html.PartialAsync("_SearchRatingSection")
-        <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+<div id="content" class="container-fluid">
+  <div class="card">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+      <div class="m-0 table-title">Danh sách đánh giá trong hệ thống</div>
+      <div id="search-bar">
+      <form method="GET" class="row row-cols-lg-auto g-3 align-items-center" id="search-form">
         <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+          <input type="text" class="form-control" id="search-input" name="searchQuery" placeholder="Tìm kiếm theo tên học viên, khóa học..." value="">
         </div>
         <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+          <button type="submit" class="btn btn-primary btn-search col-12">Tìm kiếm</button>
         </div>
-      </form> -->
+      </form>
       </div>
-      
-      <div class="card-body">
-      
-        <table class="table table-striped table-checkall">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Tên khóa học</th>
-              <th scope="col">Tên học viên</th>
-              <th scope="col">Đánh giá</th>
-              <th scope="col">Thời gian</th>
-              <th scope="col" class="admin-rating-content">Nội dung</th>
-              <th scope="col">Tác vụ</th>
-            </tr>
-          </thead>
-          <tbody>
-          
-            <tr>
-              <td scope="row" class="table-index">1</td>
-              <td>
-                <a class="course-table-name" href='/Course/Detail?course_id=card.course_id' target="_blank">
-                  VDC toán 12
-                </a>
-              </td>
-              <td>Nguyễn Chí Bảo</td>
-              <td>4 / 5</td>
-              <td>4/11/2025 5:43:10</td>
-              <td >
-              <div class="content-clamp  admin-rating-column">
-              Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy Khóa học cũng khá là wow đấy
-              </div>
-              </td>
-              <td>
-                <div class="button-group-wrapper course-manager">
-                  <!-- <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?course_id=1'">Xem
-                    các kì học </button>
-                  <button class="card-btn course-detail">Xem đánh giá</button> -->
-                  <button class="card-btn course-detail"  data-bs-toggle="modal" data-bs-target="#RatingInfoPopup">Xem chi tiết</button>
-                   @await Html.PartialAsync("Popup/_RatingInfoPopup")
-                   <button class="card-btn choose">Xóa đánh giá</button>
-                </div>
-              </td>
-            </tr>
-            
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </div>   
+    <div id="main-pagination-list"></div>
+    <div id="main-pagination-bar"></div>
   </div>
+</div>
+
+@await Html.PartialAsync("Popup/_AdminMngRatingDetailPopup")
+
 <style>
   /* Làm mờ nền khi modal mở */
   .modal.show {
-    backdrop-filter: blur(5px); /* Hiệu ứng blur */
-    background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  /* Allow specific columns to wrap */
+  .table td .comment-text {
+    white-space: normal;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* Keep table within container */
+  #content .card {
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Button styling */
+  .btn-delete {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+  
+  .btn-delete:hover {
+    background-color: #f1b0b7;
+    border-color: #ef9a9a;
+  }
+  
+  /* Rating stars styling */
+  .rating-stars i {
+    font-size: 14px;
+  }
+  
+  #rating-stars i {
+    font-size: 20px;
   }
 </style>
+<script>
+  function reload() {
+    document.querySelector('#main-pagination-bar .page-link.pa-active').click();
+  }
+  const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 }
+  initPagination(paginationInfo, "/AdminAPI/GetRatings", "#main-pagination-list", {}, "#main-pagination-bar", "#search-bar");
+  document.querySelector('#ViewRatingModal').addEventListener('hidden.bs.modal', reload);
+</script>
