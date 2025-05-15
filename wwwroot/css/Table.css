@@ -34,5 +34,7 @@
   height: 400px !important;
   /* width: 50% !important; */
 }
-
+.newtb {
+  margin-left: 2px;
+}
 /* Số lượng học viên đăng ký khóa học theo tháng */
