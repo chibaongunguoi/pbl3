@@ -14,7 +14,7 @@ public class TeacherManageController : BaseController
 
     public IActionResult AddCourse()
     {
-        return View();
+        return View(new AddCourseForm());
     }
 
     [HttpPost]
@@ -28,7 +28,7 @@ public class TeacherManageController : BaseController
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
         Course? course = null;
         Semester? semester = null;
-        QDatabase.Exec(conn => form.Execute(conn, ModelState, username, out course, out semester));
+        QDatabase.Exec(conn => form.Execute(conn, username, out course, out semester));
 
         if (course is null || semester is null)
         {
@@ -52,7 +52,7 @@ public class TeacherManageController : BaseController
         }
 
         Semester? semester = null;
-        QDatabase.Exec(conn => form.Execute(conn, ModelState, out semester));
+        QDatabase.Exec(conn => form.Execute(conn, out semester));
 
         if (semester is null)
         {

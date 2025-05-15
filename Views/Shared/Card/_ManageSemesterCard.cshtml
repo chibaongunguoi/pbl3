@@ -13,7 +13,6 @@
     <td>@($"{Model.fee}đ")</td>
     <td>
         <div class="button-group-wrapper course-manager">
-            <button class="card-btn course-detail">Xem chi tiết</button>
             <button class="card-btn course-detail" id="btn-open-modal-@Model.semesterId" data-sem-id="@Model.semesterId"
                 data-bs-toggle="modal" data-bs-target="#studentTableModal-@Model.semesterId">Xem danh
                 sách học viên</button>
@@ -27,7 +26,6 @@
         const sentData = {
             semesterId: @Model.semesterId
             }
-        console.log(sentData);
         initPagination(null, "/TeacherManageAPI/ManageStuSemCard", `#modal-${sentData.semesterId}`, sentData)
     });
 </script>

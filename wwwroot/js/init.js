@@ -1,7 +1,4 @@
-console.log("init.js loaded");
-
 function initRatingPopupStars(semesterId, stars) {
-  console.log("initRatingPopupStars loaded", semesterId, stars);
   const modal = document.querySelector(`.modal[semesterId='${semesterId}']`);
   const starWrappers = modal.querySelectorAll(".rating-star-wrapper");
   const closeButton = modal.querySelector('.close-popup');
@@ -17,7 +14,6 @@ function initRatingPopupStars(semesterId, stars) {
     wrapper.addEventListener('click', () => {
       selectedRating = index + 1;
       ratingInput.value = selectedRating;
-      console.log(ratingInput);
     });
   });
   closeButton.addEventListener('click', () => {

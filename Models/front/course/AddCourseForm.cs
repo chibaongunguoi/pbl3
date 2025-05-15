@@ -1,5 +1,4 @@
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -29,21 +28,59 @@ public class AddCourseForm
     public int? Fee { get; set; }
     public string? Description { get; set; }
 
-    public void Execute(SqlConnection conn, ModelStateDictionary dict, string username, out Course? course, out Semester? semester)
+    public List<string> SubjectOptions { get; set; } = [];
+    public List<int> GradeOptions { get; set; } = [];
+    public Dictionary<string, string> Messages { get; set; } = [];
+
+    public AddCourseForm()
+    {
+        Query q = new(Tbl.subject);
+        q.OutputDistinct(Field.subject__name);
+        q.GroupBy(Field.subject__name);
+        Query q2 = new(Tbl.subject);
+        q2.OutputDistinct(Field.subject__grade);
+        q2.GroupBy(Field.subject__grade);
+        QDatabase.Exec(conn =>
+        {
+            q.Select(conn, reader => SubjectOptions.Add(QDataReader.GetString(reader)));
+            q2.Select(conn, reader => GradeOptions.Add(QDataReader.GetInt(reader)));
+        });
+    }
+
+    public void Execute(SqlConnection conn, string username, out Course? course, out Semester? semester)
     {
         course = null;
         semester = null;
+
         DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
+        if (StartDate < today)
+        {
+            Messages["Error"] = "Ngày bắt đầu không được trước ngày hiện tại";
+            return;
+        }
+
+        if (FinishDate < StartDate)
+        {
+            Messages["Error"] = "Ngày kết thúc không được trước ngày bắt đầu";
+            return;
+        }
+
+        if (Capacity <= 0)
+        {
+            Messages["Error"] = "Số lượng học viên không hợp lệ";
+            return;
+        }
+
         Query sbj_query = new(Tbl.subject);
-        sbj_query.Where(Field.subject__name, Subject ?? "");
+        sbj_query.WhereNString(Field.subject__name, Subject ?? "");
         sbj_query.Where(Field.subject__grade, Grade);
 
         List<Subject> subjects = [];
         sbj_query.Select(conn, reader => subjects.Add(QDataReader.GetDataObj<Subject>(reader)));
         if (subjects.Count == 0)
         {
-            dict.AddModelError(nameof(Subject), "Môn học không tồn tại");
+            Messages["Error"] = "Môn học không tồn tại";
             return;
         }
 
@@ -52,7 +89,10 @@ public class AddCourseForm
         tch_query.Where(Field.teacher__username, username);
         tch_query.Select(conn, reader => teachers.Add(QDataReader.GetDataObj<Teacher>(reader)));
         if (teachers.Count == 0)
+        {
+            Messages["Error"] = "Gia sư không tồn tại";
             return;
+        }
 
         int tch_id = teachers[0].Id;
         int sbj_id = subjects[0].Id;
@@ -62,7 +102,7 @@ public class AddCourseForm
             || !IdCounterQuery.get_count(conn, Tbl.semester, out int semester_id)
         )
         {
-            dict.AddModelError(nameof(CourseName), "Không thể tạo khóa học mới");
+            Messages["Error"] = "Không thể tạo khóa học mới";
             return;
         }
 
@@ -93,21 +133,8 @@ public class AddCourseForm
         q1.Insert(conn, course);
         q1 = new(Tbl.semester);
         q1.Insert(conn, semester);
-    }
 
-
-    public void print_log()
-    {
-        Console.WriteLine("[LOG]");
-        Console.WriteLine($"course_name: {CourseName}");
-        Console.WriteLine($"subject: {Subject}");
-        Console.WriteLine($"grade: {Grade}");
-        Console.WriteLine($"start_date: {StartDate}");
-        Console.WriteLine($"finish_date: {FinishDate}");
-        Console.WriteLine($"capacity: {Capacity}");
-        Console.WriteLine($"fee: {Fee}");
-        Console.WriteLine($"description: {Description}");
-        Console.WriteLine("[/LOG]");
+        Messages["Success"] = "Khóa học và học kỳ đã được tạo thành công";
     }
 }
 

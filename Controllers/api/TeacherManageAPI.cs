@@ -10,17 +10,41 @@ namespace REPO.Controllers;
 [Authorize(Roles = UserRole.Teacher)]
 public class TeacherManageAPI : BaseController
 {
+    private static Query GetManageCourseQueryCreator(string username, string? searchQuery)
+    {
+        Query q = ManageCourseCard.GetQueryCreator();
+        q.OrderBy(Field.semester__start_date, desc: true);
+        q.Where(Field.teacher__username, username);
+        if (searchQuery is not null)
+        {
+            q.WhereContains(Field.course__name, searchQuery);
+        }
+        return q;
+    }
+
     [HttpGet("ManageCourse")]
-    public IActionResult ManageCourse()
+    public IActionResult ManageCourse(PaginationInfo paginationInfo, string? searchQuery)
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         List<ManageCourseCard> cards = [];
-        Query q = ManageCourseCard.GetQueryCreator();
-        q.Where(Field.teacher__username, username);
+        Query q = GetManageCourseQueryCreator(username, searchQuery);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         int pos = 0;
         int current_table_index = 1;
         QDatabase.Exec(conn => q.Select(conn, reader => cards.Add(ManageCourseCard.GetCard(reader, ref pos, ref current_table_index))));
         return PartialView("List/_ManageCourseCardList", cards);
+    }
+
+    [HttpGet("ManageCourse/Pagination")]
+    public IActionResult ManageCoursePagination(PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        Query q = GetManageCourseQueryCreator(username, searchQuery);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
     }
 
     [HttpGet("ManageSemester")]

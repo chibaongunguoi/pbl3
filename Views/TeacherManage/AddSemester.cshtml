@@ -6,6 +6,7 @@
 
 <div class="pt-add-content-wrapper">
   <div class="pt-add-content">
+    @await Html.PartialAsync("_Message", Model.Messages)
     <div class="pt-add-title">Thông tin kỳ học</div>
     <div class="pt-add-form">
       <form id="pt-add" enctype="multipart/form-data" method="POST">
@@ -24,9 +25,9 @@
                 <option value="@course.id">@course.name</option>
               }
             </select>
+            <span asp-validation-for="CourseId" class="text-danger"></span>
           </div>
         </div>
-        <span asp-validation-for="CourseId" class="text-danger"></span>
 
         <div class="pt-add-form-item">
           <div class="pt-add-label">
@@ -46,8 +47,8 @@
             <input class="input cb" asp-for="FinishDate">
           </div>
         </div>
-        <span asp-validation-for="StartDate" class="text-danger"></span>
-        <span asp-validation-for="FinishDate" class="text-danger"></span>
+          <span asp-validation-for="StartDate" class="text-danger"></span><br/>
+          <span asp-validation-for="FinishDate" class="text-danger"></span>
         <div class="pt-add-form-item">
           <div class="pt-add-label">
             <label asp-for="Capacity">
@@ -55,11 +56,10 @@
             </label>
           </div>
           <div class="pt-add-input-wrapper">
-            <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào"
-              maxlength="150">
+            <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào" maxlength="150">
+            <span asp-validation-for="Capacity" class="text-danger"></span>
           </div>
         </div>
-        <span asp-validation-for="Capacity" class="text-danger"></span>
         <div class="pt-add-form-item">
           <div class="pt-add-label">
             <label asp-for="Fee">
@@ -67,12 +67,11 @@
             </label>
           </div>
           <div class="pt-add-input-wrapper">
-            <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào"
-              maxlength="150" value="">
+            <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào" maxlength="150" value="">
+            <span asp-validation-for="Fee" class="text-danger"></span>
             <div class="money-detail">₫</div>
           </div>
         </div>
-        <span asp-validation-for="Fee" class="text-danger"></span>
         <div class="pt-add-form-item">
           <div class="pt-add-label">
             <label asp-for="Description">
@@ -81,9 +80,9 @@
           </div>
           <div class="pt-add-input-wrapper">
             <textarea class="pt-add-form-input detail-input" asp-for="Description" id="description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
           </div>
         </div>
-        <span asp-validation-for="Description" class="text-danger"></span>
         <div class="pt-add-btn-group">
           <button class="hl-btn"><span>Xác nhận</span></button>
         </div>

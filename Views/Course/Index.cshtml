@@ -22,7 +22,6 @@
   <script>
     const filterForm = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefCourseFilter))
       const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
-      console.log(filterForm);
     initPagination(paginationInfo, "/courseAPI/BriefCoursePage", ".brief-course-cards", filterForm, ".pagination-bar", ".pagination-form")
   </script>
 }

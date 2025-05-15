@@ -6,6 +6,7 @@
 
 <div class="pt-add-content-wrapper">
     <div class="pt-add-content">
+        @await Html.PartialAsync("_Message", Model.Messages)
         <div class="pt-add-title">Thông tin khóa học</div>
         <div class="pt-add-form">
             <!-- <form id="pt-add" action="AddCourse" enctype="multipart/form-data" method="POST"> -->
@@ -19,8 +20,8 @@
                     </div>
                     <div class="pt-add-input-wrapper">
                         <input class="pt-add-form-input pt-name-input" type="text" asp-for="CourseName" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="CourseName" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="CourseName" class="text-danger"></span>
                 </div>
 
                 <div class="pt-add-form-item">
@@ -31,11 +32,11 @@
                     </div>
                      <div class="pt-add-input-wrapper pt-add-subject-wrapper">
                         <select class=" input cb" asp-for="Subject">
-                            <option value="">Chọn khóa học</option>
-                            <option value="Toán">Toán</option>
-                            <option value="Ngữ Văn">Ngữ Văn</option>
-                            <option value="Tiếng Anh">Tiếng Anh</option>
-                            <option value="Vật lí">Vật lí</option>
+                            <option value="">Chọn môn học</option>
+                            @foreach (var subject in Model.SubjectOptions)
+                            {
+                                <option value="@subject">@subject</option>
+                            }
                         </select>
                     </div>
                      <div class="pt-add-label">
@@ -46,15 +47,14 @@
                      <div class="pt-add-input-wrapper pt-add-class-wrapper">
                         <select class=" input cb" asp-for="Grade">
                              <option value="">Chọn lớp</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
+                             @foreach (var grade in Model.GradeOptions)
+                             {
+                                 <option value="@grade">@grade</option>
+                             }
                         </select>
                     </div>
                 </div>
-
-                <span asp-validation-for="Subject" class="text-danger"></span>
+                <span asp-validation-for="Subject" class="text-danger"></span><br/>
                 <span asp-validation-for="Grade" class="text-danger"></span>
 
                 <div class="pt-add-form-item">
@@ -64,7 +64,7 @@
                         </label>
                     </div>
                      <div class="pt-add-input-wrapper pt-add-subject-wrapper">
-                       <input class="input cb" asp-for="StartDate">
+                       <input class="input cb" asp-for="StartDate"><br/>
                     </div>
                      <div class="pt-add-label">
                         <label asp-for="FinishDate">
@@ -75,7 +75,7 @@
                         <input class="input cb" asp-for="FinishDate">
                     </div>
                 </div>
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <span asp-validation-for="StartDate" class="text-danger"></span><br/>
                 <span asp-validation-for="FinishDate" class="text-danger"></span>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
@@ -85,9 +85,9 @@
                     </div>
                     <div class="pt-add-input-wrapper">
                         <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào" maxlength="150" >
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
                     </div>
                 </div>
-                <span asp-validation-for="Capacity" class="text-danger"></span>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label asp-for="Fee">
@@ -97,9 +97,9 @@
                     <div class="pt-add-input-wrapper">
                         <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào" maxlength="150" value="">
                         <div class="money-detail">₫</div>
+                        <span asp-validation-for="Fee" class="text-danger"></span>
                     </div>
                 </div>
-                <span asp-validation-for="Fee" class="text-danger"></span>
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label asp-for="Description">

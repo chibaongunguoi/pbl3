@@ -23,6 +23,8 @@ public class AddSemesterForm
     public int? Fee { get; set; } = null;
     public string? Description { get; set; } = null;
 
+    public Dictionary<string, string> Messages { get; set; } = [];
+
     public AddSemesterForm()
     {
     }
@@ -46,13 +48,33 @@ public class AddSemesterForm
         );
     }
 
-    public void Execute(SqlConnection conn, ModelStateDictionary dict, out Semester? semester)
+    public void Execute(SqlConnection conn, out Semester? semester)
     {
         semester = null;
 
+        DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
+        if (StartDate < today)
+        {
+            Messages["Error"] = "Ngày bắt đầu không được trước ngày hiện tại";
+            return;
+        }
+
+        if (FinishDate < StartDate)
+        {
+            Messages["Error"] = "Ngày kết thúc không được trước ngày bắt đầu";
+            return;
+        }
+
+        if (Capacity <= 0)
+        {
+            Messages["Error"] = "Số lượng học viên không hợp lệ";
+            return;
+        }
+
         if (!IdCounterQuery.get_count(conn, Tbl.semester, out int _))
         {
-            dict.AddModelError(nameof(CourseId), "Đã đạt giới hạn số lượng kì học");
+            Messages["Error"] = "Đã đạt giới hạn số lượng kì học";
             return;
         }
 
@@ -61,7 +83,7 @@ public class AddSemesterForm
         List<Course> courses = q.Select<Course>(conn);
         if (courses.Count == 0)
         {
-            dict.AddModelError(nameof(CourseId), "Khóa học không tồn tại");
+            Messages["Error"] = "Khóa học không tồn tại";
             return;
         }
         Course course = courses[0];
