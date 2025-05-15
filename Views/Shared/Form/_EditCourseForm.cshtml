@@ -1,0 +1,100 @@
+@model EditCourseForm
+
+<div class="pt-add-form" id="edit-course-form-container">
+    @await Html.PartialAsync("_Message", Model.Messages)
+    <form id="edit-course-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="CourseId" />
+        <input type="hidden" asp-for="SemesterId" />
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="StartDate">
+                    <div class="required-icon">*</div>Ngày bắt đầu
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-subject-wrapper">
+                <input class="input cb" type="date" asp-for="StartDate">
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="pt-add-label">
+                <label asp-for="FinishDate">
+                    <div class="required-icon">*</div>Ngày kết thúc
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper pt-add-class-wrapper">
+                <input class="input cb" type="date" asp-for="FinishDate">
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Capacity">
+                    <div class="required-icon">*</div>Số học viên đối đa
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input class="pt-add-form-input pt-name-input" type="number" asp-for="Capacity" placeholder="Nhập vào"
+                    maxlength="150">
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Fee">
+                    <div class="required-icon">*</div>Học phí
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <input class="pt-add-form-input pt-add-price-input" type="number" asp-for="Fee" placeholder="Nhập vào"
+                    maxlength="150">
+                <div class="money-detail">₫</div>
+                <span asp-validation-for="Fee" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-form-item">
+            <div class="pt-add-label">
+                <label asp-for="Description">
+                    <div class="required-icon">*</div>Mô tả khóa học
+                </label>
+            </div>
+            <div class="pt-add-input-wrapper">
+                <textarea class="pt-add-form-input detail-input" asp-for="Description" id="description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pt-add-btn-group">
+            <button type="submit" class="hl-btn"><span>Xác nhận</span></button>
+        </div>
+    </form>
+</div>
+
+<script>
+  (function initializeEditCourseForm() {
+    const placeholderSelector = "#FormPlaceholder";
+    const courseId = @Model.CourseId;
+    const formSelector = `#edit-course-form`;
+    
+    var form = document.querySelector(formSelector);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      formData.append('CourseId', @Model.CourseId);
+      formData.append('SemesterId', @Model.SemesterId);
+      $.ajax({
+        url: "/TeacherManageAPI/EditCourse",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          // Replace the entire modal content with the response
+          $(placeholderSelector).html(response);
+          initializeEditCourseForm();
+        },
+        error: function(error) {
+          console.error("Error submitting form:", error);
+        }
+      });
+    });
+  })();
+</script>

@@ -67,19 +67,42 @@ public class TeacherManageAPI : BaseController
         return PartialView("List/_ManageSemesterCardList", cards);
     }
 
-
-    [HttpGet("ManageRequest")]
-    public IActionResult ManageRequest()
+    private static Query GetManageRequestQueryCreator(string username, string? searchQuery = null)
     {
-        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         Query q = ManageRequestCard.GetQueryCreator();
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.Where(Field.teacher__username, username);
+        q.Where(Field.request__status, RequestStatus.waiting);
+        if (searchQuery is not null)
+        {
+            string pattern = $"N'%{searchQuery}%'";
+            List<string> s = [
+                $"{Field.course__name} LIKE {pattern}",
+                $"{Field.student__name} LIKE {pattern}",
+                $"{Field.student__tel} LIKE {pattern}",
+            ];
+
+            if (int.TryParse(searchQuery, out int id))
+            {
+                s.Add($"{Field.student__id} = {id}");
+            }
+
+            q.WhereClause($"({string.Join(" OR ", s)})");
+        }
+        return q;
+    }
+
+    [HttpGet("ManageRequest")]
+    public IActionResult ManageRequest(PaginationInfo paginationInfo, string? searchQuery = null)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         List<ManageRequestCard> cards = [];
+        Query q = GetManageRequestQueryCreator(username, searchQuery);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
+        int tableIdx = 1;
         QDatabase.Exec(
             conn =>
             {
-                int tableIdx = 1;
                 q.Select(
                     conn,
                     reader => cards.Add(ManageRequestCard.GetCard(reader, ref tableIdx))
@@ -89,25 +112,105 @@ public class TeacherManageAPI : BaseController
         return PartialView("List/_ManageRequestCardList", cards);
     }
 
+    [HttpGet("ManageRequest/Pagination")]
+    public IActionResult ManageRequestPagination(PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    {
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        Query q = GetManageRequestQueryCreator(username, searchQuery);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
+    }
+
     [HttpGet("AcceptRequest")]
-    public IActionResult AcceptRequest(int stuId, int semesterId)
+    public IActionResult AcceptRequest(int stuId, int semesterId, PaginationInfo paginationInfo, string? searchQuery = null)
     {
         Query q = new(Tbl.request);
         q.Set(Field.request__status, RequestStatus.joined);
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Update);
-        return RedirectToAction(nameof(ManageRequest), nameof(TeacherManageAPI));
+        return ManageRequest(paginationInfo, searchQuery);
+    }
+
+    [HttpGet("AcceptRequest/Pagination")]
+    public IActionResult AcceptRequestPagination(PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    {
+        return ManageRequestPagination(paginationInfo, searchQuery, contextUrl, contextComponent);
     }
 
     [HttpGet("RejectRequest")]
-    public IActionResult RejectRequest(int stuId, int semesterId)
+    public IActionResult RejectRequest(int stuId, int semesterId, PaginationInfo paginationInfo, string? searchQuery = null)
     {
         Query q = new(Tbl.request);
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Delete);
-        return RedirectToAction(nameof(ManageRequest), nameof(TeacherManageAPI));
+        return ManageRequest(paginationInfo, searchQuery);
+    }
+
+    [HttpGet("RejectRequest/Pagination")]
+    public IActionResult RejectRequestPagination(PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    {
+        return ManageRequestPagination(paginationInfo, searchQuery, contextUrl, contextComponent);
+    }
+    [HttpGet("GetEditCourseForm")]
+    public IActionResult GetEditCourseForm(int courseId)
+    {
+        // Verify that the course belongs to the current teacher
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        bool hasAccess = false;
+        
+        QDatabase.Exec(conn =>
+        {
+            Query q = new(Tbl.course);
+            q.Join(Field.teacher__id, Field.course__tch_id);
+            q.Where(Field.course__id, courseId);
+            q.Where(Field.teacher__username, username);
+            hasAccess = q.Count(conn) > 0;
+        });
+        
+        if (!hasAccess)
+        {
+            return Unauthorized();
+        }
+        
+        EditCourseForm form = new(courseId);
+        return PartialView("Form/_EditCourseForm", form);
+    }
+
+    [HttpPost("EditCourse")]
+    public IActionResult EditCourse(EditCourseForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return PartialView("Form/_EditCourseForm", form);
+        }
+        
+        // Verify that the course belongs to the current teacher
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        bool hasAccess = false;
+        
+        QDatabase.Exec(conn =>
+        {
+            Query q = new(Tbl.course);
+            q.Join(Field.teacher__id, Field.course__tch_id);
+            q.Where(Field.course__id, form.CourseId);
+            q.Where(Field.teacher__username, username);
+            hasAccess = q.Count(conn) > 0;
+        });
+        
+        if (!hasAccess)
+        {
+            form.Messages["Error"] = "Bạn không có quyền chỉnh sửa khóa học này";
+            return PartialView("Form/_EditCourseForm", form);
+        }
+
+        Semester? semester = null;
+        QDatabase.Exec(conn => form.Execute(conn, out semester));
+        return PartialView("Form/_EditCourseForm", form);
     }
 
     [HttpGet("ManageStuSemCard")]
@@ -130,23 +233,37 @@ public class TeacherManageAPI : BaseController
         return PartialView("List/_ManageStuSemCardList", cards);
     }
 
-    private static Query GetManageRatingQueryCreator()
+    private static Query GetManageRatingQueryCreator(string username, string? searchQuery=null, int? stars = null)
     {
         Query q = ManageRatingCard.GetQueryCreator();
+        q.Where(Field.teacher__username, username);
         q.Join(Field.teacher__id, Field.course__tch_id);
         q.OrderBy(Field.rating__timestamp, desc: true);
+        if (searchQuery is not null)
+        {
+            string pattern = $"N'%{searchQuery}%'";
+            List<string> s = [
+                $"{Field.course__name} LIKE {pattern}",
+                $"{Field.student__name} LIKE {pattern}",
+                $"{Field.rating__description} LIKE {pattern}",
+            ];
+            q.WhereClause($"({string.Join(" OR ", s)})");
+        }
+        if (stars is not null)
+        {
+            q.Where(Field.rating__stars, stars);
+        }
         return q;
     }
 
     [HttpGet("ManageRating")]
-    public IActionResult ManageRating(PaginationInfo paginationInfo)
+    public IActionResult ManageRating(PaginationInfo paginationInfo, string? searchQuery=null, int? stars=null)
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         List<ManageRatingCard> cards = [];
         int tableIdx = 1;
 
-        Query q = GetManageRatingQueryCreator();
-        q.Where(Field.teacher__username, username);
+        Query q = GetManageRatingQueryCreator(username, searchQuery, stars);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         QDatabase.Exec(
             conn =>
@@ -159,11 +276,10 @@ public class TeacherManageAPI : BaseController
     }
 
     [HttpGet("ManageRating/Pagination")]
-    public IActionResult ManageRatingPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    public IActionResult ManageRatingPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery=null, int? stars=null)
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-        Query q = GetManageRatingQueryCreator();
-        q.Where(Field.teacher__username, username);
+        Query q = GetManageRatingQueryCreator(username, searchQuery, stars);
         QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
         return PartialView(
             "_PaginationAjax",

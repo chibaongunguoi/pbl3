@@ -84,7 +84,7 @@ public class TeacherEditForm
                     return;
                 }
             }
-        }        // Update teacher information using Query directly rather than creating a Teacher object
+        }
         Query query = new(Tbl.teacher);
         query.Set(Field.teacher__username, Username);
         query.SetNString(Field.teacher__name, Name);

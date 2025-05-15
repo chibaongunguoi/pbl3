@@ -99,9 +99,7 @@ public class TeacherManageController : BaseController
     public IActionResult ChangePassword()
     {
         return View();
-    }
-
-    [HttpPost]
+    }    [HttpPost]
     public IActionResult ChangePassword(PasswordChangeForm form)
     {
         if (!ModelState.IsValid)
@@ -115,5 +113,31 @@ public class TeacherManageController : BaseController
         Account? account = null;
         QDatabase.Exec(conn => form.Execute(conn, username, role, TempData, out account));
         return View(form);
+    }
+    
+    public IActionResult EditCourse(int courseId)
+    {
+        EditCourseForm form = new(courseId);
+        return View(form);
+    }
+
+    [HttpPost]
+    public IActionResult EditCourse(EditCourseForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(form);
+        }
+
+        Semester? semester = null;
+        QDatabase.Exec(conn => form.Execute(conn, out semester));
+
+        if (semester is null)
+        {
+            return View(form);
+        }
+        
+        TempData["Success"] = "Thông tin khóa học đã được cập nhật thành công";
+        return Redirect($"~/Course/Detail?courseId={semester.CourseId}");
     }
 }

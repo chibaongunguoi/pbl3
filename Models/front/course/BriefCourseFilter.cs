@@ -6,7 +6,7 @@ public class BriefCourseFilter
     public string? SubjectName { get; set; } = null;
     public int? Grade { get; set; } = null;
     public string? Gender { get; set; } = null;
-    public string? CourseName { get; set; } = null;
+    public string? SearchQuery { get; set; } = null;
 
     public List<string> SubjectNames { get; set; } =[];
     public List<int> Grades { get; set; } = [];

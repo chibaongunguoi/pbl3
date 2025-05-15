@@ -35,13 +35,9 @@
         <div class="button-group-wrapper course-manager">
             @if (user_role == UserRole.Teacher)
             {
-                <button class="card-btn course-detail"
-                    onclick="window.location.href='/TeacherManage/ManageSemester?courseId=@Model.course_id'">Xem
-                    các kì học </button>
+                <button class="card-btn course-detail" onclick="window.location.href='/TeacherManage/ManageSemester?courseId=@Model.course_id'">Xem các kì học </button>
                 @await Html.PartialAsync("Popup/_StudentTablePopup")
-                <button class="card-btn course-detail" data-bs-toggle="modal"
-                    data-bs-target="#EditCourseModal-@Model.course_id">Chỉnh sửa</button>
-                @await Html.PartialAsync("Popup/_EditCoursePopup")
+                <button class="card-btn course-detail EditCourseBtn" data-course-id="@Model.course_id" data-bs-toggle="modal" data-bs-target="#EditCourseModal">Chỉnh sửa</button>
             }
             <button class="card-btn course-detail"
                 onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
@@ -67,3 +63,14 @@
         </div>
     </td>
 </tr>
+
+<script>
+    if ( @(user_role == UserRole.Teacher ? "true" : "false") ) {
+        document.querySelector(`.EditCourseBtn[data-course-id="${@Model.course_id}"]`) 
+        .addEventListener('click', function () {
+            const url = `/TeacherManageAPI/GetEditCourseForm`;
+            const placeholderSelector = `#FormPlaceholder`;
+            initPagination(null, url, placeholderSelector, { courseId: @Model.course_id });
+        });
+    }
+</script>

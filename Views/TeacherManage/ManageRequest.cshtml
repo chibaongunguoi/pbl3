@@ -8,16 +8,15 @@
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
       <div class="m-0 table-title">Yêu cầu đăng kí học</div>
-      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
-        </div>
-        <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
-        </div>
-      </form> -->
+      <div id="pagination-form">
+        <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-12"> <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value=""> </div>
+          <div class="col-12"> <input type="submit" class="btn btn-primary btn-search col-12" value="Tìm kiếm"> </div>
+        </form>
+      </div>
     </div>
-    <div class="pagination-list"></div>
+    <div id="pagination-list"></div>
+    <div id="pagination-bar"></div>
   </div>
 </div>
 
@@ -25,7 +24,14 @@
 @section TeacherManageLayoutScripts {
   <script src="~/js/pagination.js" asp-append-version="true"></script>
   <script>
-    initPagination(null, "/TeacherManageAPI/ManageRequest", ".pagination-list")
+    function reload() {
+      document.querySelector('#pagination-bar .page-link.pa-active').click();
+    }
+    const paginationData = {
+      CurrentPage: 1,
+      ItemsPerPage: 20,
+    }
+    initPagination(paginationData, "/TeacherManageAPI/ManageRequest", "#pagination-list", null, "#pagination-bar", "#pagination-form");
     function demo() {
       const btnAcceptRequest = document.querySelectorAll('.btn-accept-request');
       const btnRejectRequest = document.querySelectorAll('.btn-reject-request');
@@ -34,22 +40,26 @@
         btn.addEventListener('click', function () {
           const stuId = this.getAttribute('data-stu-id');
           const semesterId = this.getAttribute('data-semester-id');
+          const stuName = this.getAttribute('data-stu-name');
           const sentData = {
             stuId: stuId,
             semesterId: semesterId
           }
-          initPagination(null, "/TeacherManageAPI/AcceptRequest", ".pagination-list", sentData)
+          initPagination(paginationData, "/TeacherManageAPI/AcceptRequest", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
+          alert(`Đã chấp nhận yêu cầu đăng kí học của học viên ${stuId} - ${stuName}`);
         })
       });
       btnRejectRequest.forEach(btn => {
         btn.addEventListener('click', function () {
           const stuId = this.getAttribute('data-stu-id');
           const semesterId = this.getAttribute('data-semester-id');
+          const stuName = this.getAttribute('data-stu-name');
           const sentData = {
             stuId: stuId,
             semesterId: semesterId
           }
-          initPagination(null, "/TeacherManageAPI/RejectRequest", ".pagination-list", sentData)
+          initPagination(paginationData, "/TeacherManageAPI/RejectRequest", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
+          alert(`Đã từ chối yêu cầu đăng kí học của học viên ${stuId} - ${stuName}`);
         })
       });
     }

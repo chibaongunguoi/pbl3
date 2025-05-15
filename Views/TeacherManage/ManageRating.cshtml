@@ -6,17 +6,29 @@
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
       <div class="m-0 table-title">Danh sách đánh giá</div>
-      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
-        </div>
-        <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
-        </div>
-      </form> -->
+      <div id="pagination-form">
+        <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+            <select class="form-select" id="rating-filter" name="stars">
+              <option value="">Tất cả</option >
+              <option value="5">5 sao</option>
+              <option value="4">4 sao</option>
+              <option value="3">3 sao</option>
+              <option value="2">2 sao</option>
+              <option value="1">1 sao</option>
+            </select>
+            </div>
+            <div class="col-12">
+              <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
+            </div>
+            <div class="col-12">
+              <input type="submit" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+            </div>
+          </form>
+      </div>
     </div>
-    <div class="pagination-list"></div>
-    <div class="pagination-bar"></div>
+    <div id="pagination-list"></div>
+    <div id="pagination-bar"></div>
   </div>
 </div>
 
@@ -28,6 +40,6 @@
       CurrentPage: 1,
       ItemsPerPage: 20,
     }
-    initPagination(paginationInfo, "/TeacherManageAPI/ManageRating", ".pagination-list", {}, ".pagination-bar")
+    initPagination(paginationInfo, "/TeacherManageAPI/ManageRating", "#pagination-list", null, "#pagination-bar", "#pagination-form")
   </script>
 }

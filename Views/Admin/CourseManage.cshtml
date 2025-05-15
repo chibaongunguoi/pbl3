@@ -13,6 +13,14 @@
       <div id="pagination-form">
         <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-12">
+            <select class="form-select" id="status-filter" name="status">
+              <option value="">Tất cả trạng thái</option >
+              <option value="@SemesterStatus.waiting">Săp diễn ra</option>
+              <option value="@SemesterStatus.started">Đang diễn ra</option>
+              <option value="@SemesterStatus.finished">Đã kết thúc</option>
+            </select>
+          </div>
+          <div class="col-12">
             <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
           </div>
           <div class="col-12">

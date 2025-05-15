@@ -4,10 +4,13 @@
 {
     <nav aria-label="pagination-wrapper">
         <ul class="pagination">
-            <li class="page-item ">
-                <a class='page-link ' data-index="@(Model.paginationInfo.CurrentPage - 1)">
-                    @("<<") </a>
+            <li class="page-item">
+                <a class="page-link" data-index="1">@("<<")</a>
             </li>
+            @* <li class="page-item ">
+                <a class='page-link ' data-index="@(Model.paginationInfo.CurrentPage - 1)">
+                    @("<") </a>
+            </li> *@
             @{
                 var left = Model.paginationInfo.CurrentPage - 2;
                 var right = Model.paginationInfo.CurrentPage + 2;
@@ -28,8 +31,13 @@
                     </a>
                 </li>
             }
-            <li class="page-item ">
+            @* <li class="page-item ">
                 <a class='page-link' data-index="@(Model.paginationInfo.CurrentPage + 1)">
+                    @(">")
+                </a>
+            </li> *@
+            <li class="page-item">
+                <a class="page-link" data-index="@Model.paginationInfo.TotalPages">
                     @(">>")
                 </a>
             </li>

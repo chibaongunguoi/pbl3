@@ -9,7 +9,7 @@ static class AuthQuery
         {
             Query q = new(tableName);
             q.Where(Fld.username, form.Username);
-            q.Where(Fld.password, form.Password);
+            q.Where(Fld.password, BackUtils.ComputeSHA256(form.Password));
             var queryResult = q.Select<Account>(conn);
             if (queryResult.Count > 0)
             {

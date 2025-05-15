@@ -50,7 +50,7 @@ public class AdminMngCorCard
         statusQuery.OrderBy(Field.semester__start_date, desc: true);
         statusQuery.Offset(1, 1);
         statusQuery.Output(Field.semester__status);
-        q.OutputQuery(statusQuery.SelectQuery());
+        q.OutputQuery(statusQuery.SelectQuery(), "status");
         
         return q;
     }

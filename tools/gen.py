@@ -6,7 +6,7 @@ import json
 from datetime import datetime,date
 from typing import Any
 
-START_DATE = "2023-9-1"
+START_DATE = "2023-7-1"
 COURSE_RATE = 0.5
 REQUEST_RATE = 0.3
 RATING_RATE = 0.7
@@ -23,9 +23,12 @@ DURATION_RANGE_START = 150
 DURATION_RANGE_END = 240
 LATEST_START_DATE = 400
 
-num_of_students = 600
-num_of_teachers = 200
+num_of_students = random.randint(800, 1000)
+num_of_teachers = random.randint(250, 300)
 
+def sha256(s: str) -> str:
+    import hashlib
+    return hashlib.sha256(s.encode()).hexdigest()
 
 class nstr(str):
     pass
@@ -74,7 +77,7 @@ class Admin(Account):
 class User(Account):
     name: nstr
     gender: str
-    bday: date
+    bday: str
     tel: str
 
 @dataclass
@@ -378,7 +381,7 @@ studentSemesterLimit = {}
 
 for stu_id in student_ids:
     username = stu_id
-    password = stu_id
+    password = sha256(str(stu_id))
     gender, name = next(gender_name_gen)
     tel = next(tel_gen)
     grade = random.choice([6, 7, 8, 9, 10, 11, 12])
@@ -424,7 +427,7 @@ ratings = []
 
 for tch_id in teacher_ids:
     username = tch_id
-    password = tch_id
+    password = sha256(str(tch_id))
     gender, name = next(gender_name_gen)
     tel = next(tel_gen)
     bday = next(teacher_birthday_gen)
@@ -450,7 +453,8 @@ for tch_id in teacher_ids:
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
 """
-    teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday,tel, thumbnail, nstr(description))
+    bday = "-".join([str(bday.year), str(bday.month), str(bday.day)])
+    teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday, tel, thumbnail, nstr(description))
     teachers.append(teacher)
 
     subjects_ = random.choice(subject_groups)
@@ -502,10 +506,10 @@ for tch_id in teacher_ids:
             semester = create_semester(semester_id, semStartDate, semFinishDate, grade, semester_capacity, semester_status)
             semesters.append(semester)
             course_semesters.append(semester)
-            semStartDate = semFinishDate + timedelta(random.randint(30, 60))
+            semStartDate = semFinishDate + timedelta(random.randint(30, 60));
 
             if semIsWaiting or semIsStarted:
-                break
+                break;
 
         course_finish_date = semFinishDate
         course_status = semester_status
@@ -602,7 +606,7 @@ id_counters = [
 json_output("id_counter", id_counters)
 
 # -----------------------------------------------------------------------------
-json_output("admin", [Admin(1, "admin", "admin")])
+json_output("admin", [Admin(1, "admin",sha256("admin"))])
 
 # -----------------------------------------------------------------------------
 print("Generated successfully!")

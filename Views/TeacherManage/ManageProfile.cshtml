@@ -47,11 +47,21 @@
                 <div class="pt-add-form-item">
                     <div class="pt-add-label">
                         <label asp-for="Name">
+                            Tên đăng nhập
+                        </label>
+                    </div>
+                    <div class="pt-add-input-wrapper">
+                        <input class="pt-add-form-input pt-name-input" type="text" asp-for="Username" placeholder="Nhập vào" maxlength="150">
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="pt-add-form-item">
+                    <div class="pt-add-label">
+                        <label asp-for="Name">
                             Họ và tên
                         </label>
                     </div>
                     <div class="pt-add-input-wrapper">
-                        @* <input class="pt-add-form-input pt-name-input" type="text" name="Capacity" placeholder="Nhập vào" maxlength="150" value="@ViewBag.userName"> *@
                         <input class="pt-add-form-input pt-name-input" type="text" asp-for="Name" placeholder="Nhập vào" maxlength="150">
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
@@ -71,7 +81,7 @@
                             <label class="auth-label-radio">
                                 Nữ
                                 <input value="@Gender.female" asp-for="Gender" type="radio" class="auth-radio" />
-                            </label>
+                        </label>
                     </div>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>

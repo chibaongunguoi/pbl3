@@ -24,7 +24,7 @@ public class PasswordChangeForm
         };
 
         Query q = new(table);
-        q.Set(Fld.password, NewPassword);
+        q.Set(Fld.password, BackUtils.ComputeSHA256(NewPassword));
         q.Where(Fld.username, username);
         q.Update(conn);
 

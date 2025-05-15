@@ -1,3 +1,11 @@
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+@{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
 <div id="header_menu" class="d-none d-lg-block" data-v-4133fbdc="">
     <div class="container" data-v-4133fbdc="">
         <div class="row1" data-v-4133fbdc="">
@@ -21,6 +29,8 @@
                                 </span>
                             </a>
                         </li>
+                        @if (user_role == "Student" || user_role == "Teacher")
+                        {
                         <li class="root" data-v-4133fbdc="">
                             <a href="/Course/Manage" data-v-4133fbdc="" class="">
                                 <span data-v-4133fbdc="" class="navbar-option">
@@ -34,6 +44,7 @@
                                 </span>
                             </a>
                         </li>
+                        }
                     </ul>
                 </nav>
             </div>

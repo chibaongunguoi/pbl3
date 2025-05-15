@@ -16,6 +16,25 @@
       <div id="pagination-form">
         <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-12">
+            <select class="form-select" id="rating-filter" name="stars">
+              <option value="">Tất cả đánh giá</option>
+              <option value="5">5 sao</option>
+              <option value="4">4 sao</option>
+              <option value="3">3 sao</option>
+              <option value="2">2 sao</option>
+              <option value="1">1 sao</option>
+              <option value="0">Chưa đánh giá</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <select class="form-select" id="status-filter" name="status">
+              <option value="">Tất cả trạng thái</option >
+              <option value="@SemesterStatus.waiting">Săp diễn ra</option>
+              <option value="@SemesterStatus.started">Đang diễn ra</option>
+              <option value="@SemesterStatus.finished">Đã kết thúc</option>
+            </select>
+          </div>
+          <div class="col-12">
             <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
           </div>
           <div class="col-12">

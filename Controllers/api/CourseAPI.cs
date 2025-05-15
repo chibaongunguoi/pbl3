@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -19,9 +20,16 @@ public class CourseAPI : BaseController
         {
             q.Where(Field.subject__grade, filter.Grade);
         }
-        if (filter.CourseName is not null)
+        if (filter.SearchQuery is not null)
         {
-            q.WhereContains(Field.course__name, filter.CourseName);
+            string pattern = $"N'%{filter.SearchQuery}%'";
+            List<string> s = [
+                $"{Field.course__name} LIKE {pattern}",
+                $"{Field.teacher__name} LIKE {pattern}",
+                $"{Field.subject__name} LIKE {pattern}"
+            ];
+
+            q.WhereClause($"({string.Join(" OR ", s)})");
         }
 
         if (filter.Gender is not null)
@@ -82,7 +90,7 @@ public class CourseAPI : BaseController
         );
     }
 
-    private static Query CourseDetailQuery(string username, string? searchQuery)
+    private static Query CourseDetailQuery(string username, string? searchQuery, int? stars=null, string? status=null)
     {
         Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
         q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
@@ -93,15 +101,28 @@ public class CourseAPI : BaseController
             s += $" OR {Field.teacher__name} LIKE {searchPattern}";
             q.WhereClause($"({s})");
         }
+        if (stars is not null)
+        {
+            if (stars > 0)
+                q.Where(Field.rating__stars, stars);
+
+            else
+                q.WhereClause($"{Field.rating__stars} IS NULL");
+        }
+        if (status is not null)
+        {
+            q.Where(Field.semester__status, status);
+        }
         return q;
     }
     [HttpGet("StudentCourse")]
-    public IActionResult StudentCourse(string username, PaginationInfo paginationInfo, string? searchQuery=null)
+    [Authorize(Roles = "Student")]
+    public IActionResult StudentCourse(string username, PaginationInfo paginationInfo, string? searchQuery=null, int? stars=null, string? status=null)
     {
         List<ManageCourseCard> cards = [];
         int tableIdx = 1;
         int pos = 0;
-        Query q = CourseDetailQuery(username, searchQuery);
+        Query q = CourseDetailQuery(username, searchQuery, stars, status);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         QDatabase.Exec(conn =>
             q.Select(
@@ -114,9 +135,10 @@ public class CourseAPI : BaseController
     }
 
     [HttpGet("StudentCourse/Pagination")]
-    public IActionResult StudentCoursePagination(string username, PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    [Authorize(Roles = "Student")]
+    public IActionResult StudentCoursePagination(string username, PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent, int? stars=null, string? status=null)
     {
-        Query q = CourseDetailQuery(username, searchQuery);
+        Query q = CourseDetailQuery(username, searchQuery, stars, status);
         QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
         return PartialView(
             "_PaginationAjax",

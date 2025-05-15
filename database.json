@@ -42,7 +42,7 @@
         },
         {
           "name": "password",
-          "sql_type": "NVARCHAR(50) NOT NULL",
+          "sql_type": "NVARCHAR(64) NOT NULL",
           "dtype": "STRING"
         }
       ],
@@ -63,7 +63,7 @@
         },
         {
           "name": "password",
-          "sql_type": "NVARCHAR(50) NOT NULL",
+          "sql_type": "NVARCHAR(64) NOT NULL",
           "dtype": "STRING"
         },
         {
@@ -104,7 +104,7 @@
         },
         {
           "name": "password",
-          "sql_type": "NVARCHAR(50) NOT NULL",
+          "sql_type": "NVARCHAR(64) NOT NULL",
           "dtype": "STRING"
         },
         {

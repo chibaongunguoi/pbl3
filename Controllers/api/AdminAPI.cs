@@ -229,11 +229,6 @@ public class AdminAPI : BaseController
     [HttpGet("GetStudentRatings")]
     public IActionResult GetStudentRatings(int stuId, PaginationInfo paginationInfo)
     {
-        if (paginationInfo == null)
-        {
-            paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 5 };
-        }
-
         Query q = GetStudentRatingsQuery(stuId);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 
@@ -336,7 +331,7 @@ public class AdminAPI : BaseController
         );
     }
 
-    private Query GetCoursesQuery(string? searchQuery = null)
+    private Query GetCoursesQuery(string? searchQuery = null, string? status = null)
     {
         Query q = AdminMngCorCard.GetQuery();
         q.OrderBy(Field.course__id);
@@ -347,18 +342,17 @@ public class AdminAPI : BaseController
             s += $" OR {Field.subject__name} LIKE {searchPattern}";
             q.WhereClause($"({s})");
         }
+        if (status is not null)
+        {
+            q.WhereClause($"status = '{status}'");
+        }
         return q;
     }
 
     [HttpGet("GetCourses")]
-    public IActionResult GetCourses(PaginationInfo paginationInfo, string? searchQuery = null)
+    public IActionResult GetCourses(PaginationInfo paginationInfo, string? searchQuery = null, string? status = null)
     {
-        if (paginationInfo == null)
-        {
-            paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 20 };
-        }
-
-        Query q = GetCoursesQuery(searchQuery);
+        Query q = GetCoursesQuery(searchQuery, status);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 
         List<AdminMngCorCard> cards = [];
@@ -376,9 +370,9 @@ public class AdminAPI : BaseController
     }
 
     [HttpGet("GetCourses/Pagination")]
-    public IActionResult GetCoursesPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null)
+    public IActionResult GetCoursesPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null, string? status = null)
     {
-        QDatabase.Exec(conn => paginationInfo.TotalItems = GetCoursesQuery(searchQuery).Count(conn));
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetCoursesQuery(searchQuery, status).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
@@ -394,11 +388,6 @@ public class AdminAPI : BaseController
     [HttpGet("GetCourseSemesters")]
     public IActionResult GetCourseSemesters(int courseId, PaginationInfo paginationInfo)
     {
-        if (paginationInfo == null)
-        {
-            paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 10 };
-        }
-
         Query q = GetCourseSemestersQuery(courseId);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 

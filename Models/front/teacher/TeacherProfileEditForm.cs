@@ -8,6 +8,9 @@ public class TeacherProfileEditForm
 
     public string? Role { get; set; } = null; 
 
+    [Required(ErrorMessage = "Tên đăng nhập không được để trống")]
+    public string? Username { get; set; } = null;
+
     [Required(ErrorMessage = "Họ và tên không được để trống")]
     public string? Name { get; set; } = null;
 
@@ -42,6 +45,7 @@ public class TeacherProfileEditForm
         if (teacher != null)
         {
             Id = teacher.Id;
+            Username = teacher.Username;
             Name = teacher.Name;
             Gender = teacher.Gender;
             Bday = teacher.Bday;
@@ -62,11 +66,39 @@ public class TeacherProfileEditForm
 
     public void Execute(SqlConnection conn, string username, ITempDataDictionary tempData, out Account? account)
     {
+        account = null;
+        string oldUsername = string.Empty;
         Query q = new(Tbl.teacher);
+        q.Output(Field.teacher__username);
+        q.Where(Field.teacher__username, username);
+        q.Select(conn, reader =>
+        {
+            oldUsername = QDataReader.GetString(reader);
+        });
+
+        // Only check for username conflicts if the username has changed
+        if (oldUsername != Username)
+        {
+            foreach (string table in new List<string> { Tbl.student, Tbl.teacher, Tbl.admin })
+            {
+                q = new(table);
+                q.Where(Fld.username, Username ?? "");
+                if (q.Count(conn) > 0)
+                {
+                    tempData["ErrorMessage"] = "Tên đăng nhập đã tồn tại";
+                    return;
+                }
+            }
+        }
+        q = new(Tbl.teacher);
         q.Where(Field.teacher__username, username);
         if (Bday is not null)
         {
             q.Set(Field.teacher__bday, Bday);
+        }
+        if (Username is not null)
+        {
+            q.Set(Field.teacher__username, Username);
         }
         if (Name is not null)
         {
