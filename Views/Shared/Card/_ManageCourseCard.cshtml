@@ -11,11 +11,11 @@
 
 <tr>
     <td scope="row" class="table-index">@Model.table_index</td>
-    <td>
-        <a class="course-table-name" href='/Course/Detail?courseId=@Model.course_id' target="_blank">
-            @Model.course_name
-        </a>
-    </td>
+    <td><a class="course-table-name" href='/Course/Detail?courseId=@Model.course_id'target="_blank">@Model.course_name</a></td>
+    @if (user_role == UserRole.Student)
+    {
+        <td><a href="/Teacher/Profile?tchId=@Model.TchId" target="_blank">@Model.TeacherName</a></td>
+    }
     <td>@Model.avg_rating</td>
     <td>
         @(Model.MSemesterStatus switch {

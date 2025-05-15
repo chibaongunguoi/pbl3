@@ -11,6 +11,17 @@
       <div class="m-0 table-title">Danh sách đánh giá trong hệ thống</div>
       <div id="search-bar">
       <form method="GET" class="row row-cols-lg-auto g-3 align-items-center" id="search-form">
+        @* Lọc theo số sao *@
+        <div class="col-12">
+        <select class="form-select" id="rating-filter" name="stars">
+          <option value="">Tất cả</option >
+          <option value="5">5 sao</option>
+          <option value="1">1 sao</option>
+          <option value="2">2 sao</option>
+          <option value="3">3 sao</option>
+          <option value="4">4 sao</option>
+        </select>
+        </div>
         <div class="col-12">
           <input type="text" class="form-control" id="search-input" name="searchQuery" placeholder="Tìm kiếm theo tên học viên, khóa học..." value="">
         </div>

@@ -15,7 +15,6 @@
     <td>@($"{Model.NumParticipants}/{Model.Capacity}")</td>
     <td>@($"{Model.Fee:N0}đ")</td>    <td>
         <div class="button-group-wrapper course-manager">
-            <button class="card-btn course-detail" onclick="window.location.href='/Admin/SemesterDetail?semesterId=@Model.SemesterId'">Xem chi tiết</button>
             <button class="card-btn course-detail view-semester-students" data-sem-id="@Model.SemesterId" data-sem-name="@Model.SemesterId - @Model.CourseName">DS học viên</button></div>
     </td>
 </tr>

@@ -82,14 +82,27 @@ public class CourseAPI : BaseController
         );
     }
 
+    private static Query CourseDetailQuery(string username, string? searchQuery)
+    {
+        Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
+        q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
+        if (searchQuery is not null)
+        {
+            string searchPattern = $"N'%{searchQuery}%'";
+            string s = $"{Field.course__name} LIKE {searchPattern} OR {Field.subject__name} LIKE {searchPattern}";
+            s += $" OR {Field.teacher__name} LIKE {searchPattern}";
+            q.WhereClause($"({s})");
+        }
+        return q;
+    }
     [HttpGet("StudentCourse")]
-    public IActionResult StudentCourse(string username)
+    public IActionResult StudentCourse(string username, PaginationInfo paginationInfo, string? searchQuery=null)
     {
         List<ManageCourseCard> cards = [];
         int tableIdx = 1;
         int pos = 0;
-        Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
-        q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
+        Query q = CourseDetailQuery(username, searchQuery);
+        q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         QDatabase.Exec(conn =>
             q.Select(
                 conn,
@@ -98,6 +111,17 @@ public class CourseAPI : BaseController
             )
         );
         return PartialView(PartialList.ManageCourseCard, cards);
+    }
+
+    [HttpGet("StudentCourse/Pagination")]
+    public IActionResult StudentCoursePagination(string username, PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
+    {
+        Query q = CourseDetailQuery(username, searchQuery);
+        QDatabase.Exec(conn => paginationInfo.TotalItems = q.Count(conn));
+        return PartialView(
+            "_PaginationAjax",
+            ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
+        );
     }
 }
 

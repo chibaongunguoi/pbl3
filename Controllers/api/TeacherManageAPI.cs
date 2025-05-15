@@ -16,7 +16,6 @@ public class TeacherManageAPI : BaseController
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         List<ManageCourseCard> cards = [];
         Query q = ManageCourseCard.GetQueryCreator();
-        q.Join(Field.teacher__id, Field.course__tch_id);
         q.Where(Field.teacher__username, username);
         int pos = 0;
         int current_table_index = 1;

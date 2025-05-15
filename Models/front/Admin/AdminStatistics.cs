@@ -138,6 +138,14 @@ public class AdminStatistics
                     Count = reader.GetInt32(1)
                 });
             });
+
+            for (int i = 1; i <= 5; i++)
+            {
+                if (!RatingDistribution.Any(r => r.Stars == i))
+                {
+                    RatingDistribution.Add(new RatingDistribution { Stars = i, Count = 0 });
+                }
+            }
             
             Console.WriteLine("Getting latest semester...");
             Query latestSemesterQuery = new(Tbl.semester, "s");
@@ -247,15 +255,16 @@ public class AdminStatistics
             { SemesterStatus.finished, "Đã kết thúc" }
         };
         
-        var existingStatusLabels = CoursesByStatus.Select(c => c.Status).ToHashSet();
-        
+        var existingStatusLabels_Course = CoursesByStatus.Select(c => c.Status).ToHashSet();
+        var existingStatusLabels_Semester = SemestersByStatus.Select(c => c.Status).ToHashSet();
         foreach (var status in statuses)
         {
             var label = statusLabels[status];
-            if (!existingStatusLabels.Contains(label))
-            {
+            if (!existingStatusLabels_Course.Contains(label))
                 CoursesByStatus.Add(new CoursesByStatus { Status = label, Count = 0 });
-            }
+
+            if (!existingStatusLabels_Semester.Contains(label))
+                SemestersByStatus.Add(new SemestersByStatus { Status = label, Count = 0 });
         }
     }
 }

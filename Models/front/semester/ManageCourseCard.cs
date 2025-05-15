@@ -6,6 +6,8 @@ class ManageCourseCard
     public int course_id { get; set; }
     public int semesterId = 0;
     public string course_name { get; set; } = "";
+    public int TchId { get; set; }
+    public string TeacherName { get; set; } = "";
     public string MSemesterStatus { get; set; } = "";
     public string avg_rating { get; set; } = "";
     public string subject { get; set; } = "";
@@ -21,10 +23,15 @@ class ManageCourseCard
         Query q = new(Tbl.course);
         q.Join(Field.subject__id, Field.course__sbj_id);
         q.Join(Field.semester__course_id, Field.course__id);
+        q.Join(Field.teacher__id, Field.course__tch_id);
         if (!stuMode)
+        {
             q.WhereQuery(Field.semester__id, SemesterQuery.GetLatestSemesterIdQuery("s"));
+        }
         q.Output(Field.course__id);
         q.Output(Field.course__name);
+        q.Output(Field.teacher__id);
+        q.Output(Field.teacher__name);
         q.Output(Field.semester__status);
         q.Output(Field.subject__name);
         q.Output(Field.subject__grade);
@@ -40,6 +47,8 @@ class ManageCourseCard
         pos = 0;
         int course_id = QDataReader.GetInt(reader, ref pos);
         string course_name = QDataReader.GetString(reader, ref pos);
+        int TchId = QDataReader.GetInt(reader, ref pos);
+        string teacher_name = QDataReader.GetString(reader, ref pos);
         string semesterStatus = QDataReader.GetString(reader, ref pos);
         var subject = QDataReader.GetString(reader, ref pos);
         var grade = QDataReader.GetInt(reader, ref pos);
@@ -53,6 +62,8 @@ class ManageCourseCard
             table_index = current_table_index++,
             course_id = course_id,
             course_name = course_name,
+            TchId = TchId,
+            TeacherName = teacher_name,
             MSemesterStatus = semesterStatus,
             subject = subject,
             grade = grade,

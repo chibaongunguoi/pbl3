@@ -6,7 +6,7 @@ import json
 from datetime import datetime,date
 from typing import Any
 
-START_DATE = "2023-7-1"
+START_DATE = "2023-9-1"
 COURSE_RATE = 0.5
 REQUEST_RATE = 0.3
 RATING_RATE = 0.7
@@ -23,8 +23,8 @@ DURATION_RANGE_START = 150
 DURATION_RANGE_END = 240
 LATEST_START_DATE = 400
 
-num_of_students = 900
-num_of_teachers = 300
+num_of_students = 600
+num_of_teachers = 200
 
 
 class nstr(str):

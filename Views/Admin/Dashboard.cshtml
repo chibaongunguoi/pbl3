@@ -210,22 +210,32 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
           layout: { padding: { bottom: 10, left: 20, right: 20, } }
         }
       });
-      
-      // Process Semester Status Chart
+        // Process Semester Status Chart
       const semesterData = data.semestersByStatus;
-      const semLabels = semesterData.map(item => item.status);
-      const semValues = semesterData.map(item => item.count);
-      const semBackgroundColors = [
-        '#4e73df', '#1cc88a', '#f6c23e',
-      ];
+      
+      // Define fixed status categories and their colors
+      const statusCategories = ["Sắp diễn ra", "Đang diễn ra", "Đã kết thúc"];
+      const statusColorMap = {
+        "Sắp diễn ra": '#f6c23e', // Yellow for upcoming
+        "Đang diễn ra": '#1cc88a', // Green for in progress
+        "Đã kết thúc": '#4e73df'   // Blue for completed
+      };
+      
+      // Filter out categories with zero count and prepare labels and values
+      const filteredSemData = semesterData.filter(item => item.count > 0);
+      const semLabels = filteredSemData.map(item => item.status);
+      const semValues = filteredSemData.map(item => item.count);
+      
+      // Map colors according to status - ensuring consistent colors regardless of order
+      const semBackgroundColors = filteredSemData.map(item => statusColorMap[item.status]);
       
       const semesterChart = document.getElementById('semesterChart');
       new Chart(semesterChart, {
         type: 'doughnut',
         data: { labels: semLabels, datasets: [{
             data: semValues,
-            backgroundColor: semBackgroundColors.slice(0, semLabels.length),
-            hoverBackgroundColor: semBackgroundColors.slice(0, semLabels.length),
+            backgroundColor: semBackgroundColors,
+            hoverBackgroundColor: semBackgroundColors,
             hoverBorderColor: "rgba(234, 236, 244, 1)",
           }]
         },
@@ -240,31 +250,22 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
               display: true,
               align: 'start',
               text: 'PHÂN BỐ TRẠNG THÁI KỲ HỌC',
-              font: {
-                size: 16,
-              },
-              padding: {
-                top: 10,
-                bottom: 14
-              }
+              font: { size: 16, },
+              padding: { top: 10, bottom: 14 }
             },
           },
-          layout: {
-            padding: {
-              bottom: 10,
-              left: 10,
-              right: 10,
-            }
-          }
+          layout: { padding: { bottom: 10, left: 10, right: 10, } }
         }
-      });
-        // Process Course Status Chart
+      });        // Process Course Status Chart
       const courseData = data.coursesByStatus;
-      const courseLabels = courseData.map(item => item.status);
-      const courseValues = courseData.map(item => item.count);
-      const courseBackgroundColors = [
-        '#4e73df', '#1cc88a', '#f6c23e',
-      ];
+      
+      // Filter out categories with zero count and prepare labels and values
+      const filteredCourseData = courseData.filter(item => item.count > 0);
+      const courseLabels = filteredCourseData.map(item => item.status);
+      const courseValues = filteredCourseData.map(item => item.count);
+      
+      // Reuse the same color mapping for consistency between charts
+      const courseBackgroundColors = filteredCourseData.map(item => statusColorMap[item.status]);
       
       const courseChart = document.getElementById('courseChart');
       new Chart(courseChart, {
@@ -273,8 +274,8 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
           labels: courseLabels,
           datasets: [{
             data: courseValues,
-            backgroundColor: courseBackgroundColors.slice(0, courseLabels.length),
-            hoverBackgroundColor: courseBackgroundColors.slice(0, courseLabels.length),
+            backgroundColor: courseBackgroundColors,
+            hoverBackgroundColor: courseBackgroundColors,
             hoverBorderColor: "rgba(234, 236, 244, 1)",
           }]
         },
@@ -294,18 +295,25 @@ Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
           layout: { padding: { bottom: 10, left: 10, right: 10, } }
         }
       });
-      
-      // Process Rating Distribution Chart
+        // Process Rating Distribution Chart
       const ratingData = data.ratingDistribution;
-      const ratingLabels = ratingData.map(item => item.stars + ' sao');
-      const ratingValues = ratingData.map(item => item.count);
-      const ratingBackgroundColors = [
-        '#e74a3b', // 1 star - red
-        '#f6c23e', // 2 stars - yellow
-        '#36b9cc', // 3 stars - blue
-        '#1cc88a', // 4 stars - green
-        '#4e73df'  // 5 stars - purple
-      ];
+      
+      // Define fixed color mapping for each star rating
+      const starColorMap = {
+        1: '#e74a3b', // 1 star - red
+        2: '#f6c23e', // 2 stars - yellow
+        3: '#36b9cc', // 3 stars - blue
+        4: '#1cc88a', // 4 stars - green
+        5: '#4e73df'  // 5 stars - purple
+      };
+      
+      // Filter out categories with zero count
+      const filteredRatingData = ratingData.filter(item => item.count > 0);
+      const ratingLabels = filteredRatingData.map(item => item.stars + ' sao');
+      const ratingValues = filteredRatingData.map(item => item.count);
+      
+      // Map colors according to star rating - ensuring consistent colors
+      const ratingBackgroundColors = filteredRatingData.map(item => starColorMap[item.stars]);
       
       const ratingChart = document.getElementById('ratingChart');
       new Chart(ratingChart, {

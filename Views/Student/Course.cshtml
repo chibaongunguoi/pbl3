@@ -3,9 +3,9 @@
 @using Microsoft.AspNetCore.Http
 
 @{
-    Layout = "Layout/_StudentManageLayout";
-    var user = HttpContextAccessor.HttpContext?.User;
-    string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+  Layout = "Layout/_StudentManageLayout";
+  var user = HttpContextAccessor.HttpContext?.User;
+  string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 }
 
 @await Html.PartialAsync("_SuccessErrorMessage")
@@ -13,23 +13,30 @@
   <div class="card">
     <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
       <div class="m-0 table-title">Khóa học của tôi</div>
-      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
-        </div>
-        <div class="col-12">
-          <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
-        </div>
-      </form> -->
+      <div id="pagination-form">
+        <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-12">
+            <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
+          </div>
+          <div class="col-12">
+            <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="pagination-list"></div>
+    <div id="pagination-list"></div>
+    <div id="pagination-bar"></div>
   </div>
 </div>
 
 @section StudentManageLayoutScripts {
-    <script src="~/js/pagination.js" asp-append-version="true"></script>
-    <script>
-        const sentData = {username: @username}
-        initPagination(sentData, "/courseAPI/StudentCourse", ".pagination-list")
-    </script>
+  <script src="~/js/pagination.js" asp-append-version="true"></script>
+  <script>
+    const sentData = { username: @username}
+    const paginationData = {
+      CurrentPage: 1,
+      ItemsPerPage: 20,
+    }
+    initPagination(paginationData, "/courseAPI/StudentCourse", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
+  </script>
 }

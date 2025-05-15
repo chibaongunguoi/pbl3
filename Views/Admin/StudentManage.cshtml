@@ -2,18 +2,20 @@
   Layout = "Layout/_AdminManageLayout"; // Sử dụng layout admin
 }
 
-<div id="content" class="container-fluid px-1">
+<div id="content" class="container-fluid">
   <div class="card">
-    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center py-2">
+    <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
       <div class="m-0 table-title">Danh sách học viên trong hệ thống</div>
-      <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+      <div id="main-pagination-form">
+      <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
-          <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+          <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
         </div>
         <div class="col-12">
           <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
         </div>
-      </form> -->
+      </form>
+      </div>
     </div>
     <div id="main-pagination-list"></div>
   </div>
@@ -28,7 +30,7 @@
 
 <script> 
   const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 }
-  initPagination(paginationInfo, "/AdminAPI/GetStudents", "#main-pagination-list", {}, "#main-pagination-bar")
+  initPagination(paginationInfo, "/AdminAPI/GetStudents", "#main-pagination-list", {}, "#main-pagination-bar", "#main-pagination-form")
 
   function reload() {
     document.querySelector('#main-pagination-bar .page-link.pa-active').click();
@@ -142,15 +144,6 @@
   .course-table-name:hover {
     text-decoration: underline;
     color: #0a58ca;
-  }
-
-  /* Pagination styling */
-  #pagination-bar .pagination,
-  .student-courses-pagination .pagination,
-  .student-ratings-pagination .pagination {
-    justify-content: center;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
   }
 
   .pa-active {

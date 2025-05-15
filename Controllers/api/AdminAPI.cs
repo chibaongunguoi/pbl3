@@ -90,17 +90,27 @@ public class AdminAPI : BaseController
         );
     }
 
-    private Query GetStudentsQuery()
+    private Query GetStudentsQuery(string? searchQuery = null)
     {
         Query q = AdminMngStuCard.GetQuery();
         q.OrderBy(Field.student__id, desc: false);
+        if (searchQuery is not null)
+        {
+            string searchPattern = $"N'%{searchQuery}%'";
+            string s = $"{Field.student__name} LIKE {searchPattern} OR {Field.student__tel} LIKE {searchPattern}";
+            if (int.TryParse(searchQuery, out int id))
+            {
+                s += $" OR {Field.student__id} = {id}";
+            }
+            q.WhereClause($"({s})");
+        }
         return q;
     }
 
     [HttpGet("GetStudents")]
-    public IActionResult GetStudents(PaginationInfo paginationInfo)
+    public IActionResult GetStudents(PaginationInfo paginationInfo, string? searchQuery = null)
     {
-        Query q = GetStudentsQuery();
+        Query q = GetStudentsQuery(searchQuery);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
         List<AdminMngStuCard> cards = [];
         QDatabase.Exec(
@@ -117,9 +127,9 @@ public class AdminAPI : BaseController
     }
 
     [HttpGet("GetStudents/Pagination")]
-    public IActionResult GetStudentsPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    public IActionResult GetStudentsPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null)
     {
-        QDatabase.Exec(conn => paginationInfo.TotalItems = GetStudentsQuery().Count(conn));
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetStudentsQuery(searchQuery).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
@@ -274,22 +284,32 @@ public class AdminAPI : BaseController
         );
     }
 
-    private Query GetTeachersQuery()
+    private Query GetTeachersQuery(string? searchQuery = null)
     {
         Query q = AdminMngTeacherCard.GetQuery();
         q.OrderBy(Field.teacher__id);
+        if (searchQuery is not null)
+        {
+            string searchPattern = $"N'%{searchQuery}%'";
+            string s = $"{Fld.name} LIKE {searchPattern} OR {Fld.tel} LIKE {searchPattern}";
+            if (int.TryParse(searchQuery, out int id))
+            {
+                s += $" OR {Fld.id} = {id}";
+            }
+            q.WhereClause($"({s})");
+        }
         return q;
     }
 
     [HttpGet("GetTeachers")]
-    public IActionResult GetTeachers(PaginationInfo paginationInfo)
+    public IActionResult GetTeachers(PaginationInfo paginationInfo, string? searchQuery = null)
     {
         if (paginationInfo == null)
         {
             paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 20 };
         }
 
-        Query q = GetTeachersQuery();
+        Query q = GetTeachersQuery(searchQuery);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 
         List<AdminMngTeacherCard> cards = [];
@@ -307,31 +327,38 @@ public class AdminAPI : BaseController
     }
 
     [HttpGet("GetTeachers/Pagination")]
-    public IActionResult GetTeachersPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    public IActionResult GetTeachersPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null)
     {
-        QDatabase.Exec(conn => paginationInfo.TotalItems = GetTeachersQuery().Count(conn));
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetTeachersQuery(searchQuery).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
         );
     }
 
-    private Query GetCoursesQuery()
+    private Query GetCoursesQuery(string? searchQuery = null)
     {
         Query q = AdminMngCorCard.GetQuery();
         q.OrderBy(Field.course__id);
+        if (searchQuery is not null)
+        {
+            string searchPattern = $"N'%{searchQuery}%'";
+            string s = $"{Field.course__name} LIKE {searchPattern} OR {Field.teacher__name} LIKE {searchPattern}";
+            s += $" OR {Field.subject__name} LIKE {searchPattern}";
+            q.WhereClause($"({s})");
+        }
         return q;
     }
 
     [HttpGet("GetCourses")]
-    public IActionResult GetCourses(PaginationInfo paginationInfo)
+    public IActionResult GetCourses(PaginationInfo paginationInfo, string? searchQuery = null)
     {
         if (paginationInfo == null)
         {
             paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 20 };
         }
 
-        Query q = GetCoursesQuery();
+        Query q = GetCoursesQuery(searchQuery);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 
         List<AdminMngCorCard> cards = [];
@@ -349,9 +376,9 @@ public class AdminAPI : BaseController
     }
 
     [HttpGet("GetCourses/Pagination")]
-    public IActionResult GetCoursesPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent)
+    public IActionResult GetCoursesPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null)
     {
-        QDatabase.Exec(conn => paginationInfo.TotalItems = GetCoursesQuery().Count(conn));
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetCoursesQuery(searchQuery).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
@@ -480,7 +507,7 @@ public class AdminAPI : BaseController
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
         );
     }
-    private Query GetRatingsQuery(string? searchQuery = null)
+    private Query GetRatingsQuery(string? searchQuery = null, int? stars = null)
     {
         Query q = AdminMngRatingCard.GetQuery();
         if (searchQuery is not null)
@@ -488,18 +515,23 @@ public class AdminAPI : BaseController
             string searchPattern = $"N'%{searchQuery}%'";
             q.WhereClause($"({Field.student__name} LIKE {searchPattern} OR {Field.course__name} LIKE {searchPattern} OR {Field.rating__description} LIKE {searchPattern})");
         }
+
+        if (stars is not null)
+        {
+            q.Where(Field.rating__stars, stars);
+        }
         return q;
     }
 
     [HttpGet("GetRatings")]
-    public IActionResult GetRatings(PaginationInfo paginationInfo, string? searchQuery = null)
+    public IActionResult GetRatings(PaginationInfo paginationInfo, string? searchQuery = null, int? stars = null)
     {
         if (paginationInfo == null)
         {
             paginationInfo = new() { CurrentPage = 1, ItemsPerPage = 20 };
         }
 
-        Query q = GetRatingsQuery(searchQuery);
+        Query q = GetRatingsQuery(searchQuery, stars);
         q.Offset(paginationInfo.CurrentPage, paginationInfo.ItemsPerPage);
 
         List<AdminMngRatingCard> cards = [];
@@ -517,9 +549,9 @@ public class AdminAPI : BaseController
     }
 
     [HttpGet("GetRatings/Pagination")]
-    public IActionResult GetRatingsPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null)
+    public IActionResult GetRatingsPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null, int? stars = null)
     {
-        QDatabase.Exec(conn => paginationInfo.TotalItems = GetRatingsQuery(searchQuery).Count(conn));
+        QDatabase.Exec(conn => paginationInfo.TotalItems = GetRatingsQuery(searchQuery, stars).Count(conn));
         return PartialView(
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)

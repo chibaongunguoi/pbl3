@@ -1,6 +1,6 @@
 @model (PaginationInfo paginationInfo, string context_url, string context_component)
 
-@if (Model.paginationInfo.TotalPages > 1)
+@if (Model.paginationInfo.TotalPages > 0)
 {
     <nav aria-label="pagination-wrapper">
         <ul class="pagination">

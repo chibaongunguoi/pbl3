@@ -11,18 +11,21 @@
         <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
             <div class="m-0 table-title">Danh sách gia sư trong hệ thống</div>
             <div class="action-buttons">
-                <button class="btn btn-primary" id="AddTchBtn" data-bs-toggle="modal" data-bs-target="#AddTeacherModal">Thêm gia sư mới</button>
+                <button class="btn btn-primary" id="AddTchBtn" data-bs-toggle="modal"
+                    data-bs-target="#AddTeacherModal">Thêm gia sư mới</button>
             </div>
-            <!-- <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+            <div id="pagination-form">
+                <form method="GET" class="row row-cols-lg-auto g-3 align-items-center">
                 <div class="col-12">
-                    <input type="text" class="form-control" name="q" placeholder="Tìm kiếm" value="">
+                    <input type="text" class="form-control" name="searchQuery" placeholder="Tìm kiếm" value="">
                 </div>
                 <div class="col-12">
                     <input type="submit" name="" class="btn btn-primary btn-search col-12" value="Tìm kiếm">
                 </div>
-            </form> -->
+                </form>
+            </div>
         </div>
-        
+
         <div class="pagination-list"></div>
     </div>
     <div id="pagination-bar"></div>
@@ -33,26 +36,26 @@
 @await Html.PartialAsync("Popup/_CoursePopup")
 
 <style>
-    /* Làm mờ nền khi modal mở */
     .modal.show {
-        backdrop-filter: blur(5px); /* Hiệu ứng blur */
-        background-color: rgba(0, 0, 0, 0.3); /* Làm tối nền nhẹ */
+        backdrop-filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.3);
     }
-  .card-btn {
-    white-space: nowrap;
-    padding: 2px 4px;
-    flex: 1;
-    text-align: center;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    min-width: 80px;
-    max-width: 105px;
-    margin: 0 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
+    .card-btn {
+        white-space: nowrap;
+        padding: 2px 4px;
+        flex: 1;
+        text-align: center;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 30%;
+        min-width: 80px;
+        max-width: 105px;
+        margin: 0 1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 
 <script>
@@ -65,7 +68,7 @@
     document.querySelector(`#EditTeacherModal`).addEventListener('hidden.bs.modal', reload);
 
     const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 }
-    initPagination(paginationInfo, "/AdminAPI/GetTeachers", ".pagination-list", {}, "#pagination-bar");
+    initPagination(paginationInfo, "/AdminAPI/GetTeachers", ".pagination-list", {}, "#pagination-bar", "#pagination-form");
 
     document.querySelector(`#AddTchBtn`).addEventListener('click', function () {
         const getUrl = "/AdminAPI/GetTeacherAddForm";
