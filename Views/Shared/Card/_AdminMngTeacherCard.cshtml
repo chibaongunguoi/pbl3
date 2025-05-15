@@ -13,7 +13,8 @@
         <div class="button-group-wrapper course-manager">
             <button class="card-btn course-detail EditTeacherBtn" idx="@Model.Id" data-bs-toggle="modal" data-bs-target='#EditTeacherModal'>Sửa thông tin</button>
             <button class="card-btn course-detail ViewTchCorBtn" idx="@Model.Id" data-teacher-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#TchCorModal'>Xem khóa học</button>
-            <a href="/Teacher/Profile?tchId=@Model.Id" class="card-btn course-detail">Xem chi tiết</a>
+            <!-- <a href="/Teacher/Profile?tchId=@Model.Id" class="card-btn course-detail">Xem chi tiết</a> -->
+            <button onclick="window.location.href='/Teacher/Profile?tchId=@Model.Id'" class="card-btn course-detail">Xem chi tiết</button>
         </div>
     </td>
 </tr>
