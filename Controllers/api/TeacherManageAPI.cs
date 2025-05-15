@@ -162,7 +162,7 @@ public class TeacherManageAPI : BaseController
         // Verify that the course belongs to the current teacher
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         bool hasAccess = false;
-        
+
         QDatabase.Exec(conn =>
         {
             Query q = new(Tbl.course);
@@ -171,12 +171,12 @@ public class TeacherManageAPI : BaseController
             q.Where(Field.teacher__username, username);
             hasAccess = q.Count(conn) > 0;
         });
-        
+
         if (!hasAccess)
         {
             return Unauthorized();
         }
-        
+
         EditCourseForm form = new(courseId);
         return PartialView("Form/_EditCourseForm", form);
     }
@@ -188,11 +188,11 @@ public class TeacherManageAPI : BaseController
         {
             return PartialView("Form/_EditCourseForm", form);
         }
-        
+
         // Verify that the course belongs to the current teacher
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         bool hasAccess = false;
-        
+
         QDatabase.Exec(conn =>
         {
             Query q = new(Tbl.course);
@@ -201,7 +201,7 @@ public class TeacherManageAPI : BaseController
             q.Where(Field.teacher__username, username);
             hasAccess = q.Count(conn) > 0;
         });
-        
+
         if (!hasAccess)
         {
             form.Messages["Error"] = "Bạn không có quyền chỉnh sửa khóa học này";
@@ -233,7 +233,7 @@ public class TeacherManageAPI : BaseController
         return PartialView("List/_ManageStuSemCardList", cards);
     }
 
-    private static Query GetManageRatingQueryCreator(string username, string? searchQuery=null, int? stars = null)
+    private static Query GetManageRatingQueryCreator(string username, string? searchQuery = null, int? stars = null)
     {
         Query q = ManageRatingCard.GetQueryCreator();
         q.Where(Field.teacher__username, username);
@@ -257,7 +257,7 @@ public class TeacherManageAPI : BaseController
     }
 
     [HttpGet("ManageRating")]
-    public IActionResult ManageRating(PaginationInfo paginationInfo, string? searchQuery=null, int? stars=null)
+    public IActionResult ManageRating(PaginationInfo paginationInfo, string? searchQuery = null, int? stars = null)
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         List<ManageRatingCard> cards = [];
@@ -276,7 +276,7 @@ public class TeacherManageAPI : BaseController
     }
 
     [HttpGet("ManageRating/Pagination")]
-    public IActionResult ManageRatingPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery=null, int? stars=null)
+    public IActionResult ManageRatingPagination(PaginationInfo paginationInfo, string contextUrl, string contextComponent, string? searchQuery = null, int? stars = null)
     {
         string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         Query q = GetManageRatingQueryCreator(username, searchQuery, stars);
@@ -285,5 +285,24 @@ public class TeacherManageAPI : BaseController
             "_PaginationAjax",
             ValueTuple.Create(paginationInfo, contextUrl, contextComponent)
         );
+    }
+
+    [HttpGet("GetDeleteCourseForm")]
+    public IActionResult GetDeleteCourseForm(int id, string submitUrl)
+    {
+        DeleteCourseForm form = new(id, submitUrl);
+        return PartialView("Form/_DeleteCourseForm", form);
+    }
+
+    [HttpPost("SubmitDeleteCourseForm")]
+    public IActionResult SubmitDeleteCourseForm(DeleteCourseForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return PartialView("Form/_DeleteCourseForm", form);
+        }
+
+        QDatabase.Exec(form.Execute);
+        return PartialView("Form/_DeleteCourseForm", form);
     }
 }

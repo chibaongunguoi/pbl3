@@ -25,6 +25,7 @@
 </div>
 
 @await Html.PartialAsync("Popup/_EditCoursePopup")
+@await Html.PartialAsync("Popup/_DeleteCoursePopup")
 
 <style>
     .card-btn {
@@ -46,6 +47,7 @@
 <script>
   function reload() { document.querySelector('#pagination-bar .page-link.pa-active').click() }
   document.querySelector('#EditCourseModal').addEventListener('click', reload);
+  document.querySelector('#DeleteCourseModal').addEventListener('click', reload);
   const paginationData = { CurrentPage: 1, ItemsPerPage: 20 };
   initPagination(paginationData, "/TeacherManageAPI/ManageCourse", "#pagination-list", null, "#pagination-bar", "#pagination-form");
 </script>

@@ -15,7 +15,7 @@
             <button class="card-btn course-detail EditStuProfileBtn" idx="@Model.StuId" data-bs-toggle="modal" data-bs-target='#EditStudentModal'>Sửa thông tin</button>
             <button class="card-btn course-detail ViewStuCoursesBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#StudentCoursesModal'>Xem khóa học</button>
             <button class="card-btn course-detail ViewStuRatingsBtn" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#StudentRatingsModal'>Xem đánh giá</button>
-            
+            <button class="card-btn course-detail DeleteBtn"  style="background: salmon;" idx="@Model.StuId" data-student-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#DeleteAccountModal'>Xóa</button>
         </div>
     </td>
 </tr>
@@ -45,5 +45,16 @@
         const contentSelector = `#StudentRatingsPlaceholder`;
         const paginationSelector = `#student-ratings-pagination`;
         initPagination( studentRatingsPaginationInfo, "/AdminAPI/GetStudentRatings", contentSelector, sentData, paginationSelector);
+    });
+
+    document.querySelector(`.DeleteBtn[idx="${@Model.StuId}"]`).addEventListener('click', function () {
+        const studentName = this.getAttribute('data-student-name');
+        const modalTitle = document.querySelector(`#DeleteAccountModal .modal-title`);
+        modalTitle.textContent = `Xóa tài khoản của học viên ${studentName}`;
+        const studentIdElement = document.querySelector(`#DeleteAccountId`);
+        studentIdElement.textContent = @Model.StuId;
+        const studentNameElement = document.querySelector(`#DeleteAccountName`);
+        studentNameElement.textContent = `${studentName}`;
+        initPagination(null, "/AdminAPI/GetDeleteAccountForm", "#DeleteAccountFormPlaceholder", { id: @Model.StuId, role: `@UserRole.Student` });
     });
 </script>

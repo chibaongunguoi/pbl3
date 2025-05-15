@@ -47,6 +47,7 @@
             const eyeClose = document.querySelector(".eye-close");
             const eyeOpen = document.querySelector(".eye-open");
             const passwordInput = document.querySelector("input[name='password']");
+            if (eyeOpen != null) {
             eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
 
             eyeIconWrapper.addEventListener("click", function () {
@@ -60,6 +61,8 @@
                     passwordInput.type = "text";
                 }
             });
+                
+             }
         });
 
     </script>

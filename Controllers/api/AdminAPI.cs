@@ -559,12 +559,17 @@ public class AdminAPI : BaseController
             success = true;
         });
 
-        return Json(new { success });    }    [HttpGet("GetAllDashboardStatistics")]
+        return Json(new { success });
+    }
+    [HttpGet("GetAllDashboardStatistics")]
     public IActionResult GetAllDashboardStatistics()
     {
         // Use the cached instance to get all statistics in a single database fetch
-        var statistics = AdminStatistics.GetInstance();        
-        return Json(new {            basicStats = new {
+        var statistics = AdminStatistics.GetInstance();
+        return Json(new
+        {
+            basicStats = new
+            {
                 totalStudents = statistics.TotalStudents,
                 totalTeachers = statistics.TotalTeachers,
                 totalCourses = statistics.TotalCourses,
@@ -579,5 +584,39 @@ public class AdminAPI : BaseController
             topUpcomingCourses = statistics.TopUpcomingCourses,
             topRatedCourses = statistics.TopRatedCourses
         });
+    }
+
+    [HttpGet("GetDeleteAccountForm")]
+    public IActionResult GetDeleteAccountForm(int id, string role)
+    {
+        DeleteAccountForm form = new(id, role);
+        return PartialView("Form/_DeleteAccountForm", form);
+    }
+
+    [HttpPost("SubmitDeleteAccountForm")]
+    public IActionResult SubmitDeleteAccountForm(DeleteAccountForm form)
+    {
+        if (!ModelState.IsValid)
+            return PartialView("Form/_DeleteAccountForm", form);
+
+        QDatabase.Exec(form.Execute);
+        return PartialView("Form/_DeleteAccountForm", form);
+    }
+
+    [HttpGet("GetDeleteCourseForm")]
+    public IActionResult GetDeleteCourseForm(int id, string submitUrl)
+    {
+        DeleteCourseForm form = new(id, submitUrl);
+        return PartialView("Form/_DeleteCourseForm", form);
+    }
+
+    [HttpPost("SubmitDeleteCourseForm")]
+    public IActionResult SubmitDeleteCourseForm(DeleteCourseForm form)
+    {
+        if (!ModelState.IsValid)
+            return PartialView("Form/_DeleteCourseForm", form);
+
+        QDatabase.Exec(form.Execute);
+        return PartialView("Form/_DeleteCourseForm", form);
     }
 }

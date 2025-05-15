@@ -25,19 +25,20 @@
 @await Html.PartialAsync("Popup/_EditStudentPopup")
 @await Html.PartialAsync("Popup/_AdminStuCorPopup")
 @await Html.PartialAsync("Popup/_AdminStuRatingPopup")
+@await Html.PartialAsync("Popup/_DeleteAccountPopup")
 
 <!-- Student course popups are now loaded per student card -->
 
 <script> 
   const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 }
   initPagination(paginationInfo, "/AdminAPI/GetStudents", "#main-pagination-list", {}, "#main-pagination-bar", "#main-pagination-form")
-
   function reload() {
     document.querySelector('#main-pagination-bar .page-link.pa-active').click();
   }
   document.querySelector(`#EditStudentModal`).addEventListener('hidden.bs.modal', reload);
   document.querySelector(`#StudentRatingsModal`).addEventListener('hidden.bs.modal', reload);
   document.querySelector(`#StudentCoursesModal`).addEventListener('hidden.bs.modal', reload);
+  document.querySelector(`#DeleteAccountModal`).addEventListener('hidden.bs.modal', reload);
 </script>
 <style>
   /* Làm mờ nền khi modal mở */
@@ -87,11 +88,7 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 3px;
-    justify-content: space-between;
-    width: 100%;
-    /* Use full available width */
-    max-width: 330px;
-    /* Limit maximum width */
+    justify-content: left;
   }
 
   .card-btn {

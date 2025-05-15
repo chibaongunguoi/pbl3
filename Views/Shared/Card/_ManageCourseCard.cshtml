@@ -39,8 +39,11 @@
                 @await Html.PartialAsync("Popup/_StudentTablePopup")
                 <button class="card-btn course-detail EditCourseBtn" data-course-id="@Model.course_id" data-bs-toggle="modal" data-bs-target="#EditCourseModal">Chỉnh sửa</button>
             }
-            <button class="card-btn course-detail"
-                onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
+            <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@Model.course_id'">Xem chi tiết</button>
+            <button class="card-btn course-detail DeleteBtn" style="background: salmon;"
+                idx="@Model.course_id" data-course-name="@Model.course_name"
+                data-tch-name="@Model.TeacherName"
+                data-bs-toggle="modal" data-bs-target='#DeleteCourseModal'>Xóa</button>
             @if (user_role == UserRole.Student)
             {
                 @if (@Model.Commentable)
@@ -71,6 +74,22 @@
             const url = `/TeacherManageAPI/GetEditCourseForm`;
             const placeholderSelector = `#FormPlaceholder`;
             initPagination(null, url, placeholderSelector, { courseId: @Model.course_id });
+        });
+
+        document.querySelector(`.DeleteBtn[idx="${@Model.course_id}"]`).addEventListener('click', function () {
+            const courseName = this.getAttribute('data-course-name');
+            const tchName = this.getAttribute('data-tch-name');
+
+            const modalTitle = document.querySelector(`#DeleteCourseModal .modal-title`);
+            modalTitle.textContent = `Xóa khóa học ${courseName}`;
+
+            const courseNameElement = document.querySelector(`#DeleteCourseName`);
+            courseNameElement.textContent = `${courseName}`;
+
+            const tchNameElement = document.querySelector(`#DeleteCourseTchName`);
+            tchNameElement.textContent = `${tchName}`;
+
+            initPagination(null, "/TeacherManageAPI/GetDeleteCourseForm", "#DeleteCourseFormPlaceholder", { id: @Model.course_id, submitUrl: "/TeacherManageAPI/SubmitDeleteCourseForm" });
         });
     }
 </script>

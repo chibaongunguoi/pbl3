@@ -13,9 +13,8 @@
     <td>@Model.Tel</td>
     <td>@Model.RegistrationDate.ToString("dd/MM/yyyy HH:mm")</td>
     <td>@(Model.Status switch {
-        "approved" => "Đã chấp nhận",
-        "waiting" => "Đang chờ",
-        "rejected" => "Đã từ chối",
+       RequestStatus.waiting => "Đang chờ",
+       RequestStatus.joined => "Đã tham gia",
         _ => Model.Status
         })</td>
     <td>

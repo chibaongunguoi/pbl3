@@ -1,0 +1,42 @@
+@model DeleteCourseForm
+
+@await Html.PartialAsync("_Message", Model.Messages)
+@if (Model.ShowForm)
+{
+    <form id="DeleteCourseForm" method="post">
+        <div class="pt-add-btn-group">
+            <button type="submit" class="hl-btn" style="background: #dc3545;"><span>Xóa khóa học</span></button>
+        </div>
+    </form>
+}
+
+<script>
+    (
+        function load()
+        {
+            const placeholderSelector = `#DeleteCourseFormPlaceholder`;
+            const submitUrl = "@Model.SubmitUrl";
+            const formSelector = `#DeleteCourseForm`;
+            var form = document.querySelector(formSelector);
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                formData.append('Id', `${@Model.Id}`);
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $(placeholderSelector).html(response);
+                        load();
+                    },
+                    error: function (error) {
+                        console.error("Error submitting form:", error);
+                    }
+                });
+            });
+        }
+    )()
+</script>

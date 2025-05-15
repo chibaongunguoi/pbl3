@@ -3,7 +3,9 @@
 <tr>
     <td scope="row" class="table-index">@Model.TableIndex</td>
     <td>@Model.Id</td>
-    <td>@Model.Name</td>
+    <td>
+        <a href="/Teacher/Profile?tchId=@Model.Id">@Model.Name</a>
+    </td>
     <td>@Model.Gender</td>
     <td>@Model.Bday</td>
     <td>@Model.Tel</td>
@@ -13,7 +15,7 @@
         <div class="button-group-wrapper course-manager">
             <button class="card-btn course-detail EditTeacherBtn" idx="@Model.Id" data-bs-toggle="modal" data-bs-target='#EditTeacherModal'>Sửa thông tin</button>
             <button class="card-btn course-detail ViewTchCorBtn" idx="@Model.Id" data-teacher-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#TchCorModal'>Xem khóa học</button>
-            <a href="/Teacher/Profile?tchId=@Model.Id" class="card-btn course-detail">Xem chi tiết</a>
+            <button class="card-btn DeleteBtn" style="background: salmon;" idx="@Model.Id" data-teacher-name="@Model.Name" data-bs-toggle="modal" data-bs-target='#DeleteAccountModal'>Xóa</button>
         </div>
     </td>
 </tr>
@@ -35,5 +37,17 @@
         const contentSelector = `#teacher-courses-container`;
         const paginationSelector = `#teacher-courses-pagination`;
         initPagination(teacherCoursesPaginationInfo, "/AdminAPI/GetTeacherCourses", contentSelector, sentData, paginationSelector);
+    });
+
+    document.querySelector(`.DeleteBtn[idx="${@Model.Id}"]`)
+    .addEventListener('click', function () {
+        const teacherName = this.getAttribute('data-teacher-name');
+        const modalTitle = document.querySelector(`#DeleteAccountModal .modal-title`);
+        modalTitle.textContent = `Xóa tài khoản của gia sư ${teacherName}`;
+        const teacherIdElement = document.querySelector(`#DeleteAccountId`);
+        teacherIdElement.textContent = @Model.Id;
+        const teacherNameElement = document.querySelector(`#DeleteAccountName`);
+        teacherNameElement.textContent = `${teacherName}`;
+        initPagination(null, "/AdminAPI/GetDeleteAccountForm", "#DeleteAccountFormPlaceholder", { id: @Model.Id, role: `@UserRole.Teacher` });
     });
 </script>

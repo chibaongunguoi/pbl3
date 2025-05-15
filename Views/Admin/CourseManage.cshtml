@@ -36,6 +36,7 @@
 
 @await Html.PartialAsync("Popup/_AdminMngCorSemPopup")
 @await Html.PartialAsync("Popup/_AdminMngCorSemStudentPopup")
+@await Html.PartialAsync("Popup/_DeleteCoursePopup")
 
 <style>
   /* Làm mờ nền khi modal mở */
@@ -101,4 +102,12 @@
 <script>
   const paginationInfo = { CurrentPage: 1, ItemsPerPage: 20 };
   initPagination(paginationInfo, "/AdminAPI/GetCourses", ".pagination-list", {}, "#main-pagination-bar", "#pagination-form");
+
+    function reload() {
+        document.querySelector('#main-pagination-bar .page-link.pa-active').click();
+    }
+
+    document.querySelector(`#AdminCourseSemsModal`).addEventListener('hidden.bs.modal', reload);
+    document.querySelector(`#studentTableModal`).addEventListener('hidden.bs.modal', reload);
+    document.querySelector(`#DeleteCourseModal`).addEventListener('hidden.bs.modal', reload);
 </script>

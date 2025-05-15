@@ -28,8 +28,12 @@
                 data-course-name="@Model.CourseName"
                 data-bs-toggle="modal" 
                 data-bs-target="#AdminCourseSemsModal">Xem các kì học</button>
-            <button class="card-btn course-detail"
-                onclick="window.location.href='/Course/Detail?courseId=@Model.CourseId'">Xem khóa học</button>
+            <button class="card-btn course-detail" onclick="window.location.href='/Course/Detail?courseId=@Model.CourseId'">Xem khóa học</button>
+            <button class="card-btn course-detail DeleteBtn"  style="background: salmon;"
+            idx="@Model.CourseId" 
+            data-course-name="@Model.CourseName"
+            data-tch-name="@Model.TeacherName"
+            data-bs-toggle="modal" data-bs-target='#DeleteCourseModal'>Xóa</button>
         </div>
     </td>
 </tr>
@@ -44,5 +48,21 @@
         
         // Load semester list using the shared function
         loadSemesterList(courseId);
+    });
+
+    document.querySelector(`.DeleteBtn[idx="@Model.CourseId"]`).addEventListener('click', function () {
+        const courseName = this.getAttribute('data-course-name');
+        const tchName = this.getAttribute('data-tch-name');
+
+        const modalTitle = document.querySelector(`#DeleteCourseModal .modal-title`);
+        modalTitle.textContent = `Xóa khóa học ${courseName}`;
+
+        const courseNameElement = document.querySelector(`#DeleteCourseName`);
+        courseNameElement.textContent = `${courseName}`;
+
+        const tchNameElement = document.querySelector(`#DeleteCourseTchName`);
+        tchNameElement.textContent = `${tchName}`;
+
+        initPagination(null, "/AdminAPI/GetDeleteCourseForm", "#DeleteCourseFormPlaceholder", { id: @Model.CourseId, submitUrl: "/AdminAPI/SubmitDeleteCourseForm" });
     });
 </script>
