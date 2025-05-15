@@ -200,7 +200,7 @@
 
 .page-link {
   margin: 0 16px;
-  width: 45px;
+  /* width: 45px; */
   text-align: center;
   display: inline-block;
   border-radius: 50% !important;

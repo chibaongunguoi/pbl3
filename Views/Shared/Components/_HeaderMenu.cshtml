@@ -29,18 +29,34 @@
                                 </span>
                             </a>
                         </li>
-                        @if (user_role == "Student" || user_role == "Teacher")
+                        @if (user_role == UserRole.Student)
+                        {
+                        <li class="root" data-v-4133fbdc="">
+                            <a href="/Course/Manage" data-v-4133fbdc="" class="">
+                                <span data-v-4133fbdc="" class="navbar-option"> Quản lý khóa học </span>
+                            </a>
+                        </li>
+                        }
+                         else if (user_role == UserRole.Teacher)
                         {
                         <li class="root" data-v-4133fbdc="">
                             <a href="/Course/Manage" data-v-4133fbdc="" class="">
                                 <span data-v-4133fbdc="" class="navbar-option">
-                                    <!-- <i class="fa fa-paperclip" data-v-4133fbdc=""></i> -->
                                     Quản lý khóa học
-                                    <span
-                                        class="position-absolute translate-middle badge rounded-pill bg-danger course-manage-badget-home">
+                                    @* <span class="position-absolute translate-middle badge rounded-pill bg-danger course-manage-badget-home">
                                         5
                                         <span class="visually-hidden">unread messages</span>
-                                    </span>
+                                    </span> *@
+                                </span>
+                            </a>
+                        </li>
+                        }
+                         else if (user_role == UserRole.Admin)
+                        {
+                        <li class="root" data-v-4133fbdc="">
+                            <a href="/Admin/Dashboard" data-v-4133fbdc="" class="">
+                                <span data-v-4133fbdc="" class="navbar-option">
+                                    Trang Quản Lý
                                 </span>
                             </a>
                         </li>

@@ -14,10 +14,6 @@ public class HomeController : BaseController
 
     public IActionResult Index(BriefTeacherFilter filter)
     {
-        if (User.IsInRole(UserRole.Admin))
-        {
-            return Redirect("/Admin/Dashboard");
-        }
         return View(new BriefTeacherPage(filter));
     }
 }

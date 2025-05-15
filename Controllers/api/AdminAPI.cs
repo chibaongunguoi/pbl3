@@ -340,6 +340,10 @@ public class AdminAPI : BaseController
             string searchPattern = $"N'%{searchQuery}%'";
             string s = $"{Field.course__name} LIKE {searchPattern} OR {Field.teacher__name} LIKE {searchPattern}";
             s += $" OR {Field.subject__name} LIKE {searchPattern}";
+            if (int.TryParse(searchQuery, out int id))
+            {
+                s += $" OR {Field.course__id} = {id}";
+            }
             q.WhereClause($"({s})");
         }
         if (status is not null)
