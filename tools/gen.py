@@ -23,8 +23,11 @@ DURATION_RANGE_START = 150
 DURATION_RANGE_END = 240
 LATEST_START_DATE = 400
 
-num_of_students = random.randint(800, 1000)
-num_of_teachers = random.randint(250, 300)
+# num_of_students = random.randint(800, 1000)
+# num_of_teachers = random.randint(250, 300)
+
+num_of_students = 600
+num_of_teachers = 200
 
 def sha256(s: str) -> str:
     import hashlib
@@ -433,7 +436,10 @@ for tch_id in teacher_ids:
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
     thumbnail = r"./images/thumbnail/thumbnail.jpg"
-    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}.
+    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}."""
+    description += f""" Phương pháp dạy học hiện đại, dễ hiểu, dễ tiếp thu. Rèn luyện kỹ năng làm bài, kỹ năng tư duy, kỹ năng giải quyết vấn đề.  Nâng cao khả năng tư duy, khả năng giải quyết vấn đề.  Mang đến cho học sinh những kiến thức bổ ích, thú vị. Trang bị đầy đủ tài liệu học tập, đề thi thử, đề thi thật. Hỗ trợ học sinh trong quá trình học tập, làm bài tập, ôn thi. Không chỉ dạy học mà còn giúp học sinh phát triển toàn diện. Bạn nào có nhu cầu học thêm thì liên hệ với mình nhé!"""
+
+    a = f"""
 - Giúp bạn out trình mấy con gà không đi học thêm
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
@@ -453,6 +459,7 @@ for tch_id in teacher_ids:
 - Không sợ out meta, top 1 tri thức hệ toán
 - VDC không còn khó, đại học Vinh chỉ còn là cái tên
 """
+
     bday = "-".join([str(bday.year), str(bday.month), str(bday.day)])
     teacher = Teacher(tch_id, str(username), str(password), nstr(name), gender, bday, tel, thumbnail, nstr(description))
     teachers.append(teacher)
