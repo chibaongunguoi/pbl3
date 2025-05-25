@@ -5,17 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trung Tâm Tiên Tiến </title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script type="importmap"></script>    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Auth.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Rating.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/_ManageLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />    <link rel="stylesheet" href="~/css/_ManageLayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Notification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ManageNotification.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
 </head>
 
@@ -42,6 +44,19 @@
             userInfo.addEventListener("click", function () {
                 let dropdown = document.getElementById("user-dropdown");
                 dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            });
+        }
+         let notificationInfo = document.getElementById("notification-info");
+        if (notificationInfo) {
+            notificationInfo.addEventListener("click", function () {
+                let dropdown = document.getElementById("notification-dropdown");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                
+                // Đóng user dropdown nếu đang mở
+                let userDropdown = document.getElementById("user-dropdown");
+                if (userDropdown && userDropdown.style.display === "block") {
+                    userDropdown.style.display = "none";
+                }
             });
         }
         document.addEventListener("DOMContentLoaded", function () {

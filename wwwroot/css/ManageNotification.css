@@ -1,0 +1,50 @@
+/* Manage layout specific notification styles */
+.manage-notification-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.manage-notification-container .notification-link {
+  margin-right: 0;
+}
+
+.manage-notification-container .noti-dropdown {
+  width: 350px;
+  right: 0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Add a slight border to make the notification icon stand out against the background */
+.manage-notification-container .notification-icon {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the notification icon in the sidebar */
+#sidebar-menu .nav-link:has(.fa-bell) .notification-badge {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  min-width: 15px;
+  min-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the link badge */
+.link-badge {
+  font-size: 0.65rem !important;
+  padding: 0.15em 0.45em !important;
+  right: 5px !important;
+}
