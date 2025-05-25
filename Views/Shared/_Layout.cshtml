@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Notification.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
 </head>
 
@@ -30,18 +31,58 @@
             </main>
         </div>
     </div>
-    @await Html.PartialAsync("Components/_Footer")
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await Html.PartialAsync("Components/_Footer")    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
+        // User dropdown toggle
         let userInfo = document.getElementById("user-info");
         if (userInfo) {
             userInfo.addEventListener("click", function () {
                 let dropdown = document.getElementById("user-dropdown");
                 dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                
+                // Đóng notification dropdown nếu đang mở
+                let notificationDropdown = document.getElementById("notification-dropdown");
+                if (notificationDropdown && notificationDropdown.style.display === "block") {
+                    notificationDropdown.style.display = "none";
+                }
             });
         }
+        
+        // Notification dropdown toggle
+        let notificationInfo = document.getElementById("notification-info");
+        if (notificationInfo) {
+            notificationInfo.addEventListener("click", function () {
+                let dropdown = document.getElementById("notification-dropdown");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                
+                // Đóng user dropdown nếu đang mở
+                let userDropdown = document.getElementById("user-dropdown");
+                if (userDropdown && userDropdown.style.display === "block") {
+                    userDropdown.style.display = "none";
+                }
+            });
+        }
+        
+        // Đóng dropdown khi click bên ngoài
+        document.addEventListener('click', function(event) {
+            let userDropdown = document.getElementById("user-dropdown");
+            let notificationDropdown = document.getElementById("notification-dropdown");
+            let userInfo = document.getElementById("user-info");
+            let notificationInfo = document.getElementById("notification-info");
+            
+            // Nếu click không phải trên user-info hoặc user-dropdown thì đóng user-dropdown
+            if (userDropdown && userInfo && !userInfo.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.style.display = "none";
+            }
+            
+            // Nếu click không phải trên notification-info hoặc notification-dropdown thì đóng notification-dropdown
+            if (notificationDropdown && notificationInfo && !notificationInfo.contains(event.target) && !notificationDropdown.contains(event.target)) {
+                notificationDropdown.style.display = "none";
+            }
+        });
+        
         document.addEventListener("DOMContentLoaded", function () {
             const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
             const eyeClose = document.querySelector(".eye-close");

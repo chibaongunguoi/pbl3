@@ -1,0 +1,156 @@
+/* Notification styles */
+.notification-link {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-icon {
+  padding: 5px;
+  position: relative;
+}
+
+.notification-icon svg {
+  color: #555;
+}
+
+/* Badge for showing notification count */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  min-width: 15px;
+  min-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Notification dropdown */
+#notification-dropdown,
+.noti-dropdown {
+  position: absolute;
+  border: none;
+  top: 90%;
+  right: 180px;
+  background-color: white;
+  border: 1px solid #ddd;
+  z-index: 1000;
+  margin-top: 5px;
+}
+
+.notification-content-wrapper,
+.user-content-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
+
+.notification-header h6 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.notification-item-list,
+.user-item-list {
+  padding: 0;
+}
+
+.notification-item,
+.user-item,
+.logout-item {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover,
+.user-item:hover,
+.logout-item:hover {
+  background-color: #f5f5f5;
+}
+
+.notification-item-title,
+.user-item-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.user-item-title:hover {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.notification-item-content {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.notification-item-time {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.notification-footer {
+  padding: 10px 15px;
+  text-align: center;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+.view-all-notifications {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.view-all-notifications:hover {
+  text-decoration: underline;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #dc3545;
+}
+
+.logout-button:hover {
+  color: #bd2130;
+  text-decoration: none;
+}
+
+/* For better spacing between notification and user icon */
+.user-link-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Make user and notification components aligned */
+.nav-item {
+  display: flex;
+  align-items: center;
+}

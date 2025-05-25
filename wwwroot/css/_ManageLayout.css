@@ -372,7 +372,6 @@ button.accept-policy {
   background-color: white;
   outline: none;
   z-index: 2202;
-  position: absolute;
   font-size: 14px;
   width: 100%;
   border-radius: 3px;
