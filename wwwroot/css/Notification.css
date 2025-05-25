@@ -39,13 +39,19 @@
   position: absolute;
   border: none;
   top: 90%;
-  right: 180px;
+  right: 0px;
+
   background-color: white;
   border: 1px solid #ddd;
   z-index: 1000;
   margin-top: 5px;
 }
-
+#notification-dropdown {
+  width: 350px;
+}
+#user-dropdown {
+  right: 330px;
+}
 .notification-content-wrapper,
 .user-content-wrapper {
   max-height: 400px;
