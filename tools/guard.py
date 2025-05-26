@@ -2,7 +2,7 @@ import os
 
 comment = """
 PBL2 - Dự án lập trình tính toán
-Đề tài: Tìm kiếm gia sư cho học viên
+Đề tài: Tìm kiếm giảng viên cho học viên
 
 Thành viên thực hiện:
     Nguyễn Chí Bảo      23T_DT2

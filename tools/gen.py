@@ -436,7 +436,7 @@ for tch_id in teacher_ids:
     bday = next(teacher_birthday_gen)
     addr = next(addr_gen)
     thumbnail = r"./images/thumbnail/thumbnail.jpg"
-    description = f"""Liên hệ gia sư {name} qua số điện thoại {tel} hoặc địa chỉ {addr}."""
+    description = f"""Liên hệ giảng viên {name} qua số điện thoại {tel} hoặc địa chỉ {addr}."""
     description += f""" Phương pháp dạy học hiện đại, dễ hiểu, dễ tiếp thu. Rèn luyện kỹ năng làm bài, kỹ năng tư duy, kỹ năng giải quyết vấn đề.  Nâng cao khả năng tư duy, khả năng giải quyết vấn đề.  Mang đến cho học sinh những kiến thức bổ ích, thú vị. Trang bị đầy đủ tài liệu học tập, đề thi thử, đề thi thật. Hỗ trợ học sinh trong quá trình học tập, làm bài tập, ôn thi. Không chỉ dạy học mà còn giúp học sinh phát triển toàn diện. Bạn nào có nhu cầu học thêm thì liên hệ với mình nhé!"""
 
     a = f"""

@@ -90,7 +90,7 @@ public class AddCourseForm
         tch_query.Select(conn, reader => teachers.Add(QDataReader.GetDataObj<Teacher>(reader)));
         if (teachers.Count == 0)
         {
-            Messages["Error"] = "Gia sư không tồn tại";
+            Messages["Error"] = "Giảng viên không tồn tại";
             return;
         }
 

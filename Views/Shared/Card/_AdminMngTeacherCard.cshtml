@@ -31,7 +31,7 @@
     .addEventListener('click', function () {
         const teacherName = this.getAttribute('data-teacher-name');
         const modalTitle = document.querySelector(`#TchCorModal .modal-title`);
-        modalTitle.textContent = `Danh sách khóa học của gia sư ${teacherName}`;
+        modalTitle.textContent = `Danh sách khóa học của giảng viên ${teacherName}`;
         const teacherCoursesPaginationInfo = { CurrentPage: 1, ItemsPerPage: 5 };
         const sentData = { tchId: @Model.Id };
         const contentSelector = `#teacher-courses-container`;
@@ -43,7 +43,7 @@
     .addEventListener('click', function () {
         const teacherName = this.getAttribute('data-teacher-name');
         const modalTitle = document.querySelector(`#DeleteAccountModal .modal-title`);
-        modalTitle.textContent = `Xóa tài khoản của gia sư ${teacherName}`;
+        modalTitle.textContent = `Xóa tài khoản của giảng viên ${teacherName}`;
         const teacherIdElement = document.querySelector(`#DeleteAccountId`);
         teacherIdElement.textContent = @Model.Id;
         const teacherNameElement = document.querySelector(`#DeleteAccountName`);
