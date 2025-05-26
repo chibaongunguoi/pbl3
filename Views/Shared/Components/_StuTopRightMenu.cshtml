@@ -1,4 +1,56 @@
 <div class="nav-item">
+    <!-- Thông báo dropdown -->
+    <a id="notification-info" class="text-dark user-link notification-link">
+        <div class="notification-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+            </svg>
+            <span class="notification-badge">4</span>
+        </div>
+        <div class="noti-dropdown" id="notification-dropdown" style="display:none">
+            <div class="notification-content-wrapper">
+                
+                <div class="notification-item-list">
+                    <div class="notification-item">
+                        <div class="notification-item-title">
+                            Đã thêm bài học mới
+                        </div>
+                        <div class="notification-item-content">
+                            Giáo viên đã thêm bài học mới vào khóa học JavaScript cơ bản
+                        </div>
+                        <div class="notification-item-time">
+                            15 phút trước
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-item-title">
+                            Bài tập đã được chấm
+                        </div>
+                        <div class="notification-item-content">
+                            Bài tập của bạn đã được chấm với điểm số 8.5/10
+                        </div>
+                        <div class="notification-item-time">
+                            2 giờ trước
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-item-title">
+                            Khóa học sắp kết thúc
+                        </div>
+                        <div class="notification-item-content">
+                            Khóa học Python cơ bản sẽ kết thúc trong 3 ngày tới
+                        </div>
+                        <div class="notification-item-time">
+                            1 ngày trước
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </a>
+
+    <!-- User dropdown -->
     <a id="user-info" class="text-dark user-link">
         <div class="user-role">
             Học viên

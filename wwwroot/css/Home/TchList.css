@@ -105,6 +105,7 @@
   padding: 1px 8px;
   background-color: #caeefb;
   border-color: #318db2;
+  margin-right: 12px;
 }
 
 .choose {
@@ -344,7 +345,7 @@
 }
 
 .course-detail {
-  margin-right: 12px;
+  margin-right: 10px !important;
   width: 105px;
 }
 .card-sem-description-wrapper {
