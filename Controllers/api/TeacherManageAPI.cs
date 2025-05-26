@@ -133,7 +133,24 @@ public class TeacherManageAPI : BaseController
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Update);
         // Add notification for student
-        string message = $"Bạn đã được chấp nhận vào khóa học (ID học kỳ: {semesterId})";
+        string? courseName = null;
+        string? teacherName = null;
+        QDatabase.Exec(conn =>
+        {
+            Query courseQuery = new(Tbl.semester);
+            courseQuery.Join(Field.course__id, Field.semester__course_id);
+            courseQuery.Join(Field.teacher__id, Field.course__tch_id);
+            courseQuery.Where(Field.semester__id, semesterId);
+            courseQuery.Output(Field.course__name);
+            courseQuery.Output(Field.teacher__name);
+            courseQuery.Select(conn, reader =>
+            {
+                int pos = 0;
+                courseName = QDataReader.GetString(reader, ref pos);
+                teacherName = QDataReader.GetString(reader, ref pos);
+            });
+        });
+        string message = $"Bạn đã được chấp nhận vào khóa học {courseName} của giảng viên {teacherName}";
         QDatabase.Exec(conn => Notification.Add(conn, stuId, message));
         return ManageRequest(paginationInfo, searchQuery);
     }
@@ -151,11 +168,28 @@ public class TeacherManageAPI : BaseController
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Delete);
-        // Add notification for student
-        string message = string.IsNullOrWhiteSpace(reason)
-            ? $"Yêu cầu tham gia khóa học (ID học kỳ: {semesterId}) của bạn đã bị từ chối."
-            : $"Yêu cầu tham gia khóa học (ID học kỳ: {semesterId}) của bạn đã bị từ chối. Lý do: {reason}";
-        QDatabase.Exec(conn => Notification.Add(conn, stuId, message));
+        string? courseName = null;
+        string? teacherName = null;
+        
+        QDatabase.Exec(conn =>
+        {
+            Query courseQuery = new(Tbl.semester);
+            courseQuery.Join(Field.course__id, Field.semester__course_id);
+            courseQuery.Join(Field.teacher__id, Field.course__tch_id);
+            courseQuery.Where(Field.semester__id, semesterId);
+            courseQuery.Output(Field.course__name);
+            courseQuery.Output(Field.teacher__name);
+            courseQuery.Select(conn, reader =>
+            {
+                int pos = 0;
+                courseName = QDataReader.GetString(reader, ref pos);
+                teacherName = QDataReader.GetString(reader, ref pos);
+            });
+            string message = string.IsNullOrWhiteSpace(reason)
+                ? $"Yêu cầu tham gia khóa học {courseName} của giảng viên {teacherName} đã bị từ chối."
+                : $"Yêu cầu tham gia khóa học {courseName} của giảng viên {teacherName} đã bị từ chối. Lý do: {reason}";
+            Notification.Add(conn, stuId, message);
+        });
         paginationInfo ??= new PaginationInfo { CurrentPage = 1, ItemsPerPage = 20 };
         return ManageRequest(paginationInfo, searchQuery);
     }

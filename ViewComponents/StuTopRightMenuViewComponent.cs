@@ -21,17 +21,6 @@ public class StuTopRightMenuViewComponent : ViewComponent
                 });
             });
         }
-
-        int unreadCount = 0;
-        QDatabase.Exec(conn =>
-        {
-            Query countQuery = new(Tbl.notification);
-            countQuery.Where(Field.notification__stu_id, studentId);
-            countQuery.Where(Field.notification__is_read, 0);
-            unreadCount = countQuery.Count(conn);
-        });
-
-        ViewBag.UnreadCount = unreadCount;
         return View("~/Views/Shared/Components/_StuTopRightMenu.cshtml");
     }
 }

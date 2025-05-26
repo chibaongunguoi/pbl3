@@ -74,7 +74,7 @@ public sealed class QDatabase
     public static void ExecQuery(SqlConnection conn, string query)
     {
         int counter = ++query_counter;
-        string displayedQuery = query.Length > 500 ? query[..100] + "..." : query;
+        string displayedQuery = query.Length > 500 ? query[..100] : query;
         Console.WriteLine($"[START] query #{counter}: {displayedQuery}");
         Stopwatch stopwatch = Stopwatch.StartNew();
         using (SqlCommand command = new SqlCommand(query, conn))

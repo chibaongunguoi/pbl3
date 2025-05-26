@@ -1,9 +1,16 @@
-@model List<Notification>
-@{
-    int unreadCount = ViewBag.UnreadCount ?? 0;
-}
-<div id="notificationContent"
-    style="display:none; position: absolute; top: calc(100% + 10px); right: 0; width: 320px; background-color: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999;">
+@model NotificationViewModel
+
+<a id="notification-info" class="text-dark user-link notification-link" style="cursor: pointer; text-decoration: none; display: inline-block; position: relative;">
+    <i class="bi bi-bell" style="font-size: 1.5rem; color: #666;"></i>
+    @if (Model.UnreadCount > 0)
+    {
+        <div class="notification-badge" style="position: absolute; top: -8px; right: -8px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+            @Model.UnreadCount
+        </div>
+    }
+</a>
+<div class="noti-dropdown" id="notification-dropdown" style="display:none; position:absolute; top:calc(100% + 5px); right:0; z-index:1000; background-color: white; border: 1px solid #ddd; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">            
+    <div id="notificationContent" style="display:none; position: absolute; top: calc(100% + 10px); right: 0; width: 320px; background-color: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999;">
     <div class="notification-content-wrapper">
         <div class="notification-header" style="padding: 12px 15px; border-bottom: 1px solid #eee; background-color: #f8f9fa;">
             <div class="header-content">
@@ -11,14 +18,14 @@
                     <i class="bi bi-bell me-2"></i>
                     Thông báo
                 </h6>
-                @if (unreadCount > 0)
+                @if (Model.UnreadCount > 0)
                 {
-                    <span class="unread-count" style="background: #e7f3ff; color: #0066cc; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">@unreadCount mới</span>
+                    <span class="unread-count" style="background: #e7f3ff; color: #0066cc; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">@Model.UnreadCount mới</span>
                 }
             </div>
         </div>
         <div class="notification-item-list">
-            @if (Model.Count == 0)
+            @if (Model.Notifications.Count == 0)
             {                <div class="empty-notifications" style="padding: 30px 20px; text-align: center; color: #666;">
                     <div class="empty-icon" style="margin-bottom: 12px;">
                         <i class="bi bi-bell-slash" style="font-size: 2rem; color: #ccc;"></i>
@@ -29,9 +36,10 @@
             }
             else
             {
-                foreach (var notif in Model)
+                foreach (var notif in Model.Notifications)
                 {
-                    var isUnread = notif.IsRead == 0;                    <div class="notification-item @(isUnread ? "unread" : "read")" data-id="@notif.Id" tabindex="0"
+                    var isUnread = notif.IsRead == 0;                    
+                    <div class="notification-item @(isUnread ? "unread" : "read")" data-id="@notif.Id" tabindex="0"
                         role="button" aria-pressed="false" onclick="markAsRead(@notif.Id)" 
                         style="padding: 10px 15px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background-color 0.2s; border-bottom: 1px solid #eee; @(isUnread ? "background-color: #f8f9fa;" : "")">
                         @if (isUnread)
@@ -73,6 +81,7 @@
             </a>
         </div>
     </div>
+</div>
 </div>
 
 <script>    // Position the notification dropdown as a popup

@@ -22,7 +22,8 @@ public class StuNotificationViewComponent : ViewComponent
                     studentId = QDataReader.GetInt(reader, ref pos);
                 });
             });
-        }        List<Notification> notifications = [];
+        }
+        List<Notification> notifications = [];
         QDatabase.Exec(conn =>
         {
             // Get the latest 10 notifications for display
@@ -45,6 +46,16 @@ public class StuNotificationViewComponent : ViewComponent
             });
         });
 
-        return View("~/Views/Shared/Components/_StuNotificationDropdown.cshtml", notifications);
+        int unreadCount = 0;
+        QDatabase.Exec(conn =>
+        {
+            Query countQuery = new(Tbl.notification);
+            countQuery.Where(Field.notification__stu_id, studentId);
+            countQuery.Where(Field.notification__is_read, 0);
+            unreadCount = countQuery.Count(conn);
+        });
+
+        NotificationViewModel model = new NotificationViewModel(notifications, unreadCount);
+        return View("~/Views/Shared/Components/_StuNotificationDropdown.cshtml", model);
     }
 }
