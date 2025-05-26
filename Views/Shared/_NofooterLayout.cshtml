@@ -46,28 +46,7 @@
             </main>
         </div>
     </div>
-
     <script>
-        let userInfo = document.getElementById("user-info");
-        if (userInfo) {
-            userInfo.addEventListener("click", function () {
-                let dropdown = document.getElementById("user-dropdown");
-                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-            });
-        }
-         let notificationInfo = document.getElementById("notification-info");
-        if (notificationInfo) {
-            notificationInfo.addEventListener("click", function () {
-                let dropdown = document.getElementById("notification-dropdown");
-                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-                
-                // Đóng user dropdown nếu đang mở
-                let userDropdown = document.getElementById("user-dropdown");
-                if (userDropdown && userDropdown.style.display === "block") {
-                    userDropdown.style.display = "none";
-                }
-            });
-        }
         document.addEventListener("DOMContentLoaded", function () {
             const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
             const eyeClose = document.querySelector(".eye-close");

@@ -1,4 +1,4 @@
-<div class="nav-item">
+@* <div class="nav-item">
     <!-- Thông báo dropdown -->
     <a id="notification-info" class="text-dark user-link notification-link">
         <div class="notification-icon">
@@ -82,4 +82,78 @@
             </div>
         </div>
     </a>
+</div> *@
+
+<div class="nav-item">
+    <!-- Thông báo dropdown -->
+    <div class="notification-container" style="position: relative; display: inline-block; overflow: visible;">        <a id="notification-info" class="text-dark user-link notification-link"
+            style="cursor: pointer; text-decoration: none; display: inline-block;">
+            <i class="bi bi-bell" style="font-size: 1.5rem; color: #666;"></i>
+        </a>
+        <div class="noti-dropdown" id="notification-dropdown"
+            style="display:none; position:absolute; top:calc(100% + 5px); right:0; z-index:1000; background-color: white; border: 1px solid #ddd; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            @* @await Component.InvokeAsync("StuNotification") *@
+        </div>
+    </div>    <div style="position: relative; display: inline-block;">
+        <a id="user-info" class="text-dark user-link"
+            style="cursor:pointer; display: inline-block; margin-left: 15px;">
+            <div class="user-role" style="display: inline-block; vertical-align: middle;">
+                Giảng viên
+            </div>
+            <div class="user-name" style="display: inline-block; vertical-align: middle; margin-left: 5px;">
+                @await Component.InvokeAsync("UserName")
+            </div>        
+            <div class="user-icon down-arrow" style="display: inline-block; vertical-align: middle; margin-left: 5px;">
+                <svg width="10" height="10" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                </svg>
+            </div>
+        </a>
+        <div class="noti-dropdown" id="user-dropdown" style="display:none; position: absolute; top: calc(100% + 5px); right: 0; z-index: 1000; background-color: white; border: 1px solid #ddd; min-width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <div class="user-content-wrapper">
+            <div class="user-item-list">                <div class="user-item">
+                    <a class="user-item-title" href="/TeacherManage/ManageProfile" style="padding: 6px 15px; display: block;">Thông tin tài khoản</a>
+                </div>
+                <div class="logout-item">
+                    <form action="/Auth/Logout" method="POST">
+                        <button type='submit' class="user-item-title logout-button" style="padding: 6px 15px; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">Đăng xuất</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let userInfo = document.getElementById("user-info");        if (userInfo) {
+            userInfo.addEventListener("click", function (e) {
+                e.stopPropagation();
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown) {
+                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                }
+                let notificationDropdown = document.getElementById("notification-dropdown");
+                if (notificationDropdown && notificationDropdown.style.display === "block") {
+                    notificationDropdown.style.display = "none";
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown && !userInfo.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Update position on resize
+            window.addEventListener('resize', function() {
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown && dropdown.style.display === "block") {
+                    positionDropdown();
+                }
+            });
+        }
+    });
+</script>

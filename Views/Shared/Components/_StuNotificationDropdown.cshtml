@@ -3,71 +3,73 @@
     int unreadCount = ViewBag.UnreadCount ?? 0;
 }
 <div id="notificationContent"
-    style="display:none; position: absolute; top: 100%; right: 0; width: 350px; background-color: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 9999;">
+    style="display:none; position: absolute; top: calc(100% + 10px); right: 0; width: 320px; background-color: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999;">
     <div class="notification-content-wrapper">
-        <div class="notification-header">
+        <div class="notification-header" style="padding: 12px 15px; border-bottom: 1px solid #eee; background-color: #f8f9fa;">
             <div class="header-content">
-                <h6 class="header-title">
-                    <i class="bi bi-bell-fill me-2"></i>
+                <h6 class="header-title" style="margin: 0; font-size: 0.95rem; color: #444;">
+                    <i class="bi bi-bell me-2"></i>
                     Thông báo
                 </h6>
                 @if (unreadCount > 0)
                 {
-                    <span class="unread-count">@unreadCount mới</span>
+                    <span class="unread-count" style="background: #e7f3ff; color: #0066cc; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">@unreadCount mới</span>
                 }
             </div>
         </div>
         <div class="notification-item-list">
             @if (Model.Count == 0)
-            {
-                <div class="empty-notifications">
-                    <div class="empty-icon">
-                        <i class="bi bi-bell-slash"></i>
+            {                <div class="empty-notifications" style="padding: 30px 20px; text-align: center; color: #666;">
+                    <div class="empty-icon" style="margin-bottom: 12px;">
+                        <i class="bi bi-bell-slash" style="font-size: 2rem; color: #ccc;"></i>
                     </div>
-                    <p class="empty-text">Không có thông báo nào</p>
-                    <small class="empty-subtext">Khi có thông báo mới, chúng sẽ hiển thị ở đây</small>
+                    <p class="empty-text" style="margin: 0 0 4px 0; font-size: 0.95rem;">Không có thông báo nào</p>
+                    <small class="empty-subtext" style="color: #888; font-size: 0.85rem;">Khi có thông báo mới, chúng sẽ hiển thị ở đây</small>
                 </div>
             }
             else
             {
                 foreach (var notif in Model)
                 {
-                    var isUnread = notif.IsRead == 0;
-                    <div class="notification-item @(isUnread ? "unread" : "read")" data-id="@notif.Id" tabindex="0"
-                        role="button" aria-pressed="false" onclick="markAsRead(@notif.Id)">
+                    var isUnread = notif.IsRead == 0;                    <div class="notification-item @(isUnread ? "unread" : "read")" data-id="@notif.Id" tabindex="0"
+                        role="button" aria-pressed="false" onclick="markAsRead(@notif.Id)" 
+                        style="padding: 10px 15px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background-color 0.2s; border-bottom: 1px solid #eee; @(isUnread ? "background-color: #f8f9fa;" : "")">
                         @if (isUnread)
                         {
                             <span class="unread-indicator"
-                                style="display:inline-block;width:8px;height:8px;background:#007bff;border-radius:50%;margin-right:8px;"></span>
+                                style="margin-top: 6px; flex-shrink: 0; width: 6px; height: 6px; background: #0066cc; border-radius: 50%;"></span>
                         }
-                        <div class="notification-icon-sm">
-                            @if (notif.Message.Contains("từ chối") || notif.Message.Contains("Từ chối"))
-                            {
-                                <i class="bi bi-x-circle-fill"></i>
+                        <div class="notification-icon-sm" style="width: 32px; height: 32px; border-radius: 50%; background: #f0f4f8; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            @{
+                                string iconClass = "bi-info-circle";
+                                string iconColor = "#666";
+                                if (notif.Message.Contains("từ chối") || notif.Message.Contains("Từ chối"))
+                                {
+                                    iconClass = "bi-x-circle";
+                                    iconColor = "#dc3545";
+                                }
+                                else if (notif.Message.Contains("chấp nhận") || notif.Message.Contains("Chấp nhận"))
+                                {
+                                    iconClass = "bi-check-circle";
+                                    iconColor = "#198754";
+                                }
                             }
-                            else if (notif.Message.Contains("chấp nhận") || notif.Message.Contains("Chấp nhận"))
-                            {
-                                <i class="bi bi-check-circle-fill"></i>
-                            }
-                            else
-                            {
-                                <i class="bi bi-info-circle-fill"></i>
-                            }
+                            <i class="bi @iconClass" style="color: @iconColor; font-size: 1.1rem;"></i>
                         </div>
-                        <div class="notification-content">
-                            <div class="notification-message">@notif.Message</div>
-                            <div class="notification-time">
+                        <div class="notification-content" style="flex: 1; min-width: 0;">
+                            <div class="notification-message" style="font-size: 0.9rem; color: #444; margin-bottom: 4px; line-height: 1.4;">@notif.Message</div>
+                            <div class="notification-time" style="font-size: 0.8rem; color: #888;">
                                 <i class="bi bi-clock me-1"></i>
-                                @notif.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                @notif.CreatedAt.ToString("HH:mm dd/MM/yyyy")
                             </div>
                         </div>
                     </div>
                 }
             }
-        </div>
-        <div class="notification-footer"> <a class="view-all-notifications" href="/Student/Notifications">
-                <i class="bi bi-arrow-right me-1"></i>
+        </div>        <div class="notification-footer" style="padding: 8px; text-align: center; border-top: 1px solid #eee; background-color: #f8f9fa;"> 
+            <a class="view-all-notifications" href="/Student/Notifications" style="color: #0066cc; text-decoration: none; font-size: 0.9rem; display: block; padding: 4px;">
                 Xem tất cả thông báo
+                <i class="bi bi-chevron-right ms-1"></i>
             </a>
         </div>
     </div>

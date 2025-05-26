@@ -8,40 +8,40 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 
 <div class="container-fluid mt-4">
-    <div class="notifications-page">
-        <div class="page-header">
-            <div class="header-content">
-                <h1 class="page-title">
-                    <i class="bi bi-bell-fill me-3"></i>
-                    Thông báo của bạn
-                </h1>
-                <p class="page-subtitle">Quản lý tất cả thông báo và cập nhật quan trọng</p>
-            </div>
-            <div class="header-stats">
-                <div class="stat-card">
-                    <div class="stat-number">@Model.Count</div>
-                    <div class="stat-label">Tổng thông báo</div>
+    <div class="notifications-page">        <div class="page-header" style="background: white; border-radius: 10px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 24px;">
+            <div class="header-content" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1 class="page-title" style="font-size: 1.75rem; color: #2c3e50; margin-bottom: 8px;">
+                        <i class="bi bi-bell me-2" style="color: #3498db;"></i>
+                        Thông báo của bạn
+                    </h1>
+                    <p class="page-subtitle" style="color: #666; margin: 0;">Quản lý tất cả thông báo và cập nhật quan trọng</p>
                 </div>
-                <div class="stat-card unread-stat">
-                    <div class="stat-number">@Model.Count(n => n.IsRead == 0)</div>
-                    <div class="stat-label">Chưa đọc</div>
+                <div class="header-stats" style="display: flex; gap: 16px;">
+                    <div class="stat-card" style="background: #f8f9fa; padding: 16px; border-radius: 8px; min-width: 120px; text-align: center;">
+                        <div class="stat-number" style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">@Model.Count</div>
+                        <div class="stat-label" style="color: #666; font-size: 0.875rem;">Tổng thông báo</div>
+                    </div>
+                    <div class="stat-card unread-stat" style="background: #e7f3ff; padding: 16px; border-radius: 8px; min-width: 120px; text-align: center;">
+                        <div class="stat-number" style="font-size: 1.5rem; font-weight: 600; color: #0066cc;">@Model.Count(n => n.IsRead == 0)</div>
+                        <div class="stat-label" style="color: #0066cc; font-size: 0.875rem;">Chưa đọc</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="notifications-container">
             @if (Model.Count == 0)
-            {
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="bi bi-bell-slash"></i>
+            {                <div style="background: white; border-radius: 10px; padding: 48px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="margin-bottom: 24px;">
+                        <i class="bi bi-bell-slash" style="font-size: 3rem; color: #ccc;"></i>
                     </div>
-                    <h3 class="empty-title">Không có thông báo nào</h3>
-                    <p class="empty-description">
+                    <h3 style="font-size: 1.5rem; color: #2c3e50; margin-bottom: 12px;">Không có thông báo nào</h3>
+                    <p style="color: #666; margin-bottom: 24px; font-size: 1rem;">
                         Khi có thông báo mới từ hệ thống hoặc giảng viên, chúng sẽ xuất hiện ở đây.
                     </p>
-                    <a href="/Student/Course" class="btn btn-primary">
-                        <i class="bi bi-book me-2"></i>
+                    <a href="/Student/Course" style="display: inline-flex; align-items: center; gap: 8px; background: #3498db; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; transition: all 0.2s ease;">
+                        <i class="bi bi-book"></i>
                         Xem khóa học
                     </a>
                 </div>
@@ -50,43 +50,59 @@
             {
                 <div class="notifications-list">
                     @foreach (var notification in Model)
-                    {
-                        <div class="notification-card @(notification.IsRead == 0 ? "unread" : "read")" 
-                             data-notification-id="@notification.Id">
-                            <div class="notification-indicator">
-                                @if (notification.IsRead == 0)
-                                {
-                                    <div class="unread-dot pulse"></div>
-                                }
-                                else
-                                {
-                                    <i class="bi bi-check-circle-fill read-icon"></i>
-                                }
-                            </div>
+                    {                        <div class="notification-card @(notification.IsRead == 0 ? "unread" : "read")" 
+                             data-notification-id="@notification.Id"
+                             style="background: white; border-radius: 10px; padding: 16px; margin-bottom: 12px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid @(notification.IsRead == 0 ? "#e7f3ff" : "#eee"); transition: all 0.2s ease;">
+                            @if (notification.IsRead == 0)
+                            {
+                                <div class="notification-indicator" style="flex-shrink: 0; margin-top: 4px;">
+                                    <div style="width: 8px; height: 8px; background: #0066cc; border-radius: 50%;"></div>
+                                </div>
+                            }
                             
-                            <div class="notification-icon-container">
-                                <div class="notification-type-icon">
-                                    <i class="bi bi-info-circle-fill"></i>
+                            <div class="notification-icon-container" style="flex-shrink: 0;">
+                                <div class="notification-type-icon" style="width: 40px; height: 40px; border-radius: 50%; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                    @{
+                                        string iconClass = "bi-info-circle";
+                                        string iconColor = "#666";
+                                        if (notification.Message.Contains("từ chối") || notification.Message.Contains("Từ chối"))
+                                        {
+                                            iconClass = "bi-x-circle";
+                                            iconColor = "#dc3545";
+                                        }
+                                        else if (notification.Message.Contains("chấp nhận") || notification.Message.Contains("Chấp nhận"))
+                                        {
+                                            iconClass = "bi-check-circle";
+                                            iconColor = "#198754";
+                                        }
+                                    }
+                                    <i class="bi @iconClass" style="color: @iconColor; font-size: 1.25rem;"></i>
                                 </div>
                             </div>
                             
-                            <div class="notification-content">
-                                <div class="notification-message">
+                            <div class="notification-content" style="flex: 1; min-width: 0;">
+                                <div class="notification-message" style="font-size: 0.95rem; color: #2c3e50; margin-bottom: 8px; line-height: 1.5;">
                                     @notification.Message
                                 </div>
-                                <div class="notification-meta">
-                                    <span class="notification-time">
+                                <div class="notification-meta" style="display: flex; align-items: center; gap: 16px; font-size: 0.85rem;">
+                                    <span class="notification-time" style="color: #666;">
                                         <i class="bi bi-clock me-1"></i>
-                                        @notification.CreatedAt.ToString("dd/MM/yyyy 'lúc' HH:mm")
+                                        @notification.CreatedAt.ToString("HH:mm dd/MM/yyyy")
                                     </span>
                                     <span class="notification-status">
                                         @if (notification.IsRead == 0)
                                         {
-                                            <span class="status-badge unread-badge">Chưa đọc</span>
+                                            <span style="color: #0066cc; display: flex; align-items: center; gap: 4px;">
+                                                <i class="bi bi-circle"></i>
+                                                Chưa đọc
+                                            </span>
                                         }
                                         else
                                         {
-                                            <span class="status-badge read-badge">Đã đọc</span>
+                                            <span style="color: #198754; display: flex; align-items: center; gap: 4px;">
+                                                <i class="bi bi-check-circle"></i>
+                                                Đã đọc
+                                            </span>
                                         }
                                     </span>
                                 </div>
@@ -94,24 +110,24 @@
                             
                             @if (notification.IsRead == 0)
                             {
-                                <div class="notification-actions">
+                                <div class="notification-actions" style="flex-shrink: 0;">
                                     <button type="button" 
-                                            class="btn-mark-read" 
                                             onclick="markAsRead(@notification.Id)"
-                                            title="Đánh dấu đã đọc">
+                                            title="Đánh dấu đã đọc"
+                                            style="background: #e7f3ff; border: none; color: #0066cc; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
                                         <i class="bi bi-check2"></i>
                                     </button>
                                 </div>
                             }
                         </div>
                     }
-                </div>
-
-                @if (Model.Any(n => n.IsRead == 0))
+                </div>                @if (Model.Any(n => n.IsRead == 0))
                 {
-                    <div class="bulk-actions">
-                        <button type="button" class="btn btn-outline-primary" onclick="markAllAsRead()">
-                            <i class="bi bi-check2-all me-2"></i>
+                    <div style="margin-top: 24px; text-align: center;">
+                        <button type="button" 
+                                onclick="markAllAsRead()" 
+                                style="background: white; border: 1px solid #3498db; color: #3498db; padding: 10px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease;">
+                            <i class="bi bi-check2-all"></i>
                             Đánh dấu tất cả đã đọc
                         </button>
                     </div>
@@ -206,6 +222,6 @@ function updateStats() {
     }
 }
 </script>
-}
+
 </div>
 </div>
