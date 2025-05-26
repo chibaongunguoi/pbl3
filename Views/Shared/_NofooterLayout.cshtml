@@ -45,32 +45,7 @@
                     <div>
             </main>
         </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const eyeIconWrapper = document.querySelector(".eye-icon-wrapper");
-            const eyeClose = document.querySelector(".eye-close");
-            const eyeOpen = document.querySelector(".eye-open");
-            const passwordInput = document.querySelector("input[name='password']");
-            if (eyeIconWrapper != null)
-            {
-                eyeOpen.style.display = "none"; // Ẩn icon mở mắt mặc định
-
-                eyeIconWrapper.addEventListener("click", function () {
-                    if (eyeClose.style.display === "none") {
-                        eyeClose.style.display = "block";
-                        eyeOpen.style.display = "none";
-                        passwordInput.type = "password";
-                    } else {
-                        eyeClose.style.display = "none";
-                        eyeOpen.style.display = "block";
-                        passwordInput.type = "text";
-                    }
-                });
-            }
-        });
-
-    </script>
+    </div>    <!-- Password toggle functionality now handled by passwordVisibility.js -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

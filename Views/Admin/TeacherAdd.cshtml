@@ -135,28 +135,6 @@
 </div>
 
 @section AdminManageLayoutScripts {
-    <script>
-        // Toggle password visibility
-        document.addEventListener('DOMContentLoaded', function() {
-            const eyeIconWrappers = document.querySelectorAll('.eye-icon-wrapper');
-            eyeIconWrappers.forEach(function(wrapper) {
-                wrapper.addEventListener('click', function() {
-                    const passwordInput = this.closest('.pt-add-input-wrapper').querySelector('input');
-                    const eyeOpen = this.querySelector('.eye-open');
-                    const eyeClose = this.querySelector('.eye-close');
-                    
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        eyeOpen.style.display = 'block';
-                        eyeClose.style.display = 'none';
-                    } else {
-                        passwordInput.type = 'password';
-                        eyeOpen.style.display = 'none';
-                        eyeClose.style.display = 'block';
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- Password toggle functionality now handled by passwordVisibility.js -->
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
