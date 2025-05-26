@@ -20,6 +20,7 @@
   </div>
 </div>
 
+@await Html.PartialAsync("Popup/_RejectRequestReasonPopup")
 
 @section TeacherManageLayoutScripts {
   <script src="~/js/pagination.js" asp-append-version="true"></script>
@@ -53,14 +54,12 @@
         btn.addEventListener('click', function () {
           const stuId = this.getAttribute('data-stu-id');
           const semesterId = this.getAttribute('data-semester-id');
-          const stuName = this.getAttribute('data-stu-name');
-          const sentData = {
-            stuId: stuId,
-            semesterId: semesterId
-          }
-          initPagination(paginationData, "/TeacherManageAPI/RejectRequest", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
-          alert(`Đã từ chối yêu cầu đăng kí học của học viên ${stuId} - ${stuName}`);
-        })
+          // Set values for modal
+          document.getElementById('rejectStuId').value = stuId;
+          document.getElementById('rejectSemesterId').value = semesterId;
+          document.getElementById('rejectReason').value = '';
+          // Modal is shown by data-bs-toggle
+        });
       });
     }
   </script>

@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+@{
+    var user = HttpContextAccessor.HttpContext?.User;
+    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;  
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,23 +19,24 @@
     <link rel="stylesheet" href="~/css/Rating.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />    <link rel="stylesheet" href="~/css/_ManageLayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />    <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Notification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/NotificationOverride.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/ManageNotification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notification-popup-fix.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
 </head>
 
-<body>
-    <script src="~/js/init.js" asp-append-version="true"></script>
+<body>    <script src="~/js/init.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pagination.js" asp-append-version="true"></script>
-    @await Html.PartialAsync("Components/_Header")
+    <script src="~/js/notification-handler.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("Components/_Header", user_role)
     <div class="content-wrapper">
         <div class="container">
             <main role="main" class="pb-3 ">

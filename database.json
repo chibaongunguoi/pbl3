@@ -297,8 +297,7 @@
           "ref_field": "id"
         }
       ]
-    },
-    "Request": {
+    },    "Request": {
       "json_file": "data/request.json",
       "fields": [
         {
@@ -331,6 +330,43 @@
         {
           "field": "semester_id",
           "ref_table": "Semester",
+          "ref_field": "id"
+        }
+      ]
+    },
+    "Notification": {
+      "json_file": "data/notification.json",
+      "fields": [
+        {
+          "name": "id",
+          "sql_type": "INT PRIMARY KEY NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "stu_id",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        },
+        {
+          "name": "message",
+          "sql_type": "NVARCHAR(500) NOT NULL",
+          "dtype": "NSTRING"
+        },
+        {
+          "name": "timestamp",
+          "sql_type": "DATETIME NOT NULL",
+          "dtype": "STRING"
+        },
+        {
+          "name": "is_read",
+          "sql_type": "INT NOT NULL",
+          "dtype": "INT"
+        }
+      ],
+      "foreign_keys": [
+        {
+          "field": "stu_id",
+          "ref_table": "Student",
           "ref_field": "id"
         }
       ]

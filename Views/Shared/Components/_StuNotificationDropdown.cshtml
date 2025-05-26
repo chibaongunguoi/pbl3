@@ -1,0 +1,181 @@
+@model List<Notification>
+@{
+    int unreadCount = ViewBag.UnreadCount ?? 0;
+}
+<div id="notificationContent"
+    style="display:none; position: absolute; top: 100%; right: 0; width: 350px; background-color: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 9999;">
+    <div class="notification-content-wrapper">
+        <div class="notification-header">
+            <div class="header-content">
+                <h6 class="header-title">
+                    <i class="bi bi-bell-fill me-2"></i>
+                    Thông báo
+                </h6>
+                @if (unreadCount > 0)
+                {
+                    <span class="unread-count">@unreadCount mới</span>
+                }
+            </div>
+        </div>
+        <div class="notification-item-list">
+            @if (Model.Count == 0)
+            {
+                <div class="empty-notifications">
+                    <div class="empty-icon">
+                        <i class="bi bi-bell-slash"></i>
+                    </div>
+                    <p class="empty-text">Không có thông báo nào</p>
+                    <small class="empty-subtext">Khi có thông báo mới, chúng sẽ hiển thị ở đây</small>
+                </div>
+            }
+            else
+            {
+                foreach (var notif in Model)
+                {
+                    var isUnread = notif.IsRead == 0;
+                    <div class="notification-item @(isUnread ? "unread" : "read")" data-id="@notif.Id" tabindex="0"
+                        role="button" aria-pressed="false" onclick="markAsRead(@notif.Id)">
+                        @if (isUnread)
+                        {
+                            <span class="unread-indicator"
+                                style="display:inline-block;width:8px;height:8px;background:#007bff;border-radius:50%;margin-right:8px;"></span>
+                        }
+                        <div class="notification-icon-sm">
+                            @if (notif.Message.Contains("từ chối") || notif.Message.Contains("Từ chối"))
+                            {
+                                <i class="bi bi-x-circle-fill"></i>
+                            }
+                            else if (notif.Message.Contains("chấp nhận") || notif.Message.Contains("Chấp nhận"))
+                            {
+                                <i class="bi bi-check-circle-fill"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-info-circle-fill"></i>
+                            }
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-message">@notif.Message</div>
+                            <div class="notification-time">
+                                <i class="bi bi-clock me-1"></i>
+                                @notif.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="notification-footer"> <a class="view-all-notifications" href="/Student/Notifications">
+                <i class="bi bi-arrow-right me-1"></i>
+                Xem tất cả thông báo
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>    // Position the notification dropdown as a popup
+    document.addEventListener('DOMContentLoaded', function () {
+        const notificationLink = document.getElementById('notification-info');
+        const notificationDropdown = document.getElementById('notification-dropdown');
+        const notificationContent = document.getElementById('notificationContent');
+
+        if (notificationLink && notificationDropdown) {
+            console.log("Found notification elements, setting up click handler");
+
+            // Replace the dropdown content
+            notificationDropdown.innerHTML = notificationContent.innerHTML;
+            notificationContent.remove();
+
+            // Custom positioning for the dropdown
+            notificationLink.addEventListener('click', function (e) {
+                console.log("Notification icon clicked");
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Toggle dropdown visibility
+                if (notificationDropdown.style.display === 'none' || !notificationDropdown.style.display) {
+                    console.log("Showing dropdown");
+                    notificationDropdown.style.display = 'block';                    // Calculate position based on the notification link
+                    const rect = notificationLink.getBoundingClientRect();
+                    
+                    // Position dropdown based on screen position
+                    const windowWidth = window.innerWidth;
+                    const dropdownWidth = 350; // Same as the width in CSS
+
+                    // Always position relative to the notification link
+                    notificationDropdown.style.position = 'fixed';
+                    notificationDropdown.style.top = `${rect.bottom + 5}px`;
+
+                    // Check if we need to adjust horizontal position
+                    if (rect.right + dropdownWidth > windowWidth) {
+                        // Position left-aligned if near right edge
+                        notificationDropdown.style.right = 'auto';
+                        notificationDropdown.style.left = `${Math.max(0, windowWidth - dropdownWidth)}px`;
+                    } else {
+                        // Position right-aligned with the notification icon
+                        notificationDropdown.style.left = 'auto';
+                        notificationDropdown.style.right = `${windowWidth - rect.right}px`;
+                    }
+
+                    // Close any other open dropdowns
+                    const userDropdown = document.getElementById('user-dropdown');
+                    if (userDropdown && userDropdown.style.display === 'block') {
+                        userDropdown.style.display = 'none';
+                    }
+                } else {
+                    console.log("Hiding dropdown");
+                    notificationDropdown.style.display = 'none';
+                }
+            });            // Close dropdown when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!notificationLink.contains(e.target) && !notificationDropdown.contains(e.target)) {
+                    notificationDropdown.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    function markAsRead(notificationId) {
+        // Make AJAX call to mark notification as read
+        fetch('/Student/MarkNotificationRead', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'id=' + notificationId
+        }).then(response => {
+            if (response.ok) {
+                // Use a more robust selector to find the notification item
+                const notificationItem = document.querySelector(`.notification-item[data-id="${notificationId}"]`);
+                if (notificationItem && notificationItem.classList.contains('unread')) {
+                    notificationItem.classList.remove('unread');
+                    notificationItem.classList.add('read');
+                    const indicator = notificationItem.querySelector('.unread-indicator');
+                    if (indicator) indicator.remove();
+
+                    // Update badge count
+                    const badge = document.querySelector('.notification-badge');
+                    const unreadCountElem = document.querySelector('.unread-count');
+                    if (badge && unreadCountElem) {
+                        const currentCount = parseInt(badge.textContent);
+                        if (currentCount > 1) {
+                            badge.textContent = currentCount - 1;
+                            unreadCountElem.textContent = (currentCount - 1) + ' mới';
+                        } else {
+                            // If this was the last unread notification, hide the badge and unread count
+                            if (badge.parentNode) badge.parentNode.removeChild(badge);
+                            if (unreadCountElem.parentNode) unreadCountElem.parentNode.removeChild(unreadCountElem);
+                        }
+                    }
+                }
+
+                // Optional: Redirect to the relevant page if the notification has a link
+                // If you want to support redirect, add a property to Notification and set data-redirect in the markup
+                if (notificationItem && notificationItem.getAttribute('data-redirect')) {
+                    window.location.href = notificationItem.getAttribute('data-redirect');
+                }
+            }
+        }).catch(error => { console.error('Error marking notification as read:', error); });
+    }
+
+</script>

@@ -608,12 +608,14 @@ id_counters = [
     IdCounter("Course", course_next_id, 1, 0),
     IdCounter("Semester", semester_next_id, 1, 0),
     IdCounter("Subject", subject_next_id, 1, 0),
+    IdCounter("Notification", 1, 1, 0),
 ]
 
 json_output("id_counter", id_counters)
 
 # -----------------------------------------------------------------------------
 json_output("admin", [Admin(1, "admin",sha256("admin"))])
+json_output("notification", [])
 
 # -----------------------------------------------------------------------------
 print("Generated successfully!")

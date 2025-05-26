@@ -1,0 +1,59 @@
+/* Important overrides for notification popup */
+.notification-link {
+  position: relative !important;
+  display: inline-block !important;
+}
+
+.notification-icon-wrapper {
+  position: relative !important;
+  z-index: 1 !important;
+  cursor: pointer !important;
+}
+
+#notification-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  width: 350px !important;
+  background: white !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  z-index: 9999 !important; 
+  margin-top: 10px !important;
+  display: none;
+}
+
+/* Fix any alignment issues */
+.notification-item {
+  align-items: flex-start !important;
+  position: relative !important;
+}
+
+/* Remove any problematic animations */
+.notification-badge.pulse {
+  animation: none !important;
+}
+
+/* Ensure notification content is properly visible */
+.notification-content-wrapper {
+  background: white !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+}
+
+/* Prevent notification from being cropped by any parent containers */
+body {
+  overflow-x: hidden !important;
+}
+
+/* Ensure proper clickability for notification elements */
+.notification-item,
+.notification-footer a {
+  cursor: pointer !important;
+}
+
+/* Fix issues with Bootstrap or other frameworks */
+.dropdown-menu.show {
+  display: none !important;
+}

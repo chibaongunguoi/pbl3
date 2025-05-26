@@ -184,11 +184,12 @@ button.accept-policy {
   z-index: 2202;
   position: absolute;
   font-size: 14px;
-  width: 100%;
+  width: 200px; /* Fixed width instead of 100% */
   border-radius: 3px;
   display: flex;
   flex-direction: column;
   top: 10px;
+  right: 0; /* Align to the right */
   /* display: none; */
 }
 .user-item,

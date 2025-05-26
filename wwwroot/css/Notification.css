@@ -1,97 +1,341 @@
-/* Notification styles */
+/* Simple resets */
+.noti-dropdown {
+  display: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  position: absolute;
+  top: 100%;
+  right: -10px;  /* Shift dropdown left so right edge aligns with triangle */
+  width: 250px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  margin-top: 2px;  /* Reduced from 10px to place it closer to the menu */
+  border-left: none !important;
+  border-left-color: transparent !important;
+  border-left-width: 0 !important;
+  border-left-style: none !important;
+}
+
+.noti-dropdown * {
+  box-sizing: border-box;
+}
+
+.noti-dropdown .notification-item-list,
+.noti-dropdown .notification-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.noti-dropdown .notification-item.unread {
+  border-left: 3px solid #3498db;
+}
+
+/* Notification styles - Modern Design */
 .notification-link {
-  display: flex;
+  display: inline-block;
   align-items: center;
   margin-right: 15px;
   position: relative;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification-icon-wrapper {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .notification-icon {
-  padding: 5px;
+  padding: 8px;
   position: relative;
-}
-
-.notification-icon svg {
-  color: #555;
-}
-
-/* Badge for showing notification count */
-.notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #dc3545;
-  color: white;
   border-radius: 50%;
-  padding: 2px 5px;
-  font-size: 0.7rem;
-  min-width: 15px;
-  min-height: 15px;
+  background: #3498db;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Notification dropdown */
-#notification-dropdown,
-.noti-dropdown {
+.notification-icon:hover {
+  background: #2980b9;
+}
+
+.notification-icon svg {
+  color: white;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+/* Enhanced notification badge with pulse animation */
+.notification-badge {
   position: absolute;
-  border: none;
+  top: -5px;
+  right: -5px;
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  min-width: 16px;
+  min-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+}
+
+/* Remove pulse animation */
+
+/* Simple notification dropdown */
+.modern-dropdown {
+  position: absolute;
   top: 90%;
   right: 0px;
-
-  background-color: white;
+  width: 350px;
+  background: white;
   border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   margin-top: 5px;
+  overflow: hidden;
+  outline: none;
 }
+
+/* Remove slideDown animation */
+
+.notification-content-wrapper {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.notification-content-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Simple header */
+.notification-header {
+  background: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border-bottom: 1px solid #2980b9;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.unread-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Modern notification items */
+.notification-item-list {
+  padding: 0;
+}
+
+.notification-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.notification-item:hover {
+  background: #f9f9f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item.unread {
+  background: #f5f5f5;
+  border-left: 3px solid #3498db;
+}
+
+.notification-item.unread:hover {
+  background: #eee;
+}
+
+/* Override any bootstrap or framework default styles */
+.notification-item:before,
+.notification-item:after {
+  display: none !important; /* Prevent any pseudo elements */
+}
+
+.notification-icon-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-message {
+  font-weight: normal;
+  color: #333;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+  max-width: 100%;
+}
+
+.notification-time {
+  font-size: 0.8rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+}
+
+.notification-time i {
+  opacity: 0.7;
+}
+
+/* Simple unread count in header */
+.unread-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: normal;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.unread-indicator {
+  width: 6px;
+  height: 6px;
+  background: #e74c3c;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* Empty state styling with enhanced design */
+.empty-notifications {
+  text-align: center;
+  padding: 30px 20px;
+  color: #777;
+  background: #f5f5f5;
+  margin: 10px;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  color: #bbb;
+  margin-bottom: 15px;
+}
+
+/* Remove animation */
+.empty-text {
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1rem;
+}
+
+.empty-subtext {
+  font-size: 0.85rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Footer styles - combined and simplified */
+
+/* Important positioning for dropdowns */
 #notification-dropdown {
-  width: 350px;
+  width: 250px !important;
+  position: absolute !important;
+  z-index: 9999 !important;
+  right: -10px !important;  /* Match the offset from .noti-dropdown */
+  transform: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 2px !important;  /* Match the new spacing */
+  float: none !important;
+  left: auto !important;
+  border-left: none !important;
 }
+
 #user-dropdown {
-  right: 330px;
+  right: 0;
 }
-.notification-content-wrapper,
+
 .user-content-wrapper {
   max-height: 400px;
   overflow-y: auto;
 }
 
-.notification-header {
-  padding: 10px 15px;
-  border-bottom: 1px solid #eee;
-  font-weight: bold;
-  background-color: #f8f9fa;
-}
-
-.notification-header h6 {
-  margin: 0;
-  font-weight: bold;
-}
-
-.notification-item-list,
 .user-item-list {
   padding: 0;
 }
 
-.notification-item,
 .user-item,
 .logout-item {
-  padding: 10px 10px;
+  padding: 12px 16px;
   border-bottom: 1px solid #eee;
   transition: background-color 0.2s ease;
 }
 
-.notification-item:hover,
 .user-item:hover,
 .logout-item:hover {
   background-color: #f5f5f5;
 }
 
-.notification-item-title,
 .user-item-title {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 0.9rem;
   margin-bottom: 3px;
   color: #333;
@@ -104,34 +348,6 @@
   text-decoration: none;
 }
 
-.notification-item-content {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 5px;
-}
-
-.notification-item-time {
-  font-size: 0.75rem;
-  color: #999;
-}
-
-.notification-footer {
-  padding: 10px 15px;
-  text-align: center;
-  border-top: 1px solid #eee;
-  background-color: #f8f9fa;
-}
-
-.view-all-notifications {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.view-all-notifications:hover {
-  text-decoration: underline;
-}
-
 .logout-button {
   background: none;
   border: none;
@@ -139,7 +355,7 @@
   text-align: left;
   width: 100%;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 0.9rem;
   color: #dc3545;
 }
@@ -147,6 +363,48 @@
 .logout-button:hover {
   color: #bd2130;
   text-decoration: none;
+}
+
+/* Enhanced footer with better styling */
+.notification-footer {
+  padding: 10px 15px;
+  text-align: center;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.view-all-notifications {
+  color: #3498db;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 15px;
+}
+
+.view-all-notifications:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Simple scrollbar */
+.notification-content-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.notification-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
 }
 
 /* For better spacing between notification and user icon */
@@ -159,4 +417,28 @@
 .nav-item {
   display: flex;
   align-items: center;
+}
+
+.notification-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.status-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: normal;
+}
+
+.unread-badge {
+  background: #e74c3c;
+  color: white;
+}
+
+.read-badge {
+  background: #27ae60;
+  color: white;
 }

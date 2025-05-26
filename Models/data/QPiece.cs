@@ -12,8 +12,10 @@ static class QPiece
     public static string toStr(DateOnly? value) => $"'{value?.Year}-{value?.Month:D2}-{value?.Day:D2}'";
     public static string toStr(DateOnly value) => $"'{value.Year}-{value.Month:D2}-{value.Day:D2}'";
 
-    public static string toStr(DateTime value) =>
-        $"'{value.Year}-{value.Month:D2}-{value.Day:D2} {value.Hour:D2}:{value.Minute:D2}:{value.Second:D2}'";
+    public static string toStr(DateTime? value) =>
+        $"'{value?.Year}-{value?.Month:D2}-{value?.Day:D2} {value?.Hour:D2}:{value?.Minute:D2}:{value?.Second:D2}'";
+
+    public static string toStr(DateTime value) => toStr((DateTime?)value);
 
     public static string toStr(string value) => $"\'{value}\'";
 

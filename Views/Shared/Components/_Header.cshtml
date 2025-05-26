@@ -1,10 +1,4 @@
-@inject IHttpContextAccessor HttpContextAccessor
-@using System.Security.Claims
-
-@{
-    var user = HttpContextAccessor.HttpContext?.User;
-    string? user_role = user?.FindFirst(ClaimTypes.Role)?.Value;
-}
+@model string?
 
 <header class="header">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
@@ -15,11 +9,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex">
-                </ul>
+                <ul class="navbar-nav flex"></ul>
                 <div class="navbar-nav flex user-link-wrapper">
                     @await Html.PartialAsync(
-                    user_role switch
+                    @Model switch
                     {
                         UserRole.Teacher => "Components/_TchTopRightMenu",
                         UserRole.Student => "Components/_StuTopRightMenu",
@@ -31,5 +24,5 @@
             </div>
         </div>
     </nav>
-    @await Html.PartialAsync("Components/_HeaderMenu")
+    @await Html.PartialAsync("Components/_HeaderMenu", Model)
 </header>

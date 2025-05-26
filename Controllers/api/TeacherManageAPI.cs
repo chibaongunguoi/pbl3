@@ -132,6 +132,9 @@ public class TeacherManageAPI : BaseController
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Update);
+        // Add notification for student
+        string message = $"Bạn đã được chấp nhận vào khóa học (ID học kỳ: {semesterId})";
+        QDatabase.Exec(conn => Notification.Add(conn, stuId, message));
         return ManageRequest(paginationInfo, searchQuery);
     }
 
@@ -141,20 +144,20 @@ public class TeacherManageAPI : BaseController
         return ManageRequestPagination(paginationInfo, searchQuery, contextUrl, contextComponent);
     }
 
-    [HttpGet("RejectRequest")]
-    public IActionResult RejectRequest(int stuId, int semesterId, PaginationInfo paginationInfo, string? searchQuery = null)
+    [HttpPost("RejectRequest")]
+    public IActionResult RejectRequest(int stuId, int semesterId, string? reason = null, PaginationInfo? paginationInfo = null, string? searchQuery = null)
     {
         Query q = new(Tbl.request);
         q.Where(Field.request__semester_id, semesterId);
         q.Where(Field.request__stu_id, stuId);
         QDatabase.Exec(q.Delete);
+        // Add notification for student
+        string message = string.IsNullOrWhiteSpace(reason)
+            ? $"Yêu cầu tham gia khóa học (ID học kỳ: {semesterId}) của bạn đã bị từ chối."
+            : $"Yêu cầu tham gia khóa học (ID học kỳ: {semesterId}) của bạn đã bị từ chối. Lý do: {reason}";
+        QDatabase.Exec(conn => Notification.Add(conn, stuId, message));
+        paginationInfo ??= new PaginationInfo { CurrentPage = 1, ItemsPerPage = 20 };
         return ManageRequest(paginationInfo, searchQuery);
-    }
-
-    [HttpGet("RejectRequest/Pagination")]
-    public IActionResult RejectRequestPagination(PaginationInfo paginationInfo, string? searchQuery, string contextUrl, string contextComponent)
-    {
-        return ManageRequestPagination(paginationInfo, searchQuery, contextUrl, contextComponent);
     }
     [HttpGet("GetEditCourseForm")]
     public IActionResult GetEditCourseForm(int courseId)

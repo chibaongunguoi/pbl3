@@ -1,9 +1,6 @@
 ﻿@model BriefTeacherPage
 @using System.Text.Json
-@{
-    var contextComponent = ".pagination-list";
-    var contextUrl = "/teacherAPI/getBriefTeacherCards";
-}
+
 
 <div class="text-center">
     <div class="shop-section-wrapper container">
@@ -22,10 +19,9 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script>
         const filterForm = @Html.Raw(JsonSerializer.Serialize(@Model.MBriefTeacherFilter));
         const paginationInfo = @Html.Raw(JsonSerializer.Serialize(@Model.MPaginationInfo))
-        initPagination(paginationInfo, "@contextUrl", "@contextComponent", filterForm, ".pagination-bar", ".pagination-form")
+        initPagination(paginationInfo, "/teacherAPI/getBriefTeacherCards", ".pagination-list", filterForm, ".pagination-bar", ".pagination-form")
     </script>
 }

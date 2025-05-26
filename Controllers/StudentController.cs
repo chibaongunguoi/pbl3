@@ -86,8 +86,74 @@ public class StudentController : BaseController
         QDatabase.Exec(conn =>
         {
             q.Insert(conn, request);
-        });
-        TempData["SuccessMessage"] = "Đăng kí học thành công!";
+        });        TempData["SuccessMessage"] = "Đăng kí học thành công!";
         return Json(new { redirectUrl = Url.Action(nameof(Course)) });
+    }
+
+    [HttpGet]
+    public IActionResult Notifications()
+    {
+        int studentId = GetCurrentStudentId();
+        List<Notification> notifications = new();
+        QDatabase.Exec(conn =>
+        {
+            Query q = new(Tbl.notification);
+            q.Where(Field.notification__stu_id, studentId);
+            q.OrderBy(Field.notification__timestamp, desc: true);
+            q.Output(Field.notification__id);
+            q.Output(Field.notification__message);
+            q.Output(Field.notification__timestamp);
+            q.Output(Field.notification__is_read);
+            q.Select(conn, reader =>
+            {
+                int pos = 0;
+                Notification n = new ()
+                {
+                    Id = QDataReader.GetInt(reader, ref pos),
+                    StudentId = studentId,
+                    Message = QDataReader.GetString(reader, ref pos),
+                    CreatedAt = QDataReader.GetDateTime(reader, ref pos),
+                    IsRead = QDataReader.GetInt(reader, ref pos)
+                };
+                notifications.Add(n);
+            });
+        });
+        return View("~/Views/Student/Notifications.cshtml", notifications);
+    }
+
+    [HttpPost]
+    public IActionResult MarkNotificationRead(int id)
+    {
+        int studentId = GetCurrentStudentId();
+        QDatabase.Exec(conn =>
+        {
+            Query q = new(Tbl.notification);
+            q.Set(Field.notification__is_read, 1);
+            q.Where(Field.notification__stu_id, studentId);
+            q.Where(Field.notification__id, id);
+            q.Update(conn);
+        });
+        return RedirectToAction("Notifications");
+    }    private int GetCurrentStudentId()
+    {
+        // Get the username from the authentication claims
+        string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        if (string.IsNullOrEmpty(username))
+            return 0;
+        
+        // Query the database to get the student ID from the username
+        int studentId = 0;
+        QDatabase.Exec(conn =>
+        {
+            Query q = new(Tbl.student);
+            q.Where(Field.student__username, username);
+            q.Output(Field.student__id);
+            q.Select(conn, reader =>
+            {
+                studentId = QDataReader.GetInt(reader);
+            });
+        });
+        
+        return studentId;
     }
 }

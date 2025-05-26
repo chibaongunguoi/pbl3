@@ -270,6 +270,16 @@ public class Query
         SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
     }
 
+    public void Set(string field, DateTime? value, string? alias_ = null)
+    {
+        SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
+    }
+
+    public void Set(string field, DateTime value, string? alias_ = null)
+    {
+        SetClause($"{QPiece.dot(field, alias_)} = {QPiece.toStr(value)}");
+    }
+
     // ------------------------------------------------------------------------
     public void JoinClause(params List<string> join_cmd)
     {
@@ -443,6 +453,14 @@ public class Query
         order_bys.Clear();
         Output(QPiece.countAll);
         return Scalar(conn);
+    }
+
+    // ------------------------------------------------------------------------
+    public void Insert(SqlConnection conn)
+    {
+        // Collect all set fields as a comma-separated string of values
+        var values = string.Join(", ", set_fields.Select(f => f.Split('=')[1].Trim()));
+        QDatabase.ExecQuery(conn, InsertQuery(values));
     }
 
     // ========================================================================

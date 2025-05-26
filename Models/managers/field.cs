@@ -9,6 +9,7 @@ static class Tbl
     public const string semester = "Semester";
     public const string rating = "Rating";
     public const string request = "Request";
+    public const string notification = "Notification";
 }
 static class Fld
 {
@@ -87,5 +88,9 @@ static class Field
     public const string request__stu_id = "[Request].[stu_id]";
     public const string request__semester_id = "[Request].[semester_id]";
     public const string request__timestamp = "[Request].[timestamp]";
-    public const string request__status = "[Request].[status]";
+    public const string request__status = "[Request].[status]";    public const string notification__id = "[Notification].[id]";
+    public const string notification__stu_id = "[Notification].[stu_id]";
+    public const string notification__message = "[Notification].[message]";
+    public const string notification__timestamp = "[Notification].[timestamp]";
+    public const string notification__is_read = "[Notification].[is_read]";
 }
