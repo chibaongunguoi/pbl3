@@ -246,7 +246,53 @@ public class TeacherManageAPI : BaseController
         }
 
         Semester? semester = null;
-        QDatabase.Exec(conn => form.Execute(conn, out semester));
+        List<int> affectedStudents = [];
+
+        QDatabase.Exec(conn =>
+        {
+            // Get list of students waiting or joined for this semester
+            Query studentQuery = new(Tbl.request);
+            studentQuery.Where(Field.request__semester_id, form.SemesterId);
+            studentQuery.Output(Field.request__stu_id);
+            studentQuery.Select(conn, reader => 
+            {
+                int pos = 0;
+                affectedStudents.Add(QDataReader.GetInt(reader, ref pos));
+            });
+
+            // Get course name for notification
+            string? courseName = null;
+            string? teacherName = null;
+
+            Query teacherQuery = new(Tbl.teacher);
+            teacherQuery.Where(Field.teacher__username, username);
+            teacherQuery.Output(Field.teacher__name);
+            teacherQuery.Select(conn, reader => {
+                int pos = 0;
+                teacherName = QDataReader.GetString(reader, ref pos);
+            });
+
+            Query courseQuery = new(Tbl.course);
+            courseQuery.Where(Field.course__id, form.CourseId);
+            courseQuery.Output(Field.course__name);
+            courseQuery.Select(conn, reader => {
+                int pos = 0;
+                courseName = QDataReader.GetString(reader, ref pos);
+            });
+
+            form.Execute(conn, out semester);
+
+            if (semester != null)
+            {
+                // Send notifications to all affected students
+                foreach (var studentId in affectedStudents)
+                {
+                    string message = $"Khóa học {courseName} của giảng viên {teacherName} đã được cập nhật. Vui lòng kiểm tra thông tin mới.";
+                    Notification.Add(conn, studentId, message);
+                }
+            }
+        });
+
         return PartialView("Form/_EditCourseForm", form);
     }
 
