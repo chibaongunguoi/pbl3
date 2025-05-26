@@ -22,19 +22,18 @@ public class StuNotificationViewComponent : ViewComponent
                     studentId = QDataReader.GetInt(reader, ref pos);
                 });
             });
-        }
-        List<Notification> notifications = [];
-        int unreadCount = 0;
+        }        List<Notification> notifications = [];
         QDatabase.Exec(conn =>
         {
+            // Get the latest 10 notifications for display
             Query q = new(Tbl.notification);
             q.Where(Field.notification__stu_id, studentId);
             q.OrderBy(Field.notification__timestamp, desc: true);
-            q.Offset(1, 10);
+            q.OutputTop(10);
             q.Select(conn, reader =>
             {
                 int pos = 0;
-                Notification n = new ()
+                Notification n = new()
                 {
                     Id = QDataReader.GetInt(reader, ref pos),
                     StudentId = QDataReader.GetInt(reader, ref pos),
@@ -43,10 +42,9 @@ public class StuNotificationViewComponent : ViewComponent
                     IsRead = QDataReader.GetInt(reader, ref pos)
                 };
                 notifications.Add(n);
-                if (n.IsRead == 0) unreadCount++;
             });
         });
-        ViewBag.UnreadCount = unreadCount;
+
         return View("~/Views/Shared/Components/_StuNotificationDropdown.cshtml", notifications);
     }
 }
