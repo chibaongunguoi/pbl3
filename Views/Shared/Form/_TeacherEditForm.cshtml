@@ -12,7 +12,7 @@
             </div>
             <div class="pt-add-input-wrapper">
                 <input class="pt-add-form-input pt-name-input" type="text" asp-for="Username" placeholder="Nhập vào"
-                    maxlength="150"/>
+                    maxlength="150" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
         </div>
@@ -24,10 +24,11 @@
             </div>
             <div class="pt-add-input-wrapper">
                 <input class="pt-add-form-input pt-name-input" type="text" asp-for="Name" placeholder="Nhập vào"
-                    maxlength="150"/>
+                    maxlength="150" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-        </div>        <div class="pt-add-form-item">
+        </div>
+        <div class="pt-add-form-item">
             <div class="pt-add-label">
                 <label asp-for="MGender">
                     <div class="required-icon">*</div> Giới tính
@@ -84,20 +85,11 @@
                     Mật khẩu mới
                 </label>
             </div>
-            <div class="pt-add-input-wrapper">
-                <input asp-for="NewPassword" placeholder="Để trống nếu không thay đổi" class="pt-add-form-input pt-name-input" />
+            <div class="pt-add-input-wrapper auth-input-wrapper">
+                <input asp-for="NewPassword" type="password" placeholder="Để trống nếu không thay đổi"
+                    class="pt-add-form-input pt-name-input" />
+                @await Html.PartialAsync("Components/_Eye")
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
-                <div class="hide-show-icon-wrapper">
-                    <div class="eye-icon-wrapper" >
-                        <svg class="eye-icon eye-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%" >
-                             <path d="M32.711 11c-3.166 4.841-8.573 8.03-14.71 8.03-6.139 0-11.546-3.189-14.712-8.03M9.79 17.5l-3 5m8.5-3-1 5.5m12.5-7.5 3 5m-8.5-3 1 5.5"></path>
-                        </svg>  
-                        <svg class="eye-icon eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" width="100%" height="100%">
-                            <circle cx="18" cy="17.5" r="4"></circle>
-                            <path d="M3.284 18.47a1.77 1.77 0 0 1 0-1.94c3.167-4.84 8.573-8.03 14.711-8.03s11.545 3.19 14.711 8.03a1.77 1.77 0 0 1 0 1.94c-3.166 4.84-8.573 8.03-14.71 8.03-6.139 0-11.545-3.19-14.712-8.03"></path>
-                        </svg>        
-                    </div>
-                </div>
             </div>
         </div>
         <div class="pt-add-btn-group">
@@ -105,7 +97,6 @@
         </div>
     </form>
 </div>
-
 <script>
     function load(teacherId) {
         const placeholderSelector = `#AdminEditTeacherFormPlaceholder`;
@@ -122,31 +113,15 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     $(placeholderSelector).html(response);
                     load(teacherId);
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error submitting form:", error);
                 }
             });
         });
     }
     load(@Model.TchId);
-    
-    document.querySelector('.eye-icon-wrapper').addEventListener('click', function() {
-        const passwordInput = document.querySelector('#NewPassword');
-        const eyeOpen = document.querySelector('.eye-open');
-        const eyeClose = document.querySelector('.eye-close');
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            eyeOpen.style.display = 'block';
-            eyeClose.style.display = 'none';
-        } else {
-            passwordInput.type = 'password';
-            eyeOpen.style.display = 'none';
-            eyeClose.style.display = 'block';
-        }
-    });
 </script>

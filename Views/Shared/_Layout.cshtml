@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="~/css/Rating.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/_ManageLayout.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />    <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/HomeContent.css" asp-append-version="true" />    \
+    <link rel="stylesheet" href="~/css/Home/TchList.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Course/Manage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Notification.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/NotificationOverride.css" asp-append-version="true" />
@@ -29,10 +30,13 @@
     <link rel="stylesheet" href="~/REPO.styles.css" asp-append-version="true" />
 </head>
 
-<body>    <script src="~/js/init.js" asp-append-version="true"></script>
+<body>    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/init.js" asp-append-version="true"></script>
     <script src="~/js/pagination.js" asp-append-version="true"></script>
     <script src="~/js/notification-handler.js" asp-append-version="true"></script>
-    <script src="~/js/passwordVisibility.js" asp-append-version="true"></script>
     @await Html.PartialAsync("Components/_Header", @user_role)
     <div class="content-wrapper">
         <div class="container">
@@ -44,9 +48,6 @@
         </div>
     </div>
     @await Html.PartialAsync("Components/_Footer")
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

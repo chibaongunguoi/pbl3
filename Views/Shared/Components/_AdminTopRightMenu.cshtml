@@ -1,82 +1,60 @@
-<div class="nav-item ">
-    <!-- Thông báo dropdown -->
-    <a id="notification-info" class="text-dark user-link notification-link">
-        <div class="notification-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-            </svg>
-            <span class="notification-badge">3</span>
-        </div>
-        <div class="noti-dropdown" id="notification-dropdown" style="display:none">
-            <div class="notification-content-wrapper">
-                
-                <div class="notification-item-list">
-                    <div class="notification-item">
-                        <div class="notification-item-title">
-                            Giáo viên mới đăng ký
-                        </div>
-                        <div class="notification-item-content">
-                            Giáo viên Trần Văn B đã đăng ký làm giáo viên trên hệ thống
-                        </div>
-                        <div class="notification-item-time">
-                            15 phút trước
-                        </div>
-                    </div>
-                    <div class="notification-item">
-                        <div class="notification-item-title">
-                            Khóa học mới cần duyệt
-                        </div>
-                        <div class="notification-item-content">
-                            Giáo viên Lê Thị C đã tạo khóa học mới và đang chờ duyệt
-                        </div>
-                        <div class="notification-item-time">
-                            2 giờ trước
-                        </div>
-                    </div>
-                    <div class="notification-item">
-                        <div class="notification-item-title">
-                            Báo cáo vi phạm
-                        </div>
-                        <div class="notification-item-content">
-                            Có báo cáo vi phạm từ học viên về khóa học ReactJS
-                        </div>
-                        <div class="notification-item-time">
-                            1 ngày trước
-                        </div>
-                    </div>
-                </div>
-                
+<div class="nav-item">
+    <div style="position: relative; display: inline-block;">
+        <a id="user-info" class="text-dark user-link"
+            style="cursor:pointer; display: inline-block; margin-left: 15px;">
+            <div class="user-role" style="display: inline-block; vertical-align: middle;">
+                Quản trị viên
+            </div>   
+            <div class="user-icon down-arrow" style="display: inline-block; vertical-align: middle; margin-left: 5px;">
+                <svg width="10" height="10" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
+                </svg>
             </div>
-        </div>
-    </a>
-
-    <!-- User dropdown -->
-    <a id="user-info" class="text-dark user-link">
-        <div class="user-role">
-            Quản trị viên
-        </div>
-        <div class="user-icon down-arrow">
-            <svg width="10" height="10" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.5 12L12.9952 0.75H0.00480938L6.5 12Z" fill="#7F7F7F" />
-            </svg>
-        </div>
-        <div class="noti-dropdown" id="user-dropdown" style="display:none">
-            <div class="user-content-wrapper">
-                <div class="user-item-list">
-                    <div class="user-item">
-                        <a class="user-item-title" href="">
-                            Thông tin tài khoản
-                        </a>
-                    </div>
-                    <div class="logout-item ">
-                        <form action="/Auth/Logout" method="POST">
-                            <button type='submit' class="user-item-title logout-button">
-                                đăng xuất
-                            </button>
-                        </form>
-                    </div>
+        </a>
+        <div class="noti-dropdown" id="user-dropdown" style="display:none; position: absolute; top: calc(100% + 5px); right: 0; z-index: 1000; background-color: white; border: 1px solid #ddd; min-width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <div class="user-content-wrapper">
+            <div class="user-item-list">
+                <div class="logout-item">
+                    <form action="/Auth/Logout" method="POST">
+                        <button type='submit' class="user-item-title logout-button" style="padding: 2px; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">Đăng xuất</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </a>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let userInfo = document.getElementById("user-info");        
+        if (userInfo) {
+            userInfo.addEventListener("click", function (e) {
+                e.stopPropagation();
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown) {
+                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                }
+                let notificationDropdown = document.getElementById("notification-dropdown");
+                if (notificationDropdown && notificationDropdown.style.display === "block") {
+                    notificationDropdown.style.display = "none";
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown && !userInfo.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Update position on resize
+            window.addEventListener('resize', function() {
+                let dropdown = document.getElementById("user-dropdown");
+                if (dropdown && dropdown.style.display === "block") {
+                    positionDropdown();
+                }
+            });
+        }
+    });
+</script>

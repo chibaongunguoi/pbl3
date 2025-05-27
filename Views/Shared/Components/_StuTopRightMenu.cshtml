@@ -19,7 +19,8 @@
         </a>
         <div class="noti-dropdown" id="user-dropdown" style="display:none; position: absolute; top: calc(100% + 5px); right: 0; z-index: 1000; background-color: white; border: 1px solid #ddd; min-width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
         <div class="user-content-wrapper">
-            <div class="user-item-list">                <div class="user-item">
+            <div class="user-item-list">
+                <div class="user-item">
                     <a class="user-item-title" href="/Student/ManageProfile" style="padding: 2px; display: block;">Thông tin tài khoản</a>
                 </div>
                 <div class="logout-item">
@@ -34,7 +35,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let userInfo = document.getElementById("user-info");        if (userInfo) {
+        let userInfo = document.getElementById("user-info");        
+        if (userInfo) {
             userInfo.addEventListener("click", function (e) {
                 e.stopPropagation();
                 let dropdown = document.getElementById("user-dropdown");
