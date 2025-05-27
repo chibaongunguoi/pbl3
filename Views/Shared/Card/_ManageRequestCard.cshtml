@@ -17,3 +17,14 @@
         </div>
     </td>
 </tr>
+
+<script>
+    document.querySelector(`.btn-reject-request[data-stu-id="${@Model.StudentId}"]`).addEventListener('click', function () {
+        const stuId = this.getAttribute('data-stu-id');
+        const semesterId = this.getAttribute('data-semester-id');
+        const stuName = this.getAttribute('data-stu-name');
+
+        const modalTitle = document.querySelector('#RejectRequestReasonModal .modal-title');
+        modalTitle.textContent = `Từ chối yêu cầu đăng ký học của học viên ${stuId} - ${stuName}`;
+    });
+</script>
