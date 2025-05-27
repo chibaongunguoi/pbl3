@@ -5,7 +5,7 @@
 @{
   Layout = "Layout/_StudentManageLayout";
   var user = HttpContextAccessor.HttpContext?.User;
-  string username = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+  string username = user?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
 }
 
 @await Html.PartialAsync("_SuccessErrorMessage")
@@ -48,14 +48,11 @@
   </div>
 </div>
 
-@section StudentManageLayoutScripts {
-  <script src="~/js/pagination.js" asp-append-version="true"></script>
-  <script>
-    const sentData = { username: @username}
-    const paginationData = {
-      CurrentPage: 1,
-      ItemsPerPage: 20,
-    }
-    initPagination(paginationData, "/courseAPI/StudentCourse", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
-  </script>
-}
+<script>
+  const sentData = { username: @username}
+  const paginationData = {
+    CurrentPage: 1,
+    ItemsPerPage: 20,
+  }
+  initPagination(paginationData, "/courseAPI/StudentCourse", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
+</script>

@@ -141,6 +141,9 @@ if not os.path.exists("data"):
 with open("tools/ratings.json", 'r',encoding="utf-8" ) as f:
     comments = json.load(f)
 
+with open("tools/CourseDescriptions.json", 'r',encoding="utf-8" ) as f:
+    course_descriptions = json.load(f)
+
 def json_output(file_name, lst):
     with open(f"data/{file_name}.json", "w", encoding="utf-8", newline="") as f:
         f.write(
@@ -477,8 +480,8 @@ for tch_id in teacher_ids:
 
         course_id = course_next_id
         semester_description = (
-            f"Khóa học {sbj} của giáo viên {name}. "
-            + r"Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            f"Đây là khóa học {sbj} của giảng viên {name}. "
+            + " ".join(random.sample(course_descriptions, 10))
         )
 
         # create semesters

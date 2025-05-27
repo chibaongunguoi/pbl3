@@ -173,24 +173,7 @@
                 }
             }
         });
-          // Notification dropdown toggle - only if enhanced dropdown isn't present
-        let notificationInfo = document.getElementById("notification-info");
-        let enhancedNotificationWrapper = document.querySelector(".notification-icon-wrapper");
-        
-        if (notificationInfo && !enhancedNotificationWrapper) {
-            // Use simple dropdown toggle for basic notifications
-            notificationInfo.addEventListener("click", function (event) {
-                let dropdown = document.getElementById("notification-dropdown");
-                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-                event.stopPropagation();
-            });
-        } else if (notificationInfo && enhancedNotificationWrapper) {
-            // For enhanced student notifications, just prevent default on the parent link
-            notificationInfo.addEventListener("click", function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-        }
+         
           // Đóng dropdown khi click bên ngoài - only for basic dropdowns
         document.addEventListener('click', function(event) {
             let notificationDropdown = document.getElementById("notification-dropdown");
