@@ -62,13 +62,13 @@ public class TeacherAddForm
             Message.Add("Error", "Đã đạt giới hạn số lượng giảng viên");
             return;
         }
-        
+        string password = BackUtils.ComputeSHA256(Password ?? "");
         // Create a teacher object to insert
         Teacher newTeacher = new()
         {
             Id = id,
             Username = Username ?? "",
-            Password = Password ?? "",
+            Password = password,
             Name = Name ?? "",
             Gender = MGender ?? "",
             Bday = Bday ?? DateOnly.FromDateTime(DateTime.Now),

@@ -24,7 +24,7 @@
         </div>
         <div class="pagination-form shop-section-content">
             @await Html.PartialAsync("_RatingTable", (@Model.averageRating, @Model.numRatings, @Model.rating_counts))
-            <div class="rating-comment-wapper">
+            <div class="rating-comment-wapper" style="padding-bottom: 5px;">
                 <div class="pagination-list"></div>
             </div>
             <div class="pagination-bar"></div>

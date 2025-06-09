@@ -23,12 +23,13 @@ static class GeneralQuery
             Query q = new(Tbl.semester);
             q.WhereClause($"{Field.semester__finish_date} < {QPiece.toStr(yesterday)}");
             q.Where(Field.semester__status, [SemesterStatus.waiting, SemesterStatus.started]);
+            q.Set(Field.semester__status, SemesterStatus.finished);
+            q.Update(conn);
 
-            Query update_semester_query = q;
-            update_semester_query.Set(Field.semester__status, SemesterStatus.finished);
-            update_semester_query.Update(conn);
-
+            q = new(Tbl.semester);
+            q.Where(Field.semester__status, [SemesterStatus.finished]);
             q.Output(Field.semester__id);
+
             Query q2 = new(Tbl.request);
             q2.WhereInQuery(Field.request__semester_id, q.SelectQuery());
             q2.Where(Field.request__status, RequestStatus.waiting);

@@ -49,7 +49,7 @@ static class SemesterQuery
         Query q2 = new(Tbl.request, local_request);
         q2.Join(Field.student__id, Field.request__stu_id, localStudent, local_request);
         q2.WhereField(Field.request__semester_id, Field.semester__id, local_request);
-        q2.WhereField(Field.student__username, username, localStudent);
+        q2.Where(Field.student__username, username, localStudent);
         q2.Output(QPiece.countAll);
         p.OutputQuery(q2.SelectQuery());
     }

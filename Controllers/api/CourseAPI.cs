@@ -93,6 +93,7 @@ public class CourseAPI : BaseController
     private static Query CourseDetailQuery(string username, string? searchQuery, int? stars=null, string? status=null)
     {
         Query q = ManageCourseCard.GetStudentCourseQueryCreator(username);
+        q.OrderBy(Field.request__status, [RequestStatus.waiting, RequestStatus.joined]);
         q.OrderBy(Field.semester__status, [SemesterStatus.started, SemesterStatus.waiting, SemesterStatus.finished]);
         if (searchQuery is not null)
         {

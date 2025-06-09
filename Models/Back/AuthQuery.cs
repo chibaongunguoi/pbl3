@@ -39,7 +39,7 @@ static class AuthQuery
             modelState.AddModelError(nameof(form.Username), "Tên đăng nhập không được để trống");
         }
 
-
+        string password = BackUtils.ComputeSHA256(form.Password);
         Query q = new(Tbl.student);
         q.Where(Fld.username, form.Username);
         int count = q.Count(conn);
@@ -60,7 +60,7 @@ static class AuthQuery
         {
             Id = id,
             Username = form.Username,
-            Password = form.Password,
+            Password = password,
             Name = form.Name,
             Gender = form.Gender,
             Bday = form.Bday ?? new(),
