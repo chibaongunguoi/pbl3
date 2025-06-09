@@ -1,4 +1,4 @@
-<div class="modal fade" id="RejectRequestReasonModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="RejectRequestReasonModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,30 +22,28 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('reject-request-reason-form');
-        form && form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const stuId = document.getElementById('rejectStuId').value;
-            const semesterId = document.getElementById('rejectSemesterId').value;
-            const reason = document.getElementById('rejectReason').value;
-            const sentData = {
-                stuId: stuId,
-                semesterId: semesterId,
-                reason: reason
-            };
-            $.ajax({
-                url: '/TeacherManageAPI/RejectRequest',
-                type: 'POST',
-                data: sentData,
-                success: function (response) {
-                    $('#RejectRequestReasonModal').modal('hide');
-                    reload();
-                },
-                error: function (error) {
-                    alert('Có lỗi xảy ra khi gửi lý do từ chối.');
-                }
-            });
+    document.getElementById('reject-request-reason-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const stuId = document.getElementById('rejectStuId').value;
+        const semesterId = document.getElementById('rejectSemesterId').value;
+        const reason = document.getElementById('rejectReason').value;
+        const sentData = {
+            stuId: stuId,
+            semesterId: semesterId,
+            reason: reason
+        };
+        $.ajax({
+            url: '/TeacherManageAPI/RejectRequest',
+            type: 'POST',
+            data: sentData,
+            success: function (response) {
+                @* $('#RejectRequestReasonModal').modal('hide');
+                document.querySelector('#pagination-bar .page-link.pa-active').click(); *@
+                window.location.reload();
+            },
+            error: function (error) {
+                alert('Có lỗi xảy ra khi gửi lý do từ chối.');
+            }
         });
     });
 </script>

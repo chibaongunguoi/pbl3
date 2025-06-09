@@ -12,19 +12,40 @@
     <td>@Model.StudentTel</td>
     <td>
         <div class="button-group-wrapper course-manager">
-            <button class="card-btn course-detail btn-accept-request" data-stu-id="@Model.StudentId" data-semester-id="@Model.SemesterId" data-stu-name="@Model.StudentName">Chấp nhận</button>
-            <button class="card-btn course-detail btn-reject-request" style="background: salmon;" data-stu-id="@Model.StudentId" data-semester-id="@Model.SemesterId" data-stu-name="@Model.StudentName" data-bs-toggle="modal" data-bs-target="#RejectRequestReasonModal">Từ chối</button>
+            <button class="card-btn course-detail btn-accept-request" data-stu-id="@Model.StudentId"
+                data-semester-id="@Model.SemesterId" data-stu-name="@Model.StudentName">Chấp nhận</button>
+            <button class="card-btn course-detail btn-reject-request" style="background: salmon;"
+                data-stu-id="@Model.StudentId" data-semester-id="@Model.SemesterId" data-stu-name="@Model.StudentName"
+                data-bs-toggle="modal" data-bs-target="#RejectRequestReasonModal">Từ chối</button>
         </div>
     </td>
 </tr>
 
 <script>
-    document.querySelector(`.btn-reject-request[data-stu-id="${@Model.StudentId}"]`).addEventListener('click', function () {
-        const stuId = this.getAttribute('data-stu-id');
-        const semesterId = this.getAttribute('data-semester-id');
-        const stuName = this.getAttribute('data-stu-name');
+    document.querySelector(`.btn-accept-request[data-stu-id="${@Model.StudentId}"]`).
+        addEventListener('click', function () {
+            console.log("Accept request button clicked");
+            const stuId = this.getAttribute('data-stu-id');
+            const semesterId = this.getAttribute('data-semester-id');
+            const stuName = this.getAttribute('data-stu-name');
+            const sentData = {
+                stuId: stuId,
+                semesterId: semesterId
+            }
+            initPagination(paginationData, "/TeacherManageAPI/AcceptRequest", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
+            alert(`Đã chấp nhận yêu cầu đăng kí học của học viên ${stuId} - ${stuName}`);
+        });
 
-        const modalTitle = document.querySelector('#RejectRequestReasonModal .modal-title');
-        modalTitle.textContent = `Từ chối yêu cầu đăng ký học của học viên ${stuId} - ${stuName}`;
-    });
+    document.querySelector(`.btn-reject-request[data-stu-id="${@Model.StudentId}"]`)
+        .addEventListener('click', function () {
+            const stuId = this.getAttribute('data-stu-id');
+            const semesterId = this.getAttribute('data-semester-id');
+            const stuName = this.getAttribute('data-stu-name');
+
+            const modalTitle = document.querySelector('#RejectRequestReasonModal .modal-title');
+            modalTitle.textContent = `Từ chối yêu cầu đăng ký học của học viên ${stuId} - ${stuName}`;
+            document.getElementById('rejectStuId').value = stuId;
+            document.getElementById('rejectSemesterId').value = semesterId;
+            document.getElementById('rejectReason').value = '';
+        });
 </script>

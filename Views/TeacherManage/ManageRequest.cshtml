@@ -25,42 +25,10 @@
 @section TeacherManageLayoutScripts {
   <script src="~/js/pagination.js" asp-append-version="true"></script>
   <script>
-    function reload() {
-      document.querySelector('#pagination-bar .page-link.pa-active').click();
-    }
     const paginationData = {
       CurrentPage: 1,
       ItemsPerPage: 20,
     }
     initPagination(paginationData, "/TeacherManageAPI/ManageRequest", "#pagination-list", null, "#pagination-bar", "#pagination-form");
-    function demo() {
-      const btnAcceptRequest = document.querySelectorAll('.btn-accept-request');
-      const btnRejectRequest = document.querySelectorAll('.btn-reject-request');
-
-      btnAcceptRequest.forEach(btn => {
-        btn.addEventListener('click', function () {
-          const stuId = this.getAttribute('data-stu-id');
-          const semesterId = this.getAttribute('data-semester-id');
-          const stuName = this.getAttribute('data-stu-name');
-          const sentData = {
-            stuId: stuId,
-            semesterId: semesterId
-          }
-          initPagination(paginationData, "/TeacherManageAPI/AcceptRequest", "#pagination-list", sentData, "#pagination-bar", "#pagination-form")
-          alert(`Đã chấp nhận yêu cầu đăng kí học của học viên ${stuId} - ${stuName}`);
-        })
-      });
-      btnRejectRequest.forEach(btn => {
-        btn.addEventListener('click', function () {
-          const stuId = this.getAttribute('data-stu-id');
-          const semesterId = this.getAttribute('data-semester-id');
-          // Set values for modal
-          document.getElementById('rejectStuId').value = stuId;
-          document.getElementById('rejectSemesterId').value = semesterId;
-          document.getElementById('rejectReason').value = '';
-          // Modal is shown by data-bs-toggle
-        });
-      });
-    }
   </script>
 }

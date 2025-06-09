@@ -127,6 +127,7 @@ public class TeacherManageAPI : BaseController
     [HttpGet("AcceptRequest")]
     public IActionResult AcceptRequest(int stuId, int semesterId, PaginationInfo paginationInfo, string? searchQuery = null)
     {
+        Console.WriteLine($"Accepting request for student {stuId} in semester {semesterId}");
         Query q = new(Tbl.request);
         q.Set(Field.request__status, RequestStatus.joined);
         q.Where(Field.request__semester_id, semesterId);
