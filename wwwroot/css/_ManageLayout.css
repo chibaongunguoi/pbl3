@@ -249,6 +249,8 @@ button.accept-policy {
   border-top: 2px solid lightslategray;
   position: relative;
   text-align: justify;
+
+  flex: 1;
 }
 .about-us-wrapper {
   float: left;
